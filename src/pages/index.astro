@@ -1,6 +1,7 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
 import Row from "../components/Row.astro";
+import AccountCard from "../components/AccountCard.astro";
 import { accounts } from "../data/demo";
 import { repo, site } from "../data/site";
 import { level, levelColor, segments } from "../components/level";
@@ -33,6 +34,10 @@ const jsonLd = [{
 ---
 <Desktop title={title} description={description} page="overview" jsonLd={jsonLd}>
   <div class="content-inner">
+    <div class="hero-row">
+    <div class="hero-cards" aria-label="Two demo accounts as the dashboard shows them">
+      {accounts.slice(0, 2).map((a) => <AccountCard {...a} />)}
+    </div>
     <div class="card intro">
       <img src="/img/app-icon.png" alt="The cl_audit app icon" width="92" height="92" />
       <div>
@@ -47,6 +52,7 @@ const jsonLd = [{
           <span class="note">Free · source-available · runs entirely on your Mac</span>
         </div>
       </div>
+    </div>
     </div>
 
     <div class="cols3">
@@ -154,4 +160,20 @@ cd cl_audit && ./build.sh</code></pre>
   .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
   .lane-icons figure { margin: 0; display: grid; justify-items: center; gap: 2px; color: var(--muted); font-size: 10.5px; min-height: 58px; }
   .lane-mini { margin-top: 10px; }
+  /* top row: two account widgets on the left, the intro on the right */
+  .hero-row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: stretch; }
+  .hero-cards { display: grid; grid-template-columns: repeat(2, minmax(300px, 330px)); gap: 14px; }
+  .hero-row .intro { flex-direction: column; align-items: flex-start; justify-content: center; gap: 14px; }
+  .hero-cards :global(.acc) { align-content: start; }
+  .hero-row .intro img { display: none; }
+  @media (max-width: 1280px) {
+    .hero-row { grid-template-columns: 1fr; }
+    .hero-row .intro { order: -1; flex-direction: row; align-items: center; }
+    .hero-row .intro img { display: block; width: 92px; height: 92px; }
+    .hero-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 860px) {
+    .hero-row .intro { flex-direction: column; align-items: flex-start; }
+    .hero-cards { grid-template-columns: 1fr; }
+  }
 </style>
