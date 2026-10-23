@@ -16,7 +16,7 @@ import { accounts } from "../data/demo";
         <span class="app-tile" aria-hidden="true"></span><span class="tip">Claude desktop app — {a.name}</span><span class="run"></span>
       </button>
       <button type="button" class="dock-item" data-pop={a.id} aria-label={`cl_audit ${a.name}: ${a.five}% of the 5-hour session limit, ${a.week}% of the weekly limit`}>
-        <img src={a.icon} alt="" width="56" height="56" /><span class="tip">cl_audit {a.name}</span><span class="run"></span>
+        <img src={a.icon} data-acc-icon={a.id} alt="" width="56" height="56" /><span class="tip">cl_audit {a.name}</span><span class="run"></span>
       </button>
     </>))}
   </div>
@@ -49,6 +49,10 @@ import { accounts } from "../data/demo";
   bar.querySelectorAll<HTMLButtonElement>("[data-pop]").forEach((b) =>
     b.addEventListener("click", (e) => {
       e.stopPropagation();
+      if (b.dataset.pop === "launcher") (window as any).clCloseWins?.();
+      // An account's "Click" setting: straight to Claude, or the usage first
+      const clickPref = b.dataset.pop !== "launcher" ? (window as any).clClick?.(b.dataset.pop) : null;
+      if (clickPref === "Open Claude") { close(); (window as any).clOpenDesktop?.(b.dataset.pop); return; }
       const pop = bar.querySelector<HTMLElement>(`[data-popup="${b.dataset.pop}"]`)!;
       if (open === pop) return close();
       close();
@@ -58,7 +62,8 @@ import { accounts } from "../data/demo";
       open = pop;
       // Like the app: a click shows the usage for a moment, then opens that account's Claude desktop app.
       const id = b.dataset.pop!;
-      if (id !== "launcher") setTimeout(() => { if (open === pop) { close(); (window as any).clOpenDesktop?.(id); } }, 1400);
+      if (id !== "launcher" && clickPref !== "Show the details panel")
+        setTimeout(() => { if (open === pop) { close(); (window as any).clOpenDesktop?.(id); } }, (window as any).clPeekMs?.(id) ?? 1150);
     }),
   );
   document.addEventListener("click", (e) => { if (open && !open.contains(e.target as Node)) close(); });

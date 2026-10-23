@@ -60,7 +60,7 @@ const jsonLd = [{
         <h4>1 · Several Claude accounts</h4>
         <h2 class="h3">Side by side, each signed in</h2>
         <div class="mini-palette">
-          {accounts.map((a, i) => <Row icon={a.icon} name={a.name} color={a.color} five={a.five} week={a.week} key={`⌘${i + 1}`} sel={i === 0} open={i < 2} />)}
+          {accounts.map((a, i) => <Row id={a.id} icon={a.icon} name={a.name} color={a.color} five={a.five} week={a.week} key={`⌘${i + 1}`} sel={i === 0} open={i < 2} />)}
           <div class="foot">click or ↩ desktop app · ⌘↩ Terminal</div>
         </div>
         <p class="t">
@@ -76,7 +76,7 @@ const jsonLd = [{
         <h2 class="h3">One glance per account</h2>
         <div class="dock-mini">
           <img src="/img/app-icon.png" alt="" width="52" height="52" /><span class="vsep"></span>
-          {accounts.map((a) => <img src={a.icon} alt={`${a.name}: ${a.five}% of the 5-hour session limit used`} width="52" height="52" />)}
+          {accounts.map((a) => <img src={a.icon} data-acc-icon={a.id} alt={`${a.name}: ${a.five}% of the 5-hour session limit used`} width="52" height="52" />)}
         </div>
         <div class="lane-mini">
           <div class="lane-bar"><i style="background:var(--green)"></i><i style="background:var(--green)"></i><i style="background:var(--amber)"></i><i style="background:var(--red)"></i><i style="background:var(--red)"></i></div>

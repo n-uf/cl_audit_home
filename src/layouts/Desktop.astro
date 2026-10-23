@@ -50,6 +50,9 @@ const nav: [Page, string, string][] = [
 </Base>
 
 <script>
+  import { applyPrefs } from "../data/prefs";
+  document.addEventListener("astro:page-load", () => applyPrefs());
+
   // The menu bar clock, like the Mac's: "Fri 23 Oct 11:24".
   const tick = () => {
     const el = document.querySelector<HTMLElement>(".mb-clock");

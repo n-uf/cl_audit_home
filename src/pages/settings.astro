@@ -14,15 +14,86 @@ const description =
 </Desktop>
 
 <script>
+  import { accounts, type AccountId } from "../data/demo";
+  import { applyPrefs, colors, iconSrc, laneSrc, loadPrefs, savePrefs, type Prefs, type Style } from "../data/prefs";
+
+  const PEEK = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
   function setup() {
-    const sw = document.querySelector<HTMLElement>("[data-toggle-emails]");
-    if (!sw || sw.dataset.ready) return;
-    sw.dataset.ready = "1";
+    const root = document.getElementById("settings");
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = "1";
+    let prefs = loadPrefs();
+    let acc = (root.dataset.acc || "home") as AccountId;
+    const p = () => prefs[acc];
+    const commit = () => { savePrefs(prefs); applyPrefs(prefs); };
+    const $ = <T extends Element = HTMLElement>(sel: string) => root.querySelector<T>(sel);
+    const $$ = <T extends Element = HTMLElement>(sel: string) => [...root.querySelectorAll<T>(sel)];
+
+    // Fill every control from the selected account's settings.
+    const show = () => {
+      const a = accounts.find((x) => x.id === acc)!;
+      const pr = p();
+      $$<HTMLElement>("[data-select-acc]").forEach((t) => t.classList.toggle("sel", t.dataset.selectAcc === acc));
+      $<HTMLInputElement>('[data-field="name"]')!.value = pr.name;
+      $<HTMLInputElement>('[data-field="label"]')!.value = pr.label;
+      $$<HTMLElement>("[data-color]").forEach((b) => b.classList.toggle("on", b.dataset.color === pr.color));
+      $$<HTMLElement>('[data-text="dir"]').forEach((e) => (e.textContent = a.dir));
+      $$<HTMLElement>('[data-text="email"]').forEach((e) => (e.textContent = a.email));
+      $$<HTMLElement>('[data-text="name"]').forEach((e) => (e.textContent = pr.name));
+      for (const f of ["click", "window", "refresh"] as const) $<HTMLSelectElement>(`[data-field="${f}"]`)!.value = pr[f];
+      for (const f of ["renew", "hold", "notify", "login"] as const) $(`[data-switch="${f}"]`)!.classList.toggle("on", pr[f]);
+      $('[data-value="peek"]')!.textContent = `${pr.peek} s`;
+      $('[data-value="notifyAt"]')!.textContent = `${pr.notifyAt}%`;
+      $('[data-value="notifyAt"]')!.closest(".srow")!.classList.toggle("off", !pr.notify);
+      // icon gallery: this account's icons, the chosen style, and the preview lane under its row
+      $$<HTMLImageElement>("[data-gallery]").forEach((img) => (img.src = iconSrc(acc, img.dataset.gallery as Style)));
+      $$<HTMLElement>("[data-style]").forEach((b) => b.classList.toggle("on", b.dataset.style === pr.style));
+      $$<HTMLImageElement>("[data-lane-img]").forEach((img) => (img.src = laneSrc(acc, pr.style, +img.dataset.laneImg!)));
+      const row = $(`[data-style="${pr.style}"]`)!.closest(".fam-block")!;
+      row.after($("[data-lane]")!);
+      $$<HTMLElement>("[data-panel]").forEach((b) => b.classList.toggle("on", b.dataset.panel === pr.panel));
+      $<HTMLImageElement>("[data-panel-img]")!.src = `/img/panel-${pr.panel}.png`;
+    };
+
+    root.addEventListener("click", (e) => {
+      const t = e.target as HTMLElement;
+      const pick = (sel: string) => t.closest<HTMLElement>(sel);
+      let b: HTMLElement | null;
+      if ((b = pick("[data-select-acc]"))) { acc = b.dataset.selectAcc as AccountId; show(); return; }
+      if ((b = pick("[data-color]"))) { p().color = b.dataset.color!; commit(); show(); return; }
+      if ((b = pick("[data-switch]"))) { const k = b.dataset.switch as "renew" | "hold" | "notify" | "login"; p()[k] = !p()[k]; commit(); show(); return; }
+      if ((b = pick("[data-step]"))) {
+        const dir = +b.dataset.dir!;
+        if (b.dataset.step === "peek") { const i = Math.max(0, Math.min(PEEK.length - 1, PEEK.indexOf(p().peek) + dir)); p().peek = PEEK[i]; }
+        else if (p().notify) p().notifyAt = Math.max(50, Math.min(100, p().notifyAt + dir * 5));
+        commit(); show(); return;
+      }
+      if ((b = pick("[data-style]"))) { p().style = b.dataset.style as Style; commit(); show(); return; }
+      if ((b = pick("[data-panel]"))) { p().panel = b.dataset.panel!; commit(); show(); return; }
+      if (pick("[data-remove]")) { $("[data-dialog]")!.hidden = false; return; }
+      if (pick("[data-dialog-close]") || t.matches("[data-dialog]")) { $("[data-dialog]")!.hidden = true; return; }
+    });
+    root.addEventListener("change", (e) => {
+      const t = e.target as HTMLSelectElement;
+      const f = t.dataset.field as keyof Prefs | undefined;
+      if (f && t.tagName === "SELECT") { (p() as any)[f] = t.value; commit(); }
+    });
+    root.addEventListener("input", (e) => {
+      const t = e.target as HTMLInputElement;
+      if (t.dataset.field === "name") { p().name = t.value || accounts.find((x) => x.id === acc)!.name; commit(); }
+      if (t.dataset.field === "label") { t.value = t.value.toUpperCase().replace(/\s/g, "").slice(0, 6); p().label = t.value; commit(); }
+    });
+
+    // Show emails, shared with the rest of the site
+    const sw = $("[data-toggle-emails]")!;
     sw.classList.toggle("on", !document.documentElement.classList.contains("hide-emails"));
     sw.addEventListener("click", () => {
       const on = sw.classList.toggle("on");
       document.documentElement.classList.toggle("hide-emails", !on);
+      try { localStorage.setItem("cl_audit.showEmails", on ? "1" : "0"); } catch {}
     });
+    show();
   }
   document.addEventListener("astro:page-load", setup);
 </script>

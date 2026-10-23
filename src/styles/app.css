@@ -17,6 +17,9 @@
   --purple: #8b5cf6;
   --teal: #14b8a6;
   --pink: #ec4899;
+  --acc-home: #d97757;
+  --acc-work: #14b8a6;
+  --acc-side: #8b5cf6;
   --radius: 14px;
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", system-ui, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -271,7 +274,7 @@ h2 { font-size: clamp(26px, 3.4vw, 36px); line-height: 1.15; }
 .panel-prev { margin-top: 10px; border-radius: 12px; }
 
 /* ── The Dock ───────────────────────────────────────────────────────── */
-.dock-bar { position: fixed; left: 0; right: 0; bottom: 8px; z-index: 20; display: flex; justify-content: center; pointer-events: none; }
+.dock-bar { position: fixed; left: 0; right: 0; bottom: 8px; z-index: 5000; display: flex; justify-content: center; pointer-events: none; }
 .dock {
   pointer-events: auto; display: flex; align-items: flex-end; gap: 6px; padding: 6px 8px 4px;
   border-radius: 22px; background: rgba(44,44,48,.55);
@@ -526,3 +529,31 @@ body { overflow: hidden; }
 .range-shares { display: none; }
 .dash[data-range="24h"] .range-shares[data-range="24h"], .dash[data-range="7d"] .range-shares[data-range="7d"], .dash[data-range="30d"] .range-shares[data-range="30d"] { display: grid; }
 .no-acc { padding: 40px 0; text-align: center; color: var(--muted); font-size: 14px; }
+
+/* ── Settings controls ──────────────────────────────────────────────── */
+button.tile { border: 0; color: inherit; font: inherit; cursor: pointer; text-align: left; }
+.tile-text { display: grid; line-height: 1.25; }
+a.tile.plus { text-decoration: none; }
+label.srow { cursor: text; }
+input.field { background: none; border: 0; outline: none; color: var(--text); font: inherit; font-size: 13.5px; text-align: right; width: 130px; padding: 3px 6px; border-radius: 6px; }
+input.field:focus { background: rgba(255,255,255,.07); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+select.menu { appearance: none; -webkit-appearance: none; border: 0; color: var(--text); font: inherit; font-size: 12.5px; padding: 4px 26px 4px 10px; cursor: pointer;
+  background: rgba(255,255,255,.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239a9aa0' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 9px center; }
+select.menu:focus { outline: 1px solid rgba(255,255,255,.25); }
+select.menu option { background: #2c2c2f; color: var(--text); }
+.stepper button { width: 28px; height: 22px; border-radius: 99px; border: 0; background: rgba(255,255,255,.08); color: var(--muted); cursor: pointer; font: inherit; }
+.stepper button:hover { background: rgba(255,255,255,.14); color: var(--text); }
+.srow.off { opacity: .45; }
+.swatches button { width: 15px; height: 15px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; }
+.swatches button.on { box-shadow: 0 0 0 2px var(--window), 0 0 0 3.5px #fff; }
+.g-tile { margin: 0; display: grid; justify-items: center; gap: 2px; padding: 6px 2px; border-radius: 10px; font: inherit; font-size: 11px; color: var(--muted); text-align: center; background: none; border: 0; cursor: pointer; }
+.g-tile:hover { background: rgba(255,255,255,.05); }
+.g-tile.on { background: #3a3a3f; color: #fff; }
+.lane-row figure { margin: 0; display: grid; justify-items: center; gap: 2px; font-size: 10px; color: var(--muted); }
+.small-switch button { padding: 3px 9px; font-size: 12px; }
+.linkish { background: none; border: 0; cursor: pointer; font: inherit; padding: 0; }
+.dialog-veil { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; background: rgba(0,0,0,.35); }
+.settings { position: relative; }
+.dialog { width: min(380px, 90%); padding: 18px; border-radius: 14px; background: #333336; box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 20px 50px rgba(0,0,0,.5); display: grid; gap: 8px; font-size: 13.5px; }
+.dialog p { color: var(--soft); }
+.dialog-btns { display: flex; justify-content: flex-end; margin-top: 6px; }

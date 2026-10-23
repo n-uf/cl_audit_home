@@ -4,7 +4,7 @@ interface Props { id?: string; icon: string; name: string; color: string; five: 
 const r = Astro.props;
 ---
 <div class:list={["row", { sel: r.sel }]} data-open-desktop={r.id} role={r.id ? "button" : undefined} tabindex={r.id ? 0 : undefined}>
-  <img src={r.icon} alt="" width="42" height="42" loading="lazy" />
+  <img src={r.icon} data-acc-icon={r.id} alt="" width="42" height="42" loading="lazy" />
   <div class="meta">
     <div class="nm"><span class="dot" style={`background:${r.color};width:7px;height:7px`} />{r.name}{r.open && <span class="badge">open</span>}</div>
     {[["5h", r.five], ["wk", r.week]].map(([tag, p]) => (

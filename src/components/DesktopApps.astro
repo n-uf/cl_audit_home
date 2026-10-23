@@ -51,8 +51,10 @@ import { accounts, chats } from "../data/demo";
   const w_ = window as any;
   w_.__clZ = w_.__clZ ?? 30;
   const front = (w: HTMLElement) => { w.style.zIndex = String(++w_.__clZ); };
+  w_.clCloseWins = () => document.querySelectorAll<HTMLElement>(".deskwin").forEach((x) => (x.hidden = true));
   w_.clOpenWin = (w: HTMLElement | null) => {
     if (!w) return;
+    document.querySelectorAll<HTMLElement>(".deskwin").forEach((x) => { if (x !== w) x.hidden = true; });
     w.hidden = false;
     front(w);
     document.dispatchEvent(new Event("cl:close-pops"));
