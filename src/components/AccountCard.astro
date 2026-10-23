@@ -1,17 +1,17 @@
 ---
 import Limit from "./Limit.astro";
 interface Props {
-  icon: string; name: string; email: string; plan: string; color: string; tint: string;
+  id?: string; icon: string; name: string; email: string; plan: string; color: string; tint: string;
   five: number; fiveWhen: string; week: number; weekWhen: string; updated: string;
 }
 const a = Astro.props;
 ---
-<article class="card acc">
+<article class="card acc" data-account={a.id}>
   <div class="acc-head">
     <img src={a.icon} alt={`Dock icon of the ${a.name} account: ${a.five}% of the 5-hour limit used`} width="56" height="56" loading="lazy" />
     <div style="display:grid;gap:2px;min-width:0">
-      <div class="acc-name"><span class="dot" style={`background:${a.color}`} />{a.name}</div>
-      <div class="sub">{a.email}</div>
+      <div class="acc-name"><span class="dot" style={`background:${a.color}`} />Claude {a.name}</div>
+      <div class="sub email">{a.email}</div>
       <div class="open">Desktop open</div>
     </div>
     <span class="plan">{a.plan}</span>

@@ -1,0 +1,79 @@
+---
+// The Settings page of the app window, for the demo "home" account.
+import { accounts } from "../data/demo";
+
+const a = accounts[0];
+const families = [
+  ["Classic", [["bars", "Two numbers"], ["rings", "Rings"], ["number", "Big number"]]],
+  ["Like the panels", [["twinRings", "Twin rings"], ["segmented", "Segmented"], ["pace", "Pace bars"]]],
+  ["Status colours", [["statusTile", "Tile"], ["gauge", "Gauge"], ["worst", "Worst"], ["statusBar", "Tile + bar"], ["thinBars", "Bars"], ["batteries", "Batteries"], ["gaugeBar", "Gauge + bar"]]],
+] as const;
+const swatches = ["#d97757", "#3b82f6", "#8b5cf6", "#14b8a6", "#ec4899"];
+---
+<div class="settings">
+  <div class="strip">
+    {accounts.map((x, i) => (
+      <div class:list={["tile", { sel: i === 0 }]}><img src={x.icon} alt="" width="34" height="34" loading="lazy" /><div><b>{x.name}</b><span class="sub">{x.dir}</span></div></div>
+    ))}
+    <span class="tile plus" aria-hidden="true">＋</span>
+    <span class="spacer"></span>
+    <span class="sub show-emails">Show emails <button type="button" class="mswitch on" data-toggle-emails aria-label="Show emails"></button></span>
+  </div>
+
+  <div class="s-grid">
+    <div class="s-col">
+      <div class="card"><h4>Account</h4>
+        <div class="srow"><span>Name</span><span class="field">{a.name}</span></div>
+        <div class="srow"><span>Icon label</span><span class="field">{a.label}</span></div>
+        <div class="srow"><span>Colour</span><span class="swatches">{swatches.map((c, i) => <i class:list={{ on: i === 0 }} style={`background:${c}`} />)}</span></div>
+        <div class="srow end"><span class="danger">Remove account…</span></div>
+      </div>
+      <div class="card"><h4>Claude Code login</h4>
+        <div class="srow"><span>Folder</span><span class="menu">{a.dir}</span></div>
+        <div class="srow"><span>Login</span><span class="ok email">✓ {a.email}</span></div>
+        <div class="srow"><span>Renew expired login</span><span class="mswitch"></span></div>
+      </div>
+    </div>
+
+    <div class="s-col">
+      <div class="card"><h4>Clicking the icon</h4>
+        <div class="srow"><span>Click</span><span class="menu">Show usage, then open Claude</span></div>
+        <div class="srow"><span>Show usage for</span><span class="stepper"><i>−</i>0.75 s<i>＋</i></span></div>
+        <div class="srow"><span>Press and hold</span><span class="mswitch on"></span></div>
+        <div class="srow"><span>Claude window</span><span class="menu">Separate sign-in</span></div>
+      </div>
+      <div class="card"><h4>Behaviour</h4>
+        <div class="srow"><span>Refresh every</span><span class="menu">5 min</span></div>
+        <div class="srow"><span>Notify near a limit</span><span class="mswitch on"></span></div>
+        <div class="srow"><span>Notify at</span><span class="stepper"><i>−</i>90%<i>＋</i></span></div>
+        <div class="srow"><span>Open at login</span><span class="mswitch on"></span></div>
+      </div>
+    </div>
+
+    <div class="s-col">
+      <div class="card"><h4>Icon</h4>
+        {families.map(([fam, list]) => (
+          <>
+            <div class="fam">{fam}</div>
+            <div class="gallery">
+              {list.map(([k, n]) => (
+                <figure class:list={{ on: k === "bars" }}><img src={`/img/style-${k}.png`} alt={`${n} icon style`} width="44" height="44" loading="lazy" /><figcaption>{n}</figcaption></figure>
+              ))}
+            </div>
+            {fam === "Classic" && (
+              <div class="lane-mini">
+                <div><b>Preview</b> <span class="sub">as the limit fills up</span></div>
+                <div class="lane-bar"><i style="background:var(--green)"></i><i style="background:var(--green)"></i><i style="background:var(--amber)"></i><i style="background:var(--red)"></i><i style="background:var(--red)"></i></div>
+                <div class="lane-row">{[0, 1, 2, 3, 4].map((i) => <img src={`/img/lane-${i}.png`} alt="" width="34" height="34" loading="lazy" />)}</div>
+              </div>
+            )}
+          </>
+        ))}
+      </div>
+      <div class="card"><h4>Panels</h4>
+        <span class="switch small-switch"><span>Glow</span><span>Rings</span><span>Numbers</span><span class="on">Segments</span><span>Pace</span></span>
+        <img class="panel-prev" src="/img/panel-segments.png" alt="Segments panel design" width="800" height="511" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</div>

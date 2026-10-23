@@ -1,0 +1,58 @@
+---
+// The cl_audit main window, as the app shows it: Dashboard (account cards + usage history) and Settings.
+import AccountCard from "./AccountCard.astro";
+import History from "./History.astro";
+import SettingsPage from "./SettingsPage.astro";
+import { accounts } from "../data/demo";
+---
+<div class="window app" id="app" data-page="dashboard" data-range="7d" aria-label="The cl_audit window (demo data)">
+  <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="tb-title">cl_audit</span></div>
+  <div class="top">
+    <span class="title">cl_audit</span>
+    <span class="chips dash-only" role="group" aria-label="Accounts shown"><span class="lbl">Show</span>
+      {accounts.map((a) => (
+        <button type="button" class="chip on" data-chip={a.id}><span class="chip-ck" style={`background:${a.color}`}>✓</span>{a.name}</button>
+      ))}
+    </span>
+    <span class="updated dash-only hide-sm">Updated just now</span>
+    <span class="spacer"></span>
+    <span class="switch" role="tablist" aria-label="Page">
+      <button type="button" data-page-btn="dashboard" class="on">Dashboard</button>
+      <button type="button" data-page-btn="settings">Settings</button>
+    </span>
+  </div>
+
+  <div class="page page-dashboard">
+    <div class="cards">{accounts.map((a) => <AccountCard {...a} />)}</div>
+    <History />
+  </div>
+  <div class="page page-settings">
+    <SettingsPage />
+  </div>
+</div>
+
+<script>
+  const app = document.getElementById("app")!;
+  app.querySelectorAll<HTMLButtonElement>("[data-page-btn]").forEach((b) =>
+    b.addEventListener("click", () => {
+      app.dataset.page = b.dataset.pageBtn!;
+      app.querySelectorAll("[data-page-btn]").forEach((x) => x.classList.toggle("on", x === b));
+    }),
+  );
+  app.querySelectorAll<HTMLButtonElement>("[data-pick]").forEach((b) =>
+    b.addEventListener("click", () => {
+      app.dataset.range = b.dataset.pick!;
+      app.querySelectorAll("[data-pick]").forEach((x) => x.classList.toggle("on", x === b));
+    }),
+  );
+  app.querySelectorAll<HTMLButtonElement>("[data-chip]").forEach((b) =>
+    b.addEventListener("click", () => {
+      const on = b.classList.toggle("on");
+      app.querySelectorAll<HTMLElement>(`.cards [data-account="${b.dataset.chip}"]`).forEach((c) => (c.hidden = !on));
+    }),
+  );
+  app.querySelector<HTMLButtonElement>("[data-toggle-emails]")?.addEventListener("click", (e) => {
+    const on = (e.currentTarget as HTMLElement).classList.toggle("on");
+    document.body.classList.toggle("hide-emails", !on);
+  });
+</script>
