@@ -1,0 +1,23 @@
+---
+import Desktop from "../layouts/Desktop.astro";
+import { faq } from "../data/faq";
+
+const title = "FAQ — cl_audit: several Claude accounts and their usage limits on macOS";
+const description =
+  "Questions about cl_audit: running several Claude desktop apps at once, where the usage figures come from, privacy, supported Claude plans and requirements.";
+const jsonLd = [{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
+}];
+---
+<Desktop title={title} description={description} page="faq" jsonLd={jsonLd}>
+  <div class="content-inner">
+    <div class="page-head"><h1>Questions</h1><p>Good to know before you install.</p></div>
+    <div class="faq-list">
+      {faq.map(([q, a], i) => (
+        <details class="card" open={i < 2}><summary>{q}</summary><p>{a}</p></details>
+      ))}
+    </div>
+  </div>
+</Desktop>

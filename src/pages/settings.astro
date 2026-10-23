@@ -1,0 +1,28 @@
+---
+import Desktop from "../layouts/Desktop.astro";
+import SettingsPage from "../components/SettingsPage.astro";
+
+const title = "Settings — cl_audit: icon styles, panels and options for each Claude account";
+const description =
+  "cl_audit's Settings: for each Claude account, its name, colour and Claude Code configuration directory, what a click on its Dock icon does, refresh and notification options, 13 icon styles and 5 panel designs.";
+---
+<Desktop title={title} description={description} page="settings">
+  <div class="content-inner">
+    <h1 class="sr-only">cl_audit settings (demo account “home”)</h1>
+    <SettingsPage />
+  </div>
+</Desktop>
+
+<script>
+  function setup() {
+    const sw = document.querySelector<HTMLElement>("[data-toggle-emails]");
+    if (!sw || sw.dataset.ready) return;
+    sw.dataset.ready = "1";
+    sw.classList.toggle("on", !document.documentElement.classList.contains("hide-emails"));
+    sw.addEventListener("click", () => {
+      const on = sw.classList.toggle("on");
+      document.documentElement.classList.toggle("hide-emails", !on);
+    });
+  }
+  document.addEventListener("astro:page-load", setup);
+</script>

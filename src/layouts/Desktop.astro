@@ -1,0 +1,59 @@
+---
+// The whole site is the cl_audit app on a Mac desktop: a menu bar, one app window and the Dock.
+// The window's top-bar switch is the site navigation; each page is its own address and only the
+// window's content changes (and scrolls).
+import Base from "./Base.astro";
+import Dock from "../components/Dock.astro";
+import { repo } from "../data/site";
+
+export type Page = "overview" | "dashboard" | "settings" | "install" | "faq" | "none";
+interface Props { title: string; description: string; page: Page; jsonLd?: object[] }
+const { title, description, page, jsonLd } = Astro.props;
+
+const nav: [Page, string, string][] = [
+  ["overview", "Overview", "/"], ["dashboard", "Dashboard", "/dashboard"], ["settings", "Settings", "/settings"],
+  ["install", "Install", "/install"], ["faq", "FAQ", "/faq"],
+];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <div class="desk">
+    <header class="menubar" transition:persist="menubar">
+      <a class="mb-brand" href="/"><img src="/favicon.png" alt="" width="16" height="16" />cl_audit</a>
+      <nav class="mb-links" aria-label="Site">{nav.map(([, label, href]) => <a href={href}>{label}</a>)}</nav>
+      <span class="spacer"></span>
+      <a class="mb-gh" href={repo}>GitHub</a>
+      <span class="mb-clock" aria-hidden="true"></span>
+    </header>
+
+    <div class="appwin" transition:animate="none">
+      <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="tb-title">cl_audit</span></div>
+      <div class="topbar">
+        <a class="title" href="/">cl_audit</a>
+        <slot name="top"><span class="tagline hide-sm">Usage audit for all your Claude accounts</span></slot>
+        <span class="spacer"></span>
+        <nav class="switch pages" aria-label="Pages">
+          {nav.map(([id, label, href]) => <a href={href} class:list={{ on: id === page }} aria-current={id === page ? "page" : undefined}>{label}</a>)}
+        </nav>
+        <a class="pill small hide-sm" href={repo}>GitHub</a>
+      </div>
+      <main class="content" transition:animate="fade">
+        <slot />
+      </main>
+    </div>
+
+    <Dock />
+  </div>
+</Base>
+
+<script>
+  // The menu bar clock, like the Mac's: "Fri 23 Oct 11:24".
+  const tick = () => {
+    const el = document.querySelector<HTMLElement>(".mb-clock");
+    if (!el) return;
+    const d = new Date();
+    el.textContent = d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }).replace(",", "") +
+      "  " + d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  };
+  tick();
+  setInterval(tick, 20000);
+</script>

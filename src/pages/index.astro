@@ -1,306 +1,157 @@
 ---
-import Base from "../layouts/Base.astro";
-import AppWindow from "../components/AppWindow.astro";
-import Dock from "../components/Dock.astro";
+import Desktop from "../layouts/Desktop.astro";
+import Row from "../components/Row.astro";
 import { accounts } from "../data/demo";
+import { repo, site } from "../data/site";
+import { level, levelColor, segments } from "../components/level";
 
-const repo = "https://github.com/n-uf/cl_audit";
 const title = "cl_audit — run several Claude accounts on macOS, with usage limits in the Dock";
 const description =
   "cl_audit runs a separate Claude desktop app for each of your Claude accounts on macOS, shows each account's usage limits live in the Dock, and keeps a usage dashboard with figures read directly from Anthropic. Free and source-available.";
 
-
-const anchors = [
-  { href: "#accounts", n: "1", title: "Several Claude accounts, side by side",
-    text: "A separate Claude desktop app for each account, each with its own sign-in and its own Claude Code configuration." },
-  { href: "#dock", n: "2", title: "Usage limits, right in the Dock",
-    text: "One live icon per account with the 5-hour session limit and the weekly limit, updated every few minutes." },
-  { href: "#dashboard", n: "3", title: "A usage dashboard you can rely on",
-    text: "Limits read directly from Anthropic, the same figures Claude shows in Settings ▸ Usage, plus your usage history." },
-];
-
-const styles = [
-  ["bars", "Two numbers"], ["rings", "Rings"], ["number", "Big number"], ["twinRings", "Twin rings"],
-  ["segmented", "Segmented"], ["pace", "Pace bars"], ["statusTile", "Status tile"], ["gauge", "Gauge"],
-  ["worst", "Worst of two"], ["statusBar", "Status + week bar"], ["thinBars", "Number + bars"],
-  ["batteries", "Batteries"], ["gaugeBar", "Gauge + week bar"],
-];
 const lane = ["plenty left", "", "half used", "", "at the limit"];
-const panels = [["glow", "Glow"], ["segments", "Segments"], ["rings", "Rings"], ["numbers", "Numbers"], ["pace", "Pace"]];
+const spark = [[10, 4, 6], [14, 2, 8], [6, 22, 3], [5, 24, 2], [7, 26, 4], [9, 20, 3], [3, 8, 1]];
 
-const faq = [
-  ["Can I run several Claude desktop apps at the same time?",
-   "Yes. cl_audit starts a separate instance of the Claude desktop app for each account, each with its own app data folder, so each keeps its own sign-in. The Code tab and the Claude Code CLI use that account's own configuration directory (CLAUDE_CONFIG_DIR)."],
-  ["Where do the usage figures come from?",
-   "The 5-hour session limit and the weekly limit are read directly from Anthropic for each account, using that account's Claude Code sign-in: the same figures Claude shows in Settings ▸ Usage, with their reset times. The usage history on the dashboard comes from the Claude Code session logs on your Mac."],
-  ["Is cl_audit made by Anthropic?",
-   "No. cl_audit is an independent, source-available tool from n-uf. It is not affiliated with, endorsed by or sponsored by Anthropic. Claude is a trademark of Anthropic."],
-  ["Does it send my data anywhere?",
-   "Only to Anthropic, to read each account's usage. There is no cl_audit server, no analytics and no account to create. Sign-ins are read read-only from the macOS Keychain with Apple's security tool, the same way Claude Code reads them, and are never written to disk or logged."],
-  ["Which plans does it support?",
-   "Claude plans with usage limits, such as Pro, Max and Team, signed in to Claude Code. Accounts that use an API key are billed per token instead and have no usage limits to show."],
-  ["What does it need?",
-   "A Mac with Apple silicon and macOS 13 or later, the Xcode Command Line Tools to build it, and Claude Code signed in for each account. The Claude desktop app is needed only for the side-by-side desktop apps."],
-];
-
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "cl_audit",
-    description,
-    applicationCategory: "DeveloperApplication",
-    operatingSystem: "macOS 13 or later",
-    url: "https://cl-audit.n-uf.com/",
-    downloadUrl: repo,
-    image: "https://cl-audit.n-uf.com/img/app-icon.png",
-    featureList: anchors.map((a) => a.title),
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    author: { "@type": "Organization", name: "n-uf", url: "https://n-uf.com" },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
-  },
-];
+const jsonLd = [{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "cl_audit",
+  description,
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "macOS 13 or later",
+  url: `${site}/`,
+  downloadUrl: repo,
+  image: `${site}/img/app-icon.png`,
+  featureList: [
+    "Several Claude accounts side by side: a separate Claude desktop app per account",
+    "Usage limits for every account in the macOS Dock",
+    "A usage dashboard with limits read directly from Anthropic",
+  ],
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  author: { "@type": "Organization", name: "n-uf", url: "https://n-uf.com" },
+}];
 ---
-<Base title={title} description={description} jsonLd={jsonLd}>
-  <header class="bar">
-    <div class="wrap">
-      <a class="brand" href="/" aria-label="cl_audit home"><img src="/img/app-icon.png" alt="" width="26" height="26" />cl_audit</a>
-      <span class="spacer"></span>
-      <nav class="switch hide-sm" aria-label="Sections">
-        <a href="#accounts">Accounts</a>
-        <a href="#dock">Dock</a>
-        <a href="#dashboard">Dashboard</a>
-        <a href="#install">Install</a>
-      </nav>
-      <a class="pill small" href={repo}>GitHub</a>
-    </div>
-  </header>
-
-  <main>
-    <!-- Hero -->
-    <div class="hero wrap">
-      <div class="hero-text">
-        <p class="eyebrow">For Claude Pro, Max and Team · macOS</p>
+<Desktop title={title} description={description} page="overview" jsonLd={jsonLd}>
+  <div class="content-inner">
+    <div class="card intro">
+      <img src="/img/app-icon.png" alt="The cl_audit app icon" width="92" height="92" />
+      <div>
         <h1>Every Claude account, side by side on your Mac.</h1>
-        <p class="lead">
-          cl_audit runs a separate Claude desktop app for each of your accounts, shows each account's usage
-          limits live in the Dock, and keeps a usage dashboard with figures read directly from Anthropic.
+        <p>
+          cl_audit runs a separate Claude desktop app for each of your accounts, shows each account's usage limits
+          live in the Dock, and keeps a usage dashboard with figures read directly from Anthropic.
         </p>
-        <div class="ctas">
-          <a class="pill tint t-orange" href="#install">Install</a>
-          <a class="pill" href={repo}>View source on GitHub</a>
+        <div class="btns">
+          <a class="pill tint t-orange" href="/install">Install</a>
+          <a class="pill" href="/dashboard">Open the dashboard</a>
+          <span class="note">Free · source-available · runs entirely on your Mac</span>
         </div>
-        <p class="note">This is the real app's window with demo accounts. Try it, and click the icons in the Dock.</p>
       </div>
-
-      <AppWindow />
-
-      <nav class="anchors" aria-label="What cl_audit does">
-        {anchors.map((a) => (
-          <a class="card anchor" href={a.href}>
-            <span class="num">{a.n}</span>
-            <b>{a.title}</b>
-            <span class="sub">{a.text}</span>
-          </a>
-        ))}
-      </nav>
     </div>
 
-    <!-- 1 · Several accounts -->
-    <section id="accounts">
-      <div class="wrap">
-        <p class="eyebrow">1 · Several Claude accounts</p>
-        <h2>Run your personal, work and side-project accounts at the same time</h2>
-        <p class="lead">
-          The Claude desktop app signs in to one account at a time. cl_audit starts a separate instance of the
-          Claude desktop app for each account, each with its own app data folder, so every account stays signed
-          in, next to the others. The Code tab and the Claude Code CLI use that account's own configuration
-          directory, with its own sign-in, settings and history.
-        </p>
-        <div class="grid2" style="align-items:start;margin-top:28px">
-          <div class="card">
-            <h4>Open the right account</h4>
-            <div class="list">
-              <div><b>Click the cl_audit icon</b><span>The launcher lists every account with both limits. Click one, or press ⌘1–9, to bring up its Claude desktop app.</span></div>
-              <div><b>⌘↩ for Claude Code</b><span>Opens Terminal with Claude Code already set to that account.</span></div>
-              <div><b>Shared where you want it</b><span>Your CLAUDE.md, agents, skills and commands can be linked from your main account, while sign-ins and usage stay separate.</span></div>
-            </div>
-          </div>
-          <div class="card">
-            <h4>Add an account</h4>
-            <div class="list">
-              <div><b>✓ Create the folders and links</b><span>A Claude Code configuration directory and a desktop app data folder for the account.</span></div>
-              <div><b>✓ Sign in to Claude Code</b><span>Opens Terminal for the sign-in. The step turns green once the account is signed in, and warns if another account already uses the same sign-in.</span></div>
-              <div><b>○ Open the Claude desktop app</b><span>Its own instance with its own sign-in. Optional if you only use Claude Code in the terminal.</span></div>
-              <div><b>○ Add the Dock icon</b><span>Finish adds the account and installs its icon.</span></div>
-            </div>
-          </div>
+    <div class="cols3">
+      <article class="card" id="accounts">
+        <h4>1 · Several Claude accounts</h4>
+        <h2 class="h3">Side by side, each signed in</h2>
+        <div class="mini-palette">
+          {accounts.map((a, i) => <Row icon={a.icon} name={a.name} color={a.color} five={a.five} week={a.week} key={`⌘${i + 1}`} sel={i === 0} open={i < 2} />)}
+          <div class="foot">click or ↩ desktop app · ⌘↩ Terminal</div>
         </div>
-      </div>
-    </section>
+        <p class="t">
+          The Claude desktop app signs in to one account at a time. cl_audit starts a separate instance for each
+          account, with its own sign-in, and the Code tab and Claude Code CLI use that account's own configuration
+          directory.
+        </p>
+        <a class="more" href="/install">Set up your accounts ›</a>
+      </article>
 
-    <!-- 2 · Dock -->
-    <section id="dock">
-      <div class="wrap">
-        <p class="eyebrow">2 · Usage limits in the Dock</p>
-        <h2>Every account's limits, one glance away</h2>
-        <p class="lead">
-          Each account gets its own Dock icon (try the ones at the bottom of this page) showing how much of its 5-hour session limit and its weekly limit
-          is used. Click it to see the figures for a moment while that account's Claude desktop app opens;
-          double-click it for the full panel. A notification warns you before an account reaches its limit.
-        </p>
-        <h3 class="sub-h">Thirteen icon styles</h3>
-        <p class="sub" style="max-width:62ch">Pick a style, an account colour and an optional frame for each account. Status styles turn green, amber and red as a limit fills up.</p>
-        <div class="styles">
-          {styles.map(([k, n]) => (
-            <figure class="style"><img src={`/img/style-${k}.png`} alt={`${n} icon style`} width="72" height="72" loading="lazy" /><figcaption>{n}</figcaption></figure>
-          ))}
+      <article class="card" id="dock">
+        <h4>2 · Usage limits in the Dock</h4>
+        <h2 class="h3">One glance per account</h2>
+        <div class="dock-mini">
+          <img src="/img/app-icon.png" alt="" width="52" height="52" /><span class="vsep"></span>
+          {accounts.map((a) => <img src={a.icon} alt={`${a.name}: ${a.five}% of the 5-hour session limit used`} width="52" height="52" />)}
         </div>
-        <div class="card lane">
-          <h4>Preview · as the limit fills up</h4>
+        <div class="lane-mini">
           <div class="lane-bar"><i style="background:var(--green)"></i><i style="background:var(--green)"></i><i style="background:var(--amber)"></i><i style="background:var(--red)"></i><i style="background:var(--red)"></i></div>
-          <div class="lane-icons">
-            {lane.map((t, i) => (
-              <figure><img src={`/img/lane-${i}.png`} alt={`Two numbers style at level ${i + 1} of 5`} width="56" height="56" loading="lazy" /><figcaption>{t}</figcaption></figure>
-            ))}
-          </div>
+          <div class="lane-icons">{lane.map((t, i) => <figure><img src={`/img/lane-${i}.png`} alt="" width="40" height="40" /><figcaption>{t}</figcaption></figure>)}</div>
         </div>
-
-        <h3 class="sub-h">Five panel designs</h3>
-        <p class="sub" style="max-width:62ch">Both limits with their reset times, the plan, and buttons to open Claude or the dashboard.</p>
-        <div class="panels">
-          {panels.map(([k, n]) => (
-            <figure><img src={`/img/panel-${k}.png`} alt={`${n} panel design showing the 5-hour session limit and the weekly limit`} width="800" height="540" loading="lazy" /><figcaption>{n}</figcaption></figure>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- 3 · Dashboard -->
-    <section id="dashboard">
-      <div class="wrap">
-        <p class="eyebrow">3 · Usage dashboard</p>
-        <h2>Figures you can rely on, read directly from Anthropic</h2>
-        <p class="lead">
-          No estimates and no guesswork: for each account, cl_audit reads the usage limits directly from Anthropic,
-          the same figures Claude shows in Settings ▸ Usage, with the exact reset times. Below them, your usage
-          history shows when you use Claude, how many tokens each day, and which projects, models and apps they
-          went to. The window at the top of this page is the dashboard, with demo accounts.
+        <p class="t">
+          Each account's icon shows its 5-hour session limit and weekly limit. Click it for a quick look while that
+          account's Claude opens; 13 icon styles, 5 panel designs, and a notification before a limit is reached.
         </p>
-        <div class="sources">
-          <div class="card">
-            <h4>Usage limits</h4>
-            <p><b>Read directly from Anthropic</b> for each account, through that account's own Claude Code sign-in.
-              The 5-hour session limit and the weekly limit, as percentages with reset times, refreshed every few
-              minutes.</p>
-          </div>
-          <div class="card">
-            <h4>Usage history</h4>
-            <p><b>Read from the Claude Code session logs</b> already on your Mac: the terminal, the desktop app's Code
-              tab, VS Code and Agent SDK apps. Tokens count input, cache writes and output, for the last 24 hours,
-              7 days or 30 days.</p>
-          </div>
-          <div class="card">
-            <h4>Nothing in between</h4>
-            <p><b>No cl_audit server.</b> Sign-ins are read read-only from the macOS Keychain, the same way Claude
-              Code reads them, and the only network requests go to Anthropic.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+        <a class="more" href="/settings">Icon styles in Settings ›</a>
+      </article>
 
-    <!-- Install -->
-    <section id="install">
-      <div class="wrap grid2" style="align-items:start">
-        <div>
-          <p class="eyebrow">Install</p>
-          <h2>Build it in a minute</h2>
-          <p class="lead">cl_audit is built from source on your Mac, so you can read every line before it runs.</p>
-          <div class="ctas"><a class="pill tint t-orange" href={repo}>Get the source</a></div>
-        </div>
-        <div class="card">
-          <h4>Terminal</h4>
-          <pre class="code"><code>git clone {repo}.git
-cd cl_audit
-./build.sh</code></pre>
-          <div class="list" style="margin-top:6px">
-            <div><b>Then</b><span>Open cl_audit, add your accounts with ＋, and drag their icons into the Dock.</span></div>
-            <div><b>Requires</b><span>A Mac with Apple silicon and macOS 13 or later, the Xcode Command Line Tools (<code>xcode-select --install</code>), and Claude Code signed in for each account.</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq">
-      <div class="wrap">
-        <p class="eyebrow">Questions</p>
-        <h2>Good to know</h2>
-        <div class="faq">
-          {faq.map(([q, a]) => (
-            <details class="card"><summary>{q}</summary><p>{a}</p></details>
+      <article class="card" id="dashboard">
+        <h4>3 · Usage dashboard</h4>
+        <h2 class="h3">Read directly from Anthropic</h2>
+        <div class="mcards">
+          {accounts.map((a) => (
+            <div class="mcard">
+              <div class="mh"><span class="dot" style={`background:${a.color};width:7px;height:7px`}></span><b>{a.name}</b><span class="pct" style={`color:${levelColor(a.five)}`}>{a.five}%</span></div>
+              <div class="seg">{segments(a.five).map((c) => <i class={c} />)}</div>
+              <div class="mh2"><span>Week</span><span class={`lv-${level(a.week)}`} style="font-weight:700">{a.week}%</span></div>
+              <div class="seg">{segments(a.week).map((c) => <i class={c} />)}</div>
+            </div>
           ))}
         </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="wrap">
-      <span>cl_audit by <a href="https://n-uf.com">n-uf</a> · <a href={`${repo}/blob/main/LICENSE`}>PolyForm Perimeter 1.0.1</a> · <a href={repo}>GitHub</a></span>
-      <span>Not affiliated with Anthropic. Claude is a trademark of Anthropic.</span>
+        <a class="hist-mini" href="/dashboard">
+          <span class="spark" aria-hidden="true">{spark.map(([a, b, c]) => <span><i style={`height:${a}px;background:var(--orange)`} /><i style={`height:${b}px;background:var(--teal)`} /><i style={`height:${c}px;background:var(--purple)`} /></span>)}</span>
+          <span><b>Usage history</b><br /><span class="sub">when you use Claude · tokens per day · where they go</span></span>
+        </a>
+        <p class="t">
+          The same figures Claude shows in Settings ▸ Usage, with exact reset times, for every account. History comes
+          from the Claude Code session logs on your Mac.
+        </p>
+        <a class="more" href="/dashboard">Open the dashboard ›</a>
+      </article>
     </div>
-  </footer>
-  <Dock />
-</Base>
+
+    <div class="cols2">
+      <div class="card">
+        <h4>Open the right account</h4>
+        <div class="list">
+          <div><b>Click the cl_audit icon</b><span>The launcher lists every account with both limits. Click one, or press ⌘1–9, to bring up its Claude desktop app.</span></div>
+          <div><b>⌘↩ for Claude Code</b><span>Opens Terminal with Claude Code already set to that account.</span></div>
+          <div><b>Shared where you want it</b><span>CLAUDE.md, agents, skills and commands can be linked from your main account, while sign-ins and usage stay separate.</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Add an account</h4>
+        <div class="list">
+          <div><b>✓ Create the folders and links</b><span>A Claude Code configuration directory and a desktop app data folder for the account.</span></div>
+          <div><b>✓ Sign in to Claude Code</b><span>The step turns green once the account is signed in, and warns if another account already uses the same sign-in.</span></div>
+          <div><b>○ Open the Claude desktop app</b><span>Its own instance with its own sign-in. Optional if you only use Claude Code in the terminal.</span></div>
+          <div><b>○ Add the Dock icon</b><span>Finish adds the account and installs its icon.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cols2">
+      <div class="card">
+        <h4>Privacy</h4>
+        <div class="srow"><span>Sign-ins</span><span class="v">read-only from the macOS Keychain</span></div>
+        <div class="srow"><span>Network</span><span class="v">Anthropic only, every few minutes</span></div>
+        <div class="srow"><span>Usage history</span><span class="v">Claude Code session logs on your Mac</span></div>
+        <div class="srow"><span>Server, analytics, account</span><span class="v">none</span></div>
+      </div>
+      <div class="card">
+        <h4>Get started</h4>
+        <pre class="code"><code>git clone {repo}.git
+cd cl_audit && ./build.sh</code></pre>
+        <div class="srow" style="margin-top:6px"><span>Requires</span><span class="v">Apple silicon · macOS 13+ · Claude Code</span></div>
+        <a class="more" href="/install">Full install steps ›</a>
+      </div>
+    </div>
+
+    <p class="legal">cl_audit by <a href="https://n-uf.com">n-uf</a> · <a href={`${repo}/blob/main/LICENSE`}>PolyForm Perimeter 1.0.1</a> · Not affiliated with Anthropic. Claude is a trademark of Anthropic.</p>
+  </div>
+</Desktop>
 
 <style>
-  .hero { padding: 28px 0 40px; }
-  .hero.wrap { width: min(1360px, 100% - 32px); }
-  .hero-text { text-align: center; display: grid; justify-items: center; margin-bottom: 26px; }
-  .hero-text .ctas { margin-top: 16px; }
-  .hero-text .lead { margin-inline: auto; }
-  .hero-text .ctas { justify-content: center; }
-  h1 { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.025em; }
-  .ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
-  .note { color: var(--faint); font-size: 13px; margin-top: 14px; }
-  .anchors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 52px; }
-  .anchor { display: grid; gap: 6px; align-content: start; text-decoration: none; transition: background .15s, transform .15s; }
-  .anchor:hover { background: rgba(255,255,255,.06); transform: translateY(-2px); }
-  .anchor b { font-size: 16px; }
-  .anchor .sub { font-size: 14px; }
-  .num { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: rgba(217,119,87,.22); box-shadow: inset 0 0 0 1px rgba(217,119,87,.6); font-size: 12px; font-weight: 700; }
-  .sub-h { font-size: 20px; margin-top: 44px; margin-bottom: 6px; }
-  .dock-wrap { display: grid; justify-items: center; margin-top: 32px; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; padding: 16px; }
-  .styles { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; margin-top: 18px; }
-  .style { margin: 0; display: grid; justify-items: center; gap: 6px; padding: 12px 6px 10px; border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); font-size: 12.5px; text-align: center; }
-  .style:hover { color: var(--text); background: rgba(255,255,255,.06); }
-  .lane { margin-top: 16px; background: #3a3a3f; box-shadow: none; }
-  .lane-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
-  .lane-bar i { height: 3px; border-radius: 2px; }
-  .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 10px; }
-  .lane-icons figure { margin: 0; display: grid; justify-items: center; gap: 4px; color: var(--muted); font-size: 12px; min-height: 80px; }
-  .panels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-top: 18px; align-items: start; }
-  .panels figure { margin: 0; border-radius: 16px; background: var(--window); overflow: hidden; box-shadow: inset 0 0 0 1px var(--line); }
-  .panels figcaption { padding: 0 16px 12px; color: var(--muted); font-size: 13px; }
-  .sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
-  .sources p { color: var(--muted); font-size: 14px; }
-  .sources b { color: var(--text); }
-  .code { margin: 0; padding: 12px 14px; border-radius: 10px; background: rgba(0,0,0,.35); box-shadow: inset 0 0 0 1px var(--line); font-size: 13.5px; line-height: 1.7; overflow-x: auto; }
-  .faq { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; margin-top: 24px; align-items: start; }
-  .faq summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
-  .faq summary::after { content: "+"; color: var(--muted); }
-  .faq details[open] summary::after { content: "−"; }
-  .faq p { color: var(--soft); font-size: 14.5px; margin-top: 10px; }
-  footer { border-top: 1px solid var(--divider); padding: 28px 0 40px; color: var(--muted); font-size: 13px; }
-  footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-  @media (max-width: 860px) {
-    .anchors, .sources { grid-template-columns: 1fr; }
-    .dock img { width: 52px; height: 52px; }
-  }
+  .h3 { font-size: 18px; margin-bottom: 12px; }
+  .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
+  .lane-icons figure { margin: 0; display: grid; justify-items: center; gap: 2px; color: var(--muted); font-size: 10.5px; min-height: 58px; }
+  .lane-mini { margin-top: 10px; }
 </style>

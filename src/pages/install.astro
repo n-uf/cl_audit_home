@@ -1,0 +1,58 @@
+---
+import Desktop from "../layouts/Desktop.astro";
+import { repo } from "../data/site";
+
+const title = "Install — cl_audit: build it on your Mac in a minute";
+const description =
+  "How to install cl_audit on macOS: clone the source, run build.sh, add your Claude accounts and put their icons in the Dock. Requires Apple silicon, macOS 13 or later, the Xcode Command Line Tools and Claude Code.";
+---
+<Desktop title={title} description={description} page="install">
+  <div class="content-inner">
+    <div class="page-head"><h1>Install cl_audit</h1><p>Built from source on your Mac, so you can read every line before it runs.</p></div>
+
+    <div class="cols2">
+      <div class="card">
+        <h4>Build and install</h4>
+        <pre class="code"><code>git clone {repo}.git
+cd cl_audit
+./build.sh</code></pre>
+        <p class="t">
+          build.sh compiles the app, installs cl_audit in /Applications and, once you have accounts, one
+          “cl_audit &lt;name&gt;” icon app per account next to it, where Spotlight finds them.
+        </p>
+        <div class="btns"><a class="pill tint t-orange" href={repo}>Get the source on GitHub</a></div>
+      </div>
+
+      <div class="card">
+        <h4>Requires</h4>
+        <div class="srow"><span>Mac</span><span class="v">Apple silicon</span></div>
+        <div class="srow"><span>macOS</span><span class="v">13 Ventura or later</span></div>
+        <div class="srow"><span>To build</span><span class="v">Xcode Command Line Tools · <code>xcode-select --install</code></span></div>
+        <div class="srow"><span>Per account</span><span class="v">Claude Code, signed in</span></div>
+        <div class="srow"><span>Optional</span><span class="v">the Claude desktop app, for side-by-side windows</span></div>
+        <div class="srow"><span>Plans</span><span class="v">Pro, Max or Team (plans with usage limits)</span></div>
+      </div>
+    </div>
+
+    <div class="cols2">
+      <div class="card">
+        <h4>Add your accounts</h4>
+        <div class="steps">
+          <div><div><b>Open cl_audit</b><span>It opens on the Dashboard; switch to Settings.</span></div></div>
+          <div><div><b>Click ＋ for a new account</b><span>Give it a name, then let the checklist create its folders, run the Claude Code sign-in and open its own Claude desktop app.</span></div></div>
+          <div><div><b>Or use an existing configuration</b><span>Point an account at a Claude Code configuration directory you already use, such as ~/.claude.</span></div></div>
+          <div><div><b>Drag the icons into the Dock</b><span>Then choose Options ▸ Keep in Dock. Each icon starts at login unless you turn that off.</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4>Update and uninstall</h4>
+        <div class="steps">
+          <div><div><b>Update</b><span>Run <code>git pull && ./build.sh</code> in the cl_audit folder; the icons are updated too.</span></div></div>
+          <div><div><b>Remove an account</b><span>Settings ▸ Account ▸ Remove account… quits and deletes its icon, its login item and its saved status. Its Claude Code folder is left alone.</span></div></div>
+          <div><div><b>Uninstall</b><span>Remove every account, then delete cl_audit from /Applications and the folder ~/Library/Application Support/usage-n-uf.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Desktop>

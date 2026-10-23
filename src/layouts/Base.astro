@@ -1,5 +1,6 @@
 ---
 import "../styles/app.css";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title: string;
@@ -37,6 +38,7 @@ const ogImage = new URL("/og.png", Astro.site);
     <meta name="twitter:image" content={ogImage} />
 
     {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+    <ClientRouter fallback="swap" />
   </head>
   <body>
     <slot />
