@@ -1,24 +1,27 @@
 ---
-// What "Terminal" opens: a Terminal window running Claude Code for that account, exactly as cl_audit starts
-// it (its CLAUDE_CONFIG_DIR, then claude), with a plain sign-in line, an empty prompt and cl_audit's own
-// status line underneath. Deliberately not Claude Code's start screen.
-import { accounts } from "../data/demo";
-
-const lines = (a: (typeof accounts)[number], i: number) => ({
-  setup: i === 0 ? "unset CLAUDE_CONFIG_DIR" : `export CLAUDE_CONFIG_DIR=${a.dir}`,
-  status: `5h ${a.five}% · wk ${a.week}%`,
-});
+// What "Terminal" opens: Terminal running Claude Code for that account, exactly as cl_audit starts it
+// (its CLAUDE_CONFIG_DIR, then claude), covering the window's content area. It plays a short exchange,
+// then leaves a prompt you can type into, with cl_audit's own status line underneath.
+// Deliberately not Claude Code's start screen.
+import { accounts, chats } from "../data/demo";
 ---
 <div class="terms" transition:persist="terms">
   {accounts.map((a, i) => {
-    const l = lines(a, i);
+    const c = chats[a.id].code;
+    const setup = i === 0 ? "unset CLAUDE_CONFIG_DIR" : `export CLAUDE_CONFIG_DIR=${a.dir}`;
     return (
-      <section class="term deskwin" data-terminal={a.id} hidden style={`--i:${i}`} aria-label={`Terminal running Claude Code for the ${a.name} account (illustration)`}>
+      <section class="term deskwin" data-terminal={a.id} hidden aria-label={`Terminal running Claude Code for the ${a.name} account (illustration)`}>
         <div class="term-bar">
           <span class="lights"><button type="button" class="close" data-close aria-label="Close"></button><i></i><i></i></span>
           <span class="term-title">{a.name} — claude — 80×24</span>
         </div>
-        <pre class="term-body" data-script={JSON.stringify([l.setup, "claude"])}><span class="term-typed"></span><span class="term-after" hidden><span class="term-dim">Claude Code · signed in as </span><span class="email term-dim">{a.email}</span><span class="term-dim"> · {a.plan} plan</span><span class="term-box">&gt; <span class="term-cursor"></span></span><span class="term-status">{l.status}</span></span></pre>
+        <div class="term-body" data-log data-script={JSON.stringify({ cmds: [setup, "claude"], ask: c.ask, steps: c.steps, done: c.done })}>
+          <div class="term-signed" hidden><span class="term-dim">Claude Code · signed in as </span><span class="email term-dim">{a.email}</span><span class="term-dim"> · {a.plan} plan</span></div>
+        </div>
+        <form class="term-prompt" data-term-form hidden>
+          <span>&gt;</span><input type="text" autocomplete="off" aria-label="Message to Claude Code" />
+        </form>
+        <div class="term-status" hidden>5h {a.five}% · wk {a.week}%</div>
       </section>
     );
   })}
@@ -26,33 +29,65 @@ const lines = (a: (typeof accounts)[number], i: number) => ({
 
 <script>
   const w_ = window as any;
-  const type = (term: HTMLElement) => {
-    const body = term.querySelector<HTMLElement>(".term-body")!;
-    const typed = body.querySelector<HTMLElement>(".term-typed")!;
-    const after = body.querySelector<HTMLElement>(".term-after")!;
+  const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const line = (log: HTMLElement, text: string, cls = "") => {
+    const d = document.createElement("div");
+    d.className = "term-line " + cls; d.textContent = text;
+    log.append(d); log.scrollTop = log.scrollHeight;
+    return d;
+  };
+  const typeInto = async (el: HTMLElement, text: string, fast: boolean) => {
+    if (fast) { el.textContent += text; return; }
+    for (const ch of text) { el.textContent += ch; await wait(26); }
+  };
+
+  const play = async (term: HTMLElement) => {
     if (term.dataset.played) return;
     term.dataset.played = "1";
-    const script: string[] = JSON.parse(body.dataset.script || "[]");
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { typed.textContent = script.map((c) => "~ % " + c).join("\n") + "\n"; after.hidden = false; return; }
-    let line = 0, ch = 0;
-    const step = () => {
-      if (line >= script.length) { after.hidden = false; return; }
-      const text = script[line];
-      if (ch === 0) typed.textContent += "~ % ";
-      if (ch < text.length) { typed.textContent += text[ch++]; setTimeout(step, 28); }
-      else { typed.textContent += "\n"; line++; ch = 0; setTimeout(step, 380); }
-    };
-    setTimeout(step, 250);
+    const log = term.querySelector<HTMLElement>("[data-log]")!;
+    const s = JSON.parse(log.dataset.script || "{}");
+    const fast = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const signed = log.querySelector<HTMLElement>(".term-signed")!;
+    for (const cmd of s.cmds as string[]) {
+      const l = line(log, "~ % ");
+      log.insertBefore(l, signed);
+      await wait(fast ? 0 : 200);
+      await typeInto(l, cmd, fast);
+      await wait(fast ? 0 : 300);
+    }
+    signed.hidden = false;
+    log.append(signed);
+    await wait(fast ? 0 : 500);
+    const ask = line(log, "> ", "term-you");
+    await typeInto(ask, s.ask, fast);
+    for (const step of s.steps as string[]) { await wait(fast ? 0 : 650); line(log, "  · " + step, "term-dim"); }
+    await wait(fast ? 0 : 600);
+    line(log, s.done, "term-done");
+    term.querySelector<HTMLElement>("[data-term-form]")!.hidden = false;
+    term.querySelector<HTMLElement>(".term-status")!.hidden = false;
   };
+
   w_.clOpenTerminal = (id: string) => {
     const t = document.querySelector<HTMLElement>(`.term[data-terminal="${id}"]`);
     if (!t) return;
     w_.clOpenWin?.(t);
-    type(t);
+    play(t);
   };
   document.addEventListener("click", (e) => {
     const opener = (e.target as HTMLElement).closest<HTMLElement>("[data-open-terminal]");
     if (opener?.dataset.openTerminal) w_.clOpenTerminal(opener.dataset.openTerminal);
+  });
+  // Typing at the prompt: it's echoed, with a note that this is a demo.
+  document.addEventListener("submit", (e) => {
+    const form = (e.target as HTMLElement).closest<HTMLFormElement>("[data-term-form]");
+    if (!form) return;
+    e.preventDefault();
+    const input = form.querySelector("input")!;
+    const text = input.value.trim();
+    if (!text) return;
+    const log = form.parentElement!.querySelector<HTMLElement>("[data-log]")!;
+    line(log, "> " + text, "term-you");
+    input.value = "";
+    setTimeout(() => line(log, "  This Terminal is a demo, so nothing runs. With cl_audit installed, Claude Code runs here for this account.", "term-dim"), 400);
   });
 </script>

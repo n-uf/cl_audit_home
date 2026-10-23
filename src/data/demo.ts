@@ -129,3 +129,40 @@ export const breakdown = {
   models: [["Opus", 0.71, "#c026d3"], ["Sonnet", 0.24, "#3b82f6"], ["Haiku", 0.05, "#22c55e"]],
   surfaces: [["Desktop Code tab", 0.48, "#f59e0b"], ["Terminal", 0.37, "#3b82f6"], ["VS Code", 0.11, "#8e8e93"], ["SDK apps", 0.04, "#14b8a6"]],
 } as const;
+
+/** Demo conversations for each account's Claude desktop app and Claude Code (illustrations). */
+export const chats: Record<AccountId, { desktop: { title: string; turns: [("you" | "claude"), string][] }; code: { ask: string; steps: string[]; done: string } }> = {
+  home: {
+    desktop: {
+      title: "Weekend in Lviv",
+      turns: [
+        ["you", "Plan a relaxed weekend in Lviv for two: coffee, old town, one good dinner."],
+        ["claude", "Saturday: start with coffee near Rynok Square, walk the old town and climb the Town Hall tower before lunch. Evening: book dinner somewhere small near the Opera House.\n\nSunday: a slow breakfast, the Lychakiv Cemetery walk, and the afternoon free."],
+        ["you", "Make Sunday a bit lazier."],
+      ],
+    },
+    code: { ask: "add dark mode to the recipe site", steps: ["Read src/styles/theme.css", "Edited src/styles/theme.css (+42 −3)", "Edited src/components/Header.tsx (+11)"], done: "Dark mode follows the system setting, with a toggle in the header." },
+  },
+  work: {
+    desktop: {
+      title: "Review comments on PR 214",
+      turns: [
+        ["you", "Summarise the review comments on PR 214 and group them by file."],
+        ["claude", "api/billing.ts — two comments: handle a missing currency, and add a test for refunds.\n\nweb/Invoice.tsx — one comment: the total should use the shared money formatter.\n\nNothing blocking; all three are small."],
+        ["you", "Draft replies for the billing ones."],
+      ],
+    },
+    code: { ask: "fix the failing refund test in api/billing", steps: ["Ran npm test -- billing (1 failed)", "Read api/billing.ts", "Edited api/billing.ts (+6 −2)", "Ran npm test -- billing (24 passed)"], done: "Refunds without a currency now fall back to the invoice currency." },
+  },
+  side: {
+    desktop: {
+      title: "Names for a plant app",
+      turns: [
+        ["you", "Ten short names for an app that reminds you to water your plants."],
+        ["claude", "Sprout, Drizzle, Leafy, Thirsty, Greenday, Potter, Dewdrop, Mossy, Bloomer, Sip."],
+        ["you", "Which ones are easiest to say out loud?"],
+      ],
+    },
+    code: { ask: "scaffold the plant reminder app", steps: ["Created app/ (Expo, TypeScript)", "Created app/src/plants.ts", "Ran npm install (312 packages)"], done: "The app starts with npx expo start; plants live in app/src/plants.ts." },
+  },
+};
