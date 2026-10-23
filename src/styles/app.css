@@ -1,8 +1,8 @@
 /* The look of the cl_audit app: its dark window, cards, pills and limit bars. */
 :root {
   --bg: #1d1d1f;            /* around the window */
-  --window: #282828;        /* the app window (same as the rendered panels) */
-  --card: rgba(255, 255, 255, 0.035);
+  --window: #212121;        /* the app window, as macOS draws it in dark mode */
+  --card: rgba(255, 255, 255, 0.045);
   --line: rgba(255, 255, 255, 0.07);
   --divider: rgba(255, 255, 255, 0.06);
   --text: #f2f2f4;
@@ -605,7 +605,7 @@ select.menu, .menu {
 .fam { margin: 10px 0 4px; }
 
 /* ── The usage panel (the app's DetailsView), in five designs ───────── */
-.panel-stage { margin-top: 10px; padding: 18px; border-radius: 14px; background: #222224; }
+.panel-stage { margin-top: 10px; padding: 18px; border-radius: 14px; background: rgba(0,0,0,.22); }
 .pn { display: grid; gap: 12px; }
 .pn.large { padding: 18px; border-radius: 18px; background: #2c2c2f; box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 14px 34px rgba(0,0,0,.4); gap: 16px; }
 .pn-head { display: flex; gap: 14px; align-items: flex-start; }
