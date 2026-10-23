@@ -18,7 +18,7 @@ import { accounts, chats } from "../data/demo";
         <div class="term-body" data-log data-script={JSON.stringify({ cmds: [setup, "claude"], ask: c.ask, steps: c.steps, done: c.done })}>
           <div class="term-signed" hidden><span class="term-dim">Claude Code · signed in as </span><span class="email term-dim">{a.email}</span><span class="term-dim"> · {a.plan} plan</span></div>
         </div>
-        <form class="term-prompt" data-term-form hidden>
+        <form class="term-prompt" data-term-form data-astro-reload hidden>
           <span>&gt;</span><input type="text" autocomplete="off" aria-label="Message to Claude Code" />
         </form>
         <div class="term-status" hidden>5h {a.five}% · wk {a.week}%</div>
@@ -78,10 +78,11 @@ import { accounts, chats } from "../data/demo";
     if (opener?.dataset.openTerminal) w_.clOpenTerminal(opener.dataset.openTerminal);
   });
   // Typing at the prompt: it's echoed, with a note that this is a demo.
-  document.addEventListener("submit", (e) => {
+  window.addEventListener("submit", (e) => {
     const form = (e.target as HTMLElement).closest<HTMLFormElement>("[data-term-form]");
     if (!form) return;
     e.preventDefault();
+    e.stopImmediatePropagation();
     const input = form.querySelector("input")!;
     const text = input.value.trim();
     if (!text) return;
@@ -89,5 +90,5 @@ import { accounts, chats } from "../data/demo";
     line(log, "> " + text, "term-you");
     input.value = "";
     setTimeout(() => line(log, "  This Terminal is a demo, so nothing runs. With cl_audit installed, Claude Code runs here for this account.", "term-dim"), 400);
-  });
+  }, true);
 </script>

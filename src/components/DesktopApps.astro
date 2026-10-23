@@ -33,7 +33,7 @@ import { accounts, chats } from "../data/demo";
                 <div class:list={["msg", who]} data-step>{text}</div>
               ))}
             </div>
-            <form class="composer" data-composer>
+            <form class="composer" data-composer data-astro-reload>
               <input type="text" name="m" autocomplete="off" placeholder="Reply…" data-next={c.turns[2][1]} aria-label="Message" />
               <button type="submit" aria-label="Send">↑</button>
             </form>
@@ -85,11 +85,13 @@ import { accounts, chats } from "../data/demo";
     if (w) play(w);
   };
 
-  // Sending a message adds it to the chat, with a reply that this is a demo.
-  document.addEventListener("submit", (e) => {
+  // Sending a message adds it to the chat, with a reply that this is a demo. Handled before the page
+  // router (capture phase on window), so the router never turns it into a page load.
+  window.addEventListener("submit", (e) => {
     const form = (e.target as HTMLElement).closest<HTMLFormElement>("[data-composer]");
     if (!form) return;
     e.preventDefault();
+    e.stopImmediatePropagation();
     const input = form.querySelector("input")!;
     const text = input.value.trim();
     if (!text) return;
@@ -106,7 +108,7 @@ import { accounts, chats } from "../data/demo";
       chat.scrollTop = chat.scrollHeight;
     }, 500);
     chat.scrollTop = chat.scrollHeight;
-  });
+  }, true);
 
   // Navigating (the window's top bar, the menu bar) closes every panel and Dock pop-up.
   document.addEventListener("click", (e) => {
