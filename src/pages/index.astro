@@ -3,10 +3,10 @@ import Base from "../layouts/Base.astro";
 import AccountCard from "../components/AccountCard.astro";
 import Row from "../components/Row.astro";
 
-const repo = "https://github.com/n-uf/cl-audit";
-const title = "cl-audit — Claude usage limits for every account, in your macOS Dock";
+const repo = "https://github.com/n-uf/cl_audit";
+const title = "cl_audit — Claude usage limits for every account, in your macOS Dock";
 const description =
-  "cl-audit puts one live Dock icon per Claude account on your Mac: the 5-hour and weekly limits at a glance, a launcher that opens the right account, and a dashboard of where your tokens go. Free and source-available.";
+  "cl_audit puts one live Dock icon per Claude account on your Mac: the 5-hour and weekly limits at a glance, a launcher that opens the right account, and a dashboard of where your tokens go. Free and source-available.";
 
 const accounts = [
   { id: "home", icon: "/img/dock-home.png", name: "home", email: "you@example.com", plan: "Max", color: "var(--orange)", tint: "t-orange", five: 34, fiveWhen: "in 3 h 12 min", week: 12, weekWhen: "in 6 days", updated: "just now" },
@@ -30,16 +30,16 @@ const panels = [
 ];
 
 const faq = [
-  ["Is cl-audit made by Anthropic?",
-   "No. cl-audit is an independent, source-available tool from n-uf. It is not affiliated with, endorsed by or sponsored by Anthropic. Claude is a trademark of Anthropic."],
+  ["Is cl_audit made by Anthropic?",
+   "No. cl_audit is an independent, source-available tool from n-uf. It is not affiliated with, endorsed by or sponsored by Anthropic. Claude is a trademark of Anthropic."],
   ["Where do the numbers come from?",
    "Each icon reads its account's Claude Code login on your Mac and asks Anthropic's API for that account's plan usage: the same 5-hour and weekly limits Claude shows in its own settings. The usage history on the dashboard comes from the Claude Code session files already on your Mac."],
   ["Does it send my data anywhere?",
-   "Only to Anthropic, to read each account's usage. There is no cl-audit server, no analytics and no account to create. Logins are read read-only with Apple's security tool, the same way Claude Code reads them, and are never written to disk or logged."],
+   "Only to Anthropic, to read each account's usage. There is no cl_audit server, no analytics and no account to create. Logins are read read-only with Apple's security tool, the same way Claude Code reads them, and are never written to disk or logged."],
   ["Which plans does it work with?",
    "Claude subscription plans that have usage limits, such as Pro, Max and Team, signed in to Claude Code. API-key accounts don't have these limits, so there is nothing to show."],
   ["Can I run several Claude desktop windows at once?",
-   "Yes. Each account can open its own Claude desktop window with its own sign-in, next to the others, and its own Claude Code settings folder. cl-audit can set up a new account from scratch: folders, sign-in, window and Dock icon."],
+   "Yes. Each account can open its own Claude desktop window with its own sign-in, next to the others, and its own Claude Code settings folder. cl_audit can set up a new account from scratch: folders, sign-in, window and Dock icon."],
   ["What does it need?",
    "A Mac with Apple silicon and macOS 13 or later, Xcode's command line tools to build it, and Claude Code signed in for each account. The Claude desktop app is optional."],
 ];
@@ -48,7 +48,7 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "cl-audit",
+    name: "cl_audit",
     description,
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS 13 or later",
@@ -68,7 +68,7 @@ const jsonLd = [
 <Base title={title} description={description} jsonLd={jsonLd}>
   <header class="bar">
     <div class="wrap">
-      <a class="brand" href="/" aria-label="cl-audit home"><img src="/img/app-icon.png" alt="" width="26" height="26" />cl-audit</a>
+      <a class="brand" href="/" aria-label="cl_audit home"><img src="/img/app-icon.png" alt="" width="26" height="26" />cl_audit</a>
       <span class="spacer"></span>
       <nav class="switch hide-sm" aria-label="Sections">
         <a href="#dashboard">Dashboard</a>
@@ -89,7 +89,7 @@ const jsonLd = [
           <p class="eyebrow">For Claude Pro, Max and Team · macOS</p>
           <h1>Every Claude account. Every limit. Right in your Dock.</h1>
           <p class="lead">
-            cl-audit gives each of your Claude accounts its own live Dock icon with the 5-hour and weekly limits,
+            cl_audit gives each of your Claude accounts its own live Dock icon with the 5-hour and weekly limits,
             a launcher that opens the right account, and a dashboard of where your tokens go.
           </p>
           <div class="ctas">
@@ -99,7 +99,7 @@ const jsonLd = [
           <p class="note">Free · source-available · runs on your Mac only</p>
         </div>
 
-        <div class="palette" aria-label="The cl-audit launcher">
+        <div class="palette" aria-label="The cl_audit launcher">
           <div class="search">⌕ <span>Open Claude for…</span><span class="kbd">⌘1–3</span></div>
           {accounts.map((a, i) => <Row icon={a.icon} name={a.name} color={a.color} five={a.five} week={a.week} key={`⌘${i + 1}`} sel={i === 0} open={i < 2} />)}
           <div class="dash-card">
@@ -119,8 +119,8 @@ const jsonLd = [
       </div>
 
       <div class="dock-wrap">
-        <div class="dock" aria-label="cl-audit icons in the macOS Dock">
-          <img src="/img/app-icon.png" alt="The cl-audit app icon" width="64" height="64" />
+        <div class="dock" aria-label="cl_audit icons in the macOS Dock">
+          <img src="/img/app-icon.png" alt="The cl_audit app icon" width="64" height="64" />
           <span class="sep"></span>
           {accounts.map((a) => <img src={a.icon} alt={`${a.name} account icon: ${a.five}% of the 5-hour limit, ${a.week}% of the week`} width="64" height="64" />)}
         </div>
@@ -134,14 +134,14 @@ const jsonLd = [
         <p class="eyebrow">Dashboard</p>
         <h2>All your accounts side by side</h2>
         <p class="lead">
-          Long-press the cl-audit icon, or press ⌘D in the launcher. Each card shows both limits with their reset
+          Long-press the cl_audit icon, or press ⌘D in the launcher. Each card shows both limits with their reset
           times, opens that account's Claude window or a terminal signed in to it, and below sits your usage
           history: when you use Claude, tokens per day, and which projects, models and apps they went to.
         </p>
         <div class="window" style="margin-top:28px">
           <div class="top">
             <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="title">cl-audit</span>
+            <span class="title">cl_audit</span>
             <span class="chips hide-sm"><span class="lbl">Show</span>
               {accounts.map((a) => <span><span class="chip-ck" style={`background:${a.color}`}>✓</span> {a.name}</span>)}
             </span>
@@ -228,7 +228,7 @@ const jsonLd = [
         <div>
           <p class="eyebrow">Privacy</p>
           <h2>Your Mac, your logins, nothing in between</h2>
-          <p class="lead">There is no cl-audit server and no account. Everything runs on your Mac.</p>
+          <p class="lead">There is no cl_audit server and no account. Everything runs on your Mac.</p>
         </div>
         <div class="card">
           <h4>What it touches</h4>
@@ -248,16 +248,16 @@ const jsonLd = [
         <div>
           <p class="eyebrow">Install</p>
           <h2>Build it in a minute</h2>
-          <p class="lead">cl-audit is built from source on your Mac, so you can read every line before it runs.</p>
+          <p class="lead">cl_audit is built from source on your Mac, so you can read every line before it runs.</p>
           <div class="ctas"><a class="pill tint t-orange" href={repo}>Get the source</a></div>
         </div>
         <div class="card">
           <h4>Terminal</h4>
           <pre class="code"><code>git clone {repo}.git
-cd cl-audit
+cd cl_audit
 ./build.sh</code></pre>
           <div class="list" style="margin-top:6px">
-            <div><b>Then</b><span>Open cl-audit, add your accounts with ＋, and drag their icons into the Dock.</span></div>
+            <div><b>Then</b><span>Open cl_audit, add your accounts with ＋, and drag their icons into the Dock.</span></div>
             <div><b>Needs</b><span>Apple silicon, macOS 13 or later, Xcode command line tools (<code>xcode-select --install</code>), and Claude Code signed in for each account.</span></div>
           </div>
         </div>
@@ -280,7 +280,7 @@ cd cl-audit
 
   <footer>
     <div class="wrap">
-      <span>cl-audit by <a href="https://n-uf.com">n-uf</a> · <a href={`${repo}/blob/main/LICENSE`}>PolyForm Perimeter 1.0.1</a> · <a href={repo}>GitHub</a></span>
+      <span>cl_audit by <a href="https://n-uf.com">n-uf</a> · <a href={`${repo}/blob/main/LICENSE`}>PolyForm Perimeter 1.0.1</a> · <a href={repo}>GitHub</a></span>
       <span>Not affiliated with Anthropic. Claude is a trademark of Anthropic.</span>
     </div>
   </footer>

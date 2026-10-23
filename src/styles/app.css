@@ -1,4 +1,4 @@
-/* The look of the cl-audit app: its dark window, cards, pills and limit bars. */
+/* The look of the cl_audit app: its dark window, cards, pills and limit bars. */
 :root {
   --bg: #1d1d1f;            /* around the window */
   --window: #282828;        /* the app window (same as the rendered panels) */
