@@ -26,10 +26,29 @@ const description =
 </Desktop>
 
 <script>
+  import { rangeHTML, sharesHTML, totalsText } from "../data/historyView";
+  import { allIds, type AccountId, type Range } from "../data/demo";
+
+  const KEY = "cl_audit.dashboardHidden";
+  const load = (): string[] => { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch { return []; } };
+  const save = (v: string[]) => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} };
+
+  function render(dash: HTMLElement, hidden: string[]) {
+    const ids = allIds.filter((id) => !hidden.includes(id)) as AccountId[];
+    document.querySelectorAll<HTMLButtonElement>("[data-chip]").forEach((b) => b.classList.toggle("on", !hidden.includes(b.dataset.chip!)));
+    dash.querySelectorAll<HTMLElement>(".dash-cards [data-account]").forEach((c) => (c.hidden = hidden.includes(c.dataset.account!)));
+    dash.querySelectorAll<HTMLElement>(".legend-item").forEach((l) => (l.hidden = hidden.includes(l.dataset.account!)));
+    dash.querySelectorAll<HTMLElement>(".range-block").forEach((el) => (el.innerHTML = rangeHTML(el.dataset.range as Range, ids)));
+    dash.querySelectorAll<HTMLElement>(".range-shares").forEach((el) => (el.innerHTML = sharesHTML(el.dataset.range as Range, ids)));
+    dash.querySelectorAll<HTMLElement>(".hist-total").forEach((el) => (el.textContent = totalsText(el.dataset.range as Range, ids)));
+  }
+
   function setup() {
     const dash = document.getElementById("dash");
     if (!dash || dash.dataset.ready) return;
     dash.dataset.ready = "1";
+    let hidden = load();
+    if (hidden.length) render(dash, hidden);
     dash.querySelectorAll<HTMLButtonElement>("[data-pick]").forEach((b) =>
       b.addEventListener("click", () => {
         dash.dataset.range = b.dataset.pick!;
@@ -38,8 +57,10 @@ const description =
     );
     document.querySelectorAll<HTMLButtonElement>("[data-chip]").forEach((b) =>
       b.addEventListener("click", () => {
-        const on = b.classList.toggle("on");
-        dash.querySelectorAll<HTMLElement>(`.dash-cards [data-account="${b.dataset.chip}"]`).forEach((c) => (c.hidden = !on));
+        const id = b.dataset.chip!;
+        hidden = hidden.includes(id) ? hidden.filter((x) => x !== id) : [...hidden, id];
+        save(hidden);
+        render(dash, hidden);
       }),
     );
   }

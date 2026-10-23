@@ -1,18 +1,16 @@
 ---
-// "Usage history" as the app draws it: heatmap, tokens chart, where it goes, legend.
-import { accounts, breakdown, formatTokens, range, type Range } from "../data/demo";
+// "Usage history" as the app draws it: heatmap, tokens chart, where it goes, legend. The Show chips in the
+// top bar re-draw it in the browser for the selected accounts (see dashboard.astro).
+import { accounts, type Range } from "../data/demo";
+import { rangeHTML, sharesHTML, totalsText } from "../data/historyView";
 
-const ranges = (["24h", "7d", "30d"] as Range[]).map(range);
-const hourTicks = [0, 3, 6, 9, 12, 15, 18, 21];
-const lists = [["By project", breakdown.projects], ["By model", breakdown.models], ["By surface", breakdown.surfaces]] as const;
+const kinds: Range[] = ["24h", "7d", "30d"];
 ---
-<div class="history">
+<div class="history" id="history">
   <div class="hist-head">
     <h3>Usage history</h3>
     <span class="spacer"></span>
-    {ranges.map((r) => (
-      <span class="hist-total sub" data-range={r.kind}>{r.replies.toLocaleString("en-US")} replies · {formatTokens(r.total)} tokens</span>
-    ))}
+    {kinds.map((k) => <span class="hist-total sub" data-range={k}>{totalsText(k)}</span>)}
     <span class="switch range-picker" role="tablist" aria-label="Period">
       <button type="button" data-pick="24h">24 h</button>
       <button type="button" data-pick="7d" class="on">7 d</button>
@@ -20,59 +18,11 @@ const lists = [["By project", breakdown.projects], ["By model", breakdown.models
     </span>
   </div>
 
-  {ranges.map((r) => (
-    <div class="range-block" data-range={r.kind}>
-      <div class="chart-card">
-        <div class="cc-head"><b>When you use Claude</b><span>replies per hour · colour mixes the accounts</span></div>
-        <div class="heat-scroll">
-          <div class:list={["heat", { dense: r.days > 10 }]}>
-            <span></span>
-            <div class="heat-hours">{hourTicks.map((h) => <span style={`grid-column:${h + 1}`}>{String(h).padStart(2, "0")}</span>)}</div>
-            {r.heat.map((row) => (
-              <>
-                <span class="heat-day">{row.label}</span>
-                <div class="heat-row">{row.cells.map((c) => <i style={c ? `background:${c}` : undefined} />)}</div>
-              </>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <div class="cc-head"><b>{r.title}</b><span>input + cache writes + output · cache reads not counted</span></div>
-        <div class="tchart">
-          <div class="tgrid">
-            {[3, 2, 1, 0].map((k) => (
-              <div class="tline"><span>{formatTokens((r.top / 3) * k)}</span></div>
-            ))}
-          </div>
-          <div class="tbars" style={`--n:${r.bars.length}`}>
-            {r.bars.map((b) => (
-              <div class="tbar" title={`${b.label}: ${formatTokens(b.parts.reduce((a, p) => a + p.tokens, 0))} tokens`}>
-                <div class="tstack" style={`height:${(b.parts.reduce((a, p) => a + p.tokens, 0) / r.top) * 100}%`}>
-                  {b.parts.map((p) => <i style={`flex:${p.tokens};background:${p.hex}`} />)}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div class="tx" style={`--n:${r.bars.length}`}>{r.bars.map((b) => <span>{b.show ? b.label : ""}</span>)}</div>
-        </div>
-      </div>
-    </div>
-  ))}
+  {kinds.map((k) => <div class="range-block" data-range={k} set:html={rangeHTML(k)} />)}
 
   <div class="chart-card">
     <div class="cc-head"><b>Where it goes</b><span>share of tokens in the period</span></div>
-    <div class="shares">
-      {lists.map(([title, rows]) => (
-        <div>
-          <div class="share-title">{title}</div>
-          {rows.map(([name, share, hex]) => (
-            <div class="share"><span>{name}</span><span class="share-track"><i style={`width:${share * 100}%;background:${hex}`} /></span><span class="sub">{Math.round(share * 100)}%</span></div>
-          ))}
-        </div>
-      ))}
-    </div>
+    {kinds.map((k) => <div class="shares range-shares" data-range={k} set:html={sharesHTML(k)} />)}
   </div>
 
   <div class="legend sub">

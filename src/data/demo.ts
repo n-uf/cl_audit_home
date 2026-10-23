@@ -86,10 +86,16 @@ const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct
 
 export type Range = "24h" | "7d" | "30d";
 
-/** Everything one range of the dashboard shows. */
-export function range(kind: Range) {
+let cached: ReturnType<typeof history> | null = null;
+const pick = (c: Counts, ids: AccountId[]): Counts => Object.fromEntries(ids.filter((id) => c[id]).map((id) => [id, c[id]]));
+
+export const allIds = accounts.map((a) => a.id);
+
+/** Everything one range of the dashboard shows, for the selected accounts only. */
+export function range(kind: Range, ids: AccountId[] = allIds) {
   const days = kind === "24h" ? 2 : kind === "7d" ? 7 : 30;
-  const rows = history(30).slice(30 - days);
+  cached ??= history(30);
+  const rows = cached.slice(30 - days).map((d) => ({ date: d.date, hours: d.hours.map((c) => pick(c, ids)) }));
   const max = Math.max(1, ...rows.flatMap((d) => d.hours.map(sum)));
   const heat = rows.map((d) => ({
     label: days > 10 ? `${d.date.getDate()} ${MON[d.date.getMonth()]}` : `${WD[d.date.getDay()]} ${d.date.getDate()}`,
@@ -123,12 +129,42 @@ function niceMax(v: number) {
   return m * pow * 3;
 }
 
-/** "Where it goes": shares of tokens in the period (demo projects, models and apps). */
-export const breakdown = {
-  projects: [["web-app", 0.41, "#d97757"], ["api", 0.22, "#14b8a6"], ["infra", 0.12, "#14b8a6"], ["side-project", 0.11, "#8b5cf6"], ["docs", 0.08, "#d97757"], ["other", 0.06, "#8e8e93"]],
-  models: [["Opus", 0.71, "#c026d3"], ["Sonnet", 0.24, "#3b82f6"], ["Haiku", 0.05, "#22c55e"]],
-  surfaces: [["Desktop Code tab", 0.48, "#f59e0b"], ["Terminal", 0.37, "#3b82f6"], ["VS Code", 0.11, "#8e8e93"], ["SDK apps", 0.04, "#14b8a6"]],
-} as const;
+/** "Where it goes" per demo account; the dashboard combines the selected ones by their tokens. */
+type Share = [string, number, string];
+const perAccount: Record<AccountId, { projects: Share[]; models: Share[]; surfaces: Share[] }> = {
+  home: {
+    projects: [["recipe-site", 0.6, "#d97757"], ["notes", 0.25, "#d97757"], ["other", 0.15, "#8e8e93"]],
+    models: [["Opus", 0.6, "#c026d3"], ["Sonnet", 0.35, "#3b82f6"], ["Haiku", 0.05, "#22c55e"]],
+    surfaces: [["Desktop Code tab", 0.55, "#f59e0b"], ["Terminal", 0.35, "#3b82f6"], ["VS Code", 0.1, "#8e8e93"]],
+  },
+  work: {
+    projects: [["web-app", 0.45, "#14b8a6"], ["api", 0.35, "#14b8a6"], ["infra", 0.2, "#14b8a6"]],
+    models: [["Opus", 0.8, "#c026d3"], ["Sonnet", 0.18, "#3b82f6"], ["Haiku", 0.02, "#22c55e"]],
+    surfaces: [["Terminal", 0.45, "#3b82f6"], ["Desktop Code tab", 0.35, "#f59e0b"], ["VS Code", 0.15, "#8e8e93"], ["SDK apps", 0.05, "#14b8a6"]],
+  },
+  side: {
+    projects: [["plant-app", 0.7, "#8b5cf6"], ["landing-page", 0.2, "#8b5cf6"], ["other", 0.1, "#8e8e93"]],
+    models: [["Sonnet", 0.6, "#3b82f6"], ["Opus", 0.3, "#c026d3"], ["Haiku", 0.1, "#22c55e"]],
+    surfaces: [["Desktop Code tab", 0.6, "#f59e0b"], ["Terminal", 0.4, "#3b82f6"]],
+  },
+};
+
+export function breakdown(kind: Range, ids: AccountId[] = allIds) {
+  const r = range(kind, ids);
+  const weight: Partial<Record<AccountId, number>> = {};
+  for (const b of r.bars) for (const p of b.parts) weight[p.id as AccountId] = (weight[p.id as AccountId] ?? 0) + p.tokens;
+  const total = Object.values(weight).reduce((a, b) => a + (b ?? 0), 0) || 1;
+  const merge = (key: "projects" | "models" | "surfaces", top: number): Share[] => {
+    const m = new Map<string, [number, string]>();
+    for (const id of ids) for (const [name, share, hex] of perAccount[id][key]) {
+      const w = ((weight[id] ?? 0) / total) * share;
+      const prev = m.get(name);
+      m.set(name, [(prev?.[0] ?? 0) + w, prev?.[1] ?? hex]);
+    }
+    return [...m.entries()].map(([name, [share, hex]]) => [name, share, hex] as Share).sort((a, b) => b[1] - a[1]).slice(0, top);
+  };
+  return { projects: merge("projects", 6), models: merge("models", 4), surfaces: merge("surfaces", 4) };
+}
 
 /** Demo conversations for each account's Claude desktop app and Claude Code (illustrations). */
 export const chats: Record<AccountId, { desktop: { title: string; turns: [("you" | "claude"), string][] }; code: { ask: string; steps: string[]; done: string } }> = {

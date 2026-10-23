@@ -522,3 +522,7 @@ body { overflow: hidden; }
 .term-prompt { display: flex; align-items: center; gap: 8px; margin: 0 12px 4px; padding: 6px 10px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.22); font: 13px var(--mono); color: #e6e6e6; }
 .term-prompt input { flex: 1; min-width: 0; background: none; border: 0; outline: none; color: #e6e6e6; font: inherit; caret-color: #e6e6e6; }
 .term .term-status { padding: 0 14px 8px; font: 13px var(--mono); color: #8e8e93; }
+
+.range-shares { display: none; }
+.dash[data-range="24h"] .range-shares[data-range="24h"], .dash[data-range="7d"] .range-shares[data-range="7d"], .dash[data-range="30d"] .range-shares[data-range="30d"] { display: grid; }
+.no-acc { padding: 40px 0; text-align: center; color: var(--muted); font-size: 14px; }
