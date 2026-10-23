@@ -4,6 +4,7 @@
 // launcher; account colour; how long a Dock click shows the usage). The server renders the "home" account.
 import { accounts } from "../data/demo";
 import { colors, styles, iconSrc, laneSrc } from "../data/prefs";
+import { panelHTML } from "../data/panelView";
 
 const a = accounts[0];
 const families: [string, string[]][] = [
@@ -88,7 +89,7 @@ const panels = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["
       </div>
       <div class="card"><h4>Panels <i class="idot" title="Click: this panel for a moment. Double-click, ⌥-click or long press: the large panel in the same design.">i</i></h4>
         <span class="switch small-switch">{panels.map(([k, n]) => <button type="button" data-panel={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
-        <img class="panel-prev" src="/img/panel-segments.png" data-panel-img alt="Panel design preview" width="800" height="511" loading="lazy" />
+        <div class="panel-stage"><div data-panel-prev set:html={panelHTML("home", "segments", { large: true })} /></div>
       </div>
     </div>
   </div>

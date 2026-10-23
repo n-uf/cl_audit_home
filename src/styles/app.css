@@ -603,3 +603,50 @@ select.menu, .menu {
 .lane-mini .lane-row { display: grid; grid-template-columns: repeat(5, 1fr); justify-items: center; margin-top: 6px; }
 .lane-mini .lane-row img { width: 40px; height: 40px; }
 .fam { margin: 10px 0 4px; }
+
+/* ── The usage panel (the app's DetailsView), in five designs ───────── */
+.panel-stage { margin-top: 10px; padding: 18px; border-radius: 14px; background: #222224; }
+.pn { display: grid; gap: 12px; }
+.pn.large { padding: 18px; border-radius: 18px; background: #2c2c2f; box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 14px 34px rgba(0,0,0,.4); gap: 16px; }
+.pn-head { display: flex; gap: 14px; align-items: flex-start; }
+.pn-head img { width: 56px; height: 56px; flex: none; }
+.pn-head.small { align-items: center; gap: 7px; }
+.pn-head.small b { font-size: 14px; }
+.pn-head.small .pn-plan { margin-left: auto; }
+.pn-who { flex: 1; display: grid; gap: 3px; justify-items: start; }
+.pn-title { display: flex; align-items: center; gap: 7px; font-size: 16px; font-weight: 600; }
+.pn-plan { padding: 1px 8px; border-radius: 99px; background: rgba(255,255,255,.09); font-size: 11.5px; font-weight: 600; }
+.pn-close { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.1); color: var(--muted); font-size: 10px; }
+.pn-sub { color: var(--muted); font-size: 12px; }
+.pn-sub.small { font-size: 11px; }
+.pn-sub.strong { font-weight: 600; }
+.pn-limits { display: grid; gap: 9px; }
+.pn-limits.large { gap: 14px; }
+.pn-limits.rings { grid-template-columns: 1fr 1fr; justify-items: center; }
+.pn-limits.numbers { grid-template-columns: 1fr 1fr; gap: 16px; }
+.pn-lim { display: grid; gap: 5px; }
+.pn-row { display: flex; align-items: baseline; gap: 6px; }
+.pn-row .pn-pct { margin-left: auto; }
+.pn-row .spacer + .pn-pct { margin-left: 0; }
+.pn-name { font-size: 15px; }
+.pn-name.sm { font-size: 13.5px; font-weight: 500; }
+.pn-name.strong { font-weight: 600; }
+.pn-pct { font-variant-numeric: tabular-nums; }
+.pn-bar { position: relative; border-radius: 99px; background: rgba(255,255,255,.12); }
+.pn-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99px; }
+.pn-mark { position: absolute; top: -3px; bottom: -3px; width: 3px; margin-left: -1.5px; border-radius: 2px; background: #fff; }
+.pn-segs { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; }
+.pn-segs i { border-radius: 2px; background: rgba(255,255,255,.1); }
+.pn-ring { display: grid; justify-items: center; gap: 4px; }
+.pn-ring-name { font-size: 13px; }
+.pn-num { display: grid; gap: 3px; }
+.pn-big { display: flex; align-items: baseline; gap: 1px; font-weight: 800; line-height: 1; }
+.pn-chip { padding: 1px 6px; border-radius: 6px; font-size: 10.5px; font-weight: 600; align-self: center; }
+.pn-chip.red { background: rgba(239,68,68,.2); color: #ef4444; }
+.pn-chip.green { background: rgba(34,197,94,.2); color: #22c55e; }
+.pn-chip.gray { background: rgba(142,142,147,.2); color: rgba(242,242,244,.8); }
+.pn-foot { display: flex; align-items: center; gap: 8px; }
+.pn-gear { width: 32px; height: 26px; border-radius: 99px; display: grid; place-items: center; background: rgba(255,255,255,.08); color: var(--muted); }
+.pn-note { font-size: 11.5px; }
+.pop.peek { display: block; width: 320px; padding: 14px; }
+.pop.peek[hidden] { display: none; }

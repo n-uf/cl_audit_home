@@ -16,6 +16,7 @@ const description =
 <script>
   import { accounts, type AccountId } from "../data/demo";
   import { applyPrefs, colors, iconSrc, laneSrc, loadPrefs, savePrefs, type Prefs, type Style } from "../data/prefs";
+  import { panelHTML, type Design } from "../data/panelView";
 
   const PEEK = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
@@ -61,7 +62,7 @@ const description =
       $("[data-datarow]")!.hidden = pr.window !== "Separate";
       $$<HTMLElement>('[data-text="data"]').forEach((e) => (e.textContent = a.data));
       $$<HTMLElement>("[data-panel]").forEach((b) => b.classList.toggle("on", b.dataset.panel === pr.panel));
-      $<HTMLImageElement>("[data-panel-img]")!.src = `/img/panel-${pr.panel}.png`;
+      $("[data-panel-prev]")!.innerHTML = panelHTML(acc, pr.panel as Design, { large: true, name: pr.name, icon: iconSrc(acc, pr.style) });
     };
 
     root.addEventListener("click", (e) => {

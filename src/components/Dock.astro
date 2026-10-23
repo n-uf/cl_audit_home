@@ -2,7 +2,7 @@
 // A macOS Dock with the cl_audit icons. Like the app: click an account icon for a quick look at its
 // limits, click the cl_audit icon for the launcher.
 import Row from "./Row.astro";
-import Limit from "./Limit.astro";
+import { panelHTML, type Design } from "../data/panelView";
 import { accounts } from "../data/demo";
 ---
 <nav class="dock-bar" aria-label="cl_audit in the Dock" transition:persist="dock">
@@ -33,16 +33,13 @@ import { accounts } from "../data/demo";
   </div>
 
   {accounts.map((a) => (
-    <div class="pop peek" data-popup={a.id} hidden>
-      <div class="peek-head"><span class="dot" style={`background:${a.color}`} /><b>Claude {a.name}</b><span class="plan">{a.plan}</span></div>
-      <Limit title="5-hour" when={a.fiveWhen} p={a.five} />
-      <Limit title="Week" when={a.weekWhen} p={a.week} />
-      <div class="sub peek-foot">Opening Claude {a.name}…</div>
-    </div>
+    <div class="pop peek" data-popup={a.id} hidden set:html={panelHTML(a.id, "segments", { large: false, note: `Opening Claude ${a.name}…` })} />
   ))}
 </nav>
 
 <script>
+  import { panelHTML, type Design } from "../data/panelView";
+  import { loadPrefs } from "../data/prefs";
   const bar = document.querySelector<HTMLElement>(".dock-bar")!;
   let open: HTMLElement | null = null;
   const close = () => { open?.setAttribute("hidden", ""); open = null; };
@@ -54,6 +51,12 @@ import { accounts } from "../data/demo";
       const clickPref = b.dataset.pop !== "launcher" ? (window as any).clClick?.(b.dataset.pop) : null;
       if (clickPref === "Claude") { close(); (window as any).clOpenDesktop?.(b.dataset.pop); return; }
       const pop = bar.querySelector<HTMLElement>(`[data-popup="${b.dataset.pop}"]`)!;
+      if (b.dataset.pop !== "launcher") {
+        // the compact panel, in the design chosen for this account in Settings
+        const pr = loadPrefs()[b.dataset.pop as "home"];
+        const note = clickPref === "Details panel" ? "" : `Opening Claude ${pr.name}…`;
+        pop.innerHTML = panelHTML(b.dataset.pop as "home", pr.panel as Design, { large: false, name: pr.name, note });
+      }
       if (open === pop) return close();
       close();
       pop.removeAttribute("hidden");
