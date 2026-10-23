@@ -42,8 +42,8 @@ const jsonLd = [{
           live in the Dock, and keeps a usage dashboard with figures read directly from Anthropic.
         </p>
         <div class="btns">
-          <a class="pill tint t-orange" href="/install">Install</a>
-          <a class="pill" href="/dashboard">Open the dashboard</a>
+          <a class="pill tint t-orange" href="/install/">Install</a>
+          <a class="pill" href="/dashboard/">Open the dashboard</a>
           <span class="note">Free · source-available · runs entirely on your Mac</span>
         </div>
       </div>
@@ -62,7 +62,7 @@ const jsonLd = [{
           account, with its own sign-in, and the Code tab and Claude Code CLI use that account's own configuration
           directory.
         </p>
-        <a class="more" href="/install">Set up your accounts ›</a>
+        <a class="more" href="/install/">Set up your accounts ›</a>
       </article>
 
       <article class="card" id="dock">
@@ -80,7 +80,7 @@ const jsonLd = [{
           Each account's icon shows its 5-hour session limit and weekly limit. Click it for a quick look while that
           account's Claude opens; 13 icon styles, 5 panel designs, and a notification before a limit is reached.
         </p>
-        <a class="more" href="/settings">Icon styles in Settings ›</a>
+        <a class="more" href="/settings/">Icon styles in Settings ›</a>
       </article>
 
       <article class="card" id="dashboard">
@@ -96,7 +96,7 @@ const jsonLd = [{
             </div>
           ))}
         </div>
-        <a class="hist-mini" href="/dashboard">
+        <a class="hist-mini" href="/dashboard/">
           <span class="spark" aria-hidden="true">{spark.map(([a, b, c]) => <span><i style={`height:${a}px;background:var(--orange)`} /><i style={`height:${b}px;background:var(--teal)`} /><i style={`height:${c}px;background:var(--purple)`} /></span>)}</span>
           <span><b>Usage history</b><br /><span class="sub">when you use Claude · tokens per day · where they go</span></span>
         </a>
@@ -104,7 +104,7 @@ const jsonLd = [{
           The same figures Claude shows in Settings ▸ Usage, with exact reset times, for every account. History comes
           from the Claude Code session logs on your Mac.
         </p>
-        <a class="more" href="/dashboard">Open the dashboard ›</a>
+        <a class="more" href="/dashboard/">Open the dashboard ›</a>
       </article>
     </div>
 
@@ -141,7 +141,7 @@ const jsonLd = [{
         <pre class="code"><code>git clone {repo}.git
 cd cl_audit && ./build.sh</code></pre>
         <div class="srow" style="margin-top:6px"><span>Requires</span><span class="v">Apple silicon · macOS 13+ · Claude Code</span></div>
-        <a class="more" href="/install">Full install steps ›</a>
+        <a class="more" href="/install/">Full install steps ›</a>
       </div>
     </div>
 
