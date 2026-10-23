@@ -31,7 +31,10 @@ import { accounts } from "../data/demo";
   import { loadPrefs } from "../data/prefs";
   const bar = document.querySelector<HTMLElement>(".dock-bar")!;
   let open: HTMLElement | null = null;
-  const close = () => { open?.setAttribute("hidden", ""); open = null; };
+  let timer = 0;
+  const close = () => { clearTimeout(timer); open?.setAttribute("hidden", ""); open = null; };
+  // A peek hides itself after 3 s, like the app's; it waits while the pointer is over it.
+  const autoHide = () => { clearTimeout(timer); timer = window.setTimeout(() => { if (open && !open.matches(":hover")) close(); else autoHide(); }, 3000); };
   // cl_audit's own icon: bring it to the front, like clicking a running app (closes other windows and pop-ups).
   bar.querySelector<HTMLButtonElement>("[data-front-app]")?.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -51,6 +54,7 @@ import { accounts } from "../data/demo";
       const r = b.getBoundingClientRect(), w = pop.offsetWidth;
       pop.style.left = `${Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2))}px`;
       open = pop;
+      autoHide();
     }),
   );
   document.addEventListener("click", (e) => { if (open && !open.contains(e.target as Node)) close(); });
