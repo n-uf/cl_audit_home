@@ -6,11 +6,11 @@ export type AccountId = "home" | "work" | "side";
 
 export const accounts = [
   { id: "home" as AccountId, name: "home", label: "HOME", email: "you@example.com", plan: "Max", hex: "#d97757", color: "var(--orange)", tint: "t-orange",
-    icon: "/img/dock-home.png", dir: "~/.claude", five: 34, fiveWhen: "in 3 h 12 min", week: 12, weekWhen: "in 6 days", updated: "just now" },
+    icon: "/img/dock-home.png", dir: "~/.claude", data: "~/Library/Application Support/Claude", five: 34, fiveWhen: "in 3 h 12 min", week: 12, weekWhen: "in 6 days", updated: "just now" },
   { id: "work" as AccountId, name: "work", label: "WORK", email: "you@work.example", plan: "Team", hex: "#14b8a6", color: "var(--teal)", tint: "t-teal",
-    icon: "/img/dock-work.png", dir: "~/.claude-work", five: 78, fiveWhen: "in 41 min", week: 61, weekWhen: "in 3 days", updated: "1 min ago" },
+    icon: "/img/dock-work.png", dir: "~/.claude-work", data: "~/Library/Application Support/Claude-work", five: 78, fiveWhen: "in 41 min", week: 61, weekWhen: "in 3 days", updated: "1 min ago" },
   { id: "side" as AccountId, name: "side", label: "SIDE", email: "side@example.com", plan: "Pro", hex: "#8b5cf6", color: "var(--purple)", tint: "t-purple",
-    icon: "/img/dock-side.png", dir: "~/.claude-side", five: 12, fiveWhen: "in 4 h 40 min", week: 40, weekWhen: "in 5 days", updated: "2 min ago" },
+    icon: "/img/dock-side.png", dir: "~/.claude-side", data: "~/Library/Application Support/Claude-side", five: 12, fiveWhen: "in 4 h 40 min", week: 40, weekWhen: "in 5 days", updated: "2 min ago" },
 ];
 
 // ── a small seeded random generator (mulberry32) ──────────────────────

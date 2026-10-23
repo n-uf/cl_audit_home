@@ -65,6 +65,7 @@ code, kbd { font-family: var(--mono); }
 /* ── Pills: the app's buttons ───────────────────────────────────────── */
 .pill {
   --tint: 255, 255, 255;
+  border: 0; font-family: inherit; cursor: pointer;
   display: inline-flex; align-items: center; gap: 7px;
   padding: 7px 16px; border-radius: 99px;
   background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.1);
@@ -405,3 +406,40 @@ body { overflow: hidden; }
 }
 
 .code { margin: 0; padding: 12px 14px; border-radius: 10px; background: rgba(0,0,0,.35); box-shadow: inset 0 0 0 1px var(--line); font-size: 13.5px; line-height: 1.7; overflow-x: auto; max-width: 100%; }
+
+/* ── Each account's Claude desktop app window ───────────────────────── */
+.dapp {
+  position: absolute; z-index: 30; width: min(620px, calc(100vw - 32px)); height: min(420px, calc(100dvh - 180px));
+  top: calc(84px + var(--i) * 30px); left: calc(50% - min(310px, 50vw - 16px) + var(--i) * 30px - 30px);
+  display: flex; flex-direction: column; overflow: hidden; border-radius: 12px; background: #262624;
+  box-shadow: 0 0 0 1px #000, 0 0 0 2px rgba(255,255,255,.08), 0 28px 80px rgba(0,0,0,.65);
+  animation: dapp-in .18s ease-out;
+  padding: 0; border-top: 0;
+}
+@keyframes dapp-in { from { transform: scale(.96); opacity: 0; } }
+.dapp-bar { position: relative; display: flex; align-items: center; height: 32px; padding: 0 12px; background: #2e2e2b; border-bottom: 1px solid rgba(255,255,255,.06); flex: none; }
+.dapp-bar .lights .close { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; border: 0; padding: 0; cursor: pointer; }
+.dapp-title { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; font-weight: 600; color: #d6d3cc; pointer-events: none; }
+.dapp-body { flex: 1; display: grid; grid-template-columns: 160px 1fr; min-height: 0; }
+.dapp-side { display: grid; align-content: start; gap: 10px; padding: 14px 12px; background: #1f1f1d; border-right: 1px solid rgba(255,255,255,.05); }
+.dapp-side i { display: block; height: 8px; border-radius: 4px; background: rgba(255,255,255,.08); }
+.dapp-acc { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.dapp-main { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; min-width: 0; overflow: auto; }
+.dapp-signed { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); }
+.dapp-signed b { color: var(--text); font-weight: 600; }
+.dapp-main p { font-size: 13.5px; color: var(--soft); }
+.dapp-rows { display: grid; gap: 6px; }
+.dapp-rows div { display: grid; grid-template-columns: 92px 1fr; gap: 8px; align-items: baseline; font-size: 12.5px; }
+.dapp-rows span { color: var(--muted); }
+.dapp-rows code { font-size: 11.5px; color: #e8e2d6; overflow-wrap: anywhere; }
+.dapp-skel { display: grid; gap: 8px; margin-top: auto; }
+.dapp-skel i { display: block; height: 8px; border-radius: 4px; background: rgba(255,255,255,.07); }
+.dapp-input { padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); color: var(--faint); font-size: 13px; }
+.dapp-note { font-size: 11.5px !important; color: var(--faint) !important; }
+.row[data-open-desktop] { cursor: pointer; }
+.row[data-open-desktop]:hover { background: rgba(255,255,255,.07); }
+@media (max-width: 860px) {
+  .dapp { left: 16px; top: calc(60px + var(--i) * 24px); }
+  .dapp-body { grid-template-columns: 1fr; }
+  .dapp-side { display: none; }
+}

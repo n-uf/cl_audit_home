@@ -1,9 +1,9 @@
 ---
 import { levelColor } from "./level";
-interface Props { icon: string; name: string; color: string; five: number; week: number; key: string; sel?: boolean; open?: boolean }
+interface Props { id?: string; icon: string; name: string; color: string; five: number; week: number; key: string; sel?: boolean; open?: boolean }
 const r = Astro.props;
 ---
-<div class:list={["row", { sel: r.sel }]}>
+<div class:list={["row", { sel: r.sel }]} data-open-desktop={r.id} role={r.id ? "button" : undefined} tabindex={r.id ? 0 : undefined}>
   <img src={r.icon} alt="" width="42" height="42" loading="lazy" />
   <div class="meta">
     <div class="nm"><span class="dot" style={`background:${r.color};width:7px;height:7px`} />{r.name}{r.open && <span class="badge">open</span>}</div>

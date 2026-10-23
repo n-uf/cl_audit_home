@@ -19,8 +19,8 @@ const a = Astro.props;
   <Limit title="5-hour" when={a.fiveWhen} p={a.five} />
   <Limit title="Week" when={a.weekWhen} p={a.week} />
   <div class="acc-actions">
-    <span class={`pill small tint ${a.tint}`}>Show Desktop</span>
-    <span class="pill small">Terminal</span>
+    <button type="button" class={`pill small tint ${a.tint}`} data-open-desktop={a.id}>Show Desktop</button>
+    <button type="button" class="pill small" data-open-terminal={a.id}>Terminal</button>
     <span class="sub">{a.updated}</span>
   </div>
 </article>

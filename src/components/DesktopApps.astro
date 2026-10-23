@@ -1,0 +1,63 @@
+---
+// What "Show Desktop" opens: each account's own Claude desktop app window, on the site's desktop.
+// An outline of the app (not a copy of its interface) with what cl_audit set up for that account.
+import { accounts } from "../data/demo";
+---
+<div class="dapps" transition:persist="dapps">
+  {accounts.map((a, i) => (
+    <section class="dapp" data-desktop={a.id} hidden style={`--i:${i}`} aria-label={`Claude desktop app for the ${a.name} account (illustration)`}>
+      <div class="dapp-bar">
+        <span class="lights"><button type="button" class="close" data-close aria-label="Close"></button><i></i><i></i></span>
+        <span class="dapp-title">Claude — {a.name}</span>
+      </div>
+      <div class="dapp-body">
+        <aside class="dapp-side" aria-hidden="true">
+          <div class="dapp-acc"><span class="dot" style={`background:${a.color}`}></span>{a.name}</div>
+          <i style="width:70%"></i><i style="width:85%"></i><i style="width:60%"></i><i style="width:78%"></i><i style="width:52%"></i>
+        </aside>
+        <div class="dapp-main">
+          <div class="dapp-signed"><span class="dot" style={`background:${a.color}`}></span>Signed in as <b class="email">{a.email}</b></div>
+          <p>
+            The Claude desktop app for your <b>{a.name}</b> account, in its own window. cl_audit started it with its own
+            app data folder, so it stays signed in next to your other accounts.
+          </p>
+          <div class="dapp-rows">
+            <div><span>App data</span><code>{a.data}</code></div>
+            <div><span>Claude Code</span><code>{a.dir}</code></div>
+            <div><span>Started with</span><code>{i === 0 ? "open -a Claude" : `open -n -a Claude --args --user-data-dir=…/Claude-${a.id}`}</code></div>
+          </div>
+          <div class="dapp-skel" aria-hidden="true"><i style="width:62%"></i><i style="width:84%"></i><i style="width:46%"></i></div>
+          <div class="dapp-input" aria-hidden="true">Message Claude…</div>
+          <p class="dapp-note">Illustration of the account's own Claude desktop app window.</p>
+        </div>
+      </div>
+    </section>
+  ))}
+</div>
+
+<script>
+  // Opened from "Show Desktop", the launcher rows and the Dock icons; stays open across pages.
+  let z = 30;
+  const front = (w: HTMLElement) => { w.style.zIndex = String(++z); };
+  const open = (id: string) => {
+    const w = document.querySelector<HTMLElement>(`.dapp[data-desktop="${id}"]`);
+    if (!w) return;
+    w.hidden = false;
+    front(w);
+    document.dispatchEvent(new Event("cl:close-pops"));
+  };
+  (window as any).clOpenDesktop = open;
+  document.addEventListener("click", (e) => {
+    const t = e.target as HTMLElement;
+    const opener = t.closest<HTMLElement>("[data-open-desktop]");
+    if (opener?.dataset.openDesktop) { open(opener.dataset.openDesktop); return; }
+    const w = t.closest<HTMLElement>(".dapp");
+    if (w && t.closest("[data-close]")) { w.hidden = true; return; }
+    if (w) front(w);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    const top = [...document.querySelectorAll<HTMLElement>(".dapp:not([hidden])")].sort((a, b) => +b.style.zIndex - +a.style.zIndex)[0];
+    if (top) top.hidden = true;
+  });
+</script>
