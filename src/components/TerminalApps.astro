@@ -1,0 +1,58 @@
+---
+// What "Terminal" opens: a Terminal window running Claude Code for that account, exactly as cl_audit starts
+// it (its CLAUDE_CONFIG_DIR, then claude), with a plain sign-in line, an empty prompt and cl_audit's own
+// status line underneath. Deliberately not Claude Code's start screen.
+import { accounts } from "../data/demo";
+
+const lines = (a: (typeof accounts)[number], i: number) => ({
+  setup: i === 0 ? "unset CLAUDE_CONFIG_DIR" : `export CLAUDE_CONFIG_DIR=${a.dir}`,
+  status: `5h ${a.five}% · wk ${a.week}%`,
+});
+---
+<div class="terms" transition:persist="terms">
+  {accounts.map((a, i) => {
+    const l = lines(a, i);
+    return (
+      <section class="term deskwin" data-terminal={a.id} hidden style={`--i:${i}`} aria-label={`Terminal running Claude Code for the ${a.name} account (illustration)`}>
+        <div class="term-bar">
+          <span class="lights"><button type="button" class="close" data-close aria-label="Close"></button><i></i><i></i></span>
+          <span class="term-title">{a.name} — claude — 80×24</span>
+        </div>
+        <pre class="term-body" data-script={JSON.stringify([l.setup, "claude"])}><span class="term-typed"></span><span class="term-after" hidden><span class="term-dim">Claude Code · signed in as </span><span class="email term-dim">{a.email}</span><span class="term-dim"> · {a.plan} plan</span><span class="term-box">&gt; <span class="term-cursor"></span></span><span class="term-status">{l.status}</span></span></pre>
+      </section>
+    );
+  })}
+</div>
+
+<script>
+  const w_ = window as any;
+  const type = (term: HTMLElement) => {
+    const body = term.querySelector<HTMLElement>(".term-body")!;
+    const typed = body.querySelector<HTMLElement>(".term-typed")!;
+    const after = body.querySelector<HTMLElement>(".term-after")!;
+    if (term.dataset.played) return;
+    term.dataset.played = "1";
+    const script: string[] = JSON.parse(body.dataset.script || "[]");
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) { typed.textContent = script.map((c) => "~ % " + c).join("\n") + "\n"; after.hidden = false; return; }
+    let line = 0, ch = 0;
+    const step = () => {
+      if (line >= script.length) { after.hidden = false; return; }
+      const text = script[line];
+      if (ch === 0) typed.textContent += "~ % ";
+      if (ch < text.length) { typed.textContent += text[ch++]; setTimeout(step, 28); }
+      else { typed.textContent += "\n"; line++; ch = 0; setTimeout(step, 380); }
+    };
+    setTimeout(step, 250);
+  };
+  w_.clOpenTerminal = (id: string) => {
+    const t = document.querySelector<HTMLElement>(`.term[data-terminal="${id}"]`);
+    if (!t) return;
+    w_.clOpenWin?.(t);
+    type(t);
+  };
+  document.addEventListener("click", (e) => {
+    const opener = (e.target as HTMLElement).closest<HTMLElement>("[data-open-terminal]");
+    if (opener?.dataset.openTerminal) w_.clOpenTerminal(opener.dataset.openTerminal);
+  });
+</script>

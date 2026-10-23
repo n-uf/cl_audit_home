@@ -5,7 +5,7 @@ import { accounts } from "../data/demo";
 ---
 <div class="dapps" transition:persist="dapps">
   {accounts.map((a, i) => (
-    <section class="dapp" data-desktop={a.id} hidden style={`--i:${i}`} aria-label={`Claude desktop app for the ${a.name} account (illustration)`}>
+    <section class="dapp deskwin" data-desktop={a.id} hidden style={`--i:${i}`} aria-label={`Claude desktop app for the ${a.name} account (illustration)`}>
       <div class="dapp-bar">
         <span class="lights"><button type="button" class="close" data-close aria-label="Close"></button><i></i><i></i></span>
         <span class="dapp-title">Claude — {a.name}</span>
@@ -36,28 +36,29 @@ import { accounts } from "../data/demo";
 </div>
 
 <script>
-  // Opened from "Show Desktop", the launcher rows and the Dock icons; stays open across pages.
-  let z = 30;
-  const front = (w: HTMLElement) => { w.style.zIndex = String(++z); };
-  const open = (id: string) => {
-    const w = document.querySelector<HTMLElement>(`.dapp[data-desktop="${id}"]`);
+  // A small window manager for the site's desktop: Claude desktop app and Terminal windows.
+  // Opened from "Show Desktop" / "Terminal", the launcher rows and the Dock icons; they stay open across pages.
+  const w_ = window as any;
+  w_.__clZ = w_.__clZ ?? 30;
+  const front = (w: HTMLElement) => { w.style.zIndex = String(++w_.__clZ); };
+  w_.clOpenWin = (w: HTMLElement | null) => {
     if (!w) return;
     w.hidden = false;
     front(w);
     document.dispatchEvent(new Event("cl:close-pops"));
   };
-  (window as any).clOpenDesktop = open;
+  w_.clOpenDesktop = (id: string) => w_.clOpenWin(document.querySelector(`.dapp[data-desktop="${id}"]`));
   document.addEventListener("click", (e) => {
     const t = e.target as HTMLElement;
     const opener = t.closest<HTMLElement>("[data-open-desktop]");
-    if (opener?.dataset.openDesktop) { open(opener.dataset.openDesktop); return; }
-    const w = t.closest<HTMLElement>(".dapp");
+    if (opener?.dataset.openDesktop) { w_.clOpenDesktop(opener.dataset.openDesktop); return; }
+    const w = t.closest<HTMLElement>(".deskwin");
     if (w && t.closest("[data-close]")) { w.hidden = true; return; }
     if (w) front(w);
   });
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
-    const top = [...document.querySelectorAll<HTMLElement>(".dapp:not([hidden])")].sort((a, b) => +b.style.zIndex - +a.style.zIndex)[0];
+    const top = [...document.querySelectorAll<HTMLElement>(".deskwin:not([hidden])")].sort((a, b) => +b.style.zIndex - +a.style.zIndex)[0];
     if (top) top.hidden = true;
   });
 </script>

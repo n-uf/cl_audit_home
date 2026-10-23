@@ -5,6 +5,7 @@
 import Base from "./Base.astro";
 import Dock from "../components/Dock.astro";
 import DesktopApps from "../components/DesktopApps.astro";
+import TerminalApps from "../components/TerminalApps.astro";
 import { repo } from "../data/site";
 
 export type Page = "overview" | "dashboard" | "settings" | "install" | "faq" | "none";
@@ -43,6 +44,7 @@ const nav: [Page, string, string][] = [
     </div>
 
     <DesktopApps />
+    <TerminalApps />
     <Dock />
   </div>
 </Base>
