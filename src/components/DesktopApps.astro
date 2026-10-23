@@ -111,7 +111,13 @@ import { accounts, chats } from "../data/demo";
   document.addEventListener("click", (e) => {
     const t = e.target as HTMLElement;
     const opener = t.closest<HTMLElement>("[data-open-desktop]");
-    if (opener?.dataset.openDesktop) { w_.clOpenDesktop(opener.dataset.openDesktop); return; }
+    if (opener?.dataset.openDesktop) {
+      // A Claude tile in the Dock toggles its panel: a second click closes it.
+      const panel = document.querySelector<HTMLElement>(`.dapp[data-desktop="${opener.dataset.openDesktop}"]`);
+      if (opener.closest(".dock") && panel && !panel.hidden) { panel.hidden = true; return; }
+      w_.clOpenDesktop(opener.dataset.openDesktop);
+      return;
+    }
     const w = t.closest<HTMLElement>(".deskwin");
     if (w && t.closest("[data-close]")) { w.hidden = true; return; }
     if (w) front(w);
