@@ -330,7 +330,7 @@ body { overflow: hidden; }
 .mb-links { display: flex; gap: 18px; }
 .mb-clock { color: #e8e8ea; font-variant-numeric: tabular-nums; white-space: pre; }
 .appwin {
-  position: absolute; top: 44px; left: 24px; right: 24px; bottom: 96px;
+  position: absolute; top: 28px; left: 0; right: 0; bottom: 84px;   /* maximised, like the app: under the menu bar, above the Dock */
   display: flex; flex-direction: column; overflow: hidden;
   background: var(--window); border-radius: 14px;
   box-shadow: 0 0 0 1px #000, 0 0 0 2px rgba(255,255,255,.07), 0 30px 90px rgba(0,0,0,.6);
@@ -492,7 +492,7 @@ body { overflow: hidden; }
 
 /* ── Panels opened from Show Desktop / Terminal cover the window's content area ── */
 .dapp.deskwin, .term.deskwin {
-  width: auto; height: auto; left: 40px; right: 40px; top: 122px; bottom: 108px;
+  width: auto; height: auto; left: 16px; right: 16px; top: 112px; bottom: 96px;
 }
 @media (max-width: 860px) {
   .dapp.deskwin, .term.deskwin { left: 6px; right: 6px; top: 112px; bottom: 82px; }
