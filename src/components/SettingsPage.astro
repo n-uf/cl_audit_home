@@ -14,11 +14,11 @@ const families: [string, string[]][] = [
 const nameOf = Object.fromEntries(styles) as Record<string, string>;
 const lane = ["plenty left", "", "half used", "", "at the limit"];
 const menus = {
-  click: ["Show usage, then open Claude", "Open Claude", "Show the details panel"],
-  window: ["Standard", "Separate sign-in", "None"],
+  click: ["Usage, then Claude", "Claude", "Details panel"],
+  window: ["Standard", "Separate", "None"],
   refresh: ["1 min", "2 min", "5 min", "10 min", "15 min"],
-  folder: [a.dir],
 };
+const info = (t: string) => t;
 const panels = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["segments", "Segments"], ["pace", "Pace"]];
 ---
 <div class="settings" id="settings" data-acc={a.id}>
@@ -38,14 +38,14 @@ const panels = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["
     <div class="s-col">
       <div class="card"><h4>Account</h4>
         <label class="srow"><span>Name</span><input class="field" data-field="name" value={a.name} maxlength="20" /></label>
-        <label class="srow"><span>Icon label</span><input class="field" data-field="label" value="HOME" maxlength="6" /></label>
-        <div class="srow"><span>Colour</span><span class="swatches">{Object.entries(colors).map(([k, hex]) => <button type="button" data-color={k} class:list={{ on: k === "orange" }} style={`background:${hex}`} aria-label={k} />)}</span></div>
+        <label class="srow"><span>Icon label <i class="idot" title="Drawn on the icon, up to 6 letters. The Dock shows the app as “cl_audit <name>”.">i</i></span><input class="field" data-field="label" value="HOME" maxlength="6" /></label>
+        <div class="srow"><span>Colour <i class="idot" title="This account's colour in the launcher, the dashboard (chips, cards and charts) and the panels.">i</i></span><span class="swatches">{Object.entries(colors).map(([k, hex]) => <button type="button" data-color={k} class:list={{ on: k === "orange" }} style={`background:${hex}`} aria-label={k} />)}</span></div>
         <div class="srow end"><button type="button" class="danger linkish" data-remove>Remove account…</button></div>
       </div>
-      <div class="card"><h4>Claude Code login</h4>
-        <div class="srow"><span>Folder</span><span class="menu" data-text="dir">{a.dir}</span></div>
+      <div class="card"><h4>Claude Code login <i class="idot" title="cl_audit reads this folder's Claude Code login from the Keychain, read-only, the same way Claude Code does.">i</i></h4>
+        <div class="srow"><span>Folder</span><span class="folder-ctl"><span class="menu menu-static" data-text="dir">{a.dir}</span><span class="folder-btn" aria-hidden="true"><svg width="15" height="12" viewBox="0 0 15 12"><path d="M1 2.2C1 1.5 1.5 1 2.2 1h3.3l1.4 1.5h5.9c.7 0 1.2.5 1.2 1.2v6.1c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></span></div>
         <div class="srow"><span>Login</span><span class="ok">✓ <span class="email" data-text="email">{a.email}</span></span></div>
-        <div class="srow"><span>Renew expired login</span><button type="button" class="mswitch" data-switch="renew" aria-label="Renew expired login"></button></div>
+        <div class="srow"><span>Renew expired login <i class="idot" title="When the login has expired, a tiny Claude Code request renews it (uses a little usage).">i</i></span><button type="button" class="mswitch" data-switch="renew" aria-label="Renew expired login"></button></div>
       </div>
     </div>
 
@@ -53,11 +53,12 @@ const panels = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["
       <div class="card"><h4>Clicking the icon</h4>
         <div class="srow"><span>Click</span><select class="menu" data-field="click">{menus.click.map((o) => <option>{o}</option>)}</select></div>
         <div class="srow"><span>Show usage for</span><span class="stepper"><button type="button" data-step="peek" data-dir="-1">−</button><span data-value="peek">0.75 s</span><button type="button" data-step="peek" data-dir="1">＋</button></span></div>
-        <div class="srow"><span>Press and hold</span><button type="button" class="mswitch on" data-switch="hold" aria-label="Press and hold"></button></div>
-        <div class="srow"><span>Claude window</span><select class="menu" data-field="window">{menus.window.map((o) => <option>{o}</option>)}</select></div>
+        <div class="srow"><span>Press and hold <i class="idot" title="Experimental: press and hold shows the details panel next to a short Dock menu.">i</i></span><button type="button" class="mswitch on" data-switch="hold" aria-label="Press and hold"></button></div>
+        <div class="srow"><span>Claude window <i class="idot" title="Which Claude desktop window this account opens. A separate window has its own sign-in.">i</i></span><select class="menu" data-field="window">{menus.window.map((o) => <option>{o}</option>)}</select></div>
+        <div class="srow" data-datarow><span>Data folder</span><span class="menu menu-static" data-text="data">{a.data}</span></div>
       </div>
       <div class="card"><h4>Behaviour</h4>
-        <div class="srow"><span>Refresh every</span><select class="menu" data-field="refresh">{menus.refresh.map((o) => <option selected={o === "5 min"}>{o}</option>)}</select></div>
+        <div class="srow"><span>Refresh every</span><select class="menu" data-field="refresh">{menus.refresh.map((o) => <option>{o}</option>)}</select></div>
         <div class="srow"><span>Notify near a limit</span><button type="button" class="mswitch on" data-switch="notify" aria-label="Notify near a limit"></button></div>
         <div class="srow"><span>Notify at</span><span class="stepper"><button type="button" data-step="notifyAt" data-dir="-1">−</button><span data-value="notifyAt">90%</span><button type="button" data-step="notifyAt" data-dir="1">＋</button></span></div>
         <div class="srow"><span>Open at login</span><button type="button" class="mswitch on" data-switch="login" aria-label="Open at login"></button></div>
@@ -79,12 +80,13 @@ const panels = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["
           </div>
         ))}
         <div class="lane-mini" data-lane>
-          <div><b>Preview</b> <span class="sub">as the limit fills up</span></div>
+          <div class="lane-head"><b>Preview</b> <span class="sub">as the limit fills up</span></div>
           <div class="lane-bar"><i style="background:var(--green)"></i><i style="background:var(--green)"></i><i style="background:var(--amber)"></i><i style="background:var(--red)"></i><i style="background:var(--red)"></i></div>
-          <div class="lane-row">{lane.map((t, i) => <figure><img src={laneSrc("home", "bars", i)} data-lane-img={i} alt="" width="34" height="34" /><figcaption>{t}</figcaption></figure>)}</div>
+          <div class="lane-caps"><span>plenty left</span><span>half used</span><span>at limit</span></div>
+          <div class="lane-row">{lane.map((_, i) => <img src={laneSrc("home", "bars", i)} data-lane-img={i} alt="" width="40" height="40" />)}</div>
         </div>
       </div>
-      <div class="card"><h4>Panels</h4>
+      <div class="card"><h4>Panels <i class="idot" title="Click: this panel for a moment. Double-click, ⌥-click or long press: the large panel in the same design.">i</i></h4>
         <span class="switch small-switch">{panels.map(([k, n]) => <button type="button" data-panel={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
         <img class="panel-prev" src="/img/panel-segments.png" data-panel-img alt="Panel design preview" width="800" height="511" loading="lazy" />
       </div>

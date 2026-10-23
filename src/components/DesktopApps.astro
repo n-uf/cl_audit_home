@@ -108,6 +108,13 @@ import { accounts, chats } from "../data/demo";
     chat.scrollTop = chat.scrollHeight;
   });
 
+  // Navigating (the window's top bar, the menu bar) closes every panel and Dock pop-up.
+  document.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest(".switch.pages a, .menubar a, .topbar .title")) {
+      w_.clCloseWins();
+      document.dispatchEvent(new Event("cl:close-pops"));
+    }
+  }, true);
   document.addEventListener("click", (e) => {
     const t = e.target as HTMLElement;
     const opener = t.closest<HTMLElement>("[data-open-desktop]");

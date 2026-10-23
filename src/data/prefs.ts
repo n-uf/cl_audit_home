@@ -20,12 +20,12 @@ export type Prefs = {
 };
 
 const defaults: Record<AccountId, Prefs> = {
-  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Show usage, then open Claude", peek: 0.75, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments" },
-  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Show usage, then open Claude", peek: 1, hold: true, window: "Separate sign-in", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings" },
-  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Show usage, then open Claude", peek: 0.75, hold: false, window: "Separate sign-in", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow" },
+  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 0.75, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments" },
+  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 1, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings" },
+  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 0.75, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow" },
 };
 
-const KEY = "cl_audit.settings.v2"; // v2: every account shows its usage on click by default
+const KEY = "cl_audit.settings.v3"; // v3: the app's short menu labels
 
 export function loadPrefs(): Record<AccountId, Prefs> {
   let saved: Partial<Record<AccountId, Partial<Prefs>>> = {};
@@ -56,7 +56,7 @@ export function applyPrefs(p = loadPrefs()) {
     });
   }
   (window as any).clPeekMs = (id: AccountId) => Math.round((p[id]?.peek ?? 0.75) * 1000) + 400;
-  (window as any).clClick = (id: AccountId) => p[id]?.click ?? "Show usage, then open Claude";
+  (window as any).clClick = (id: AccountId) => p[id]?.click ?? "Usage, then Claude";
   let showEmails = true;
   try { showEmails = localStorage.getItem("cl_audit.showEmails") !== "0"; } catch {}
   root.classList.toggle("hide-emails", !showEmails);

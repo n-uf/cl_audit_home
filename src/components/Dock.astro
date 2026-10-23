@@ -52,7 +52,7 @@ import { accounts } from "../data/demo";
       if (b.dataset.pop === "launcher") (window as any).clCloseWins?.();
       // An account's "Click" setting: straight to Claude, or the usage first
       const clickPref = b.dataset.pop !== "launcher" ? (window as any).clClick?.(b.dataset.pop) : null;
-      if (clickPref === "Open Claude") { close(); (window as any).clOpenDesktop?.(b.dataset.pop); return; }
+      if (clickPref === "Claude") { close(); (window as any).clOpenDesktop?.(b.dataset.pop); return; }
       const pop = bar.querySelector<HTMLElement>(`[data-popup="${b.dataset.pop}"]`)!;
       if (open === pop) return close();
       close();
@@ -62,7 +62,7 @@ import { accounts } from "../data/demo";
       open = pop;
       // Like the app: a click shows the usage for a moment, then opens that account's Claude desktop app.
       const id = b.dataset.pop!;
-      if (id !== "launcher" && clickPref !== "Show the details panel")
+      if (id !== "launcher" && clickPref !== "Details panel")
         setTimeout(() => { if (open === pop) { close(); (window as any).clOpenDesktop?.(id); } }, (window as any).clPeekMs?.(id) ?? 1150);
     }),
   );

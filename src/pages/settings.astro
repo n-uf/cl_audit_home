@@ -50,8 +50,16 @@ const description =
       $$<HTMLImageElement>("[data-gallery]").forEach((img) => (img.src = iconSrc(acc, img.dataset.gallery as Style)));
       $$<HTMLElement>("[data-style]").forEach((b) => b.classList.toggle("on", b.dataset.style === pr.style));
       $$<HTMLImageElement>("[data-lane-img]").forEach((img) => (img.src = laneSrc(acc, pr.style, +img.dataset.laneImg!)));
-      const row = $(`[data-style="${pr.style}"]`)!.closest(".fam-block")!;
-      row.after($("[data-lane]")!);
+      // the lane joins the selected tile: it goes into the gallery grid right after that tile's row
+      const lanes = $("[data-lane]")!;
+      const sel = $(`[data-style="${pr.style}"]`)!;
+      const tiles = [...sel.parentElement!.querySelectorAll<HTMLElement>("[data-style]")];
+      const i = tiles.indexOf(sel), cols = 4;
+      tiles[Math.min(tiles.length, (Math.floor(i / cols) + 1) * cols) - 1].after(lanes);
+      lanes.dataset.col = String(i % cols);
+      lanes.dataset.last = String(i % cols === cols - 1 || i === tiles.length - 1 && tiles.length % cols === 0);
+      $("[data-datarow]")!.hidden = pr.window !== "Separate";
+      $$<HTMLElement>('[data-text="data"]').forEach((e) => (e.textContent = a.data));
       $$<HTMLElement>("[data-panel]").forEach((b) => b.classList.toggle("on", b.dataset.panel === pr.panel));
       $<HTMLImageElement>("[data-panel-img]")!.src = `/img/panel-${pr.panel}.png`;
     };
@@ -77,7 +85,7 @@ const description =
     root.addEventListener("change", (e) => {
       const t = e.target as HTMLSelectElement;
       const f = t.dataset.field as keyof Prefs | undefined;
-      if (f && t.tagName === "SELECT") { (p() as any)[f] = t.value; commit(); }
+      if (f && t.tagName === "SELECT") { (p() as any)[f] = t.value; commit(); show(); }
     });
     root.addEventListener("input", (e) => {
       const t = e.target as HTMLInputElement;
