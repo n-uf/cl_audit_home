@@ -1,0 +1,15 @@
+---
+import { levelColor } from "./level";
+interface Props { icon: string; name: string; color: string; five: number; week: number; key: string; sel?: boolean; open?: boolean }
+const r = Astro.props;
+---
+<div class:list={["row", { sel: r.sel }]}>
+  <img src={r.icon} alt="" width="42" height="42" loading="lazy" />
+  <div class="meta">
+    <div class="nm"><span class="dot" style={`background:${r.color};width:7px;height:7px`} />{r.name}{r.open && <span class="badge">open</span>}</div>
+    {[["5h", r.five], ["wk", r.week]].map(([tag, p]) => (
+      <div class="mini"><span class="tag">{tag}</span><span class="track"><i style={`width:${p}%;background:${levelColor(p as number)};box-shadow:0 0 6px ${levelColor(p as number)}`} /></span><span class="p" style={`color:${levelColor(p as number)}`}>{p}%</span></div>
+    ))}
+  </div>
+  <span class="kbd">{r.key}</span>
+</div>
