@@ -33,7 +33,7 @@ import { accounts } from "../data/demo";
   </div>
 
   {accounts.map((a) => (
-    <div class="pop peek" data-popup={a.id} hidden set:html={panelHTML(a.id, "segments", { large: false, note: `Opening Claude ${a.name}…` })} />
+    <div class="pop peek" data-popup={a.id} hidden set:html={panelHTML(a.id, "segments", { large: false })} />
   ))}
 </nav>
 
@@ -47,15 +47,11 @@ import { accounts } from "../data/demo";
     b.addEventListener("click", (e) => {
       e.stopPropagation();
       if (b.dataset.pop === "launcher") (window as any).clCloseWins?.();
-      // An account's "Click" setting: straight to Claude, or the usage first
-      const clickPref = b.dataset.pop !== "launcher" ? (window as any).clClick?.(b.dataset.pop) : null;
-      if (clickPref === "Claude") { close(); (window as any).clOpenDesktop?.(b.dataset.pop); return; }
       const pop = bar.querySelector<HTMLElement>(`[data-popup="${b.dataset.pop}"]`)!;
       if (b.dataset.pop !== "launcher") {
         // the compact panel, in the design chosen for this account in Settings
         const pr = loadPrefs()[b.dataset.pop as "home"];
-        const note = clickPref === "Details panel" ? "" : `Opening Claude ${pr.name}…`;
-        pop.innerHTML = panelHTML(b.dataset.pop as "home", pr.panel as Design, { large: false, name: pr.name, note });
+        pop.innerHTML = panelHTML(b.dataset.pop as "home", pr.panel as Design, { large: false, name: pr.name });
       }
       if (open === pop) return close();
       close();
@@ -63,10 +59,6 @@ import { accounts } from "../data/demo";
       const r = b.getBoundingClientRect(), w = pop.offsetWidth;
       pop.style.left = `${Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2))}px`;
       open = pop;
-      // Like the app: a click shows the usage for a moment, then opens that account's Claude desktop app.
-      const id = b.dataset.pop!;
-      if (id !== "launcher" && clickPref !== "Details panel")
-        setTimeout(() => { if (open === pop) { close(); (window as any).clOpenDesktop?.(id); } }, (window as any).clPeekMs?.(id) ?? 1150);
     }),
   );
   document.addEventListener("click", (e) => { if (open && !open.contains(e.target as Node)) close(); });
