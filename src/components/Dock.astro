@@ -11,11 +11,14 @@ import { accounts } from "../data/demo";
       <img src="/img/app-icon.png" alt="" width="56" height="56" /><span class="tip">cl_audit</span><span class="run"></span>
     </button>
     <span class="sep"></span>
-    {accounts.map((a) => (
+    {accounts.map((a) => (<>
+      <button type="button" class="dock-item" data-open-desktop={a.id} aria-label={`Claude desktop app for the ${a.name} account`}>
+        <span class="app-tile" aria-hidden="true"></span><span class="tip">Claude desktop app — {a.name}</span><span class="run"></span>
+      </button>
       <button type="button" class="dock-item" data-pop={a.id} aria-label={`cl_audit ${a.name}: ${a.five}% of the 5-hour session limit, ${a.week}% of the weekly limit`}>
         <img src={a.icon} alt="" width="56" height="56" /><span class="tip">cl_audit {a.name}</span><span class="run"></span>
       </button>
-    ))}
+    </>))}
   </div>
 
   <div class="pop palette" data-popup="launcher" hidden>
