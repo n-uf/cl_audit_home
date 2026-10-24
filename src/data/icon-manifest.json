@@ -1,0 +1,4 @@
+{
+  "tintStyles": ["bars", "number", "twinRings", "segmented", "pace", "gauge", "thinBars", "batteries", "gaugeBar"],
+  "usageStyles": ["number"]
+}

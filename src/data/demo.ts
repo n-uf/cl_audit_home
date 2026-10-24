@@ -6,7 +6,7 @@ export type AccountId = "home" | "work" | "side";
 
 export const accounts = [
   { id: "home" as AccountId, name: "home", label: "HOME", email: "you@example.com", plan: "Max", hex: "#d97757", color: "var(--acc-home)", tint: "t-orange",
-    icon: "/img/acc/home-bars.png", dir: "~/.claude", data: "~/Library/Application Support/Claude", five: 34, fiveWhen: "in 3 h 12 min", week: 12, weekWhen: "in 6 days", fiveLeftMin: 192, weekLeftMin: 6 * 1440 + 200, updated: "just now", winOpen: true },
+    icon: "/img/acc/home-bars-orange.png", dir: "~/.claude", data: "~/Library/Application Support/Claude", five: 34, fiveWhen: "in 3 h 12 min", week: 12, weekWhen: "in 6 days", fiveLeftMin: 192, weekLeftMin: 6 * 1440 + 200, updated: "just now", winOpen: true },
   { id: "work" as AccountId, name: "work", label: "WORK", email: "you@work.example", plan: "Team", hex: "#14b8a6", color: "var(--acc-work)", tint: "t-teal",
     icon: "/img/acc/work-rings.png", dir: "~/.claude-work", data: "~/Library/Application Support/Claude-work", five: 78, fiveWhen: "in 41 min", week: 61, weekWhen: "in 3 days", fiveLeftMin: 41, weekLeftMin: 3 * 1440 + 300, updated: "1 min ago", winOpen: true },
   { id: "side" as AccountId, name: "side", label: "SIDE", email: "side@example.com", plan: "Pro", hex: "#8b5cf6", color: "var(--acc-side)", tint: "t-purple",

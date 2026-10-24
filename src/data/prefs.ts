@@ -1,8 +1,9 @@
 // The demo's Settings, per profile, remembered in this browser (like the app's accounts.json, but local
-// to the visitor). Applied on every page: icon style (Dock, cards, strip, launcher), profile colour, the
+// to the visitor). Applied on every page: icon style and colour (Dock, cards, strip, launcher), profile colour, the
 // Claude open dot, how long a Dock click shows the usage before opening Claude, and whether a profile has
 // a Claude window at all.
 import { accounts, type AccountId } from "./demo";
+import manifest from "./icon-manifest.json";   // written by scripts/render-icons.sh
 
 export const styles = [
   ["bars", "Two numbers"], ["rings", "Rings"], ["number", "Big number"],
@@ -26,7 +27,7 @@ export type Prefs = {
   click: string; peek: number; hold: boolean; window: string;
   refresh: string; notify: boolean; notifyAt: number; login: boolean; renew: boolean; panel: string;
   dataDir: string;         // the separate Claude window's data folder (a name under ~/Library/Application Support)
-  iconColor: string;       // the icon's colour (Settings ▸ Icon); the pictures here are rendered, so it is only remembered
+  iconColor: string;       // the icon's colour (Settings ▸ Icon): picks the rendered picture (see iconSrc)
   frame: string;           // "" = no frame, else a tile colour; drawn as a ring over the icons in CSS
   dot: boolean;            // Claude open dot: an orange dot on the icon while the profile's Claude window is open
   showInDock: boolean;     // Dock icon ▸ Show in the Dock
@@ -60,8 +61,17 @@ export function savePrefs(p: Record<AccountId, Prefs>) {
   try { localStorage.setItem(KEY, JSON.stringify(p)); } catch {}
 }
 
-export const iconSrc = (id: AccountId, style: Style) => `/img/acc/${id}-${style}.png`;
-export const laneSrc = (id: AccountId, style: Style, i: number) => `/img/acc/lane-${id}-${style}-${i}.png`;
+/**
+ * The icon pictures are rendered by the app (scripts/render-icons.sh), one per colour for the styles the
+ * colour changes (the manifest lists them); the other styles have one picture for every colour. "By usage"
+ * and graphite draw the same picture, except for a style whose tile follows the 5-hour level.
+ */
+const tintStyles: string[] = manifest.tintStyles;
+const usageStyles: string[] = manifest.usageStyles;
+const colourPart = (style: Style, color: string) =>
+  !tintStyles.includes(style) ? "" : `-${color === "usage" && !usageStyles.includes(style) ? "graphite" : color in tileColors ? color : "orange"}`;
+export const iconSrc = (id: AccountId, style: Style, color: string = defaults[id].iconColor) => `/img/acc/${id}-${style}${colourPart(style, color)}.png`;
+export const laneSrc = (id: AccountId, style: Style, i: number, color: string = defaults[id].iconColor) => `/img/acc/lane-${id}-${style}${colourPart(style, color)}-${i}.png`;
 export const defaultStyle = (id: AccountId) => defaults[id].style;
 export const defaultColor = (id: AccountId) => colors[defaults[id].color];
 
@@ -76,7 +86,7 @@ export function applyPrefs(p = loadPrefs()) {
     // a profile without a Claude window has no window switch and no "Open window" on its card
     document.querySelectorAll<HTMLElement>(`.acc[data-account="${a.id}"]`).forEach((c) => c.classList.toggle("no-window", pr.window === "None"));
     document.querySelectorAll<HTMLImageElement>(`img[data-acc-icon="${a.id}"]`).forEach((img) => {
-      const src = iconSrc(a.id, pr.style);
+      const src = iconSrc(a.id, pr.style, pr.iconColor);
       if (img.getAttribute("src") !== src) img.src = src;
     });
   }

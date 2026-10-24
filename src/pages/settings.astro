@@ -153,10 +153,10 @@ const description =
       $("[data-oc-result]")!.innerHTML = ocHTML(pr);
       // icon gallery: this profile's icons, the chosen style, and the preview lane under its row
       $$<HTMLElement>(".c-i .ico").forEach((e) => (e.dataset.ico = acc));
-      $$<HTMLImageElement>("[data-gallery]").forEach((img) => (img.src = iconSrc(acc, img.dataset.gallery as Style)));
-      $$<HTMLImageElement>("[data-dot-img]").forEach((img) => (img.src = iconSrc(acc, pr.style)));
+      $$<HTMLImageElement>("[data-gallery]").forEach((img) => (img.src = iconSrc(acc, img.dataset.gallery as Style, pr.iconColor)));
+      $$<HTMLImageElement>("[data-dot-img]").forEach((img) => (img.src = iconSrc(acc, pr.style, pr.iconColor)));
       $$<HTMLElement>("[data-style]").forEach((b) => b.classList.toggle("on", b.dataset.style === pr.style));
-      $$<HTMLImageElement>("[data-lane-img]").forEach((img) => (img.src = laneSrc(acc, pr.style, +img.dataset.laneImg!)));
+      $$<HTMLImageElement>("[data-lane-img]").forEach((img) => (img.src = laneSrc(acc, pr.style, +img.dataset.laneImg!, pr.iconColor)));
       // the lane joins the selected tile: it goes into the gallery grid right after that tile's row
       const lanes = $("[data-lane]")!;
       const sel = $(`[data-style="${pr.style}"]`)!;
