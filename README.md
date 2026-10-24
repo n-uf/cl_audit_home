@@ -22,7 +22,22 @@ Claude window, Dock icon, profile settings, General settings, New profile, Remov
 - The icons and panels in `public/img` are rendered by cl_audit itself with demo profiles
   (`UsageDock --render-preview` / `--render-panel`). The demo history in `src/data/demo.ts` is generated at
   build time from a fixed seed.
-- The demo is client side only: a profile's settings are kept in this browser (`src/data/prefs.ts`), and
+- **Profile icons** (`public/img/acc`, 1,872 small PNGs, about 4.4 MB) are drawn by the app's own painter for
+  every profile, icon style, icon colour and preview-lane step, so Settings ▸ Icon ▸ Colour redraws them
+  everywhere (`iconSrc` / `laneSrc` in `src/data/prefs.ts`). Only styles whose look depends on the colour get
+  a picture per colour; the others have one for every colour. After the app's painter changes, regenerate
+  them (and `src/data/icon-manifest.json`, which lists the colour-dependent styles):
+
+  ```bash
+  (cd ../cl_audit && ./build.sh --no-install)   # builds ./build/UsageDock only, installs nothing
+  scripts/render-icons.sh                       # needs macOS (sips) and, for small files, pngquant
+  ```
+
+  The frame and the Claude open dot are drawn in CSS.
+- **Open Graph image:** `public/og.png` is drawn by `scripts/render-og.py` (Pillow + numpy, no browser) in
+  Inter. The font file stays out of the repo: pass Inter's variable font from Google Fonts or the
+  rsms/inter release with `--font`. Edit the wording at the top of the script.
+- The demo is client side only: a profile's settings and the dashboard card style (General settings) are kept in this browser (`src/data/prefs.ts`), and
   the dashboard switches keep their state while you move between pages (`src/data/cardState.ts`). The
   "What this does now" panel (`src/data/whatNow.ts`) is an overlay that takes no layout space.
 - **Version:** `src/data/site.ts` holds the current cl_audit `version` and `released` date. Update both on
