@@ -703,3 +703,20 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .dock-item .ico { transition: transform .16s; }
 .dock-item:hover .ico { transform: translateY(-8px) scale(1.12); }
 .dock-item .ico img { transition: none; transform: none !important; }
+
+/* ── "What this does now": an overlay in the window, bottom centre, above the Dock; no layout space ── */
+.whatnow { position: absolute; left: 0; right: 0; bottom: 14px; z-index: 4; display: flex; justify-content: center; padding: 0 12px; pointer-events: none; }
+.whatnow-card {
+  position: relative; width: 100%; max-width: 520px; padding: 11px 38px 12px 14px; border-radius: 12px;
+  background: rgba(36,36,40,.88); box-shadow: 0 0 0 1px rgba(255,255,255,.16), 0 14px 40px rgba(0,0,0,.55);
+  backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+  display: grid; gap: 3px; font-size: 13px; line-height: 1.45;
+  opacity: 0; transform: translateY(6px); transition: opacity .2s ease, transform .2s ease; pointer-events: none;
+}
+.whatnow-card.show { opacity: 1; transform: none; pointer-events: auto; }
+.wn-t { font-weight: 700; font-size: 13px; }
+.wn-d { color: var(--soft); }
+.wn-x { position: absolute; top: 7px; right: 8px; width: 22px; height: 22px; border: 0; border-radius: 50%; background: rgba(255,255,255,.09); color: var(--muted); font: 15px/1 var(--font); cursor: pointer; }
+.wn-x:hover { background: rgba(255,255,255,.18); color: #fff; }
+@media (prefers-reduced-motion: reduce) { .whatnow-card { transition: none; } }
+

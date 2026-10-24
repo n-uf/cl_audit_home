@@ -41,6 +41,14 @@ const nav: [Page, string, string][] = [
       <main class="content" transition:animate="fade">
         <slot />
       </main>
+      <!-- "What this does now" (Settings): an overlay that takes no layout space, bottom centre of the window -->
+      <div class="whatnow" aria-live="polite" aria-atomic="true">
+        <div class="whatnow-card" data-whatnow>
+          <button type="button" class="wn-x" aria-label="Close" data-whatnow-close>×</button>
+          <b class="wn-t"></b>
+          <span class="wn-d"></span>
+        </div>
+      </div>
     </div>
 
     <DesktopApps />
@@ -52,7 +60,8 @@ const nav: [Page, string, string][] = [
 <script>
   import { applyPrefs } from "../data/prefs";
   import { initCards } from "../data/cardState";
-  document.addEventListener("astro:page-load", () => { applyPrefs(); initCards(); });
+  import { initWhatNow } from "../data/whatNow";
+  document.addEventListener("astro:page-load", () => { applyPrefs(); initCards(); initWhatNow(); });
 
   // The menu bar clock, like the Mac's: "Fri 23 Oct 11:24".
   const tick = () => {
