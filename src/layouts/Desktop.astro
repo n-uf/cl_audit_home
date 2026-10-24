@@ -6,7 +6,7 @@ import Base from "./Base.astro";
 import Dock from "../components/Dock.astro";
 import DesktopApps from "../components/DesktopApps.astro";
 import TerminalApps from "../components/TerminalApps.astro";
-import { repo } from "../data/site";
+import { repo, download, version } from "../data/site";
 
 export type Page = "overview" | "dashboard" | "settings" | "install" | "faq" | "none";
 interface Props { title: string; description: string; page: Page; jsonLd?: object[] }
@@ -23,6 +23,7 @@ const nav: [Page, string, string][] = [
       <a class="mb-brand" href="/"><img src="/favicon.png" alt="" width="16" height="16" />cl_audit</a>
       <nav class="mb-links" aria-label="Site">{nav.map(([, label, href]) => <a href={href}>{label}</a>)}</nav>
       <span class="spacer"></span>
+      <a class="mb-dl" href={download} title={`cl_audit ${version} for Mac`}><span aria-hidden="true">↓</span> Download for Mac</a>
       <a class="mb-gh" href={repo}>GitHub</a>
       <span class="mb-clock" aria-hidden="true"></span>
     </header>
@@ -36,7 +37,8 @@ const nav: [Page, string, string][] = [
         <nav class="switch pages" aria-label="Pages">
           {nav.map(([id, label, href]) => <a href={href} class:list={{ on: id === page }} aria-current={id === page ? "page" : undefined}>{label}</a>)}
         </nav>
-        <a class="pill small hide-sm" href={repo}>GitHub</a>
+        <a class="pill small dl hide-sm" href={download} title={`cl_audit ${version}: the ready-built app (zip)`}><span aria-hidden="true">↓</span> Download for Mac</a>
+        <a class="pill small quiet hide-sm" href={repo}>GitHub</a>
       </div>
       <main class="content" transition:animate="fade">
         <slot />

@@ -1,42 +1,59 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
-import { repo, version, releasedText, changelog } from "../data/site";
+import { repo, version, releasedText, changelog, download, requires } from "../data/site";
 
-const title = "Install — cl_audit: build it on your Mac in a minute";
+const title = "Install — cl_audit: download it for your Mac, or build it from source";
 const description =
-  "How to install cl_audit on macOS: clone the source, run build.sh, add a profile for each Claude setup and put its Dock icon in the Dock. Requires Apple silicon, macOS 13 or later, the Xcode Command Line Tools and Claude Code.";
+  "Download cl_audit for macOS (Apple silicon, macOS 13 or later), allow it once in Privacy & Security, and add a profile for each Claude setup. Or build it from source with build.sh. Requires Claude Code.";
 ---
 <Desktop title={title} description={description} page="install">
   <div class="content-inner">
-    <div class="page-head"><h1>Install cl_audit</h1><p>Built from source on your Mac, so you can read every line before it runs.</p></div>
+    <div class="page-head"><h1>Install cl_audit</h1><p>Download the ready-built app, or build it from source.</p></div>
 
     <div class="cols2">
-      <div class="card">
-        <h4>Build and install</h4>
-        <pre class="code"><code>git clone {repo}.git
-cd cl_audit
-./build.sh</code></pre>
-        <p class="t">
-          build.sh compiles cl_audit, installs it in /Applications and updates the Dock icon apps: one
-          “cl_audit &lt;profile&gt;” app per profile, next to it, where Spotlight finds them. <code>./build.sh --no-install</code>
-          only builds into the folder.
-        </p>
-        <p class="t">Latest: <b>{version}</b>, released {releasedText()} · <a href={changelog}>What's new</a>. To build exactly this version, run <code>git checkout v{version}</code> before <code>./build.sh</code>.</p>
-        <div class="btns"><a class="pill tint t-orange" href={repo}>Get the source on GitHub</a></div>
+      <div class="card dl-card">
+        <h4>Download</h4>
+        <div class="dl-row">
+          <a class="pill dl big" href={download}><span aria-hidden="true">↓</span> Download cl_audit {version}</a>
+          <span class="sub">Released {releasedText()} · {requires} · <a href={changelog}>What's new</a></span>
+        </div>
+        <div class="steps">
+          <div><div><b>Unzip it and move cl_audit to Applications</b><span>Double-click <code>cl_audit.zip</code> in Downloads, then drag cl_audit into the Applications folder.</span></div></div>
+          <div><div><b>Open it; macOS asks once</b><span>cl_audit isn't signed with an Apple Developer ID yet, so the first time macOS says it can't verify the app. Click Done.</span></div></div>
+          <div><div><b>Allow it in Privacy &amp; Security</b><span>Open System Settings ▸ Privacy &amp; Security, scroll down and click <b>Open Anyway</b> next to cl_audit, then confirm. You only do this once; the Dock icon apps cl_audit makes for your profiles open without asking.</span></div></div>
+        </div>
+        <div class="gk" aria-hidden="true">
+          <div class="gk-title">Privacy &amp; Security</div>
+          <div class="gk-row"><span>“cl_audit” was blocked to protect your Mac.</span><span class="gk-btn">Open Anyway</span></div>
+        </div>
       </div>
 
       <div class="card">
         <h4>Requires</h4>
         <div class="srow"><span>Mac</span><span class="v">Apple silicon</span></div>
         <div class="srow"><span>macOS</span><span class="v">13 Ventura or later</span></div>
-        <div class="srow"><span>To build</span><span class="v">Xcode Command Line Tools · <code>xcode-select --install</code></span></div>
         <div class="srow"><span>Per profile</span><span class="v">Claude Code, signed in</span></div>
         <div class="srow"><span>Optional</span><span class="v">the Claude app, for Claude windows</span></div>
         <div class="srow"><span>Plans</span><span class="v">Pro, Max or Team (plans with usage limits)</span></div>
+        <div class="srow"><span>To build it yourself</span><span class="v">Xcode Command Line Tools · <code>xcode-select --install</code></span></div>
       </div>
     </div>
 
     <div class="cols2">
+      <div class="card">
+        <h4>Or build it from source</h4>
+        <p class="t">Read every line before it runs, then build it on your Mac:</p>
+        <pre class="code"><code>git clone {repo}.git
+cd cl_audit
+git checkout v{version}   # optional: exactly this release
+./build.sh</code></pre>
+        <p class="t">
+          build.sh compiles cl_audit, installs it in /Applications and updates the Dock icon apps: one
+          “cl_audit &lt;profile&gt;” app per profile, next to it, where Spotlight finds them. <code>./build.sh --no-install</code>
+          only builds into the folder. Built on your own Mac, it opens without the Privacy &amp; Security step.
+        </p>
+        <div class="btns"><a class="pill" href={repo}>Source on GitHub</a></div>
+      </div>
       <div class="card">
         <h4>Add a profile</h4>
         <div class="steps">
@@ -49,10 +66,13 @@ cd cl_audit
         </div>
       </div>
 
+    </div>
+
+    <div class="cols2">
       <div class="card">
         <h4>Update, remove, uninstall</h4>
         <div class="steps">
-          <div><div><b>Update</b><span>Run <code>git pull && ./build.sh</code> in the cl_audit folder; the Dock icon apps are updated too, and profiles and settings are kept.</span></div></div>
+          <div><div><b>Update</b><span>Download the new zip and replace cl_audit in Applications (<a href={changelog}>what's new</a>), or run <code>git pull && ./build.sh</code> in the cl_audit folder. The Dock icon apps follow, and profiles and settings are kept.</span></div></div>
           <div><div><b>Remove a profile</b><span>Settings ▸ the profile ▸ Remove profile… removes its Dock icon app and what macOS keeps for it, plus its saved usage. “Delete its folders too” also signs its Claude Code folder out and deletes it and its Claude window's data folder; the default <code>~/.claude</code> and the standard window are never deleted.</span></div></div>
           <div><div><b>Uninstall</b><span>Remove every profile, then delete cl_audit from /Applications and the folder <code>~/Library/Application Support/usage-n-uf</code>, where profiles are saved.</span></div></div>
         </div>
@@ -60,3 +80,12 @@ cd cl_audit
     </div>
   </div>
 </Desktop>
+
+<style>
+  .dl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 4px 0 12px; }
+  .pill.big { padding: 10px 20px; font-size: 15.5px; }
+  .gk { margin-top: 12px; border-radius: 10px; background: rgba(0,0,0,.28); box-shadow: inset 0 0 0 1px var(--line); padding: 10px 12px; font-size: 13px; }
+  .gk-title { font-weight: 700; margin-bottom: 6px; }
+  .gk-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--muted); flex-wrap: wrap; }
+  .gk-btn { padding: 3px 12px; border-radius: 6px; background: rgba(255,255,255,.14); color: #fff; font-weight: 600; box-shadow: 0 0 0 2px #d97757; white-space: nowrap; }
+</style>
