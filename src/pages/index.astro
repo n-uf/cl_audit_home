@@ -3,7 +3,7 @@ import Desktop from "../layouts/Desktop.astro";
 import Row from "../components/Row.astro";
 import AccountCard from "../components/AccountCard.astro";
 import { accounts } from "../data/demo";
-import { repo, site } from "../data/site";
+import { repo, site, version, released, releasedText, changelog } from "../data/site";
 import { level, levelColor, segments } from "../components/level";
 
 const title = "cl_audit — run several Claude accounts on macOS, with usage limits in the Dock";
@@ -20,6 +20,10 @@ const jsonLd = [{
   description,
   applicationCategory: "DeveloperApplication",
   operatingSystem: "macOS 13 or later",
+  softwareVersion: version,
+  datePublished: released,
+  dateModified: released,
+  releaseNotes: changelog,
   url: `${site}/`,
   downloadUrl: repo,
   image: `${site}/img/app-icon.png`,
@@ -151,7 +155,7 @@ cd cl_audit && ./build.sh</code></pre>
       </div>
     </div>
 
-    <p class="legal">cl_audit by <a href="https://n-uf.com">n-uf</a> · <a href={`${repo}/blob/main/LICENSE`}>PolyForm Perimeter 1.0.1</a> · Not affiliated with Anthropic. Claude is a trademark of Anthropic.</p>
+    <p class="legal">cl_audit {version} · {releasedText()} · <a href={changelog}>What's new</a> · by <a href="https://n-uf.com">n-uf</a> · <a href={`${repo}/blob/main/LICENSE`}>PolyForm Perimeter 1.0.1</a> · Not affiliated with Anthropic. Claude is a trademark of Anthropic.</p>
   </div>
 </Desktop>
 

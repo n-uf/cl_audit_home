@@ -1,6 +1,6 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
-import { repo } from "../data/site";
+import { repo, version, releasedText, changelog } from "../data/site";
 
 const title = "Install — cl_audit: build it on your Mac in a minute";
 const description =
@@ -20,6 +20,7 @@ cd cl_audit
           build.sh compiles the app, installs cl_audit in /Applications and, once you have accounts, one
           “cl_audit &lt;name&gt;” icon app per account next to it, where Spotlight finds them.
         </p>
+        <p class="t">Latest: <b>{version}</b>, released {releasedText()} · <a href={changelog}>What's new</a>. To build exactly this version: <code>git checkout v{version}</code> before <code>./build.sh</code>.</p>
         <div class="btns"><a class="pill tint t-orange" href={repo}>Get the source on GitHub</a></div>
       </div>
 
