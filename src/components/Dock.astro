@@ -1,8 +1,9 @@
 ---
-// A macOS Dock with the cl_audit icons. Like the app: click an account icon for a quick look at its
-// limits, a Claude tile for its desktop app, the cl_audit icon to bring cl_audit to the front.
+// A macOS Dock with the cl_audit icons. Like the app: click a profile's Dock icon for a quick look at its
+// limits, a Claude tile for its Claude window, the cl_audit icon to bring cl_audit to the front.
 import { panelHTML, type Design } from "../data/panelView";
 import { accounts } from "../data/demo";
+import AccIcon from "./AccIcon.astro";
 ---
 <nav class="dock-bar" aria-label="cl_audit in the Dock" transition:persist="dock">
   <div class="dock">
@@ -11,11 +12,11 @@ import { accounts } from "../data/demo";
     </button>
     <span class="sep"></span>
     {accounts.map((a) => (<>
-      <button type="button" class="dock-item" data-open-desktop={a.id} aria-label={`Claude desktop app for the ${a.name} account`}>
-        <span class="app-tile" aria-hidden="true"></span><span class="tip">Claude desktop app — {a.name}</span><span class="run"></span>
+      <button type="button" class="dock-item" data-open-desktop={a.id} aria-label={`Claude window of the ${a.name} profile`}>
+        <span class="app-tile" aria-hidden="true"></span><span class="tip">Claude window — {a.name}</span><span class="run"></span>
       </button>
-      <button type="button" class="dock-item" data-pop={a.id} aria-label={`cl_audit ${a.name}: ${a.five}% of the 5-hour session limit, ${a.week}% of the weekly limit`}>
-        <img src={a.icon} data-acc-icon={a.id} alt="" width="56" height="56" /><span class="tip">cl_audit {a.name}</span><span class="run"></span>
+      <button type="button" class="dock-item" data-pop={a.id} aria-label={`cl_audit ${a.name} (Dock icon): ${a.five}% of the 5-hour limit, ${a.week}% of the weekly limit`}>
+        <AccIcon id={a.id} src={a.icon} size={56} /><span class="tip">cl_audit {a.name}</span><span class="run"></span>
       </button>
     </>))}
   </div>

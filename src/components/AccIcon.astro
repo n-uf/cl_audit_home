@@ -1,0 +1,8 @@
+---
+// A profile's Dock icon image in a wrapper, so the "Claude open dot" can be drawn over it in CSS
+// (see .ico in app.css). The wrapper carries the profile id; the dot shows while the profile's setting
+// is "while open" (Settings ▸ Icon) and, outside Settings, its Claude window is open.
+interface Props { id: string; src: string; size: number; alt?: string; loading?: "lazy" | "eager"; gallery?: string; lane?: number; sel?: boolean }
+const { id, src, size, alt = "", loading, gallery, lane } = Astro.props;
+---
+<span class="ico" data-ico={id}><img src={src} data-acc-icon={gallery || lane !== undefined ? undefined : id} data-gallery={gallery} data-lane-img={lane} alt={alt} width={size} height={size} loading={loading} /></span>

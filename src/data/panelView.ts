@@ -69,7 +69,7 @@ export function panelHTML(id: AccountId, design: Design, opts: { large: boolean;
   const a = accounts.find((x) => x.id === id)!;
   const name = opts.name ?? a.name;
   const head = opts.large
-    ? `<div class="pn-head"><img src="${opts.icon ?? a.icon}" alt="" width="56" height="56"><div class="pn-who"><div class="pn-title"><span class="dot" style="background:${a.color}"></span>Claude ${name}</div><div class="pn-sub email">${a.email}</div><span class="pn-plan">${a.plan} plan</span></div><span class="pn-close" aria-hidden="true">✕</span></div>`
+    ? `<div class="pn-head"><span class="ico" data-ico="${id}"><img src="${opts.icon ?? a.icon}" alt="" width="56" height="56"></span><div class="pn-who"><div class="pn-title"><span class="dot" style="background:${a.color}"></span>Claude ${name}</div><div class="pn-sub email">${a.email}</div><span class="pn-plan">${a.plan} plan</span></div><span class="pn-close" aria-hidden="true">✕</span></div>`
     : `<div class="pn-head small"><span class="dot" style="background:${a.color}"></span><b>Claude ${name}</b><span class="pn-plan">${a.plan}</span></div>`;
   const foot = opts.large
     ? `<div class="pn-foot"><span class="pill small tint ${a.tint}">Claude</span><span class="pill small">Dashboard</span><span class="spacer"></span><span class="pn-sub">Updated just now</span><span class="pn-gear" aria-hidden="true">⚙︎</span></div>`

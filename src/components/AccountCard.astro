@@ -1,26 +1,52 @@
 ---
+// A profile's dashboard card, as the app draws it: icon and name, one row of two switches (its Claude
+// window and its Dock icon), both limits, and the buttons. The switches work in the demo: the script in
+// data/cardState.ts moves them, with a spinner, and keeps the state across pages.
 import Limit from "./Limit.astro";
+import AccIcon from "./AccIcon.astro";
 interface Props {
   id?: string; icon: string; name: string; email: string; plan: string; color: string; tint: string;
-  five: number; fiveWhen: string; week: number; weekWhen: string; updated: string;
+  five: number; fiveWhen: string; week: number; weekWhen: string; updated: string; winOpen?: boolean;
 }
 const a = Astro.props;
+const glyphW = "chip-glyph chip-glyph-w";
+const open = !!a.winOpen;   // the demo's starting state; data/cardState.ts takes over in the browser
 ---
 <article class="card acc" data-account={a.id}>
   <div class="acc-head">
-    <img src={a.icon} data-acc-icon={a.id} alt={`Dock icon of the ${a.name} account: ${a.five}% of the 5-hour limit used`} width="56" height="56" loading="lazy" />
+    <AccIcon id={a.id!} src={a.icon} size={56} alt={`Dock icon of the ${a.name} profile: ${a.five}% of the 5-hour limit used`} loading="lazy" />
     <div style="display:grid;gap:2px;min-width:0">
       <div class="acc-name"><span class="dot" style={`background:${a.color}`} />Claude {a.name}</div>
       <div class="sub email">{a.email}</div>
-      <div class="open">Desktop open</div>
     </div>
     <span class="plan">{a.plan}</span>
   </div>
+
+  <div class="chips2" role="group" aria-label={`Claude window and Dock icon of ${a.name}`}>
+    <div class:list={["pchip", "chip-w", { off: !open }]} data-chip-w>
+      <span class={glyphW} aria-hidden="true"></span>
+      <span class="pchip-text"><span class="pchip-title">Claude window</span><span class="pchip-sub" data-sub>{open ? "open" : "closed"}</span></span>
+      <button type="button" class:list={["cswitch", { on: open }]} role="switch" aria-checked={open ? "true" : "false"} aria-label={`Claude window of ${a.name}`} data-win-switch={a.id}><i></i></button>
+    </div>
+    <div class="pchip chip-d" data-chip-d>
+      <span class="chip-glyph chip-glyph-d" aria-hidden="true"></span>
+      <span class="pchip-text"><span class="pchip-title">Dock icon</span><span class="pchip-sub" data-sub>running</span></span>
+      <button type="button" class="cswitch on" role="switch" aria-checked="true" aria-label={`Dock icon of ${a.name}`} data-dock-switch={a.id}><i></i></button>
+    </div>
+  </div>
+
   <Limit title="5-hour" when={a.fiveWhen} p={a.five} />
   <Limit title="Week" when={a.weekWhen} p={a.week} />
   <div class="acc-actions">
-    <button type="button" class={`pill small tint ${a.tint}`} data-open-desktop={a.id}>Show Desktop</button>
+    <button type="button" class={`pill small tint ${a.tint}`} data-open-desktop={a.id} data-open-label>{open ? "Show window" : "Open window"}</button>
     <button type="button" class="pill small" data-open-terminal={a.id}>Terminal</button>
+    <span class="more-wrap">
+      <button type="button" class="pill small more-btn" data-more aria-haspopup="menu" aria-expanded="false" aria-label={`More for ${a.name}`} title={`More for ${a.name}`}>⋯</button>
+      <span class="more-menu" role="menu" hidden>
+        <button type="button" role="menuitem" data-refresh>Refresh now</button>
+        <a role="menuitem" href="/settings/" data-profile-settings={a.id}>Profile settings…</a>
+      </span>
+    </span>
     <span class="sub">{a.updated}</span>
   </div>
 </article>

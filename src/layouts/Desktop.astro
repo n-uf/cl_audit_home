@@ -31,7 +31,7 @@ const nav: [Page, string, string][] = [
       <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="tb-title">cl_audit</span></div>
       <div class="topbar">
         <a class="title" href="/">cl_audit</a>
-        <slot name="top"><span class="tagline hide-sm">Usage audit for all your Claude accounts</span></slot>
+        <slot name="top"><span class="tagline hide-sm">Usage audit for all your Claude profiles</span></slot>
         <span class="spacer"></span>
         <nav class="switch pages" aria-label="Pages">
           {nav.map(([id, label, href]) => <a href={href} class:list={{ on: id === page }} aria-current={id === page ? "page" : undefined}>{label}</a>)}
@@ -51,7 +51,8 @@ const nav: [Page, string, string][] = [
 
 <script>
   import { applyPrefs } from "../data/prefs";
-  document.addEventListener("astro:page-load", () => applyPrefs());
+  import { initCards } from "../data/cardState";
+  document.addEventListener("astro:page-load", () => { applyPrefs(); initCards(); });
 
   // The menu bar clock, like the Mac's: "Fri 23 Oct 11:24".
   const tick = () => {
