@@ -1,10 +1,15 @@
 ---
-// The Settings page of the app window, working: pick an account in the strip and change its settings.
-// Choices are remembered in this browser and show up across the site (icon style in the Dock, cards and
-// launcher; account colour; how long a Dock click shows the usage). The server renders the "home" account.
+// The Settings page of the app window, working: pick a profile in the strip and change its settings, or
+// General. Choices are remembered in this browser and show up across the site (icon style in the Dock,
+// cards and launcher; profile colour; the Claude open dot; how long a Dock click shows the usage).
+// The server renders the "home" profile; src/pages/settings.astro fills the controls in.
+// Cards, as in the app: Profile · Claude Code and window · Updates and alerts · Clicking and panels (left),
+// Icon (middle), Dock icon · Opening and closing (right). Three columns from 1180 px, two from 800, one below.
 import { accounts } from "../data/demo";
-import { colors, styles, iconSrc, laneSrc } from "../data/prefs";
+import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices } from "../data/prefs";
 import { panelHTML } from "../data/panelView";
+import { version, releasedText, changelog } from "../data/site";
+import AccIcon from "./AccIcon.astro";
 
 const a = accounts[0];
 const families: [string, string[]][] = [
@@ -15,89 +20,135 @@ const families: [string, string[]][] = [
 const nameOf = Object.fromEntries(styles) as Record<string, string>;
 const lane = ["plenty left", "", "half used", "", "at the limit"];
 const menus = {
-  click: ["Usage, then Claude", "Claude", "Details panel"],
+  click: [["Usage, then Claude", "Usage, then Claude"], ["Claude", "Open Claude"], ["Details panel", "Details panel"]],
   window: ["Standard", "Separate", "None"],
-  refresh: ["1 min", "2 min", "5 min", "10 min", "15 min"],
 };
-const info = (t: string) => t;
 const panels = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["segments", "Segments"], ["pace", "Pace"]];
+const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 33%, #f59e0b 0 66%, #ef4444 0)" : hex);
 ---
 <div class="settings" id="settings" data-acc={a.id}>
   <div class="strip">
+    <button type="button" class="tile tile-plain" data-select-acc="general"><span class="tile-text"><b>General</b><span class="sub">dashboard · Dock · emails</span></span></button>
     {accounts.map((x, i) => (
       <button type="button" class:list={["tile", { sel: i === 0 }]} data-select-acc={x.id}>
-        <img src={x.icon} data-acc-icon={x.id} alt="" width="34" height="34" />
+        <AccIcon id={x.id} src={x.icon} size={34} />
         <span class="tile-text"><b data-acc-name={x.id}>{x.name}</b><span class="sub">{x.dir}</span></span>
       </button>
     ))}
-    <a class="tile plus" href="/install/" title="Set up a new Claude account">＋</a>
+    <a class="tile tile-plain" href="/install/" title="Add a profile: see Install"><span class="tile-text"><b>New profile</b></span></a>
     <span class="spacer"></span>
-    <span class="sub show-emails">Show emails <button type="button" class="mswitch on" data-toggle-emails aria-label="Show emails"></button></span>
+    <span class="sub show-emails">Show emails <button type="button" class="mswitch on" role="switch" aria-checked="true" data-toggle-emails aria-label="Show emails"></button></span>
   </div>
 
-  <div class="s-grid">
-    <div class="s-col">
-      <div class="card"><h4>Account</h4>
-        <label class="srow"><span>Name</span><input class="field" data-field="name" value={a.name} maxlength="20" /></label>
-        <label class="srow"><span>Icon label <i class="idot" title="Drawn on the icon, up to 6 letters. The Dock shows the app as “cl_audit <name>”.">i</i></span><input class="field" data-field="label" value="HOME" maxlength="6" /></label>
-        <div class="srow"><span>Colour <i class="idot" title="This account's colour in the launcher, the dashboard (chips, cards and charts) and the panels.">i</i></span><span class="swatches">{Object.entries(colors).map(([k, hex]) => <button type="button" data-color={k} class:list={{ on: k === "orange" }} style={`background:${hex}`} aria-label={k} />)}</span></div>
-        <div class="srow end"><button type="button" class="danger linkish" data-remove>Remove account…</button></div>
-      </div>
-      <div class="card"><h4>Claude Code login <i class="idot" title="cl_audit reads this folder's Claude Code login from the Keychain, read-only, the same way Claude Code does.">i</i></h4>
-        <div class="srow"><span>Folder</span><span class="folder-ctl"><span class="menu menu-static" data-text="dir">{a.dir}</span><span class="folder-btn" aria-hidden="true"><svg width="15" height="12" viewBox="0 0 15 12"><path d="M1 2.2C1 1.5 1.5 1 2.2 1h3.3l1.4 1.5h5.9c.7 0 1.2.5 1.2 1.2v6.1c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></span></div>
-        <div class="srow"><span>Login</span><span class="ok">✓ <span class="email" data-text="email">{a.email}</span></span></div>
-        <div class="srow"><span>Renew expired login <i class="idot" title="When the login has expired, a tiny Claude Code request renews it (uses a little usage).">i</i></span><button type="button" class="mswitch" data-switch="renew" aria-label="Renew expired login"></button></div>
+  <!-- A profile's settings -->
+  <div class="s-grid" data-profile-view>
+    <div class="card c-p"><h4>Profile</h4>
+      <label class="srow"><span>Name</span><input class="field" data-field="name" value={a.name} maxlength="20" /></label>
+      <label class="srow"><span>Icon label <i class="idot" title="Up to 6 letters drawn on the icon. The Dock names the app “cl_audit <name>”.">i</i></span><input class="field" data-field="label" value="HOME" maxlength="6" /></label>
+      <div class="srow"><span>Colour <i class="idot" title="This profile's colour in the launcher, the dashboard and the panels. The icon's own colour is under Icon.">i</i></span><span class="swatches" data-swatches="color">{Object.entries(colors).map(([k, hex]) => <button type="button" data-color={k} class:list={{ on: k === "orange" }} style={`background:${hex}`} aria-label={k} title={k} />)}</span></div>
+      <div class="srow end"><button type="button" class="danger linkish" data-remove>Remove profile…</button></div>
+    </div>
+
+    <div class="card c-c"><h4>Claude Code and window <i class="idot" title="The Dock icon reads this folder's Claude Code login from the Keychain, read-only, the same way Claude Code does. No new Keychain permission.">i</i></h4>
+      <div class="srow"><span>Folder</span><span class="folder-ctl"><span class="menu menu-static" data-text="dir">{a.dir}</span><span class="folder-btn" aria-hidden="true"><svg width="15" height="12" viewBox="0 0 15 12"><path d="M1 2.2C1 1.5 1.5 1 2.2 1h3.3l1.4 1.5h5.9c.7 0 1.2.5 1.2 1.2v6.1c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></span></div>
+      <div class="srow"><span>Login</span><span class="ok">✓ <span class="email" data-text="email">{a.email}</span></span></div>
+      <div class="srow"><span>Renew if expired <i class="idot" title="When the login expires, the Dock icon runs Claude Code once with a one-line prompt so it renews. Uses a little of this profile's usage.">i</i></span><button type="button" class="mswitch" role="switch" aria-checked="false" data-switch="renew" aria-label="Renew if expired"></button></div>
+      <div class="srow"><span>Claude window <i class="idot" title="Which Claude window this profile opens: the standard one, its own (with its own sign-in and data), or none.">i</i></span><select class="menu" data-field="window" aria-label="Claude window">{menus.window.map((o) => <option>{o}</option>)}</select></div>
+      <div class="srow" data-datarow><span>Data folder</span><select class="menu" data-field="dataDir" aria-label="Data folder"></select></div>
+    </div>
+
+    <div class="card c-u"><h4>Updates and alerts</h4>
+      <div class="srow"><span>Refresh every</span><select class="menu" data-field="refresh" aria-label="Refresh every">{refreshChoices.map((o) => <option>{o}</option>)}</select></div>
+      <div class="srow"><span>Notify at <i class="idot" title="A notification when the 5-hour or weekly limit reaches this level.">i</i></span><span class="ctl-pair"><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="notify" aria-label="Notify at"></button><span class="stepper" data-notify-step><button type="button" data-step="notifyAt" data-dir="-1" aria-label="Lower">−</button><span data-value="notifyAt">90%</span><button type="button" data-step="notifyAt" data-dir="1" aria-label="Higher">＋</button></span></span></div>
+    </div>
+
+    <div class="card c-k"><h4>Clicking and panels <i class="idot" title="Click: this panel briefly. Double-click, ⌥-click or press and hold: the large panel in the same design.">i</i></h4>
+      <div class="srow"><span>Click</span><select class="menu" data-field="click" aria-label="Click">{menus.click.map(([v, t]) => <option value={v}>{t}</option>)}</select></div>
+      <div class="srow" data-peekrow><span>Show usage for</span><span class="stepper"><button type="button" data-step="peek" data-dir="-1" aria-label="Shorter">−</button><span data-value="peek">3 s</span><button type="button" data-step="peek" data-dir="1" aria-label="Longer">＋</button></span></div>
+      <div class="srow"><span>Press and hold <i class="idot" title="Press and hold the icon for its details panel and a short menu. Double-click or ⌥-click also opens the panel; right-click shows the full menu.">i</i></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="hold" aria-label="Press and hold"></button></div>
+      <div class="srow stacked"><span>Panel design</span>
+        <span class="switch small-switch" role="group" aria-label="Panel design">{panels.map(([k, n]) => <button type="button" data-panel={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
+        <div class="panel-stage"><div data-panel-prev set:html={panelHTML("home", "segments", { large: false })} /></div>
       </div>
     </div>
 
-    <div class="s-col">
-      <div class="card"><h4>Clicking the icon</h4>
-        <div class="srow"><span>Click</span><select class="menu" data-field="click">{menus.click.map((o) => <option>{o}</option>)}</select></div>
-        <div class="srow"><span>Show usage for</span><span class="stepper"><button type="button" data-step="peek" data-dir="-1">−</button><span data-value="peek">0.75 s</span><button type="button" data-step="peek" data-dir="1">＋</button></span></div>
-        <div class="srow"><span>Press and hold <i class="idot" title="Experimental: press and hold shows the details panel next to a short Dock menu.">i</i></span><button type="button" class="mswitch on" data-switch="hold" aria-label="Press and hold"></button></div>
-        <div class="srow"><span>Claude window <i class="idot" title="Which Claude desktop window this account opens. A separate window has its own sign-in.">i</i></span><select class="menu" data-field="window">{menus.window.map((o) => <option>{o}</option>)}</select></div>
-        <div class="srow" data-datarow><span>Data folder</span><span class="menu menu-static" data-text="data">{a.data}</span></div>
-      </div>
-      <div class="card"><h4>Behaviour</h4>
-        <div class="srow"><span>Refresh every</span><select class="menu" data-field="refresh">{menus.refresh.map((o) => <option>{o}</option>)}</select></div>
-        <div class="srow"><span>Notify near a limit</span><button type="button" class="mswitch on" data-switch="notify" aria-label="Notify near a limit"></button></div>
-        <div class="srow"><span>Notify at</span><span class="stepper"><button type="button" data-step="notifyAt" data-dir="-1">−</button><span data-value="notifyAt">90%</span><button type="button" data-step="notifyAt" data-dir="1">＋</button></span></div>
-        <div class="srow"><span>Open at login</span><button type="button" class="mswitch on" data-switch="login" aria-label="Open at login"></button></div>
-      </div>
-    </div>
-
-    <div class="s-col">
-      <div class="card"><h4>Icon</h4>
-        {families.map(([fam, list]) => (
-          <div class="fam-block">
-            <div class="fam">{fam}</div>
-            <div class="gallery">
-              {list.map((k) => (
-                <button type="button" class:list={["g-tile", { on: k === "bars" }]} data-style={k}>
-                  <img src={iconSrc("home", k as any)} data-gallery={k} alt="" width="44" height="44" loading="lazy" /><span>{nameOf[k]}</span>
-                </button>
-              ))}
-            </div>
+    <div class="card c-i"><h4>Icon</h4>
+      {families.map(([fam, list]) => (
+        <div class="fam-block">
+          <div class="fam">{fam}</div>
+          <div class="gallery">
+            {list.map((k) => (
+              <button type="button" class:list={["g-tile", { on: k === "bars" }]} data-style={k}>
+                <AccIcon id="home" src={iconSrc("home", k as any)} size={44} loading="lazy" gallery={k} /><span>{nameOf[k]}</span>
+              </button>
+            ))}
           </div>
-        ))}
-        <div class="lane-mini" data-lane>
-          <div class="lane-head"><b>Preview</b> <span class="sub">as the limit fills up</span></div>
-          <div class="lane-bar"><i style="background:var(--green)"></i><i style="background:var(--green)"></i><i style="background:var(--amber)"></i><i style="background:var(--red)"></i><i style="background:var(--red)"></i></div>
-          <div class="lane-caps"><span>plenty left</span><span>half used</span><span>at limit</span></div>
-          <div class="lane-row">{lane.map((_, i) => <img src={laneSrc("home", "bars", i)} data-lane-img={i} alt="" width="40" height="40" />)}</div>
         </div>
+      ))}
+      <div class="lane-mini" data-lane>
+        <div class="lane-head"><b>Preview</b> <span class="sub">as the limit fills up</span></div>
+        <div class="lane-bar"><i style="background:var(--green)"></i><i style="background:var(--green)"></i><i style="background:var(--amber)"></i><i style="background:var(--red)"></i><i style="background:var(--red)"></i></div>
+        <div class="lane-caps"><span>plenty left</span><span>half used</span><span>at limit</span></div>
+        <div class="lane-row">{lane.map((_, i) => <AccIcon id="home" src={laneSrc("home", "bars", i)} size={40} lane={i} />)}</div>
       </div>
-      <div class="card"><h4>Panels <i class="idot" title="Click: this panel for a moment. Double-click, ⌥-click or long press: the large panel in the same design.">i</i></h4>
-        <span class="switch small-switch">{panels.map(([k, n]) => <button type="button" data-panel={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
-        <div class="panel-stage"><div data-panel-prev set:html={panelHTML("home", "segments", { large: true })} /></div>
+      <div class="srow stacked"><span>Colour <i class="idot" title="Tells the profiles apart on the label, the Big number tile and the panels' dot. In this demo the icon pictures are rendered by the app, so the choice is remembered but not redrawn.">i</i></span>
+        <span class="swatches" data-swatches="iconColor">{Object.entries(tileColors).map(([k, hex]) => <button type="button" data-icon-color={k} style={`background:${swatchBg(hex)}`} aria-label={k === "usage" ? "By usage" : k} title={k === "usage" ? "By usage" : k} />)}</span></div>
+      <div class="srow stacked"><span>Frame <i class="idot" title="An optional ring around the icon, in one of these colours.">i</i></span>
+        <span class="swatches" data-swatches="frame"><button type="button" data-frame="" class="none-sw" aria-label="No frame" title="No frame"></button>{Object.entries(tileColors).map(([k, hex]) => <button type="button" data-frame={k} style={`background:${swatchBg(hex)}`} aria-label={k === "usage" ? "By usage" : k} title={k === "usage" ? "By usage" : k} />)}</span></div>
+      <div class="srow stacked"><span>Claude open dot <i class="idot" title="An orange dot at the icon's corner while this profile's Claude window is open. Shown on every icon on this page while picked.">i</i></span>
+        <span class="dot-choice" role="group" aria-label="Claude open dot">
+          <button type="button" data-dot="0"><span class="ico" data-ico={a.id} data-nodot><img src={iconSrc("home", "bars")} data-dot-img alt="" width="30" height="30" /></span><span>none</span></button>
+          <button type="button" data-dot="1"><span class="ico ico-dot" data-ico={a.id}><img src={iconSrc("home", "bars")} data-dot-img alt="" width="30" height="30" /></span><span>while open</span></button>
+        </span></div>
+    </div>
+
+    <div class="card c-d"><h4>Dock icon</h4>
+      <div class="srow top"><span>Show in the Dock</span>
+        <span class="dock-ctl">
+          <span class="ctl-pair"><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="showInDock" aria-label="Show in the Dock"></button><span class="sub sm" data-dock-sub>shown in the Dock</span></span>
+          <span class="caution"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M10 6a4 4 0 1 1-1.2-2.8M10 1.5v2.7H7.3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Changing this restarts the Dock (takes the pin out or puts it back)</span>
+        </span>
       </div>
+      <div class="srow"><span>Open at login</span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="login" aria-label="Open at login"></button></div>
+      <div class="srow"><span>Now</span><span class="now"><i class="now-dot"></i><span data-now>running, in the Dock</span></span></div>
+    </div>
+
+    <div class="card c-o" data-openclose><h4>Opening and closing</h4>
+      <fieldset class="oc-q">
+        <legend>When <span data-text="name">home</span>'s Claude window opens or quits</legend>
+        <label class="oc-opt"><input type="radio" name="oc-icon" value="0" /><span class="oc-radio"></span><span><span class="oc-t">leave the Dock icon alone</span></span></label>
+        <label class="oc-opt"><input type="radio" name="oc-icon" value="1" /><span class="oc-radio"></span><span><span class="oc-t">start or quit the Dock icon too</span><span class="oc-n">it quits 10 s after the window; starting needs cl_audit running</span></span></label>
+      </fieldset>
+      <fieldset class="oc-q">
+        <legend>When <span data-text="name">home</span>'s Dock icon starts or quits</legend>
+        <label class="oc-opt"><input type="radio" name="oc-window" value="0" /><span class="oc-radio"></span><span><span class="oc-t">leave the Claude window alone</span></span></label>
+        <label class="oc-opt"><input type="radio" name="oc-window" value="1" /><span class="oc-radio"></span><span><span class="oc-t">open or quit the Claude window too</span><span class="oc-n">not at login; Claude asks about unsent work</span></span></label>
+      </fieldset>
+      <div class="oc-result" data-oc-result></div>
+    </div>
+  </div>
+
+  <!-- General settings -->
+  <div class="g-grid" data-general-view hidden>
+    <div class="card"><h4>About</h4>
+      <div class="srow"><span>Version <i class="idot" title="Calendar versions: year, month of the release, then a counter within the month.">i</i></span><span class="v">{version}</span></div>
+      <div class="srow"><span>Released</span><span class="v">{releasedText()}</span></div>
+      <div class="srow"><span>Changes</span><a class="more-link" href={changelog}>What's new</a></div>
+    </div>
+    <div class="card"><h4>Emails</h4>
+      <div class="srow"><span>Show emails <i class="idot" title="Off: email addresses are left out of the launcher, dashboard, panels and Dock menus, and blurred in Settings (hover to see one).">i</i></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-toggle-emails aria-label="Show emails"></button></div>
+    </div>
+    <div class="card"><h4>Dock <i class="idot" title="Off by default; experimental and invasive: it rewrites the Dock's pin list and restarts the Dock, and macOS can misplace or drop pins.">i</i></h4>
+      <div class="srow"><span>Keep the cl_audit icons together</span><button type="button" class="mswitch" role="switch" aria-checked="false" data-demo-switch aria-label="Keep the cl_audit icons together"></button></div>
+      <p class="g-note">Experimental. When on, cl_audit pins its Dock icons together in profile order, the cl_audit app last, with at most one Claude pin before them. Other apps keep their places. <b>Arrange Dock</b> applies it and <b>Restore my Dock</b> puts back the pins saved before the first change.</p>
+      <p class="g-note sub">This is a demo, so nothing in your Dock changes.</p>
     </div>
   </div>
 
   <div class="dialog-veil" data-dialog hidden>
     <div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="rm-title">
       <b id="rm-title">Remove “<span data-text="name">home</span>”?</b>
-      <p>In the app, this quits and deletes its Dock icon, its open-at-login entry and its saved status. Its Claude Code folder is left alone.</p>
+      <p>In the app, this removes its Dock icon app and what macOS keeps for it: the open-at-login entry, preferences, caches, its pin in the Dock, plus its saved usage and Terminal scripts. “Delete its folders too” also signs its Claude Code folder out and deletes it, and its Claude window's data folder.</p>
       <p class="sub">This is a demo, so nothing is removed here.</p>
       <div class="dialog-btns"><button type="button" class="pill small" data-dialog-close>OK</button></div>
     </div>

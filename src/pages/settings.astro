@@ -2,23 +2,26 @@
 import Desktop from "../layouts/Desktop.astro";
 import SettingsPage from "../components/SettingsPage.astro";
 
-const title = "Settings — cl_audit: icon styles, panels and options for each Claude account";
+const title = "Settings — cl_audit: icon styles, panels and options for each Claude profile";
 const description =
-  "cl_audit's Settings: for each Claude account, its name, colour and Claude Code configuration directory, what a click on its Dock icon does, refresh and notification options, 13 icon styles and 5 panel designs.";
+  "cl_audit's Settings: for each profile, its name, colour and Claude Code folder, its Claude window, what a click on its Dock icon does, refresh and notification options, 13 icon styles and 5 panel designs, and how its Dock icon and Claude window open and quit together.";
 ---
 <Desktop title={title} description={description} page="settings">
   <div class="content-inner">
-    <h1 class="sr-only">cl_audit settings (demo account “home”)</h1>
+    <h1 class="sr-only">cl_audit settings (demo profile “home”)</h1>
     <SettingsPage />
   </div>
 </Desktop>
 
 <script>
   import { accounts, type AccountId } from "../data/demo";
-  import { applyPrefs, colors, iconSrc, laneSrc, loadPrefs, savePrefs, type Prefs, type Style } from "../data/prefs";
+  import { applyPrefs, loadPrefs, savePrefs, iconSrc, laneSrc, type Prefs, type Style } from "../data/prefs";
   import { panelHTML, type Design } from "../data/panelView";
+  import { showWhatNow } from "../data/whatNow";
 
   const PEEK = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+  const clickTitle: Record<string, string> = { "Usage, then Claude": "Usage, then Claude", Claude: "Open Claude", "Details panel": "Details panel" };
+  const secs = (v: number) => `${v} s`;
 
   function setup() {
     const root = document.getElementById("settings");
@@ -26,29 +29,132 @@ const description =
     root.dataset.ready = "1";
     let prefs = loadPrefs();
     let acc = (root.dataset.acc || "home") as AccountId;
+    let general = false;
+    // "Profile settings…" on a dashboard card lands here with that profile selected
+    try {
+      const want = sessionStorage.getItem("cl_audit.settingsProfile");
+      if (want) { sessionStorage.removeItem("cl_audit.settingsProfile"); if (accounts.some((x) => x.id === want)) acc = want as AccountId; }
+    } catch {}
     const p = () => prefs[acc];
+    const who = () => p().name.trim() || "this profile";
     const commit = () => { savePrefs(prefs); applyPrefs(prefs); };
     const $ = <T extends Element = HTMLElement>(sel: string) => root.querySelector<T>(sel);
     const $$ = <T extends Element = HTMLElement>(sel: string) => [...root.querySelectorAll<T>(sel)];
 
-    // Fill every control from the selected account's settings.
+    // ── "What this does now": the plain-language note for a changed setting (never for visual ones) ──
+    type K = "renew" | "window" | "dataDir" | "refresh" | "notify" | "notifyAt" | "click" | "peek" | "hold" | "showInDock" | "login";
+    const say = (k: K) => {
+      const pr = p(), n = who();
+      const on = (v: boolean) => (v ? "on" : "off");
+      switch (k) {
+        case "renew":
+          return showWhatNow("Renew if expired", on(pr.renew), pr.renew
+            ? `When ${n}'s Claude Code login expires, cl_audit renews it with one tiny Claude Code request (it uses a little usage).`
+            : "An expired login stays expired until you sign in again; the card shows Sign in…");
+        case "window":
+          return showWhatNow("Claude window", pr.window, pr.window === "Standard"
+            ? "Opens the standard Claude app with whatever account it is signed in to. Only one profile can use it."
+            : pr.window === "Separate"
+              ? `Opens ${n}'s own Claude app, with its own sign-in and data folder, side by side with the others.`
+              : `No Claude window: ${n} is Claude Code in Terminal only. A click shows its usage.`);
+        case "dataDir":
+          return showWhatNow("Data folder", pr.dataDir, `${n}'s own Claude window keeps its sign-in and data in this folder.`);
+        case "refresh":
+          return showWhatNow("Refresh every", pr.refresh, `Asks Anthropic for ${n}'s usage every ${pr.refresh}. It doesn't use any of your limits.`);
+        case "notify": case "notifyAt":
+          return showWhatNow("Notify at", pr.notify ? `${pr.notifyAt}%` : "off", pr.notify
+            ? `A macOS notification when ${n}'s 5-hour or weekly limit reaches ${pr.notifyAt}%.`
+            : `No usage notifications for ${n}.`);
+        case "click":
+          return showWhatNow("Click", clickTitle[pr.click] ?? pr.click, pr.click === "Usage, then Claude"
+            ? `A click on the Dock icon shows ${n}'s usage for a moment while its Claude window opens.`
+            : pr.click === "Claude"
+              ? `A click on the Dock icon brings ${n}'s Claude window forward right away.`
+              : "A click on the Dock icon shows the details panel; open Claude from there.");
+        case "peek":
+          return showWhatNow("Show usage for", secs(pr.peek), `After a click the usage stays up for ${secs(pr.peek)}, then the Claude window comes forward.`);
+        case "hold":
+          return showWhatNow("Press and hold", on(pr.hold), pr.hold
+            ? "Press and hold the Dock icon for the details panel next to a short menu."
+            : "Press and hold shows only the Dock menu.");
+        case "showInDock":
+          return showWhatNow("Show in the Dock", on(pr.showInDock), pr.showInDock
+            ? "The Dock icon gets its tile back. The Dock restarts to put the pin where it was."
+            : "The Dock icon keeps running without a tile, so it still refreshes and alerts. The Dock restarts to take its pin out.");
+        case "login":
+          return showWhatNow("Open at login", on(pr.login), pr.login
+            ? `${n}'s Dock icon starts when you log in to your Mac.`
+            : `${n}'s Dock icon starts only when you start it, or with its Claude window.`);
+      }
+    };
+
+    // ── Opening and closing: the table of what each action does to the other thing ──
+    const ocHTML = (pr: Prefs) => {
+      const i = pr.iconFollows, w = pr.windowFollows;
+      const title = i ? (w ? "Together" : "The Dock icon follows the window") : w ? "The window follows the Dock icon" : "Independent";
+      const rows: [boolean, string, string | null, string | null][] = [
+        [true, "You open the window", i ? "Dock icon starts" : null, null],
+        [true, "You quit the window", i ? "Dock icon quits" : null, "10 s later"],
+        [false, "You start the Dock icon", w ? "window opens" : null, "not at login"],
+        [false, "You quit the Dock icon", w ? "window quits" : null, i ? "or ⌥ Quit and keep" : "Claude may ask"],
+      ];
+      const esc = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+      return `<div class="oc-head"><b>${title}</b><span>${esc(who())}</span></div>` + rows.map(([win, label, effect, note]) =>
+        `<div class="oc-row"><i class="oc-glyph ${win ? "w" : "d"}"></i><span class="oc-label">${label}</span><span class="oc-eff">${
+          effect ? `<span class="oc-pill">${effect}</span>${note ? `<span class="oc-note">${note}</span>` : ""}` : `<span class="oc-none">not touched</span>`
+        }</span></div>`).join("");
+    };
+
+    const setSwitch = (el: Element | null | undefined, on: boolean) => { el?.classList.toggle("on", on); el?.setAttribute("aria-checked", String(on)); };
+
+    // The data folders to choose from: those other profiles use are marked and can't be picked.
+    const fillDataFolders = () => {
+      const sel = $<HTMLSelectElement>('[data-field="dataDir"]')!;
+      const names = [...new Set([...accounts.map((x) => prefs[x.id].dataDir), p().dataDir, `Claude-${acc}`])];
+      sel.innerHTML = names.map((nm) => {
+        const owner = accounts.find((x) => x.id !== acc && prefs[x.id].dataDir === nm && prefs[x.id].window !== "None");
+        const label = nm === `Claude-${acc}` && nm !== p().dataDir && !accounts.some((x) => prefs[x.id].dataDir === nm) ? `New: ${nm}` : nm + (owner ? `  —  used by ${owner.name}` : "");
+        return `<option value="${nm}"${owner ? " disabled" : ""}>${label}</option>`;
+      }).join("");
+      sel.value = p().dataDir;
+    };
+
+    // Fill every control from the selected profile's settings.
     const show = () => {
+      $$<HTMLElement>("[data-select-acc]").forEach((t) => t.classList.toggle("sel", general ? t.dataset.selectAcc === "general" : t.dataset.selectAcc === acc));
+      $("[data-profile-view]")!.hidden = general;
+      $("[data-general-view]")!.hidden = !general;
+      if (general) return;
       const a = accounts.find((x) => x.id === acc)!;
       const pr = p();
-      $$<HTMLElement>("[data-select-acc]").forEach((t) => t.classList.toggle("sel", t.dataset.selectAcc === acc));
       $<HTMLInputElement>('[data-field="name"]')!.value = pr.name;
       $<HTMLInputElement>('[data-field="label"]')!.value = pr.label;
       $$<HTMLElement>("[data-color]").forEach((b) => b.classList.toggle("on", b.dataset.color === pr.color));
+      $$<HTMLElement>("[data-icon-color]").forEach((b) => b.classList.toggle("on", b.dataset.iconColor === pr.iconColor));
+      $$<HTMLElement>("[data-frame]").forEach((b) => b.classList.toggle("on", b.dataset.frame === pr.frame));
+      $$<HTMLElement>("[data-dot]").forEach((b) => b.classList.toggle("on", b.dataset.dot === (pr.dot ? "1" : "0")));
       $$<HTMLElement>('[data-text="dir"]').forEach((e) => (e.textContent = a.dir));
       $$<HTMLElement>('[data-text="email"]').forEach((e) => (e.textContent = a.email));
-      $$<HTMLElement>('[data-text="name"]').forEach((e) => (e.textContent = pr.name));
+      $$<HTMLElement>('[data-text="name"]').forEach((e) => (e.textContent = who()));
       for (const f of ["click", "window", "refresh"] as const) $<HTMLSelectElement>(`[data-field="${f}"]`)!.value = pr[f];
-      for (const f of ["renew", "hold", "notify", "login"] as const) $(`[data-switch="${f}"]`)!.classList.toggle("on", pr[f]);
-      $('[data-value="peek"]')!.textContent = `${pr.peek} s`;
+      for (const f of ["renew", "hold", "notify", "login", "showInDock"] as const) setSwitch($(`[data-switch="${f}"]`), pr[f]);
+      $('[data-value="peek"]')!.textContent = secs(pr.peek);
       $('[data-value="notifyAt"]')!.textContent = `${pr.notifyAt}%`;
-      $('[data-value="notifyAt"]')!.closest(".srow")!.classList.toggle("off", !pr.notify);
-      // icon gallery: this account's icons, the chosen style, and the preview lane under its row
+      $("[data-notify-step]")!.hidden = !pr.notify;
+      $("[data-peekrow]")!.hidden = pr.click !== "Usage, then Claude";
+      // Dock icon
+      $("[data-dock-sub]")!.textContent = pr.showInDock ? "shown in the Dock" : "runs in the background; still refreshes and alerts";
+      $("[data-now]")!.textContent = pr.showInDock ? "running, in the Dock" : "running, hidden";
+      $(".now-dot")!.classList.toggle("hid", !pr.showInDock);
+      // Opening and closing (only with a Claude window)
+      $("[data-openclose]")!.hidden = pr.window === "None";
+      $$<HTMLInputElement>('input[name="oc-icon"]').forEach((r) => (r.checked = r.value === (pr.iconFollows ? "1" : "0")));
+      $$<HTMLInputElement>('input[name="oc-window"]').forEach((r) => (r.checked = r.value === (pr.windowFollows ? "1" : "0")));
+      $("[data-oc-result]")!.innerHTML = ocHTML(pr);
+      // icon gallery: this profile's icons, the chosen style, and the preview lane under its row
+      $$<HTMLElement>(".c-i .ico").forEach((e) => (e.dataset.ico = acc));
       $$<HTMLImageElement>("[data-gallery]").forEach((img) => (img.src = iconSrc(acc, img.dataset.gallery as Style)));
+      $$<HTMLImageElement>("[data-dot-img]").forEach((img) => (img.src = iconSrc(acc, pr.style)));
       $$<HTMLElement>("[data-style]").forEach((b) => b.classList.toggle("on", b.dataset.style === pr.style));
       $$<HTMLImageElement>("[data-lane-img]").forEach((img) => (img.src = laneSrc(acc, pr.style, +img.dataset.laneImg!)));
       // the lane joins the selected tile: it goes into the gallery grid right after that tile's row
@@ -60,48 +166,83 @@ const description =
       lanes.dataset.col = String(i % cols);
       lanes.dataset.last = String(i % cols === cols - 1 || i === tiles.length - 1 && tiles.length % cols === 0);
       $("[data-datarow]")!.hidden = pr.window !== "Separate";
-      $$<HTMLElement>('[data-text="data"]').forEach((e) => (e.textContent = a.data));
+      fillDataFolders();
       $$<HTMLElement>("[data-panel]").forEach((b) => b.classList.toggle("on", b.dataset.panel === pr.panel));
-      $("[data-panel-prev]")!.innerHTML = panelHTML(acc, pr.panel as Design, { large: true, name: pr.name, icon: iconSrc(acc, pr.style) });
+      $("[data-panel-prev]")!.innerHTML = panelHTML(acc, pr.panel as Design, { large: false, name: pr.name });
     };
 
     root.addEventListener("click", (e) => {
       const t = e.target as HTMLElement;
       const pick = (sel: string) => t.closest<HTMLElement>(sel);
       let b: HTMLElement | null;
-      if ((b = pick("[data-select-acc]"))) { acc = b.dataset.selectAcc as AccountId; show(); return; }
+      if ((b = pick("[data-select-acc]"))) {
+        if (b.dataset.selectAcc === "general") general = true; else { general = false; acc = b.dataset.selectAcc as AccountId; }
+        show(); return;
+      }
       if ((b = pick("[data-color]"))) { p().color = b.dataset.color!; commit(); show(); return; }
-      if ((b = pick("[data-switch]"))) { const k = b.dataset.switch as "renew" | "hold" | "notify" | "login"; p()[k] = !p()[k]; commit(); show(); return; }
+      if ((b = pick("[data-icon-color]"))) { p().iconColor = b.dataset.iconColor!; commit(); show(); return; }
+      if (pick("[data-frame]")) { p().frame = pick("[data-frame]")!.dataset.frame!; commit(); show(); return; }
+      if ((b = pick("[data-dot]"))) { p().dot = b.dataset.dot === "1"; commit(); show(); return; }
+      if ((b = pick("[data-switch]"))) {
+        const k = b.dataset.switch as "renew" | "hold" | "notify" | "login" | "showInDock";
+        p()[k] = !p()[k]; commit(); show(); say(k); return;
+      }
       if ((b = pick("[data-step]"))) {
         const dir = +b.dataset.dir!;
-        if (b.dataset.step === "peek") { const i = Math.max(0, Math.min(PEEK.length - 1, PEEK.indexOf(p().peek) + dir)); p().peek = PEEK[i]; }
-        else if (p().notify) p().notifyAt = Math.max(50, Math.min(100, p().notifyAt + dir * 5));
-        commit(); show(); return;
+        if (b.dataset.step === "peek") {
+          const i = Math.max(0, Math.min(PEEK.length - 1, PEEK.indexOf(p().peek) + dir)); p().peek = PEEK[i];
+          commit(); show(); say("peek");
+        } else if (p().notify) {
+          p().notifyAt = Math.max(50, Math.min(100, p().notifyAt + dir * 5));
+          commit(); show(); say("notifyAt");
+        }
+        return;
       }
       if ((b = pick("[data-style]"))) { p().style = b.dataset.style as Style; commit(); show(); return; }
       if ((b = pick("[data-panel]"))) { p().panel = b.dataset.panel!; commit(); show(); return; }
+      if (pick("[data-demo-switch]")) { const s = pick("[data-demo-switch]")!; setSwitch(s, !s.classList.contains("on")); return; }
       if (pick("[data-remove]")) { $("[data-dialog]")!.hidden = false; return; }
       if (pick("[data-dialog-close]") || t.matches("[data-dialog]")) { $("[data-dialog]")!.hidden = true; return; }
     });
     root.addEventListener("change", (e) => {
-      const t = e.target as HTMLSelectElement;
+      const t = e.target as HTMLSelectElement | HTMLInputElement;
+      if (t instanceof HTMLInputElement && (t.name === "oc-icon" || t.name === "oc-window")) {
+        // Opening and closing shows its own table, so no note
+        if (t.name === "oc-icon") p().iconFollows = t.value === "1"; else p().windowFollows = t.value === "1";
+        commit(); show(); return;
+      }
       const f = t.dataset.field as keyof Prefs | undefined;
-      if (f && t.tagName === "SELECT") { (p() as any)[f] = t.value; commit(); show(); }
+      if (f && t.tagName === "SELECT") {
+        (p() as any)[f] = t.value; commit(); show();
+        if (f === "window" || f === "dataDir" || f === "refresh" || f === "click") say(f);
+      }
     });
     root.addEventListener("input", (e) => {
+      // typing a name or label is not a setting with an effect to explain: no note
       const t = e.target as HTMLInputElement;
-      if (t.dataset.field === "name") { p().name = t.value || accounts.find((x) => x.id === acc)!.name; commit(); }
+      if (t.dataset.field === "name") {
+        p().name = t.value || accounts.find((x) => x.id === acc)!.name; commit();
+        $$<HTMLElement>(`[data-acc-name="${acc}"]`).forEach((el) => (el.textContent = p().name));
+        $$<HTMLElement>('[data-text="name"]').forEach((el) => (el.textContent = who()));
+        const r = $("[data-oc-result]"); if (r) r.innerHTML = ocHTML(p());
+        $("[data-panel-prev]")!.innerHTML = panelHTML(acc, p().panel as Design, { large: false, name: p().name });
+      }
       if (t.dataset.field === "label") { t.value = t.value.toUpperCase().replace(/\s/g, "").slice(0, 6); p().label = t.value; commit(); }
     });
 
-    // Show emails, shared with the rest of the site
-    const sw = $("[data-toggle-emails]")!;
-    sw.classList.toggle("on", !document.documentElement.classList.contains("hide-emails"));
-    sw.addEventListener("click", () => {
-      const on = sw.classList.toggle("on");
+    // Show emails (the strip's switch and General's), shared with the rest of the site
+    const sws = $$("[data-toggle-emails]");
+    const syncEmails = () => sws.forEach((s) => setSwitch(s, !document.documentElement.classList.contains("hide-emails")));
+    syncEmails();
+    sws.forEach((sw) => sw.addEventListener("click", () => {
+      const on = document.documentElement.classList.contains("hide-emails");   // it was off, so it turns on
       document.documentElement.classList.toggle("hide-emails", !on);
       try { localStorage.setItem("cl_audit.showEmails", on ? "1" : "0"); } catch {}
-    });
+      syncEmails();
+      showWhatNow("Show emails", on ? "on" : "off", on
+        ? "Email addresses show everywhere in cl_audit."
+        : "Email addresses are left out of the launcher, dashboard, panels and Dock menus, and blurred in Settings — for screen sharing.");
+    }));
     show();
   }
   document.addEventListener("astro:page-load", setup);

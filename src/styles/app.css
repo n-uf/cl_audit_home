@@ -720,3 +720,108 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .wn-x:hover { background: rgba(255,255,255,.18); color: #fff; }
 @media (prefers-reduced-motion: reduce) { .whatnow-card { transition: none; } }
 
+/* ── Settings layout: three columns from 1180 px, two from 800, one below (like the app) ────────────
+   Cards flow top to bottom in columns; forced breaks put Icon alone in the middle, Dock icon and Opening
+   and closing in the right column (three columns) or under Icon (two). Cards keep their natural height,
+   so one with a tall preview (the Pace panel) just grows. */
+.s-grid { column-count: 3; column-gap: 12px; }
+.s-grid > .card { break-inside: avoid; -webkit-column-break-inside: avoid; margin: 0 0 12px; display: block; }
+.s-grid > .c-i { break-before: column; -webkit-column-break-before: always; }
+.s-grid > .c-d { break-before: column; -webkit-column-break-before: always; }
+.g-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+@media (max-width: 1179px) {
+  .s-grid { column-count: 2; }
+  .s-grid > .c-d { break-before: auto; -webkit-column-break-before: auto; }
+  .g-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 799px) {
+  .s-grid { column-count: auto; display: flex; flex-direction: column; gap: 12px; }
+  .s-grid > .card { margin: 0; }
+  .s-grid > .c-p { order: 1; } .s-grid > .c-c { order: 2; } .s-grid > .c-i { order: 3; } .s-grid > .c-d { order: 4; }
+  .s-grid > .c-o { order: 5; } .s-grid > .c-u { order: 6; } .s-grid > .c-k { order: 7; }
+  .g-grid { grid-template-columns: minmax(0, 1fr); }
+}
+.s-grid > .card, .g-grid > .card { min-width: 0; }
+
+/* strip: General and New profile are text-only tiles */
+.settings .strip { gap: 8px; }
+.tile-plain { padding: 6px 14px; min-height: 46px; text-decoration: none; }
+a.tile { color: inherit; }
+a.tile.tile-plain:hover, button.tile:hover { background: rgba(255,255,255,.07); }
+.tile-plain .tile-text b { font-size: 14px; }
+
+/* rows with a stacked control (label above) and the small pairs */
+.settings .srow.stacked { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 6px; padding: 8px 0 10px; }
+.settings .srow.top { align-items: flex-start; padding-top: 8px; padding-bottom: 8px; }
+.settings .srow.top > span:first-child { padding-top: 2px; }
+.ctl-pair { display: inline-flex; align-items: center; gap: 8px; }
+.sub.sm { font-size: 10.5px; line-height: 1.3; }
+.dock-ctl { display: grid; gap: 5px; justify-items: end; text-align: right; min-width: 0; }
+.dock-ctl .ctl-pair { justify-content: flex-end; flex-wrap: wrap; }
+.caution { display: inline-flex; align-items: flex-start; gap: 5px; color: #f59e0b; font-size: 10.5px; line-height: 1.35; text-align: left; max-width: 230px; }
+.caution svg { flex: none; margin-top: 2px; }
+.now { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; }
+.now-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+.now-dot.hid { background: var(--faint); }
+.more-link { color: #e8a07f; font-size: 12.5px; text-decoration: none; font-weight: 600; }
+.g-note { margin: 4px 0 0; font-size: 12.5px; color: var(--soft); line-height: 1.5; }
+.g-note.sub { color: var(--muted); }
+.settings .menu { max-width: 100%; }
+.srow > select.menu { min-width: 0; text-overflow: ellipsis; }
+
+/* swatches: wrap in narrow columns, the frame's "none" first */
+.swatches { flex-wrap: wrap; }
+.swatches button.none-sw { background: transparent; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.4); position: relative; }
+.swatches button.none-sw::after { content: ""; position: absolute; left: 3px; right: 3px; top: 50%; border-top: 1.5px solid #f87171; transform: rotate(-45deg); }
+.swatches button.none-sw.on { box-shadow: 0 0 0 2px var(--window), 0 0 0 3.5px rgba(255,255,255,.9); }
+
+/* Claude open dot: the profile's icon without and with the dot */
+.dot-choice { display: inline-flex; gap: 8px; }
+.dot-choice button { display: grid; justify-items: center; gap: 3px; padding: 5px 9px; border: 0; border-radius: 8px; background: none; color: var(--muted); font: inherit; font-size: 10.5px; cursor: pointer; }
+.dot-choice button:hover { background: rgba(255,255,255,.05); }
+.dot-choice button.on { background: rgba(255,255,255,.1); color: var(--text); font-weight: 600; }
+.settings .ico[data-nodot]::after { display: none !important; }
+.settings .ico-dot::after { display: block !important; }
+
+/* a frame, drawn over the icon in CSS: a ring in the profile's frame colour (Settings ▸ Icon ▸ Frame) */
+.ico::before { content: ""; position: absolute; inset: 3.1%; border-radius: 20%; pointer-events: none; z-index: 1; }
+.ico[data-ico="home"]::before { box-shadow: inset 0 0 0 2px var(--frame-home, transparent); }
+.ico[data-ico="work"]::before { box-shadow: inset 0 0 0 2px var(--frame-work, transparent); }
+.ico[data-ico="side"]::before { box-shadow: inset 0 0 0 2px var(--frame-side, transparent); }
+.ico::after { z-index: 2; }
+
+/* the panel design picker and its preview, at natural size: the card grows with the design */
+.settings .srow.stacked .small-switch { flex-wrap: wrap; border-radius: 14px; }
+.panel-stage { margin-top: 4px; padding: 0; background: none; width: 100%; display: grid; justify-items: start; }
+.panel-stage > div { max-width: 100%; }
+.panel-stage .pn:not(.large) { width: 300px; max-width: 100%; padding: 14px; border-radius: 16px; background: #2c2c2f; box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 10px 26px rgba(0,0,0,.35); }
+
+/* Opening and closing */
+.oc-q { margin: 0 0 6px; padding: 8px 10px; border: 0; border-radius: 9px; background: rgba(255,255,255,.04); box-shadow: inset 0 0 0 1px rgba(255,255,255,.07); display: grid; gap: 4px; min-width: 0; }
+.oc-q legend { float: left; width: 100%; padding: 0; margin: 0 0 3px; font-size: 11.5px; color: var(--muted); }
+.oc-q legend + * { clear: both; }
+.oc-opt { position: relative; display: flex; align-items: flex-start; gap: 7px; cursor: pointer; font-size: 12px; }
+.oc-opt input { position: absolute; opacity: 0; width: 12px; height: 12px; margin: 2px 0 0; }
+.oc-radio { flex: none; width: 12px; height: 12px; margin-top: 2px; border-radius: 50%; box-shadow: inset 0 0 0 1.3px var(--muted); }
+.oc-opt input:checked + .oc-radio { box-shadow: inset 0 0 0 4px #fff; }
+.oc-opt input:focus-visible + .oc-radio { outline: 2px solid rgba(255,255,255,.6); outline-offset: 2px; }
+.oc-opt:has(input:checked) .oc-t { font-weight: 500; }
+.oc-t { display: block; }
+.oc-n { display: block; font-size: 10px; color: var(--muted); line-height: 1.35; }
+.oc-result { margin-top: 4px; border-radius: 9px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255,255,255,.09); }
+.oc-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 7px 10px; background: rgba(217,119,87,.14); font-size: 12px; }
+.oc-head span { color: var(--muted); font-size: 10.5px; }
+.oc-row { display: grid; grid-template-columns: 14px minmax(0, 150px) minmax(0, 1fr); align-items: center; gap: 8px; padding: 5px 10px; border-top: 1px solid rgba(255,255,255,.06); font-size: 11.5px; min-height: 30px; }
+.oc-label { color: rgba(242,242,244,.8); }
+.oc-glyph { display: block; }
+.oc-glyph.w { width: 14px; height: 10px; border-radius: 2px; background: linear-gradient(#e08a69, #c96440); }
+.oc-glyph.d { width: 10px; height: 10px; margin-left: 2px; border-radius: 3px; background: #1f1f1f; box-shadow: inset 0 0 0 1px rgba(255,255,255,.35); }
+.oc-eff { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; min-width: 0; }
+.oc-pill { padding: 1px 8px; border-radius: 99px; background: rgba(34,197,94,.16); color: var(--green); font-size: 11px; font-weight: 600; white-space: nowrap; }
+.oc-note { color: var(--muted); font-size: 10px; }
+.oc-none { color: var(--faint); font-size: 11px; }
+@media (max-width: 480px) { .oc-row { grid-template-columns: 14px minmax(0, 1fr); } .oc-eff { grid-column: 2; } }
+
+/* Show emails off: left out everywhere, but blurred in Settings (hover to see one), as the app does */
+.hide-emails .settings .email { display: inline !important; filter: blur(5px); transition: filter .12s; }
+.hide-emails .settings .email:hover { filter: none; }
