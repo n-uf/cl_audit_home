@@ -15,8 +15,8 @@ const description =
 
 <script>
   import { accounts, type AccountId } from "../data/demo";
-  import { applyPrefs, loadPrefs, savePrefs, iconSrc, laneSrc, type Prefs, type Style } from "../data/prefs";
-  import { panelHTML, type Design } from "../data/panelView";
+  import { applyPrefs, loadPrefs, savePrefs, loadCardStyle, saveCardStyle, iconSrc, laneSrc, type Prefs, type Style } from "../data/prefs";
+  import { panelHTML, limitsHTML, type Design } from "../data/panelView";
   import { showWhatNow } from "../data/whatNow";
 
   const PEEK = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -124,7 +124,13 @@ const description =
       $$<HTMLElement>("[data-select-acc]").forEach((t) => t.classList.toggle("sel", general ? t.dataset.selectAcc === "general" : t.dataset.selectAcc === acc));
       $("[data-profile-view]")!.hidden = general;
       $("[data-general-view]")!.hidden = !general;
-      if (general) return;
+      if (general) {
+        // General ▸ Dashboard cards: the picked style and its preview (a look, so no note)
+        const cs = loadCardStyle();
+        $$<HTMLElement>("[data-card-style]").forEach((b) => b.classList.toggle("on", b.dataset.cardStyle === cs));
+        $("[data-card-prev]")!.innerHTML = limitsHTML("sample", cs, false);
+        return;
+      }
       const a = accounts.find((x) => x.id === acc)!;
       const pr = p();
       $<HTMLInputElement>('[data-field="name"]')!.value = pr.name;
@@ -199,6 +205,7 @@ const description =
         return;
       }
       if ((b = pick("[data-style]"))) { p().style = b.dataset.style as Style; commit(); show(); return; }
+      if ((b = pick("[data-card-style]"))) { saveCardStyle(b.dataset.cardStyle as Design); applyPrefs(prefs); show(); return; }
       if ((b = pick("[data-panel]"))) { p().panel = b.dataset.panel!; commit(); show(); return; }
       if (pick("[data-demo-switch]")) { const s = pick("[data-demo-switch]")!; setSwitch(s, !s.classList.contains("on")); return; }
       if (pick("[data-remove]")) { $("[data-dialog]")!.hidden = false; return; }

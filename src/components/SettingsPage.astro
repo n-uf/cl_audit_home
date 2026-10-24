@@ -7,7 +7,7 @@
 // Icon (middle), Dock icon · Opening and closing (right). Three columns from 1180 px, two from 800, one below.
 import { accounts } from "../data/demo";
 import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices } from "../data/prefs";
-import { panelHTML } from "../data/panelView";
+import { panelHTML, limitsHTML, designs } from "../data/panelView";
 import { version, releasedText, changelog } from "../data/site";
 import AccIcon from "./AccIcon.astro";
 
@@ -130,6 +130,12 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
 
   <!-- General settings -->
   <div class="g-grid" data-general-view hidden>
+    <div class="card"><h4>Dashboard cards <i class="idot" title="One card style for every profile on the dashboard. Each profile's panel design is set in its profile settings.">i</i></h4>
+      <div class="srow stacked"><span>Card style</span>
+        <span class="switch small-switch" role="group" aria-label="Card style">{designs.map(([k, n]) => <button type="button" data-card-style={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
+        <div class="card-prev" data-card-prev set:html={limitsHTML("sample", "segments", false)} />
+      </div>
+    </div>
     <div class="card"><h4>About</h4>
       <div class="srow"><span>Version <i class="idot" title="Calendar versions: year, month of the release, then a counter within the month.">i</i></span><span class="v">{version}</span></div>
       <div class="srow"><span>Released</span><span class="v">{releasedText()}</span></div>

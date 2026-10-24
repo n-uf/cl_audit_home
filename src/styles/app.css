@@ -119,16 +119,6 @@ code, kbd { font-family: var(--mono); }
 .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 .sub { color: var(--muted); font-size: 13px; }
 .plan { margin-left: auto; align-self: flex-start; padding: 2px 9px; border-radius: 99px; background: rgba(255,255,255,.08); font-size: 12px; font-weight: 600; }
-.limit-row { display: flex; align-items: baseline; gap: 6px; }
-.limit-row b { font-size: 15px; }
-.limit-row .when { color: var(--muted); font-size: 12.5px; }
-.limit-row .pct { margin-left: auto; font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; }
-.seg { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; margin-top: 5px; }
-.seg i { height: 9px; border-radius: 3px; background: rgba(255,255,255,.08); }
-.seg i.g { background: var(--green); box-shadow: 0 0 8px rgba(34,197,94,.35); }
-.seg i.a { background: var(--amber); box-shadow: 0 0 8px rgba(245,158,11,.35); }
-.seg i.r { background: var(--red); box-shadow: 0 0 8px rgba(239,68,68,.35); }
-.lv-g { color: var(--green); } .lv-a { color: var(--amber); } .lv-r { color: var(--red); }
 .acc-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .acc-actions .sub { margin-left: auto; }
 
@@ -362,12 +352,8 @@ body { overflow: hidden; }
 .dock-mini .vsep { width: 1px; align-self: stretch; margin: 6px 2px; background: rgba(255,255,255,.2); }
 .mcards { display: grid; gap: 8px; }
 .mcard { padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.04); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
-.mcard .mh { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.mcard .mh { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-bottom: 6px; }
 .mcard .mh b { font-weight: 600; }
-.mcard .mh .pct { margin-left: auto; font-weight: 700; }
-.mcard .seg { margin-top: 3px; gap: 2px; }
-.mcard .seg i { height: 6px; border-radius: 2px; box-shadow: none; }
-.mcard .mh2 { display: flex; justify-content: space-between; margin-top: 4px; color: var(--muted); font-size: 12.5px; }
 .hist-mini { display: flex; gap: 12px; align-items: center; margin-top: 10px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.06); font-size: 13px; text-decoration: none; }
 .hist-mini .spark { height: 34px; }
 .hist-mini .spark span { width: 7px; }
@@ -825,3 +811,9 @@ a.tile.tile-plain:hover, button.tile:hover { background: rgba(255,255,255,.07); 
 /* Show emails off: left out everywhere, but blurred in Settings (hover to see one), as the app does */
 .hide-emails .settings .email { display: inline !important; filter: blur(5px); transition: filter .12s; }
 .hide-emails .settings .email:hover { filter: none; }
+
+/* The dashboard card style (General settings ▸ Dashboard cards): the two limits in one of the five designs.
+   The preview keeps the height of the tallest design, so the cards below it stay where they are. */
+.card-limits { min-width: 0; }
+.mcard .card-limits .pn-limits { gap: 6px; }
+.card-prev { margin-top: 8px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.05); min-height: 162px; display: grid; align-content: start; }

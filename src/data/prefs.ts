@@ -1,8 +1,9 @@
 // The demo's Settings, per profile, remembered in this browser (like the app's accounts.json, but local
-// to the visitor). Applied on every page: icon style and colour (Dock, cards, strip, launcher), profile colour, the
+// to the visitor). Applied on every page: icon style and colour (Dock, cards, strip, launcher), profile colour, the card style, the
 // Claude open dot, how long a Dock click shows the usage before opening Claude, and whether a profile has
 // a Claude window at all.
 import { accounts, type AccountId } from "./demo";
+import { limitsHTML, type Design } from "./panelView";
 import manifest from "./icon-manifest.json";   // written by scripts/render-icons.sh
 
 export const styles = [
@@ -40,6 +41,17 @@ const defaults: Record<AccountId, Prefs> = {
   work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, iconFollows: false, windowFollows: false },
   side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, iconFollows: false, windowFollows: false },
 };
+
+/** General settings ▸ Dashboard cards: one card style for every profile card (dashboard and Overview). */
+const CARD_KEY = "cl_audit.cardStyle";
+const cardDesigns = ["glow", "rings", "numbers", "segments", "pace"];
+export function loadCardStyle(): Design {
+  try { const v = localStorage.getItem(CARD_KEY); if (v && cardDesigns.includes(v)) return v as Design; } catch {}
+  return "segments";
+}
+export function saveCardStyle(d: Design) {
+  try { localStorage.setItem(CARD_KEY, d); } catch {}
+}
 
 /** The app offers these refresh intervals. */
 export const refreshChoices = ["2 min", "5 min", "10 min", "15 min"];
@@ -90,6 +102,13 @@ export function applyPrefs(p = loadPrefs()) {
       if (img.getAttribute("src") !== src) img.src = src;
     });
   }
+  // the card style: every profile card draws its two limits in it
+  const design = loadCardStyle();
+  document.querySelectorAll<HTMLElement>("[data-card-limits]").forEach((el) => {
+    if (el.dataset.design === design) return;
+    el.dataset.design = design;
+    el.innerHTML = limitsHTML(el.dataset.cardLimits as AccountId, design, false);
+  });
   (window as any).clPeekMs = (id: AccountId) => Math.round((p[id]?.peek ?? 0.75) * 1000) + 400;
   (window as any).clClick = (id: AccountId) => p[id]?.click ?? "Usage, then Claude";
   let showEmails = true;

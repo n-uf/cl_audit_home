@@ -5,7 +5,7 @@ import AccountCard from "../components/AccountCard.astro";
 import AccIcon from "../components/AccIcon.astro";
 import { accounts } from "../data/demo";
 import { repo, site, version, released, releasedText, changelog } from "../data/site";
-import { level, levelColor, segments } from "../components/level";
+import { cardLimitsHTML } from "../data/panelView";
 
 const title = "cl_audit — run several Claude profiles on macOS, with usage limits in the Dock";
 const description =
@@ -102,10 +102,8 @@ const jsonLd = [{
         <div class="mcards">
           {accounts.map((a) => (
             <div class="mcard">
-              <div class="mh"><span class="dot" style={`background:${a.color};width:7px;height:7px`}></span><b>{a.name}</b><span class="pct" style={`color:${levelColor(a.five)}`}>{a.five}%</span></div>
-              <div class="seg">{segments(a.five).map((c) => <i class={c} />)}</div>
-              <div class="mh2"><span>Week</span><span class={`lv-${level(a.week)}`} style="font-weight:700">{a.week}%</span></div>
-              <div class="seg">{segments(a.week).map((c) => <i class={c} />)}</div>
+              <div class="mh"><span class="dot" style={`background:${a.color};width:7px;height:7px`}></span><b>{a.name}</b></div>
+              <Fragment set:html={cardLimitsHTML(a.id, "segments")} />
             </div>
           ))}
         </div>

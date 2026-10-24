@@ -56,12 +56,26 @@ function pace(l: L, large: boolean) {
     <div class="pn-sub small">resets in ${short(l.left)} · ${l.elapsed}% of the window gone</div></div>`;
 }
 
-/** The limits part of a panel in one design. */
-export function limitsHTML(id: AccountId, design: Design, large: boolean) {
-  const ls = limits(id);
+/** The app's sample figures for the General settings preview: 34 % of the 5-hour limit, 61 % of the week. */
+const sample: L[] = [
+  { name: "5-hour", title: "5-hour session", p: 34, left: 192, elapsed: 36 },
+  { name: "Week", title: "Week", p: 61, left: 3 * 1440, elapsed: 57 },
+];
+
+/** The limits part of a panel in one design (`"sample"`: the app's sample figures, for the card style preview). */
+export function limitsHTML(id: AccountId | "sample", design: Design, large: boolean) {
+  const ls = id === "sample" ? sample : limits(id);
   const draw = { glow, rings: ring, numbers: number, segments, pace }[design];
   const cls = design === "rings" ? "pn-limits rings" : design === "numbers" ? "pn-limits numbers" : "pn-limits";
   return `<div class="${cls}${large ? " large" : ""}">${ls.map((l) => draw(l, large)).join("")}</div>`;
+}
+
+export const designs: [Design, string][] = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["segments", "Segments"], ["pace", "Pace"]];
+
+/** The profile's two limits as a dashboard card draws them: the small panel design, one for every card. */
+export function cardLimitsHTML(id: AccountId, design: Design) {
+  const a = accounts.find((x) => x.id === id)!;
+  return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="img" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}</div>`;
 }
 
 /** A whole panel: header (icon, name, email, plan), the limits in the chosen design, and the footer. */

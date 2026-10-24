@@ -1,9 +1,0 @@
----
-import { level, segments } from "./level";
-interface Props { title: string; when: string; p: number }
-const { title, when, p } = Astro.props;
----
-<div>
-  <div class="limit-row"><b>{title}</b><span class="when">· {when}</span><span class={`pct lv-${level(p)}`}>{p}%</span></div>
-  <div class="seg" role="img" aria-label={`${title}: ${p}% used`}>{segments(p).map((c) => <i class={c} />)}</div>
-</div>
