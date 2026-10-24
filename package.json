@@ -2,7 +2,7 @@
   "name": "cl_audit_home",
   "private": true,
   "type": "module",
-  "description": "Home site of cl_audit: usage audit for all your Claude accounts.",
+  "description": "Home site of cl_audit: usage audit for all your Claude profiles.",
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "dev": "astro dev --port 5190",
