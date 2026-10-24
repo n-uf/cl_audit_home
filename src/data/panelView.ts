@@ -1,5 +1,5 @@
 // The app's usage panel in its five designs (Glow bars, Twin rings, Big numbers, Segmented, Pace bars),
-// drawn from an account's figures. "large" is the full panel (Settings preview); otherwise the compact one
+// drawn from a profile's figures. "large" is the full panel (Settings preview); otherwise the compact one
 // the Dock shows on a click. Same layout rules as the app's PanelDesigns.swift.
 import { accounts, type AccountId } from "./demo";
 

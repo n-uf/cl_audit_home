@@ -1,14 +1,14 @@
 ---
-// What "Show Desktop" opens: that account's own Claude desktop app, covering the window's content area,
-// with a short demo conversation. A neutral chat layout (not a copy of the app's interface) plus a strip
-// with what cl_audit set up for that account. You can type; the reply says it's a demo.
+// What "Show window" / "Open window" opens: that profile's Claude window, covering the window's content area,
+// with a short demo conversation. A neutral chat layout (not a copy of the Claude app's interface) plus a strip
+// with what cl_audit set up for that profile. You can type; the reply says it's a demo.
 import { accounts, chats } from "../data/demo";
 ---
 <div class="dapps" transition:persist="dapps">
   {accounts.map((a) => {
     const c = chats[a.id].desktop;
     return (
-      <section class="dapp deskwin" data-desktop={a.id} hidden aria-label={`Claude desktop app for the ${a.name} account (illustration)`}>
+      <section class="dapp deskwin" data-desktop={a.id} hidden aria-label={`Claude window of the ${a.name} profile (illustration)`}>
         <div class="dapp-bar">
           <span class="lights"><button type="button" class="close" data-close aria-label="Close"></button><i></i><i></i></span>
           <span class="dapp-title">Claude — {a.name}</span>
@@ -24,7 +24,7 @@ import { accounts, chats } from "../data/demo";
           <div class="dapp-main">
             <div class="dapp-strip">
               <span><span class="dot" style={`background:${a.color}`}></span><b>{a.name}</b> · <span class="email">{a.email}</span> · {a.plan}</span>
-              <span class="hide-sm">App data <code>{a.data}</code></span>
+              <span class="hide-sm">Data folder <code>{a.data}</code></span>
               <span class="hide-sm">Claude Code <code>{a.dir}</code></span>
             </div>
             <div class="chat" data-chat>
@@ -37,7 +37,7 @@ import { accounts, chats } from "../data/demo";
               <input type="text" name="m" autocomplete="off" placeholder="Reply…" data-next={c.turns[2][1]} aria-label="Message" />
               <button type="submit" aria-label="Send">↑</button>
             </form>
-            <p class="dapp-note">Illustration of the {a.name} account's own Claude desktop app window, opened by cl_audit.</p>
+            <p class="dapp-note">Illustration of the {a.name} profile's Claude window, opened by cl_audit.</p>
           </div>
         </div>
       </section>
@@ -46,8 +46,8 @@ import { accounts, chats } from "../data/demo";
 </div>
 
 <script>
-  // A small window manager for the site's desktop: Claude desktop app and Terminal panels.
-  // Opened from "Show Desktop" / "Terminal", the launcher rows and the Dock; they stay open across pages.
+  // A small window manager for the site's desktop: Claude window and Terminal panels.
+  // Opened from "Show window" / "Open window" / "Terminal", the launcher rows and the Dock; they stay open across pages.
   const w_ = window as any;
   w_.__clZ = w_.__clZ ?? 30;
   const front = (w: HTMLElement) => { w.style.zIndex = String(++w_.__clZ); };
@@ -103,7 +103,7 @@ import { accounts, chats } from "../data/demo";
     setTimeout(() => {
       const reply = document.createElement("div");
       reply.className = "msg claude demo";
-      reply.textContent = "This is a demo window, so nothing is sent. With cl_audit installed, this account's own Claude desktop app opens here, signed in and ready.";
+      reply.textContent = "This is a demo window, so nothing is sent. With cl_audit installed, this profile's Claude window opens here, signed in and ready.";
       chat.append(reply);
       chat.scrollTop = chat.scrollHeight;
     }, 500);

@@ -4,13 +4,13 @@ import AccountCard from "../components/AccountCard.astro";
 import History from "../components/History.astro";
 import { accounts } from "../data/demo";
 
-const title = "Dashboard — cl_audit: Claude usage limits and history for every account";
+const title = "Dashboard — cl_audit: Claude usage limits and history for every profile";
 const description =
-  "The cl_audit dashboard: each Claude account's 5-hour session limit and weekly limit, read directly from Anthropic, plus usage history: when you use Claude, tokens per day, and which projects, models and apps they went to.";
+  "The cl_audit dashboard: each Claude profile's 5-hour limit and weekly limit, read directly from Anthropic, with switches for its Claude window and Dock icon, plus usage history: when you use Claude, tokens per day, and which projects, models and apps they went to.";
 ---
 <Desktop title={title} description={description} page="dashboard">
   <Fragment slot="top">
-    <span class="chips" role="group" aria-label="Accounts shown"><span class="lbl">Show</span>
+    <span class="chips" role="group" aria-label="Profiles shown"><span class="lbl">Show</span>
       {accounts.map((a) => (
         <button type="button" class="chip on" data-chip={a.id}><span class="chip-ck" style={`background:${a.color}`}>✓</span>{a.name}</button>
       ))}
@@ -19,7 +19,7 @@ const description =
   </Fragment>
 
   <div class="content-inner dash" id="dash" data-range="7d">
-    <h1 class="sr-only">cl_audit dashboard (demo accounts)</h1>
+    <h1 class="sr-only">cl_audit dashboard (demo profiles)</h1>
     <div class="dash-cards">{accounts.map((a) => <AccountCard {...a} />)}</div>
     <History />
   </div>

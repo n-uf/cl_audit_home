@@ -1,23 +1,23 @@
 // The dashboard's usage history as HTML, drawn the way the app draws it. Used by the server for the first
-// render (so the page has full HTML) and by the browser whenever the Show chips change the accounts.
+// render (so the page has full HTML) and by the browser whenever the Show chips change the profiles.
 import { allIds, breakdown, formatTokens, range, type AccountId, type Range } from "./demo";
 
 const hourTicks = [0, 3, 6, 9, 12, 15, 18, 21];
 
 function empty(title: string, note: string) {
-  return `<div class="chart-card"><div class="cc-head"><b>${title}</b><span>${note}</span></div><div class="no-acc">No account selected</div></div>`;
+  return `<div class="chart-card"><div class="cc-head"><b>${title}</b><span>${note}</span></div><div class="no-acc">No profile selected</div></div>`;
 }
 
 /** The heatmap and the tokens chart for one period. */
 export function rangeHTML(kind: Range, ids: AccountId[] = allIds): string {
   const r = range(kind, ids);
   if (!ids.length) {
-    return empty("When you use Claude", "replies per hour · colour mixes the accounts") +
+    return empty("When you use Claude", "replies per hour · colour mixes the profiles") +
       empty(r.title, "input + cache writes + output · cache reads not counted");
   }
   const heat = `
     <div class="chart-card">
-      <div class="cc-head"><b>When you use Claude</b><span>replies per hour · colour mixes the accounts</span></div>
+      <div class="cc-head"><b>When you use Claude</b><span>replies per hour · colour mixes the profiles</span></div>
       <div class="heat-scroll"><div class="heat${r.days > 10 ? " dense" : ""}">
         <span></span>
         <div class="heat-hours">${hourTicks.map((h) => `<span style="grid-column:${h + 1}">${String(h).padStart(2, "0")}</span>`).join("")}</div>
@@ -47,7 +47,7 @@ export function totalsText(kind: Range, ids: AccountId[] = allIds): string {
 
 /** "Where it goes" for one period. */
 export function sharesHTML(kind: Range, ids: AccountId[] = allIds): string {
-  if (!ids.length) return `<div class="no-acc" style="grid-column:1/-1">No account selected</div>`;
+  if (!ids.length) return `<div class="no-acc" style="grid-column:1/-1">No profile selected</div>`;
   const b = breakdown(kind, ids);
   const list = (title: string, rows: [string, number, string][]) => `
     <div><div class="share-title">${title}</div>${rows.map(([name, share, hex]) => `

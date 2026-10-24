@@ -1,5 +1,5 @@
 ---
-// What "Terminal" opens: Terminal running Claude Code for that account, exactly as cl_audit starts it
+// What "Terminal" opens: Terminal running Claude Code for that profile, exactly as cl_audit starts it
 // (its CLAUDE_CONFIG_DIR, then claude), covering the window's content area. It plays a short exchange,
 // then leaves a prompt you can type into, with cl_audit's own status line underneath.
 // Deliberately not Claude Code's start screen.
@@ -10,7 +10,7 @@ import { accounts, chats } from "../data/demo";
     const c = chats[a.id].code;
     const setup = i === 0 ? "unset CLAUDE_CONFIG_DIR" : `export CLAUDE_CONFIG_DIR=${a.dir}`;
     return (
-      <section class="term deskwin" data-terminal={a.id} hidden aria-label={`Terminal running Claude Code for the ${a.name} account (illustration)`}>
+      <section class="term deskwin" data-terminal={a.id} hidden aria-label={`Terminal running Claude Code for the ${a.name} profile (illustration)`}>
         <div class="term-bar">
           <span class="lights"><button type="button" class="close" data-close aria-label="Close"></button><i></i><i></i></span>
           <span class="term-title">{a.name} — claude — 80×24</span>
@@ -89,6 +89,6 @@ import { accounts, chats } from "../data/demo";
     const log = form.parentElement!.querySelector<HTMLElement>("[data-log]")!;
     line(log, "> " + text, "term-you");
     input.value = "";
-    setTimeout(() => line(log, "  This Terminal is a demo, so nothing runs. With cl_audit installed, Claude Code runs here for this account.", "term-dim"), 400);
+    setTimeout(() => line(log, "  This Terminal is a demo, so nothing runs. With cl_audit installed, Claude Code runs here for this profile.", "term-dim"), 400);
   }, true);
 </script>

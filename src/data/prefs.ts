@@ -65,7 +65,7 @@ export const laneSrc = (id: AccountId, style: Style, i: number) => `/img/acc/lan
 export const defaultStyle = (id: AccountId) => defaults[id].style;
 export const defaultColor = (id: AccountId) => colors[defaults[id].color];
 
-/** Puts the saved choices on the page: icons, account colours, names. */
+/** Puts the saved choices on the page: icons, profile colours, names. */
 export function applyPrefs(p = loadPrefs()) {
   const root = document.documentElement;
   for (const a of accounts) {

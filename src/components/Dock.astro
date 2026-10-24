@@ -34,7 +34,7 @@ import AccIcon from "./AccIcon.astro";
   let open: HTMLElement | null = null;
   let timer = 0;
   const close = () => { clearTimeout(timer); open?.setAttribute("hidden", ""); open = null; };
-  // A peek hides itself after the account's "Show usage for" time (3 s by default); it waits while the pointer is over it.
+  // A peek hides itself after the profile's "Show usage for" time (3 s by default); it waits while the pointer is over it.
   const autoHide = (ms: number) => { clearTimeout(timer); timer = window.setTimeout(() => { if (open && !open.matches(":hover")) close(); else autoHide(ms); }, ms); };
   // cl_audit's own icon: bring it to the front, like clicking a running app (closes other windows and pop-ups).
   bar.querySelector<HTMLButtonElement>("[data-front-app]")?.addEventListener("click", (e) => {
@@ -46,7 +46,7 @@ import AccIcon from "./AccIcon.astro";
     b.addEventListener("click", (e) => {
       e.stopPropagation();
       const pop = bar.querySelector<HTMLElement>(`[data-popup="${b.dataset.pop}"]`)!;
-      // the compact panel, in the design chosen for this account in Settings
+      // the compact panel, in the design chosen for this profile in Settings
       const pr = loadPrefs()[b.dataset.pop as "home"];
       pop.innerHTML = panelHTML(b.dataset.pop as "home", pr.panel as Design, { large: false, name: pr.name });
       if (open === pop) return close();

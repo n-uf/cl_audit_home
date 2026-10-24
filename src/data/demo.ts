@@ -23,7 +23,7 @@ function rng(seed: number) {
   };
 }
 
-/** How busy each account is at each hour of the day (0…1). */
+/** How busy each profile is at each hour of the day (0…1). */
 function profile(id: AccountId, hour: number, weekday: number): number {
   const weekend = weekday === 0 || weekday === 6;
   if (id === "work") return weekend ? 0 : hour >= 9 && hour <= 18 ? (hour === 13 ? 0.4 : 0.85) : hour >= 19 && hour <= 21 ? 0.15 : 0;
@@ -40,7 +40,7 @@ const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDat
 const today = startOfDay(new Date());
 const nowHour = 10; // the demo "now": mid-morning, so today is partly filled
 
-/** Replies per account for each day (rows) and hour (columns), oldest day first. */
+/** Replies per profile for each day (rows) and hour (columns), oldest day first. */
 function history(days: number) {
   const r = rng(20261023);
   const rows: { date: Date; hours: Counts[] }[] = [];
@@ -63,7 +63,7 @@ function history(days: number) {
 
 const sum = (c: Counts) => Object.values(c).reduce((a, b) => a + (b ?? 0), 0);
 
-/** The accounts' colours averaged by their reply counts, at a strength that follows the count. */
+/** The profiles' colours averaged by their reply counts, at a strength that follows the count. */
 function cellColor(c: Counts, max: number): string | null {
   const total = sum(c);
   if (!total) return null;
@@ -91,7 +91,7 @@ const pick = (c: Counts, ids: AccountId[]): Counts => Object.fromEntries(ids.fil
 
 export const allIds = accounts.map((a) => a.id);
 
-/** Everything one range of the dashboard shows, for the selected accounts only. */
+/** Everything one range of the dashboard shows, for the selected profiles only. */
 export function range(kind: Range, ids: AccountId[] = allIds) {
   const days = kind === "24h" ? 2 : kind === "7d" ? 7 : 30;
   cached ??= history(30);
@@ -129,7 +129,7 @@ function niceMax(v: number) {
   return m * pow * 3;
 }
 
-/** "Where it goes" per demo account; the dashboard combines the selected ones by their tokens. */
+/** "Where it goes" per demo profile; the dashboard combines the selected ones by their tokens. */
 type Share = [string, number, string];
 const perAccount: Record<AccountId, { projects: Share[]; models: Share[]; surfaces: Share[] }> = {
   home: {
@@ -166,7 +166,7 @@ export function breakdown(kind: Range, ids: AccountId[] = allIds) {
   return { projects: merge("projects", 6), models: merge("models", 4), surfaces: merge("surfaces", 4) };
 }
 
-/** Demo conversations for each account's Claude desktop app and Claude Code (illustrations). */
+/** Demo conversations for each profile's Claude window and Claude Code (illustrations). */
 export const chats: Record<AccountId, { desktop: { title: string; turns: [("you" | "claude"), string][] }; code: { ask: string; steps: string[]; done: string } }> = {
   home: {
     desktop: {
