@@ -80,7 +80,7 @@ code, kbd { font-family: var(--mono); }
 .pill.tint:hover { background: rgba(var(--tint), .34); }
 .pill.small { padding: 4px 12px; font-size: 13px; }
 /* Download for Mac: the one filled button, on every page */
-/* "Your login stays with Claude": the note next to every download */
+/* the Claude login note next to the download (Install page) */
 .login-note { margin: 0; padding: 9px 12px; border-radius: 10px; font-size: 13.5px; line-height: 1.5; color: var(--muted);
   background: rgba(34,197,94,.08); box-shadow: inset 0 0 0 1px rgba(34,197,94,.3); }
 .login-note b { color: var(--text); }
