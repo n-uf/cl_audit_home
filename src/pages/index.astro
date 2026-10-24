@@ -11,6 +11,19 @@ const title = "cl_audit — run several Claude profiles on macOS, with usage lim
 const description =
   "cl_audit gives each of your Claude setups on macOS its own profile: a Claude Code folder, an optional separate Claude window and a Dock icon that shows its usage limits live. One dashboard with switches for every profile, figures read directly from Anthropic. Free and source-available.";
 
+// The login strip on the Overview: each point opens a plain explanation.
+const trustFacts: [string, string][] = [
+  ["Password never seen: Claude's own sign-in",
+   "You sign in through Claude's own screens: Claude Code's sign-in in Terminal (claude auth login) and the Claude app's sign-in window. cl_audit only opens them, so whatever you type goes straight to Anthropic."],
+  ["Login read-only, kept in memory",
+   "After you sign in, Claude Code saves its login in your Mac's Keychain. cl_audit reads it the same way Claude Code does, with Apple's security tool, so macOS asks nothing. It keeps only the short-lived part, in memory, and never writes, renews or logs it. Any app running as you could read it the same way; cl_audit doesn't change that."],
+  ["Sent only to Anthropic",
+   "cl_audit uses the login for two requests to Anthropic's own server, api.anthropic.com: your 5-hour and weekly usage, and which account a profile is signed in to. Nothing else leaves your Mac."],
+  ["History from Claude Code's logs on your Mac",
+   "The usage charts come from the session files Claude Code already writes on your Mac: only the time, model, token counts, project folder and where you used Claude. Nothing is uploaded."],
+  ["No server, analytics or sign-up",
+   "cl_audit has no server of its own, collects no statistics and needs no account. Its code is open: how it reads your login is in Login.read (Sources/Model.swift)."],
+];
 const lane = ["plenty left", "", "half used", "", "at the limit"];
 const spark = [[10, 4, 6], [14, 2, 8], [6, 22, 3], [5, 24, 2], [7, 26, 4], [9, 20, 3], [3, 8, 1]];
 
@@ -58,21 +71,22 @@ const jsonLd = [{
           <a class="pill quiet" href="/dashboard/">Open the dashboard</a>
         </div>
         <span class="note dl-note">cl_audit {version} · {releasedText()} · {requires} · free and source-available · runs entirely on your Mac</span>
-        <p class="login-note"><b>Your login stays with Claude.</b> You sign in with Claude's own sign-in, so cl_audit never sees your password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href="#login">How it works</a></p>
       </div>
     </div>
     </div>
 
     <div class="card trust" id="login">
-      <h2 class="trust-head"><svg width="20" height="22" viewBox="0 0 20 22" aria-hidden="true"><rect x="2" y="9" width="16" height="12" rx="3" fill="currentColor"/><path d="M6 9V6.5a4 4 0 0 1 8 0V9" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>Your Claude login stays with Claude</h2>
-      <div class="trust-rows">
-      <div class="srow"><span>Your password</span><span class="v">never seen: you sign in with Claude's own sign-in</span></div>
-      <div class="srow"><span>Saved login</span><span class="v">read-only, kept in memory, never written or logged</span></div>
-      <div class="srow"><span>Sent to</span><span class="v">Anthropic only (api.anthropic.com)</span></div>
-      <div class="srow"><span>Usage history</span><span class="v">Claude Code session logs on your Mac</span></div>
-      <div class="srow"><span>Server, analytics, sign-up</span><span class="v">none</span></div>
+      <span class="trust-title"><svg width="13" height="14" viewBox="0 0 20 22" aria-hidden="true"><rect x="2" y="9" width="16" height="12" rx="3" fill="currentColor"/><path d="M6 9V6.5a4 4 0 0 1 8 0V9" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>Your Claude login stays with Claude</span>
+      <a class="more" href={`${repo}#your-claude-login`}>How it works ›</a>
+      <ul class="trust-facts">
+        {trustFacts.map(([short], i) => <li><button type="button" class="tf" data-tf={i} aria-expanded="false" aria-controls="tf-pop">{short}</button></li>)}
+      </ul>
+      <div class="tf-pop" id="tf-pop" role="dialog" aria-live="polite" hidden>
+        <button type="button" class="tf-close" aria-label="Close">×</button>
+        <b data-tf-title></b>
+        <p data-tf-text></p>
       </div>
-      <a class="more" href={`${repo}#your-claude-login`}>How cl_audit uses your login ›</a>
+      <script type="application/json" id="tf-data" set:html={JSON.stringify(trustFacts)} />
     </div>
 
     <div class="cols3">
@@ -189,20 +203,69 @@ cd cl_audit && ./build.sh</code></pre>
   </div>
 </Desktop>
 
+<script>
+  // The login strip: a click on a point shows its explanation just under it, over the page.
+  function setupTrust() {
+    const card = document.getElementById("login");
+    if (!card || card.dataset.ready) return;
+    card.dataset.ready = "1";
+    const facts = JSON.parse(document.getElementById("tf-data")!.textContent || "[]") as [string, string][];
+    const pop = card.querySelector<HTMLElement>(".tf-pop")!;
+    let open: HTMLElement | null = null;
+    const close = () => { pop.hidden = true; open?.setAttribute("aria-expanded", "false"); open = null; };
+    const show = (b: HTMLElement) => {
+      const [title, text] = facts[+b.dataset.tf!];
+      pop.querySelector("[data-tf-title]")!.textContent = title;
+      pop.querySelector("[data-tf-text]")!.textContent = text;
+      open?.setAttribute("aria-expanded", "false");
+      b.setAttribute("aria-expanded", "true");
+      open = b;
+      pop.hidden = false;
+      const c = card.getBoundingClientRect(), r = b.getBoundingClientRect();
+      const left = Math.max(12, Math.min(r.left - c.left, c.width - pop.offsetWidth - 12));
+      pop.style.left = `${left}px`;
+      pop.style.top = `${r.bottom - c.top + 6}px`;
+    };
+    card.addEventListener("click", (e) => {
+      const t = e.target as HTMLElement;
+      const b = t.closest<HTMLElement>(".tf");
+      if (b) { b === open ? close() : show(b); return; }
+      if (t.closest(".tf-close")) close();
+    });
+    document.addEventListener("click", (e) => { if (open && !card.contains(e.target as Node)) close(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && open) close(); });
+    document.querySelector(".content")?.addEventListener("scroll", () => { if (open) show(open); }, { passive: true });
+  }
+  document.addEventListener("astro:page-load", setupTrust);
+</script>
+
 <style>
   .pill.big { padding: 10px 20px; font-size: 15.5px; }
   .dl-note { display: block; color: var(--muted); font-size: 12.5px; }
-  /* the login card: the one thing people should not miss */
-  .trust { background: linear-gradient(180deg, rgba(34,197,94,.12), rgba(34,197,94,.05)); box-shadow: inset 0 0 0 1.5px rgba(34,197,94,.45); }
-  .trust-head { display: flex; align-items: center; gap: 10px; font-size: 20px; margin: 2px 0 10px; color: #fff; }
-  .trust-head svg { color: #4ade80; flex: none; }
-  .trust .srow > span:first-child { display: flex; align-items: center; gap: 8px; font-weight: 600; }
-  .trust .srow > span:first-child::before { content: "✓"; color: #4ade80; font-weight: 800; }
-  .trust .srow .v { color: var(--text); }
-  .trust .more { color: #4ade80; }
-  .trust-rows { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; }
+  /* the login card: compact, one strip */
+  .trust { padding: 11px 16px; background: rgba(34,197,94,.05); box-shadow: inset 0 0 0 1px rgba(34,197,94,.22); }
+  .trust { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "title more" "facts facts"; align-items: baseline; column-gap: 12px; }
+  .trust-title { grid-area: title; }
+  .trust .more { grid-area: more; }
+  .trust-facts { grid-area: facts; }
+  @media (max-width: 520px) { .trust { grid-template-columns: 1fr; grid-template-areas: "title" "facts" "more"; } .trust .more { margin-top: 6px; } }
+  .trust-title { display: inline-flex; align-items: center; gap: 7px; font-weight: 650; font-size: 14.5px; color: var(--text); }
+  .trust-title svg { color: #4ade80; }
+  .trust .more { margin: 0; font-size: 13px; }
+  .trust-facts { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13px; color: var(--muted); }
+  .trust { position: relative; }
+  .tf { background: none; border: 0; padding: 1px 0; font: inherit; color: inherit; cursor: pointer; text-align: left;
+    text-decoration: underline dotted rgba(255,255,255,.3); text-underline-offset: 3px; }
+  .tf::before { content: "✓"; color: #4ade80; font-weight: 700; margin-right: 6px; }
+  .tf:hover, .tf[aria-expanded="true"] { color: var(--text); text-decoration-color: #4ade80; }
+  /* the explanation floats over the page, so nothing moves */
+  .tf-pop { position: absolute; z-index: 30; width: min(400px, calc(100% - 24px)); padding: 11px 32px 11px 13px; border-radius: 11px;
+    background: #2a2a2d; box-shadow: 0 0 0 1px rgba(34,197,94,.4), 0 12px 30px rgba(0,0,0,.45); font-size: 13.5px; line-height: 1.5; }
+  .tf-pop b { display: block; margin-bottom: 3px; color: var(--text); }
+  .tf-pop p { margin: 0; color: var(--muted); }
+  .tf-close { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; border: 0; cursor: pointer;
+    background: rgba(255,255,255,.08); color: var(--muted); font-size: 15px; line-height: 1; }
   .start-row { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 720px; }
-  @media (max-width: 1100px) { .trust-rows { grid-template-columns: 1fr; } }
   .h3 { font-size: 18px; margin-bottom: 12px; }
   .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
   .lane-icons figure { margin: 0; display: grid; justify-items: center; gap: 2px; color: var(--muted); font-size: 10.5px; min-height: 58px; }
