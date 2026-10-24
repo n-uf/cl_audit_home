@@ -18,6 +18,8 @@ export const faq: [string, string][] = [
    "No. You sign in with Claude's own sign-in: Claude Code's (claude auth login, in Terminal) and the Claude app's sign-in window. cl_audit only opens them; everything you type to sign in goes straight to Anthropic."],
   ["How does cl_audit get my Claude login, and where does it send it?",
    "Claude Code saves its login in your macOS Keychain. cl_audit reads that item read-only with Apple's security tool, exactly the way Claude Code reads it, so macOS shows no prompt and cl_audit gets no Keychain permission of its own. It keeps only the short-lived access token, in memory, and never writes, renews, copies or logs it. It sends it only to Anthropic (api.anthropic.com), to read each profile's usage and which account it is signed in to. There is no cl_audit server, no analytics and nothing to sign up for."],
+  ["Will cl_audit keep working when Claude updates?",
+   "Usually. Each release says which Claude Code and Claude app versions it was checked with (the Overview and Install pages show the current ones). cl_audit relies on how Claude Code saves its login and on Anthropic's usage figures, which aren't public interfaces, so a newer Claude version can change them. If something stops working after a Claude update, update cl_audit."],
   ["Does cl_audit make my login safer?",
    "No, and it doesn't make it more exposed either. Any app running under your macOS user can read Claude Code's saved login the same way; that is how Claude Code stores it. So install only software you trust. cl_audit's code is open to check (Login.read in Sources/Model.swift)."],
   ["Which plans does it support?",

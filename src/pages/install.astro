@@ -1,6 +1,6 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
-import { repo, version, releasedText, changelog, download, requires } from "../data/site";
+import { repo, version, releasedText, changelog, download, requires, checkedWith, driftNote } from "../data/site";
 
 const title = "Install — cl_audit: download it for your Mac, or build it from source";
 const description =
@@ -31,12 +31,14 @@ const description =
 
       <div class="card">
         <h4>Requires</h4>
+        <div class="srow"><span>Checked with</span><span class="v">Claude Code {checkedWith.claudeCode} · Claude app {checkedWith.claudeApp}</span></div>
         <div class="srow"><span>Mac</span><span class="v">Apple silicon</span></div>
         <div class="srow"><span>macOS</span><span class="v">13 Ventura or later</span></div>
         <div class="srow"><span>Per profile</span><span class="v">Claude Code, signed in</span></div>
         <div class="srow"><span>Optional</span><span class="v">the Claude app, for Claude windows</span></div>
         <div class="srow"><span>Plans</span><span class="v">Pro, Max or Team (plans with usage limits)</span></div>
         <div class="srow"><span>To build it yourself</span><span class="v">Xcode Command Line Tools · <code>xcode-select --install</code></span></div>
+        <p class="t drift">{driftNote}</p>
       </div>
     </div>
 
@@ -83,6 +85,7 @@ git checkout v{version}   # optional: exactly this release
 </Desktop>
 
 <style>
+  .drift { margin: 10px 0 0; font-size: 12.5px; }
   .dl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 4px 0 12px; }
   .pill.big { padding: 10px 20px; font-size: 15.5px; }
   .gk { margin-top: 12px; border-radius: 10px; background: rgba(0,0,0,.28); box-shadow: inset 0 0 0 1px var(--line); padding: 10px 12px; font-size: 13px; }
