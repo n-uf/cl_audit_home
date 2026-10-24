@@ -1,16 +1,25 @@
 // Questions and answers for the FAQ page (also its FAQPage structured data).
+// Words: a profile is one Claude setup in cl_audit; an account is only the claude.ai account a profile signs in to.
 
 export const faq: [string, string][] = [
-  ["Can I run several Claude desktop apps at the same time?",
-   "Yes. cl_audit starts a separate instance of the Claude desktop app for each account, each with its own app data folder, so each keeps its own sign-in. The Code tab and the Claude Code CLI use that account's own configuration directory (CLAUDE_CONFIG_DIR)."],
+  ["What's the difference between a profile and an account?",
+   "A profile is one Claude setup in cl_audit: a Claude Code folder with its sign-in, a Claude window and a Dock icon. An account is only the claude.ai account a profile is signed in to. Several profiles can use one account; each profile has its own folder, settings and Dock icon."],
+  ["Can I run several Claude windows at the same time?",
+   "Yes. A profile can have a separate Claude window, with its own sign-in and data folder, next to the standard one (only one profile can use the standard window). Its Claude Code folder keeps its own sign-in too, through CLAUDE_CONFIG_DIR."],
+  ["What do the two switches on a card do?",
+   "Claude window opens or quits the profile's Claude window. Dock icon starts or quits the profile's Dock icon. Pins are never touched, so the Dock doesn't restart, but while the Dock icon is stopped the profile doesn't refresh or alert. A flipped switch stays where you put it, with a spinner, until the change is done. In a profile's settings, Opening and closing lets the two follow each other."],
+  ["Why does hiding the Dock icon restart the Dock?",
+   "Show in the Dock (profile settings ▸ Dock icon) takes the icon's pin out of the Dock or puts it back. Pins live in the Dock's own list, which it only reloads when it restarts, so cl_audit restarts it. The Dock icon keeps running while hidden, so it still refreshes and alerts. The Dock icon switch on a dashboard card never touches pins, so it never restarts the Dock."],
   ["Where do the usage figures come from?",
-   "The 5-hour session limit and the weekly limit are read directly from Anthropic for each account, using that account's Claude Code sign-in: the same figures Claude shows in Settings ▸ Usage, with their reset times. The usage history on the dashboard comes from the Claude Code session logs on your Mac."],
+   "The 5-hour limit and the weekly limit are read directly from Anthropic for each profile, using that profile's Claude Code sign-in: the same figures Claude shows in Settings ▸ Usage, with their reset times. The usage history on the dashboard comes from the Claude Code session files on your Mac."],
   ["Is cl_audit made by Anthropic?",
    "No. cl_audit is an independent, source-available tool from n-uf. It is not affiliated with, endorsed by or sponsored by Anthropic. Claude is a trademark of Anthropic."],
   ["Does it send my data anywhere?",
-   "Only to Anthropic, to read each account's usage. There is no cl_audit server, no analytics and no account to create. Sign-ins are read read-only from the macOS Keychain with Apple's security tool, the same way Claude Code reads them, and are never written to disk or logged."],
+   "Only to Anthropic, to read each profile's usage. There is no cl_audit server, no analytics and nothing to sign up for. Sign-ins are read read-only from the macOS Keychain with Apple's security tool, the same way Claude Code reads them, and are never written to disk or logged."],
   ["Which plans does it support?",
-   "Claude plans with usage limits, such as Pro, Max and Team, signed in to Claude Code. Accounts that use an API key are billed per token instead and have no usage limits to show."],
+   "Claude plans with usage limits, such as Pro, Max and Team, signed in to Claude Code. A profile that uses an API key is billed per token instead and has no usage limits to show."],
   ["What does it need?",
-   "A Mac with Apple silicon and macOS 13 or later, the Xcode Command Line Tools to build it, and Claude Code signed in for each account. The Claude desktop app is needed only for the side-by-side desktop apps."],
+   "A Mac with Apple silicon and macOS 13 or later, the Xcode Command Line Tools to build it, and Claude Code signed in for each profile. The Claude app is needed only for Claude windows."],
+  ["How are versions numbered?",
+   "With calendar versions, YY.M.R: the year and month of the release date, then a counter within that month. 26.10.0 is the first release of October 2026, the next one that month is 26.10.1, and a release in November starts at 26.11.0. A version can't signal a breaking change, so read What's new before updating."],
 ];

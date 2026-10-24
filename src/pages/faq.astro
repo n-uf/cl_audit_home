@@ -2,9 +2,9 @@
 import Desktop from "../layouts/Desktop.astro";
 import { faq } from "../data/faq";
 
-const title = "FAQ — cl_audit: several Claude accounts and their usage limits on macOS";
+const title = "FAQ — cl_audit: several Claude profiles and their usage limits on macOS";
 const description =
-  "Questions about cl_audit: running several Claude desktop apps at once, where the usage figures come from, privacy, supported Claude plans and requirements.";
+  "Questions about cl_audit: profiles and accounts, Claude windows, the two switches on a dashboard card, why hiding the Dock icon restarts the Dock, where the usage figures come from, privacy, plans, requirements and version numbers.";
 const jsonLd = [{
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -16,7 +16,7 @@ const jsonLd = [{
     <div class="page-head"><h1>Questions</h1><p>Good to know before you install.</p></div>
     <div class="faq-list">
       {faq.map(([q, a], i) => (
-        <details class="card" open={i < 2}><summary>{q}</summary><p>{a}</p></details>
+        <details class="card" open={i < 3}><summary>{q}</summary><p>{a}</p></details>
       ))}
     </div>
   </div>
