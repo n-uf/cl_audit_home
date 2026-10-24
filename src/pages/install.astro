@@ -17,7 +17,7 @@ const description =
           <a class="pill dl big" href={download}><span aria-hidden="true">↓</span> Download cl_audit {version}</a>
           <span class="sub">Released {releasedText()} · {requires} · <a href={changelog}>What's new</a></span>
         </div>
-        <p class="t login-note"><b>Your login stays with Claude.</b> You sign in with Claude's own sign-in, so cl_audit never sees your password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href={`${repo}#your-claude-login`}>How it works</a></p>
+        <p class="t login-note" style="margin:0 0 12px"><b>Your login stays with Claude.</b> You sign in with Claude's own sign-in, so cl_audit never sees your password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href={`${repo}#your-claude-login`}>How it works</a></p>
         <div class="steps">
           <div><div><b>Unzip it and move cl_audit to Applications</b><span>Double-click <code>cl_audit.zip</code> in Downloads, then drag cl_audit into the Applications folder.</span></div></div>
           <div><div><b>Open it; macOS asks once</b><span>cl_audit isn't signed with an Apple Developer ID yet, so the first time macOS says it can't verify the app. Click Done.</span></div></div>
@@ -83,7 +83,6 @@ git checkout v{version}   # optional: exactly this release
 </Desktop>
 
 <style>
-  .login-note { margin: 0 0 12px; padding: 9px 12px; border-radius: 10px; background: rgba(34,197,94,.08); box-shadow: inset 0 0 0 1px rgba(34,197,94,.3); }
   .dl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 4px 0 12px; }
   .pill.big { padding: 10px 20px; font-size: 15.5px; }
   .gk { margin-top: 12px; border-radius: 10px; background: rgba(0,0,0,.28); box-shadow: inset 0 0 0 1px var(--line); padding: 10px 12px; font-size: 13px; }

@@ -58,8 +58,21 @@ const jsonLd = [{
           <a class="pill quiet" href="/dashboard/">Open the dashboard</a>
         </div>
         <span class="note dl-note">cl_audit {version} · {releasedText()} · {requires} · free and source-available · runs entirely on your Mac</span>
+        <p class="login-note"><b>Your login stays with Claude.</b> You sign in with Claude's own sign-in, so cl_audit never sees your password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href="#login">How it works</a></p>
       </div>
     </div>
+    </div>
+
+    <div class="card trust" id="login">
+      <h2 class="trust-head"><svg width="20" height="22" viewBox="0 0 20 22" aria-hidden="true"><rect x="2" y="9" width="16" height="12" rx="3" fill="currentColor"/><path d="M6 9V6.5a4 4 0 0 1 8 0V9" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>Your Claude login stays with Claude</h2>
+      <div class="trust-rows">
+      <div class="srow"><span>Your password</span><span class="v">never seen: you sign in with Claude's own sign-in</span></div>
+      <div class="srow"><span>Saved login</span><span class="v">read-only, kept in memory, never written or logged</span></div>
+      <div class="srow"><span>Sent to</span><span class="v">Anthropic only (api.anthropic.com)</span></div>
+      <div class="srow"><span>Usage history</span><span class="v">Claude Code session logs on your Mac</span></div>
+      <div class="srow"><span>Server, analytics, sign-up</span><span class="v">none</span></div>
+      </div>
+      <a class="more" href={`${repo}#your-claude-login`}>How cl_audit uses your login ›</a>
     </div>
 
     <div class="cols3">
@@ -160,16 +173,7 @@ const jsonLd = [{
       </div>
     </div>
 
-    <div class="cols2">
-      <div class="card">
-        <h4>Your Claude login stays with Claude</h4>
-        <div class="srow"><span>Your password</span><span class="v">never seen: you sign in with Claude's own sign-in</span></div>
-        <div class="srow"><span>Saved login</span><span class="v">read-only, kept in memory, never written or logged</span></div>
-        <div class="srow"><span>Sent to</span><span class="v">Anthropic only (api.anthropic.com)</span></div>
-        <div class="srow"><span>Usage history</span><span class="v">Claude Code session logs on your Mac</span></div>
-        <div class="srow"><span>Server, analytics, sign-up</span><span class="v">none</span></div>
-        <a class="more" href={`${repo}#your-claude-login`}>How cl_audit uses your login ›</a>
-      </div>
+    <div class="start-row">
       <div class="card">
         <h4>Get started</h4>
         <div class="btns" style="margin:2px 0 8px"><a class="pill dl dim" href={download}><span aria-hidden="true">↓</span> Download cl_audit {version}</a></div>
@@ -188,6 +192,17 @@ cd cl_audit && ./build.sh</code></pre>
 <style>
   .pill.big { padding: 10px 20px; font-size: 15.5px; }
   .dl-note { display: block; color: var(--muted); font-size: 12.5px; }
+  /* the login card: the one thing people should not miss */
+  .trust { background: linear-gradient(180deg, rgba(34,197,94,.12), rgba(34,197,94,.05)); box-shadow: inset 0 0 0 1.5px rgba(34,197,94,.45); }
+  .trust-head { display: flex; align-items: center; gap: 10px; font-size: 20px; margin: 2px 0 10px; color: #fff; }
+  .trust-head svg { color: #4ade80; flex: none; }
+  .trust .srow > span:first-child { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .trust .srow > span:first-child::before { content: "✓"; color: #4ade80; font-weight: 800; }
+  .trust .srow .v { color: var(--text); }
+  .trust .more { color: #4ade80; }
+  .trust-rows { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; }
+  .start-row { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 720px; }
+  @media (max-width: 1100px) { .trust-rows { grid-template-columns: 1fr; } }
   .h3 { font-size: 18px; margin-bottom: 12px; }
   .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
   .lane-icons figure { margin: 0; display: grid; justify-items: center; gap: 2px; color: var(--muted); font-size: 10.5px; min-height: 58px; }
