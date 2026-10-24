@@ -4,7 +4,7 @@ import { repo, version, releasedText, changelog } from "../data/site";
 
 const title = "Install — cl_audit: build it on your Mac in a minute";
 const description =
-  "How to install cl_audit on macOS: clone the source, run build.sh, add your Claude accounts and put their icons in the Dock. Requires Apple silicon, macOS 13 or later, the Xcode Command Line Tools and Claude Code.";
+  "How to install cl_audit on macOS: clone the source, run build.sh, add a profile for each Claude setup and put its Dock icon in the Dock. Requires Apple silicon, macOS 13 or later, the Xcode Command Line Tools and Claude Code.";
 ---
 <Desktop title={title} description={description} page="install">
   <div class="content-inner">
@@ -17,10 +17,11 @@ const description =
 cd cl_audit
 ./build.sh</code></pre>
         <p class="t">
-          build.sh compiles the app, installs cl_audit in /Applications and, once you have accounts, one
-          “cl_audit &lt;name&gt;” icon app per account next to it, where Spotlight finds them.
+          build.sh compiles cl_audit, installs it in /Applications and updates the Dock icon apps: one
+          “cl_audit &lt;profile&gt;” app per profile, next to it, where Spotlight finds them. <code>./build.sh --no-install</code>
+          only builds into the folder.
         </p>
-        <p class="t">Latest: <b>{version}</b>, released {releasedText()} · <a href={changelog}>What's new</a>. To build exactly this version: <code>git checkout v{version}</code> before <code>./build.sh</code>.</p>
+        <p class="t">Latest: <b>{version}</b>, released {releasedText()} · <a href={changelog}>What's new</a>. To build exactly this version, run <code>git checkout v{version}</code> before <code>./build.sh</code>.</p>
         <div class="btns"><a class="pill tint t-orange" href={repo}>Get the source on GitHub</a></div>
       </div>
 
@@ -29,29 +30,31 @@ cd cl_audit
         <div class="srow"><span>Mac</span><span class="v">Apple silicon</span></div>
         <div class="srow"><span>macOS</span><span class="v">13 Ventura or later</span></div>
         <div class="srow"><span>To build</span><span class="v">Xcode Command Line Tools · <code>xcode-select --install</code></span></div>
-        <div class="srow"><span>Per account</span><span class="v">Claude Code, signed in</span></div>
-        <div class="srow"><span>Optional</span><span class="v">the Claude desktop app, for side-by-side windows</span></div>
+        <div class="srow"><span>Per profile</span><span class="v">Claude Code, signed in</span></div>
+        <div class="srow"><span>Optional</span><span class="v">the Claude app, for Claude windows</span></div>
         <div class="srow"><span>Plans</span><span class="v">Pro, Max or Team (plans with usage limits)</span></div>
       </div>
     </div>
 
     <div class="cols2">
       <div class="card">
-        <h4>Add your accounts</h4>
+        <h4>Add a profile</h4>
         <div class="steps">
-          <div><div><b>Open cl_audit</b><span>It opens on the Dashboard; switch to Settings.</span></div></div>
-          <div><div><b>Click ＋ for a new account</b><span>Give it a name, then let the checklist create its folders, run the Claude Code sign-in and open its own Claude desktop app.</span></div></div>
-          <div><div><b>Or use an existing configuration</b><span>Point an account at a Claude Code configuration directory you already use, such as ~/.claude.</span></div></div>
-          <div><div><b>Drag the icons into the Dock</b><span>Then choose Options ▸ Keep in Dock. Each icon starts at login unless you turn that off.</span></div></div>
+          <div><div><b>Open cl_audit, then Settings ▸ New profile</b><span>A page opens in the same window: the profile and its Claude window, its Claude Code folder, and a summary with the live icon and the steps to do.</span></div></div>
+          <div><div><b>Choose its Claude Code folder</b><span>A new one (<code>~/.claude-&lt;name&gt;</code>, optionally sharing instructions, agents, skills, commands or memory from another folder) or an existing one, such as <code>~/.claude</code>.</span></div></div>
+          <div><div><b>Choose its Claude window</b><span>The standard one (only while no other profile uses it), a separate one with its own sign-in and data folder, or none, for Claude Code in Terminal only.</span></div></div>
+          <div><div><b>Quit the Claude app until the folder is set up</b><span>While it is open it writes its own sign-in and settings. The page lists its windows and checks every 2 seconds. Claude Code in Terminal doesn't get in the way.</span></div></div>
+          <div><div><b>Sign in, in two parts</b><span>Claude Code first (Terminal runs <code>claude auth login</code> for the folder), then, with a separate window, that window, signed in to the same claude.ai account. “Finish now” leaves sign-in for later.</span></div></div>
+          <div><div><b>Put its Dock icon in the Dock</b><span>cl_audit installs the profile's Dock icon and starts it. Drag it into the Dock, or let Settings ▸ General ▸ Dock pin it for you (experimental: it rewrites the Dock's pin list and restarts the Dock).</span></div></div>
         </div>
       </div>
 
       <div class="card">
-        <h4>Update and uninstall</h4>
+        <h4>Update, remove, uninstall</h4>
         <div class="steps">
-          <div><div><b>Update</b><span>Run <code>git pull && ./build.sh</code> in the cl_audit folder; the icons are updated too.</span></div></div>
-          <div><div><b>Remove an account</b><span>Settings ▸ Account ▸ Remove account… quits and deletes its icon, its login item and its saved status. Its Claude Code folder is left alone.</span></div></div>
-          <div><div><b>Uninstall</b><span>Remove every account, then delete cl_audit from /Applications and the folder ~/Library/Application Support/usage-n-uf.</span></div></div>
+          <div><div><b>Update</b><span>Run <code>git pull && ./build.sh</code> in the cl_audit folder; the Dock icon apps are updated too, and profiles and settings are kept.</span></div></div>
+          <div><div><b>Remove a profile</b><span>Settings ▸ the profile ▸ Remove profile… removes its Dock icon app and what macOS keeps for it, plus its saved usage. “Delete its folders too” also signs its Claude Code folder out and deletes it and its Claude window's data folder; the default <code>~/.claude</code> and the standard window are never deleted.</span></div></div>
+          <div><div><b>Uninstall</b><span>Remove every profile, then delete cl_audit from /Applications and the folder <code>~/Library/Application Support/usage-n-uf</code>, where profiles are saved.</span></div></div>
         </div>
       </div>
     </div>
