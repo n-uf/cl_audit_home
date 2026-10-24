@@ -162,11 +162,13 @@ const jsonLd = [{
 
     <div class="cols2">
       <div class="card">
-        <h4>Privacy</h4>
-        <div class="srow"><span>Sign-ins</span><span class="v">read-only from the macOS Keychain</span></div>
-        <div class="srow"><span>Network</span><span class="v">Anthropic only, every few minutes</span></div>
+        <h4>Your Claude login stays with Claude</h4>
+        <div class="srow"><span>Your password</span><span class="v">never seen: you sign in with Claude's own sign-in</span></div>
+        <div class="srow"><span>Saved login</span><span class="v">read-only, kept in memory, never written or logged</span></div>
+        <div class="srow"><span>Sent to</span><span class="v">Anthropic only (api.anthropic.com)</span></div>
         <div class="srow"><span>Usage history</span><span class="v">Claude Code session logs on your Mac</span></div>
         <div class="srow"><span>Server, analytics, sign-up</span><span class="v">none</span></div>
+        <a class="more" href={`${repo}#your-claude-login`}>How cl_audit uses your login ›</a>
       </div>
       <div class="card">
         <h4>Get started</h4>
