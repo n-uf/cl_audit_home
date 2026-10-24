@@ -37,8 +37,6 @@ const nav: [Page, string, string][] = [
         <nav class="switch pages" aria-label="Pages">
           {nav.map(([id, label, href]) => <a href={href} class:list={{ on: id === page }} aria-current={id === page ? "page" : undefined}>{label}</a>)}
         </nav>
-        <a class="pill small dl hide-sm" href={download} title={`cl_audit ${version}: the ready-built app (zip)`}><span aria-hidden="true">↓</span> Download for Mac</a>
-        <a class="pill small quiet hide-sm" href={repo}>GitHub</a>
       </div>
       <main class="content" transition:animate="fade">
         <slot />
