@@ -1003,19 +1003,14 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .card-prev { margin-top: 8px; padding: 12px; border-radius: 7px; background: rgba(0,0,0,.26); box-shadow: var(--well); min-height: 162px; display: grid; align-content: start; }
 
 /* ── Faceplate themes (title bar ▸ Face) ─────────────────────────────────────────────────────────────────────
-   Black: a black anodised deck plate with a horizontal hairline and a chamfered top edge; a thin silk-screened
-   frame inside each panel, its label sitting on the frame line. */
+   Black: a black anodised deck plate with a horizontal hairline and a chamfered top edge. */
 .face-black :is(.card, .chart-card) {
   border-radius: 4px;
   background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #2b2b2d 0%, #1e1e20 60%, #19191b 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 2px 0 rgba(255,255,255,.04), inset 0 -1px 0 rgba(0,0,0,.6),
     inset 1px 0 0 rgba(255,255,255,.05), inset -1px 0 0 rgba(0,0,0,.4), 0 0 0 1px #050505, 0 6px 16px rgba(0,0,0,.4);
 }
-.face-black .card::before { content: ""; position: absolute; inset: 7px; border: 1px solid rgba(255,255,255,.15); border-radius: 3px; pointer-events: none; }
-.face-black .card:has(> h4)::before { top: 19px; }
-.face-black .card > h4 { position: relative; z-index: 1; display: inline-flex; margin-left: -6px; padding: 0 6px; background: #2a2a2c; color: rgba(255,255,255,.75); }
-.face-black .card > h4::after { display: none; }
-.face-black .card > * { position: relative; }
+.face-black .card h4 { color: rgba(255,255,255,.66); }
 
 /* Silver: a brushed silver deck plate with dark printed legends; readouts, lists and code sit in dark windows. */
 .face-silver :is(.card, .chart-card) {
@@ -1034,8 +1029,9 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .face-silver .card :is(.pn-segs i:not([style]), .pn-bar) { background: rgba(0,0,0,.16); }
 .face-silver .card .pn-pct, .face-silver .card .pn-big { filter: brightness(.8); }
 /* windows in the silver plate: dark, with the dark theme's text */
-.face-silver :is(.card, .chart-card) :is(.mini-palette, .dock-mini, .mcard, .hist-mini, .pchip, .tf-pane, .code, .start-box, .lane-mini, .card-prev,
-  .oc-q, .oc-result, .login-note, .seg, .heat-scroll, .tchart, select.menu, .menu, .g-tile.on, .more-menu, .dialog, .pn, .gk) {
+.face-silver .appwin :is(.mini-palette, .dock-mini, .mcard, .hist-mini, .pchip, .tf-pane, .code, .start-box, .lane-mini, .card-prev,
+  .oc-q, .oc-result, .login-note, .seg, .heat-scroll, .tchart, select.menu, .menu, .g-tile.on, .more-menu, .dialog, .pn, .gk,
+  .plate:not(.pages), .switch, .chips, .settings .strip, .whatnow-card) {
   --text: #ececee; --soft: rgba(236,236,238,.82); --muted: #9a9aa0; --faint: #6e6e74;
   color: var(--text); background-color: #141517;
 }
@@ -1045,3 +1041,39 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .face-silver .card .caution { color: #8a4f00; }
 .face-silver .card .danger, .face-silver .card .danger.linkish { color: #b42318; }
 .face-silver .card .ok { color: #11743a; }
+
+/* ── Faceplates on the whole window, not only the panels ──────────────────────────────────────────────────── */
+/* Black: the window body is a darker hairline plate; key strips are recessed black channels. */
+.face-black .appwin {
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #1d1d1f, #141416 40%, #111113);
+}
+.face-black .fascia { border-bottom-color: #000; box-shadow: 0 1px 0 rgba(255,255,255,.05); }
+.face-black :is(.plate:not(.pages), .switch, .chips, .settings .strip) {
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #19191b, #121214);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.75), inset 0 0 0 1px rgba(0,0,0,.5), 0 1px 0 rgba(255,255,255,.07);
+}
+.face-black .whatnow-card {
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #2b2b2d, #1e1e20);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 -1px 0 rgba(0,0,0,.6), 0 0 0 1px #000, 0 14px 40px rgba(0,0,0,.6);
+}
+
+/* Silver: the window body is silver too, a shade darker than the panels so they stand out; titles, labels and
+   the footer turn dark; key strips are dark channels set into the silver. */
+.face-silver .appwin {
+  --text: #1c1c1e; --soft: #2c2c2f; --muted: #46464b; --faint: #5e5e63;
+  color: var(--text);
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.18) 0 1px, rgba(0,0,0,.03) 1px 2px), linear-gradient(180deg, #bdbdb8, #aeaea9 40%, #a5a5a0);
+  box-shadow: 0 0 0 1px #000, 0 0 0 2px rgba(255,255,255,.2), 0 30px 90px rgba(0,0,0,.6);
+}
+.face-silver .appwin .tb-title, .face-silver .face-pick .lbl, .face-silver .brand span { color: rgba(20,20,20,.62); }
+.face-silver .fascia { border-bottom-color: rgba(0,0,0,.35); box-shadow: 0 1px 0 rgba(255,255,255,.5); }
+.face-silver :is(.card, .chart-card) { box-shadow: inset 0 1px 0 rgba(255,255,255,.9), inset 0 -1px 0 rgba(0,0,0,.2), 0 0 0 1px rgba(0,0,0,.55), 0 4px 12px rgba(0,0,0,.22); }
+.face-silver :is(.plate:not(.pages), .switch, .chips, .settings .strip) {
+  background: linear-gradient(180deg, #2a2a2c, #1f1f21);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.6), 0 0 0 1px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.55);
+}
+.face-silver .whatnow-card { background: linear-gradient(180deg, #2f2f32, #252527); }
+.face-silver .appwin .hist-head h3 { color: var(--text); }
+.face-silver .appwin .legend-item { color: var(--soft); }
+.face-silver .appwin .legal { color: var(--muted); }
+.face-silver .fk { box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 0 0 1px #3a3a38, 0 1px 0 rgba(255,255,255,.4); }
