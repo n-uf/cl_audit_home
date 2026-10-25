@@ -81,7 +81,8 @@ code, kbd { font-family: var(--mono); }
 /* latched: the current page, the chosen tab or option, held down with its LED lit */
 .key.on, .switch .on, .key[aria-selected="true"] { transform: translateY(1px); background: var(--alu-down); box-shadow: var(--key-down); }
 
-/* the LED: off is a dark dot in the key, lit is orange and glows */
+/* the LED: only a lit LED is shown on a key (current page, chosen range or design); keys without one stay plain,
+   like the hero keys */
 .led, .switch a::before, .switch button::before {
   content: ""; width: 6px; height: 6px; border-radius: 50%; flex: none;
   background: #6b5a52; box-shadow: inset 0 1px 1px rgba(0,0,0,.45);
@@ -92,6 +93,7 @@ code, kbd { font-family: var(--mono); }
 }
 /* Download: the key with the orange light slot along its top edge, as on the production site. Only one is
    lit at a time (data/downloadFocus.ts dims the others; a dimmed slot is unlit). */
+.key:not(.on):not([aria-selected="true"]) > .led, .switch a:not(.on)::before, .switch button:not(.on)::before { display: none; }
 .pill.dl { flex: none; padding-top: 4px; }
 .pill.dl::before {
   content: ""; position: absolute; left: 6px; right: 6px; top: 4px; height: 3px; border-radius: 3px;
@@ -392,7 +394,7 @@ body { overflow: hidden; }
 .brand { grid-area: brand; display: grid; line-height: 1.1; text-decoration: none; }
 .brand b { font-size: 19px; font-weight: 700; letter-spacing: -.01em; }
 .brand span { margin-top: 4px; font: 600 8.5px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.42); white-space: nowrap; }
-.fascia .page-disp { grid-area: disp; margin: 0; min-width: 0; height: 40px; padding: 0 16px; gap: 14px; border-radius: 6px;
+.fascia .page-disp { grid-area: disp; margin: 0; min-width: 0; height: 38px; padding: 0 16px; gap: 14px; border-radius: 7px;   /* as tall as the PAGE plate */
   font-size: 12px; font-weight: 600; letter-spacing: .1em; }
 .page-disp .pd-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .fascia-slot { grid-column: 1 / -1; display: flex;   /* its own row below, unless there is room (1600 px+) */ align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }
@@ -492,7 +494,6 @@ body { overflow: hidden; }
   /* five keys share a phone's width: only the lit LED stays, the keys tighten */
   .plate.pages { gap: 4px; padding: 5px; }
   .plate.pages .key { padding: 0 4px; font-size: 9px; letter-spacing: .04em; }
-  .plate.pages .key:not(.on) .led { display: none; }
 }
 
 /* code: a dark recessed screen */
