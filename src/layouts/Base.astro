@@ -39,6 +39,31 @@ const ogImage = new URL("/og.png", Astro.site);
 
     {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
     <ClientRouter fallback="swap" />
+    <!-- cl_audit runs only on Macs with Apple silicon. Before the first paint, mark the page when the browser says it
+         isn't on a Mac (an iPad says it is a Mac, but has a touch screen); Chrome and Edge can also tell an Intel Mac.
+         CSS then shows the Download keys as unlit "Mac only" keys and the hero display gives the reason. -->
+    <script is:inline>
+      (function () {
+        var w = window, root = document.documentElement;
+        function apply() {
+          root.classList.toggle("not-mac", w.__clSys !== "mac");
+          root.dataset.sys = w.__clSys;
+        }
+        try {
+          var d = navigator.userAgentData, p = (d && d.platform) || navigator.platform || "", ua = navigator.userAgent || "";
+          var mac = /mac/i.test(p) || /Macintosh/.test(ua);
+          if (mac && navigator.maxTouchPoints > 1) mac = false;
+          w.__clSys = mac ? "mac" : "other";
+          if (mac && d && d.getHighEntropyValues) {
+            d.getHighEntropyValues(["architecture"]).then(function (v) {
+              if (v.architecture === "x86") { w.__clSys = "intel"; apply(); document.dispatchEvent(new Event("cl:platform")); }
+            }).catch(function () {});
+          }
+        } catch (e) { w.__clSys = "mac"; }
+        apply();
+        document.addEventListener("astro:after-swap", apply);
+      })();
+    </script>
   </head>
   <body>
     <slot />

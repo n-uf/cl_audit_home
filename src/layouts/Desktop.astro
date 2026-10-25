@@ -28,6 +28,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       <nav class="mb-links" aria-label="Site">{nav.map(([, label, href]) => <a href={href}>{label}</a>)}</nav>
       <span class="spacer"></span>
       <a class:list={["mb-dl", { dim: page === "overview" || page === "install" }]} href={download} title={`cl_audit ${version} for Mac`}><span aria-hidden="true">↓ </span>Download for Mac</a>
+      <span class="mb-na">Mac only</span>
       <a class="mb-gh" href={repo}>GitHub</a>
       <span class="mb-clock" aria-hidden="true"></span>
     </header>
@@ -68,7 +69,16 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
   import { initCards } from "../data/cardState";
   import { initWhatNow } from "../data/whatNow";
   import { initDownloadFocus } from "../data/downloadFocus";
-  document.addEventListener("astro:page-load", () => { applyPrefs(); initCards(); initWhatNow(); initDownloadFocus(); });
+  // On a computer that isn't a Mac (see Base.astro) the Download keys can't be pressed: no link, out of the tab order.
+  const lockDownloads = () => {
+    const off = document.documentElement.classList.contains("not-mac");
+    document.querySelectorAll<HTMLAnchorElement>("a.pill.dl, a.mb-dl").forEach((a) => {
+      if (off && a.hasAttribute("href")) { a.dataset.href = a.getAttribute("href")!; a.removeAttribute("href"); a.setAttribute("aria-disabled", "true"); }
+      if (!off && a.dataset.href) { a.setAttribute("href", a.dataset.href); a.removeAttribute("aria-disabled"); }
+    });
+  };
+  document.addEventListener("astro:page-load", () => { applyPrefs(); initCards(); initWhatNow(); initDownloadFocus(); lockDownloads(); });
+  document.addEventListener("cl:platform", lockDownloads);
 
   // The menu bar clock, like the Mac's: "Fri 23 Oct 11:24".
   const tick = () => {

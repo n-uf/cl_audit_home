@@ -117,6 +117,20 @@ code, kbd { font-family: var(--mono); }
 }
 .pill.dl.dim::before { background: #7a5a4c; box-shadow: inset 0 1px 1px rgba(0,0,0,.4); }
 .pill.dl.dim::after { opacity: 0; }
+/* On a computer that isn't a Mac: every Download key is an unlit "Mac only" key that can't be pressed (dark face,
+   dim legend, its slot dark); the menu bar says "Mac only" as plain text. */
+.pill.dl .dl-na, .mb-na { display: none; }
+.not-mac .pill.dl .dl-l { display: none; }
+.not-mac .pill.dl .dl-na { display: inline; }
+.not-mac .pill.dl, .not-mac .pill.dl.dim {
+  cursor: not-allowed; pointer-events: none; transform: none; color: rgba(241,241,240,.45); text-shadow: none;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #3a3a3c, #2a2a2c);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -1px 0 rgba(0,0,0,.4), 0 0 0 1px #151515, 0 1px 0 #0a0a0a; }
+.not-mac .pill.dl::before { background: #4a3a33; box-shadow: inset 0 1px 1px rgba(0,0,0,.5); }
+.not-mac .pill.dl::after { opacity: 0; }
+.not-mac .mb-dl { display: none; }
+.not-mac .mb-na { display: inline; color: #8e8e93; }
+
 /* quiet: an unlit key with a lighter legend */
 .pill.quiet { color: rgba(241,241,240,.7); }
 /* tinted (the card's Open window): its LED in the profile colour */

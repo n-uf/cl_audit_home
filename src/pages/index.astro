@@ -32,6 +32,11 @@ const relPages: { html: string; amber?: boolean }[] = [
   { html: `<em>Checked with</em> <span>Claude Code ${checkedWith.claudeCode}</span> <em>·</em> <span>Claude app ${checkedWith.claudeApp}</span>` },
   { html: `<em class="amber">Note</em> <span class="sub">newer Claude versions may need a cl_audit update</span>`, amber: true },
 ];
+// shown instead on a computer that isn't a Mac (or, where the browser can tell, an Intel Mac)
+const relReason = {
+  other: `<em class="amber">This computer isn't a Mac</em> <em>·</em> <span>cl_audit runs on macOS 13+, Apple silicon</span>`,
+  intel: `<em class="amber">This Mac has an Intel chip</em> <em>·</em> <span>cl_audit needs Apple silicon</span>`,
+};
 const relText = `cl_audit ${version} · ${releasedText()} · ${requires}. Checked with Claude Code ${checkedWith.claudeCode} and the Claude app ${checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.`;
 const spark = [[10, 4, 6], [14, 2, 8], [6, 22, 3], [5, 24, 2], [7, 26, 4], [9, 20, 3], [3, 8, 1]];
 
@@ -80,10 +85,10 @@ const jsonLd = [{
           <span class="rel-marks">{relPages.map((p, i) => <i class:list={{ on: i === 0, amber: p.amber }} />)}</span>
         </div>
         <p class="sr-only">{relText}</p>
-        <script type="application/json" id="rel-data" set:html={JSON.stringify(relPages.map((p) => p.html))} />
+        <script type="application/json" id="rel-data" set:html={JSON.stringify({ pages: relPages.map((p) => p.html), reason: relReason })} />
         <div class="plate hero-keys">
           <span class="lbl hk-ver" title={`cl_audit ${version}`}>{version}</span><span class="divider" aria-hidden="true"></span>
-          <a class="pill dl big" href={download}>Download for Mac</a>
+          <a class="pill dl big" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
           <a class="key" href="/install/">Install steps</a>
           <a class="key" href="/dashboard/" title="The dashboard with sample profiles">Demo dashboard</a>
         </div>
@@ -215,7 +220,7 @@ const jsonLd = [{
           <h4 class="sg-h1">Install</h4>
           <h4 class="sg-h2">Or build from source</h4>
           <div class="sg-k1 start-keyrow">
-            <span class="plate"><a class="pill dl dim" href={download}>Download for Mac</a></span>
+            <span class="plate"><a class="pill dl dim" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a></span>
             <span class="start-note">cl_audit {version} · {requires} · needs Claude Code</span>
           </div>
           <div class="sg-k2 start-keyrow">
@@ -291,7 +296,12 @@ cd cl_audit && ./build.sh</code></pre>
     const el = document.getElementById("rel");
     if (!el || el.dataset.ready) return;
     el.dataset.ready = "1";
-    const pages = JSON.parse(document.getElementById("rel-data")?.textContent || "[]") as string[];
+    const data = JSON.parse(document.getElementById("rel-data")?.textContent || "{}") as { pages: string[]; reason: Record<string, string> };
+    // on a computer that isn't a Mac the display shows only the reason (see Base.astro)
+    const notMac = () => document.documentElement.classList.contains("not-mac");
+    let pages = data.pages;
+    const choose = () => { pages = notMac() ? [data.reason[document.documentElement.dataset.sys || "other"] ?? data.reason.other] : data.pages; };
+    choose();
     const view = el.querySelector<HTMLElement>(".rel-view")!, marks = [...el.querySelectorAll<HTMLElement>(".rel-marks i")];
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const SPEED = 45, WAIT_START = 2000, WAIT_END = 2500, HOLD = [6000, 4500, 4500];
@@ -323,6 +333,7 @@ cd cl_audit && ./build.sh</code></pre>
     el.addEventListener("mouseenter", () => (hold = true));
     el.addEventListener("mouseleave", () => (hold = false));
     el.addEventListener("click", () => show((i + 1) % pages.length));
+    document.addEventListener("cl:platform", () => { choose(); show(0); });
     show(0);
   }
   document.addEventListener("astro:page-load", setupRel);
@@ -343,6 +354,8 @@ cd cl_audit && ./build.sh</code></pre>
   .version-disp :global(.sub) { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
   .version-disp :global(em.amber) { color: #fbbf24; text-shadow: 0 0 3px rgba(251,191,36,.7), 0 0 9px rgba(251,191,36,.3); }
   .rel-marks { flex: none; display: inline-flex; gap: 3px; }
+  :global(.not-mac) .rel-marks { display: none; }
+  :global(.not-mac) #rel:not([data-started]) .rel-line { visibility: hidden; }   /* no release line flashing before the reason */
   .rel-marks i { width: 5px; height: 5px; border-radius: 1px; background: rgba(var(--glow), .18); }
   .rel-marks i.on { background: rgb(var(--glow)); box-shadow: 0 0 4px rgba(var(--glow), .8); }
   .rel-marks i.amber { background: rgba(251,191,36,.22); }
