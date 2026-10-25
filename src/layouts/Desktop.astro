@@ -9,8 +9,9 @@ import TerminalApps from "../components/TerminalApps.astro";
 import { repo, download, version } from "../data/site";
 
 export type Page = "overview" | "dashboard" | "settings" | "install" | "faq" | "none";
-interface Props { title: string; description: string; page: Page; jsonLd?: object[] }
-const { title, description, page, jsonLd } = Astro.props;
+// headline: the page title, shown lit in the top display window (it is the page's h1)
+interface Props { title: string; description: string; page: Page; headline?: string; jsonLd?: object[] }
+const { title, description, page, headline, jsonLd } = Astro.props;
 
 const nav: [Page, string, string][] = [
   ["overview", "Overview", "/"], ["dashboard", "Demo dashboard", "/dashboard/"], ["settings", "Settings", "/settings/"],
@@ -31,12 +32,11 @@ const current = nav.find(([id]) => id === page)?.[1];
 
     <div class="appwin" transition:animate="none">
       <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="tb-title">cl_audit</span></div>
-      <!-- the top strip of the front panel: brand, a display window naming the page, the PAGE keys -->
+      <!-- the top strip of the front panel: brand, the display window with the page title, the PAGE keys -->
       <div class="fascia">
-        <a class="brand" href="/"><b>cl_audit</b><span>Usage audit · all Claude profiles</span></a>
-        {current && <span class="disp page-disp" aria-hidden="true"><em>Page</em>{current}</span>}
-        <slot name="top" />
-        <span class="spacer"></span>
+        <a class="brand" href="/"><b>cl_audit</b><span>Usage audit for Claude profiles</span></a>
+        {headline && <h1 class="disp page-disp"><em>{current}</em><span class="pd-t">{headline}</span></h1>}
+        <div class="fascia-slot"><slot name="top" /></div>
         <nav class="plate pages" aria-label="Pages">
           <span class="lbl" aria-hidden="true">Page</span><span class="divider" aria-hidden="true"></span>
           {nav.map(([id, label, href]) => <a href={href} class:list={["key", "sm", { on: id === page }]} aria-current={id === page ? "page" : undefined}><span class="led" aria-hidden="true"></span>{label}</a>)}

@@ -6,12 +6,11 @@ const title = "Install — cl_audit: download it for your Mac, or build it from 
 const description =
   "Download cl_audit for macOS (Apple silicon, macOS 13 or later), allow it once in Privacy & Security, and add a profile for each Claude setup. Or build it from source with build.sh. Requires Claude Code.";
 ---
-<Desktop title={title} description={description} page="install">
+<Desktop title={title} description={description} page="install" headline="Download or build from source">
   <div class="content-inner">
     <div class="cols2 lead-row">
       <div class="card dl-card">
         <h4>Download</h4>
-        <div class="page-head"><h1>Install cl_audit</h1><p>Download the ready-built app, or build it from source.</p></div>
         <div class="dl-row">
           <span class="plate"><span class="lbl" aria-hidden="true">Mac</span><span class="divider" aria-hidden="true"></span><a class="pill dl big" href={download}>Download cl_audit {version}</a></span>
           <span class="disp"><em>Rel</em>{releasedText()}</span>
@@ -45,7 +44,7 @@ const description =
     <div class="cols2">
       <div class="card">
         <h4>Or build it from source</h4>
-        <p class="t">Read every line before it runs, then build it on your Mac:</p>
+        <p class="t">Review the source, then build on the Mac:</p>
         <pre class="code"><code>git clone {repo}.git
 cd cl_audit
 git checkout v{version}   # optional: exactly this release
@@ -85,9 +84,8 @@ git checkout v{version}   # optional: exactly this release
 </Desktop>
 
 <style>
-  .dl-card .page-head { margin-bottom: 2px; }
   .drift { margin: 10px 0 0; font-size: 12.5px; }
-  .dl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 12px 0 14px; }
+  .dl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 2px 0 14px; }
   .dl-row .sub a { color: #e8a07f; }
   /* the macOS Privacy & Security row, as macOS draws it */
   .gk { margin: 2px 0 0 46px; border-radius: 9px; background: #2b2b2e; box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 6px 16px rgba(0,0,0,.3); padding: 10px 12px; font-size: 13px; }

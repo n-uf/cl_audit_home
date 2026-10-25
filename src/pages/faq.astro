@@ -11,9 +11,8 @@ const jsonLd = [{
   mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
 }];
 ---
-<Desktop title={title} description={description} page="faq" jsonLd={jsonLd}>
+<Desktop title={title} description={description} page="faq" headline="Common questions" jsonLd={jsonLd}>
   <div class="content-inner">
-    <div class="page-head"><h1>Questions</h1><p>Good to know before you install.</p></div>
     <div class="faq-list">
       {faq.map(([q, a], i) => (
         <details class="card" open={i < 3}><summary>{q}</summary><p>{a}</p></details>

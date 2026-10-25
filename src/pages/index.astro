@@ -50,7 +50,7 @@ const jsonLd = [{
   author: { "@type": "Organization", name: "n-uf", url: "https://n-uf.com" },
 }];
 ---
-<Desktop title={title} description={description} page="overview" jsonLd={jsonLd}>
+<Desktop title={title} description={description} page="overview" headline="Multiple Claude desktop apps · usage per profile" jsonLd={jsonLd}>
   <div class="content-inner">
     <div class="hero-row">
     <div class="hero-cards" aria-label="Two demo profiles as the dashboard shows them">
@@ -59,24 +59,22 @@ const jsonLd = [{
     <div class="card intro">
       <img src="/img/app-icon.png" alt="The cl_audit app icon" width="92" height="92" />
       <div class="intro-body">
-        <h4 class="intro-label">cl_audit for Mac</h4>
-        <h1>Every Claude profile, side by side on your Mac.</h1>
-        <p>
-          A profile is one Claude setup: its Claude Code folder and sign-in, its Claude window and its Dock icon.
-          cl_audit shows each profile's usage limits live in the Dock and on a dashboard, with figures read
-          directly from Anthropic.
+        <h4 class="intro-label">What it does</h4>
+        <p class="intro-text">
+          cl_audit runs several Claude desktop apps side by side on one Mac, each with its own sign-in, and shows
+          every profile's 5-hour and weekly usage in the Dock and on a dashboard. A profile is one Claude setup: a
+          Claude Code folder with its sign-in, a Claude window and a Dock icon. Limits are read from Anthropic;
+          usage history comes from Claude Code's session logs on the Mac.
         </p>
-        <!-- the actions as one key strip (sketch T4) -->
+        <!-- the release in a display window, then the actions as one key strip (sketch T4); both full width -->
+        <div class="disp version-disp"><span>cl_audit {version}</span><em>·</em><span>{releasedText()}</span><em class="vd-req">·</em><span class="vd-req">{requires}</span></div>
         <div class="plate hero-keys">
-          <span class="lbl" aria-hidden="true">cl_audit</span><span class="divider" aria-hidden="true"></span>
+          <span class="lbl hk-ver" title={`cl_audit ${version}`}>{version}</span><span class="divider" aria-hidden="true"></span>
           <a class="pill dl big" href={download}>Download for Mac</a>
-          <a class="key" href="/install/"><span class="led" aria-hidden="true"></span>Install steps</a>
-          <a class="key" href="/dashboard/" title="The dashboard with sample profiles"><span class="led" aria-hidden="true"></span>Demo dashboard</a>
+          <a class="key" href="/install/">Install steps</a>
+          <a class="key" href="/dashboard/" title="The dashboard with sample profiles">Demo dashboard</a>
         </div>
-        <div class="dl-meta">
-          <span class="disp version-disp"><span>cl_audit {version}</span><em>·</em><span>{releasedText()}</span><em class="hide-xs">·</em><span class="hide-xs">{requires}</span></span>
-          <span class="dl-note">free and source-available · runs entirely on your Mac</span>
-        </div>
+        <span class="dl-note">Source-available · runs locally · no account or server</span>
         <span class="dl-note checked" title={driftNote}>Checked with Claude Code {checkedWith.claudeCode} and the Claude app {checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.</span>
       </div>
     </div>
@@ -102,23 +100,23 @@ const jsonLd = [{
 
     <div class="cols3">
       <article class="card" id="profiles">
-        <h4>1 · Several Claude profiles</h4>
-        <h2 class="h3">Side by side, each signed in</h2>
+        <h4>1 · Multiple Claude apps</h4>
+        <h2 class="h3">A Claude window per profile, each signed in</h2>
         <div class="mini-palette">
           {accounts.map((a, i) => <Row id={a.id} icon={a.icon} name={a.name} color={a.color} five={a.five} week={a.week} key={`⌘${i + 1}`} sel={i === 0} open={i < 2} />)}
           <div class="foot">click or ↩ Claude window · ⌘↩ Terminal</div>
         </div>
         <p class="t">
-          The Claude app signs in to one account at a time. A profile can have a separate Claude window, with its
-          own sign-in and data folder, next to the standard one; its Claude Code folder keeps its own sign-in
-          too. Several profiles can use one claude.ai account.
+          The Claude app signs in to one account at a time. A profile can add a separate Claude window with its own
+          sign-in and data folder; its Claude Code folder keeps its own sign-in. Several profiles can use one
+          claude.ai account.
         </p>
         <a class="more" href="/install/">Add a profile ›</a>
       </article>
 
       <article class="card" id="dock">
-        <h4>2 · Usage limits in the Dock</h4>
-        <h2 class="h3">One glance per profile</h2>
+        <h4>2 · Usage in the Dock</h4>
+        <h2 class="h3">Both limits, per profile</h2>
         <div class="dock-mini">
           <img src="/img/app-icon.png" alt="" width="52" height="52" /><span class="vsep"></span>
           {accounts.map((a) => <AccIcon id={a.id} src={a.icon} size={52} alt={`Dock icon of the ${a.name} profile: ${a.five}% of the 5-hour limit used`} />)}
@@ -128,16 +126,16 @@ const jsonLd = [{
           <div class="lane-icons">{lane.map((t, i) => <figure><img src={`/img/lane-${i}.png`} alt="" width="40" height="40" /><figcaption>{t}</figcaption></figure>)}</div>
         </div>
         <p class="t">
-          Each profile's Dock icon shows its 5-hour limit and weekly limit. Click it for a quick look while that
-          profile's Claude window opens; 13 icon styles, 5 panel designs, a notification before a limit is
-          reached and an optional dot while its Claude window is open.
+          Each profile's Dock icon shows its 5-hour and weekly limits. A click shows the usage for a moment, then
+          opens its Claude window. Options: 13 icon styles, 5 panel designs, a notification at a set level, a dot
+          while its Claude window is open.
         </p>
         <a class="more" href="/settings/">Icon styles in Settings ›</a>
       </article>
 
       <article class="card" id="dashboard">
         <h4>3 · Usage dashboard</h4>
-        <h2 class="h3">Read directly from Anthropic</h2>
+        <h2 class="h3">Limits from Anthropic, history from local logs</h2>
         <div class="mcards">
           {accounts.map((a) => (
             <div class="mcard">
@@ -151,8 +149,8 @@ const jsonLd = [{
           <span><b>Usage history</b><br /><span class="sub">when you use Claude · tokens per day · where they go</span></span>
         </a>
         <p class="t">
-          The same figures Claude shows in Settings ▸ Usage, with exact reset times, for every profile. History comes
-          from the Claude Code session logs on your Mac.
+          The figures Claude shows in Settings ▸ Usage, with exact reset times, for every profile. History is read
+          from Claude Code's session logs on the Mac; nothing is uploaded.
         </p>
         <a class="more" href="/dashboard/">Demo dashboard ›</a>
       </article>
@@ -160,21 +158,21 @@ const jsonLd = [{
 
     <div class="cols2">
       <div class="card">
-        <h4>Open the right profile</h4>
+        <h4>Launcher</h4>
         <div class="list">
-          <div><b>Click the cl_audit icon</b><span>The launcher lists every profile with both limits. Click one, or press ⌘1–9, to open its Claude window.</span></div>
-          <div><b>⌘↩ for Claude Code</b><span>Opens Terminal with Claude Code already set to that profile's folder.</span></div>
-          <div><b>Shared where you want it</b><span>A new profile can share CLAUDE.md, agents, skills, commands or memory with another Claude Code folder, while sign-ins and usage stay separate.</span></div>
+          <div><b>cl_audit icon</b><span>Lists every profile with both limits. Click or ⌘1–9 opens that profile's Claude window.</span></div>
+          <div><b>⌘↩</b><span>Opens Terminal with Claude Code set to that profile's folder.</span></div>
+          <div><b>Shared files</b><span>A new profile can share CLAUDE.md, agents, skills, commands or memory with another Claude Code folder. Sign-ins and usage stay separate.</span></div>
         </div>
       </div>
       <div class="card">
-        <h4>Two switches on every card</h4>
+        <h4>Card switches</h4>
         <div class="list">
-          <div><b>Claude window</b><span>Open or quit the profile's Claude window.</span></div>
-          <div><b>Dock icon</b><span>Start or quit the profile's Dock icon. The Dock is never restarted, but while the icon is stopped the profile doesn't refresh or alert.</span></div>
-          <div><b>Following each other</b><span>In a profile's settings, Opening and closing lets the Dock icon follow its window, the window follow its Dock icon, or both.</span></div>
+          <div><b>Claude window</b><span>Opens or quits the profile's Claude window.</span></div>
+          <div><b>Dock icon</b><span>Starts or quits the profile's Dock icon. The Dock is not restarted. While stopped, the profile doesn't refresh or alert.</span></div>
+          <div><b>Opening and closing</b><span>A profile setting: the Dock icon follows its window, the window follows its Dock icon, or both.</span></div>
         </div>
-        <a class="more" href="/dashboard/">Try the switches ›</a>
+        <a class="more" href="/dashboard/">Switches in the demo ›</a>
       </div>
     </div>
 
@@ -182,14 +180,14 @@ const jsonLd = [{
       <div class="card">
         <h4>Add a profile</h4>
         <div class="list">
-          <div><b>Settings ▸ New profile</b><span>Choose a new or existing Claude Code folder, and its Claude window: standard, separate or none.</span></div>
-          <div><b>Quit the Claude app first</b><span>Until the folder exists: while open, the app writes its own sign-in and settings.</span></div>
-          <div><b>Sign in, in two parts</b><span>Claude Code first, then a separate window, signed in to the same claude.ai account.</span></div>
-          <div><b>Its Dock icon</b><span>cl_audit installs and starts it. Drag it into the Dock, or let General settings ▸ Dock pin it (experimental).</span></div>
+          <div><b>Settings ▸ New profile</b><span>Pick a new or existing Claude Code folder and the Claude window: standard, separate or none.</span></div>
+          <div><b>Quit the Claude app first</b><span>Until the folder exists. While open, the app writes its own sign-in and settings.</span></div>
+          <div><b>Sign in, two steps</b><span>Claude Code first, then the separate window, both to the same claude.ai account.</span></div>
+          <div><b>Dock icon</b><span>Installed and started by cl_audit. Drag it into the Dock, or let General settings ▸ Dock pin it (experimental).</span></div>
         </div>
       </div>
       <div class="card">
-        <h4>Words used here</h4>
+        <h4>Terms</h4>
         <div class="list">
           <div><b>Profile</b><span>One Claude setup in cl_audit: a Claude Code folder with its sign-in, a Claude window and a Dock icon.</span></div>
           <div><b>Account</b><span>Only the claude.ai account a profile is signed in to. Several profiles can use one account.</span></div>
@@ -200,13 +198,13 @@ const jsonLd = [{
 
     <div class="start-row">
       <div class="card">
-        <h4>Get started</h4>
+        <h4>Install</h4>
         <div class="btns" style="margin:2px 0 8px"><a class="pill dl dim" href={download}>Download cl_audit {version}</a></div>
-        <p class="t">Unzip, move it to Applications and open it; the first time, allow it once in Privacy &amp; Security. Or build it yourself:</p>
+        <p class="t">Unzip, move to Applications, open. On first launch, allow it once in System Settings ▸ Privacy &amp; Security. Or build from source:</p>
         <pre class="code"><code>git clone {repo}.git
 cd cl_audit && ./build.sh</code></pre>
         <div class="srow" style="margin-top:6px"><span>Requires</span><span class="v">{requires} · Claude Code</span></div>
-        <a class="more" href="/install/">Full install steps ›</a>
+        <a class="more" href="/install/">Install steps ›</a>
       </div>
     </div>
 
@@ -266,25 +264,25 @@ cd cl_audit && ./build.sh</code></pre>
 <style>
   .intro-body { min-width: 0; }
   .intro-label { margin-bottom: 12px; }
-  /* the hero key strip: one row of equal keys; with too little room the printed label goes first, then the
-     keys share each row evenly (never a lone key hanging under a half-empty row) */
+  .intro-text { margin: 0; color: var(--soft); font-size: 15.5px; line-height: 1.6; max-width: 72ch; }
+  /* the release display and the key strip below it, both as wide as the intro; the keys share the strip */
   .intro-body { container-type: inline-size; width: 100%; }
-  .hero-keys { display: inline-flex; flex-wrap: wrap; margin-top: 18px; max-width: 100%; }
-  .hero-keys > .pill, .hero-keys > .key { flex: none; height: 32px; padding: 0 14px; font-size: 11px; }
-  @container (max-width: 660px) {
-    .hero-keys > .lbl, .hero-keys > .divider { display: none; }
-  }
-  @container (max-width: 560px) {
+  .version-disp { display: flex; width: 100%; height: 30px; margin-top: 18px; gap: 7px; font-size: 11px; letter-spacing: .12em; }
+  @container (max-width: 580px) { .version-disp .vd-req { display: none; } }
+  .hero-keys { display: flex; width: 100%; flex-wrap: wrap; margin-top: 10px; }
+  .hero-keys > .pill, .hero-keys > .key { flex: 1 1 auto; height: 32px; padding: 0 16px; font-size: 11px; }
+  .hero-keys > .pill.dl { padding-top: 4px; }
+  .hk-ver { padding: 0 2px 0 4px; font-family: var(--mono); letter-spacing: .1em; }
+  @container (max-width: 620px) {
     .hero-keys > .pill, .hero-keys > .key { padding: 0 10px; font-size: 10.5px; letter-spacing: .08em; }
   }
   @container (max-width: 470px) {
-    .hero-keys { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
-    .hero-keys > .pill.dl { grid-column: 1 / -1; }
+    /* phone: the version and Download on the first row, the other two keys sharing the second */
+    .hero-keys > .pill.dl { flex: 1 1 auto; }
+    .hero-keys > .key { flex: 1 1 40%; }
   }
-  .dl-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
-  .version-disp { gap: 7px; }
-  .dl-note { color: var(--muted); font-size: 12.5px; }
-  .dl-note.checked { display: block; margin-top: 6px; cursor: help; }
+  .dl-note { display: block; margin-top: 12px; color: var(--muted); font-size: 12.5px; }
+  .dl-note.checked { margin-top: 4px; cursor: help; }
   /* the login section: one module; a display badge, a row of keys, a recessed readout */
   .trust { min-width: 0; }
   .trust-head { display: flex; align-items: center; gap: 12px; }

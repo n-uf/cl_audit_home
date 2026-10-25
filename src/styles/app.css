@@ -82,18 +82,29 @@ code, kbd { font-family: var(--mono); }
 .key.on, .switch .on, .key[aria-selected="true"] { transform: translateY(1px); background: var(--alu-down); box-shadow: var(--key-down); }
 
 /* the LED: off is a dark dot in the key, lit is orange and glows */
-.led, .switch a::before, .switch button::before, .pill.dl::before {
+.led, .switch a::before, .switch button::before {
   content: ""; width: 6px; height: 6px; border-radius: 50%; flex: none;
   background: #6b5a52; box-shadow: inset 0 1px 1px rgba(0,0,0,.45);
   transition: background .2s, box-shadow .2s;
 }
-.led.lit, .key.on .led, .key[aria-selected="true"] .led, .switch .on::before, .pill.dl::before {
+.led.lit, .key.on .led, .key[aria-selected="true"] .led, .switch .on::before {
   background: rgb(var(--led)); box-shadow: 0 0 6px rgba(var(--led), .9), 0 0 0 1px rgba(120,40,0,.25);
 }
-/* Download: the key with the lit LED. Only one is lit at a time (data/downloadFocus.ts dims the others). */
-.pill.dl { flex: none; }
-.pill.dl.big { padding: 0 16px; }   /* same height as the keys beside it; the lit LED marks it */
-.pill.dl.dim::before { background: #6b5a52; box-shadow: inset 0 1px 1px rgba(0,0,0,.45); }
+/* Download: the key with the orange light slot along its top edge, as on the production site. Only one is
+   lit at a time (data/downloadFocus.ts dims the others; a dimmed slot is unlit). */
+.pill.dl { flex: none; padding-top: 4px; }
+.pill.dl::before {
+  content: ""; position: absolute; left: 6px; right: 6px; top: 4px; height: 3px; border-radius: 3px;
+  background: linear-gradient(180deg, #ffb08a, #ff7a3d 60%, #f0612a);
+  box-shadow: 0 0 3px rgba(255,122,61,.8), 0 0 9px rgba(255,122,61,.5), 0 2px 12px rgba(255,122,61,.25), inset 0 1px 0 rgba(255,255,255,.45);
+  transition: background .25s, box-shadow .25s;
+}
+.pill.dl::after {   /* the slot's glow on the key face */
+  content: ""; position: absolute; left: 12%; right: 12%; top: 7px; height: 12px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(ellipse at top, rgba(255,140,80,.28), rgba(255,140,80,0) 70%); transition: opacity .25s;
+}
+.pill.dl.dim::before { background: #7a5a4c; box-shadow: inset 0 1px 1px rgba(0,0,0,.4); }
+.pill.dl.dim::after { opacity: 0; }
 /* quiet: an unlit key with a lighter legend */
 .pill.quiet { color: #4a4a4a; }
 /* tinted (the card's Open window): its LED in the profile colour */
@@ -161,7 +172,7 @@ code, kbd { font-family: var(--mono); }
   background: var(--grain), linear-gradient(180deg, #48484b, #333336);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.4), 0 0 0 1px #0b0b0c, 0 4px 12px rgba(0,0,0,.35); }
 .chips .lbl { padding: 0 2px 0 3px; }
-.updated { color: var(--muted); font-size: 12px; }
+.updated { color: var(--muted); font-size: 12px; white-space: nowrap; }
 
 /* ── Profile cards (dashboard) ──────────────────────────────────────── */
 .acc { display: grid; gap: 12px; }
@@ -211,7 +222,7 @@ code, kbd { font-family: var(--mono); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dash-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(352px, 1fr)); gap: 12px; }   /* wide enough for both switches in one row */
 .dash .history { margin-top: 10px; }
-.fascia .chips { flex: none; }
+
 .chip { gap: 7px; }
 .chip-ck { width: 6px; height: 6px; border-radius: 50%; font-size: 0; color: transparent; box-shadow: 0 0 6px currentColor; }
 .chip.on .chip-ck { box-shadow: 0 0 6px rgba(255,255,255,.35), 0 0 0 1px rgba(0,0,0,.25); }
@@ -372,16 +383,31 @@ body { overflow: hidden; }
 .appwin .titlebar { position: relative; display: flex; align-items: center; height: 28px; padding: 0 12px; flex: none; }
 .appwin .tb-title { position: absolute; left: 0; right: 0; text-align: center; color: var(--muted); font-size: 12.5px; font-weight: 600; pointer-events: none; }
 
-/* the top strip: brand with a printed sub-label, the page display, the PAGE key strip */
-.fascia { display: flex; align-items: center; gap: 14px; padding: 4px 18px 12px; flex: none; min-width: 0;
+/* the top strip: brand with a printed sub-label, the display window with the page title (the page's h1),
+   page-specific controls (the dashboard's Show keys) and the PAGE key strip. A grid, so the display takes the
+   free width and the strip rearranges in rows when it runs out of room. */
+.fascia { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "brand disp keys";
+  align-items: center; column-gap: 16px; row-gap: 10px; padding: 4px 18px 12px; flex: none; min-width: 0;
   border-bottom: 1px solid rgba(0,0,0,.6); box-shadow: 0 1px 0 rgba(255,255,255,.04); }
-.brand { display: grid; line-height: 1.1; text-decoration: none; flex: none; }
+.brand { grid-area: brand; display: grid; line-height: 1.1; text-decoration: none; }
 .brand b { font-size: 19px; font-weight: 700; letter-spacing: -.01em; }
-.brand span { margin-top: 4px; font: 600 8.5px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.42); }
-/* the page display: as tall as the brand block (title + sub-label), so the two read as one unit */
-.fascia .page-disp { align-self: stretch; height: auto; min-height: 40px; margin: 2px 0; padding: 0 14px; gap: 10px; border-radius: 6px; font-size: 12.5px; letter-spacing: .18em; }
-.plate.pages { flex: none; }
+.brand span { margin-top: 4px; font: 600 8.5px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.42); white-space: nowrap; }
+.fascia .page-disp { grid-area: disp; margin: 0; min-width: 0; height: 40px; padding: 0 16px; gap: 14px; border-radius: 6px;
+  font-size: 12px; font-weight: 600; letter-spacing: .1em; }
+.page-disp .pd-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.fascia-slot { grid-column: 1 / -1; display: flex;   /* its own row below, unless there is room (1600 px+) */ align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }
+.fascia-slot:empty { display: none; }
+.plate.pages { grid-area: keys; justify-self: end; }
 .plate.pages .key { height: 24px; }
+@media (min-width: 1600px) {
+  .fascia { grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-areas: "brand disp slot keys"; }
+  .fascia-slot { grid-area: slot; }
+}
+@media (max-width: 1440px) { .fascia .page-disp > em { display: none; } }   /* the lit PAGE key names the page */
+@media (max-width: 1300px) {
+  .fascia { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "brand keys" "disp disp"; }
+  .fascia .page-disp > em { display: inline; }
+}
 
 .content { flex: 1; overflow: auto; padding: 18px; overscroll-behavior: contain; }
 .content-inner { display: grid; gap: 14px; align-content: start; max-width: 1400px; margin: 0 auto; }
@@ -446,14 +472,14 @@ body { overflow: hidden; }
 
 @media (max-width: 1100px) {
   .cols3 { grid-template-columns: 1fr 1fr; }
-  .fascia .page-disp { display: none; }
 }
 @media (max-width: 860px) {
   .mb-links, .mb-clock, .mb-gh { display: none; }
   .appwin { top: 28px; left: 0; right: 0; bottom: 74px; border-radius: 0; }
-  .fascia { flex-wrap: wrap; gap: 10px; padding: 2px 12px 10px; }
-  .fascia .spacer { display: none; }
-  .plate.pages { flex: 1 1 100%; gap: 5px; padding: 6px; }
+  .fascia { grid-template-columns: minmax(0, 1fr); grid-template-areas: "brand" "disp" "keys"; row-gap: 9px; padding: 2px 12px 10px; }
+  .fascia .page-disp { height: auto; min-height: 36px; padding: 8px 12px; white-space: normal; line-height: 1.5; flex-wrap: wrap; row-gap: 0; font-size: 11.5px; }
+  .page-disp .pd-t { overflow: visible; }
+  .plate.pages { justify-self: stretch; display: flex; gap: 5px; padding: 6px; }
   .plate.pages > .lbl, .plate.pages > .divider { display: none; }
   .plate.pages .key { flex: 1 1 auto; min-width: 0; padding: 0 6px; gap: 5px; font-size: 9.5px; letter-spacing: .06em; }
   .content { padding: 12px; }
