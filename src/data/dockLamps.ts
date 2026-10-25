@@ -75,7 +75,7 @@ export function initDockLamps() {
   slot.innerHTML = "";
   const frame = document.createElement("span");
   frame.className = "lfr";
-  frame.style.width = `${width(0)}px`;
+  frame.style.width = `${width(1)}px`;   // the Dock starts with one pair in place
   slot.append(frame);
   const pairs = START.map(([five, week]) => {
     const el = document.createElement("span");
@@ -133,10 +133,14 @@ export function initDockLamps() {
     };
     later(tick, rnd(1500, 4000));
   };
-  pairs.forEach((p, i) => later(() => {
+  // the first pair is there from the start (its usage fills); the others launch into the Dock one at a time
+  frame.append(pairs[0].el);
+  pairs[0].el.classList.add("in");
+  later(() => { pairs[0].rings.five.to(pairs[0].five, 1600, false); pairs[0].rings.week.to(pairs[0].week, 1900, false); }, 400);
+  pairs.slice(1).forEach((p, j) => later(() => {
     frame.append(p.el);
-    frame.style.width = `${width(i + 1)}px`;   // the Dock opens a place
+    frame.style.width = `${width(j + 2)}px`;   // the Dock opens a place
     later(() => { p.el.classList.add("in"); later(() => { p.rings.five.to(p.five, 1600, false); p.rings.week.to(p.week, 1900, false); }, 350); }, 260);   // the pair pops in, its usage fills
-  }, 500 + i * 1500));
-  pairs.forEach((p, i) => later(() => live(p), 500 + 3 * 1500 + 1500 + i * 900));
+  }, 1800 + j * 1500));
+  pairs.forEach((p, i) => later(() => live(p), 1800 + 2 * 1500 + 1500 + i * 900));
 }
