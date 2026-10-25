@@ -9,7 +9,7 @@ export function initDownloadFocus() {
   cleanup?.();
   const content = document.querySelector<HTMLElement>(".content");
   const bar = document.querySelector<HTMLElement>(".mb-dl");
-  const buttons = [...document.querySelectorAll<HTMLElement>(".content .pill.dl")];
+  const buttons = [...document.querySelectorAll<HTMLElement>(".content .dl")];
 
   const update = () => {
     const area = content?.getBoundingClientRect();

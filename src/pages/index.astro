@@ -24,6 +24,10 @@ const trustFacts: { tab: string; title: string; text: string }[] = [
   { tab: "No server or analytics", title: "No server, analytics or sign-up",
     text: "cl_audit has no server of its own, collects no statistics and needs no account. Its code is open: the login is read in <code>Login.read</code> (Sources/Model.swift)." },
 ];
+// The Security badge (sketch V4).
+const badges = [
+  { key: "", cls: "", html: "<em>LOGIN</em>SECURITY", name: "" },
+];
 const lane = ["plenty left", "", "half used", "", "at the limit"];
 const spark = [[10, 4, 6], [14, 2, 8], [6, 22, 3], [5, 24, 2], [7, 26, 4], [9, 20, 3], [3, 8, 1]];
 
@@ -66,9 +70,9 @@ const jsonLd = [{
           directly from Anthropic.
         </p>
         <div class="btns">
-          <a class="pill dl big" href={download}><span aria-hidden="true">↓</span> Download for Mac</a>
-          <a class="pill" href="/install/">Install steps</a>
-          <a class="pill quiet" href="/dashboard/">Open the dashboard</a>
+          <a class="key t2 primary dl" href={download}><span class="bar" aria-hidden="true"></span>Download for Mac</a>
+          <a class="key t2" href="/install/">Install steps</a>
+          <a class="key t1" href="/dashboard/" title="The dashboard with sample profiles">Demo dashboard</a>
         </div>
         <span class="note dl-note">cl_audit {version} · {releasedText()} · {requires} · free and source-available · runs entirely on your Mac</span>
         <span class="note dl-note checked" title={driftNote}>Checked with Claude Code {checkedWith.claudeCode} and the Claude app {checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.</span>
@@ -76,21 +80,23 @@ const jsonLd = [{
     </div>
     </div>
 
-    <section class="card trust" id="login" aria-labelledby="trust-title">
+    <script type="application/json" id="tf-data" set:html={JSON.stringify(trustFacts)} />
+    {badges.map((b) => (
+    <section class="card trust" aria-labelledby={`trust-title${b.key}`}>
       <div class="trust-head">
-        <span class="sbadge" aria-hidden="true"><span><i></i>Security</span></span>
-        <h2 id="trust-title" class="trust-title"><span class="sr-only">Security: </span>How cl_audit handles the Claude login</h2>
+        <span class={`vfd ${b.cls}`} aria-hidden="true"><span set:html={b.html} /></span>
+        <h2 id={`trust-title${b.key}`} class="trust-title"><span class="sr-only">Security: </span>How cl_audit handles the Claude login</h2>
         <a class="trust-more" href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>Details ›</a>
       </div>
       <div class="seg" role="tablist" aria-label="How cl_audit handles the Claude login">
-        <span class="seg-ind first" aria-hidden="true"></span>
-        {trustFacts.map((f, i) => <button type="button" class="stab" role="tab" id={`tf-tab-${i}`} aria-controls="tf-pane" aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-i={i}>{f.tab}</button>)}
+        <span class="seg-ind" aria-hidden="true"></span>
+        {trustFacts.map((f, i) => <button type="button" class="stab" role="tab" id={`tf-tab-${i}${b.key}`} aria-controls={`tf-pane${b.key}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-i={i}>{f.tab}</button>)}
       </div>
-      <div class="tf-pane" id="tf-pane" role="tabpanel" aria-labelledby="tf-tab-0">
+      <div class="tf-pane" id={`tf-pane${b.key}`} role="tabpanel" aria-labelledby={`tf-tab-0${b.key}`}>
         <div class="tf-text"><b>{trustFacts[0].title}</b><p set:html={trustFacts[0].text} /></div>
       </div>
-      <script type="application/json" id="tf-data" set:html={JSON.stringify(trustFacts)} />
     </section>
+    ))}
 
     <div class="cols3">
       <article class="card" id="profiles">
@@ -146,7 +152,7 @@ const jsonLd = [{
           The same figures Claude shows in Settings ▸ Usage, with exact reset times, for every profile. History comes
           from the Claude Code session logs on your Mac.
         </p>
-        <a class="more" href="/dashboard/">Open the dashboard ›</a>
+        <a class="more" href="/dashboard/">Demo dashboard ›</a>
       </article>
     </div>
 
@@ -210,16 +216,18 @@ cd cl_audit && ./build.sh</code></pre>
   // The login section: tabs with a sliding highlight; the explanation cross-fades and the section keeps
   // the height of its longest explanation, so the page never moves. Arrow keys move between tabs.
   function setupTrust() {
-    const card = document.getElementById("login");
-    if (!card || card.dataset.ready) return;
+    const facts = JSON.parse(document.getElementById("tf-data")?.textContent || "[]") as { tab: string; title: string; text: string }[];
+    document.querySelectorAll<HTMLElement>(".card.trust").forEach((card) => initTrust(card, facts));
+  }
+  function initTrust(card: HTMLElement, facts: { tab: string; title: string; text: string }[]) {
+    if (card.dataset.ready) return;
     card.dataset.ready = "1";
-    const facts = JSON.parse(document.getElementById("tf-data")!.textContent || "[]") as { tab: string; title: string; text: string }[];
     const seg = card.querySelector<HTMLElement>(".seg")!, ind = card.querySelector<HTMLElement>(".seg-ind")!;
     const tabs = [...card.querySelectorAll<HTMLButtonElement>(".stab")];
     const pane = card.querySelector<HTMLElement>(".tf-pane")!, text = card.querySelector<HTMLElement>(".tf-text")!;
     const html = (i: number) => `<b>${facts[i].title}</b><p>${facts[i].text}</p>`;
     let cur = 0, timer = 0;
-    const place = () => { const b = tabs[cur]; ind.style.width = `${b.offsetWidth}px`; ind.style.transform = `translateX(${b.offsetLeft}px)`; ind.classList.toggle("first", cur === 0); };
+    const place = () => { const b = tabs[cur]; ind.style.width = `${b.offsetWidth}px`; ind.style.transform = `translateX(${b.offsetLeft}px)`; };
     const measure = () => {
       const keep = text.innerHTML; let h = 0;
       facts.forEach((_, i) => { text.innerHTML = html(i); h = Math.max(h, text.offsetHeight); });
@@ -251,19 +259,45 @@ cd cl_audit && ./build.sh</code></pre>
 
 <style>
   .pill.big { padding: 10px 20px; font-size: 15.5px; }
+  /* hero keys (sketch T2): black anodised hi-fi keys, white legend; the download key has a glowing orange slot */
+  .key { position: relative; display: inline-flex; align-items: center; gap: 9px; border: 0; cursor: pointer; text-decoration: none; user-select: none;
+    transition: transform .06s, box-shadow .06s, filter .15s; -webkit-tap-highlight-color: transparent; }
+  .key:active { transform: translateY(1px); }
+  .led { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+  /* gunmetal key (Demo dashboard) */
+  .t1 { height: 38px; padding: 0 18px; border-radius: 4px; font: 600 11.5px/1 -apple-system, system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #f1f1f0; text-shadow: 0 -1px 0 rgba(0,0,0,.35);
+    background: repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, rgba(0,0,0,.06) 1px 2px), linear-gradient(180deg, #74746f, #52524e);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -1px 0 rgba(0,0,0,.35), 0 0 0 1px #2e2e2c, 0 2px 0 #121211, 0 4px 8px rgba(0,0,0,.5); }
+  .t1:hover { filter: brightness(1.04); }
+  .t1:active { box-shadow: inset 0 1px 0 rgba(255,255,255,.2), inset 0 -1px 0 rgba(0,0,0,.3), 0 0 0 1px #2e2e2c, 0 1px 0 #121211, 0 2px 4px rgba(0,0,0,.45); }
+  /* T2 · black anodised, white legend */
+  .t2 { height: 38px; padding: 0 18px; border-radius: 4px; font: 600 11.5px/1 -apple-system, system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #e9e9e9;
+    background: repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #3b3b3e, #1d1d1f);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 -1px 0 rgba(0,0,0,.6), 0 0 0 1px #000, 0 2px 0 #000, 0 4px 9px rgba(0,0,0,.55); }
+  .t2:hover { filter: brightness(1.12); }
+  .t2:active { box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -1px 0 rgba(0,0,0,.6), 0 0 0 1px #000, 0 1px 0 #000, 0 2px 4px rgba(0,0,0,.5); }
+  /* the orange light strip: a wide slot along the top edge that glows onto the key face */
+  .key .bar { position: absolute; left: 6px; right: 6px; top: 4px; height: 3px; border-radius: 3px;
+    background: linear-gradient(180deg, #ffb08a, #ff7a3d 60%, #f0612a);
+    box-shadow: 0 0 3px rgba(255,122,61,.8), 0 0 9px rgba(255,122,61,.5), 0 2px 12px rgba(255,122,61,.25), inset 0 1px 0 rgba(255,255,255,.45); }
+  .key .bar::after { content: ""; position: absolute; left: 8%; right: 8%; top: 3px; height: 12px; border-radius: 50%;
+    background: radial-gradient(ellipse at top, rgba(255,140,80,.18), rgba(255,140,80,0) 70%); pointer-events: none; }
+  .key.primary { padding-top: 4px; }
+  .key.dl.dim .bar { opacity: .3; box-shadow: none; }   /* another download button is the prominent one */
   .dl-note { display: block; color: var(--muted); font-size: 12.5px; }
   .dl-note.checked { margin-top: 2px; cursor: help; }
   /* the login section (sketch D1): a green bar on the title, text tabs with a sliding highlight */
   .trust { min-width: 0; padding: 16px 18px 18px; }   /* colours come from .card (the site's tokens) */
   .trust-head { display: flex; align-items: center; gap: 12px; }
   .trust-title { position: relative; margin: 0; font-size: 16px; font-weight: 650; letter-spacing: -.01em; color: var(--text); }
-  /* the Security badge (sketch S3): one segment, like the chosen tab, with a green status dot */
-  .sbadge { display: inline-flex; padding: 3px; border-radius: 9px; flex: none;
-    background: rgba(0,0,0,.22); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 2px rgba(0,0,0,.35); }
-  .sbadge > span { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 10px; border-radius: 6px; white-space: nowrap;
-    font-size: 12px; font-weight: 600; letter-spacing: .01em; color: #fff;
-    background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.06)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 3px rgba(0,0,0,.45); }
-  .sbadge i { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,.18), 0 0 8px rgba(74,222,128,.6); }
+  /* the Security badge (sketch V4): a small display window like a hi-fi receiver's readout, dim LOGIN, lit SECURITY */
+  .vfd { --glow: 127,249,234; position: relative; display: inline-flex; align-items: center; flex: none; height: 22px; padding: 0 10px; border-radius: 5px; overflow: hidden;
+    background: linear-gradient(180deg, #030607, #0a1113 70%, #0c1517);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,.035), 0 0 0 1px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.07); }
+  .vfd::after { content: ""; position: absolute; inset: 0 0 55% 0; pointer-events: none; background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,0)); }
+  .vfd > span { position: relative; display: inline-flex; gap: 8px; font: 600 10.5px var(--mono); letter-spacing: .18em; padding-left: .18em;
+    color: rgb(var(--glow)); text-shadow: 0 0 3px rgba(var(--glow), .75), 0 0 9px rgba(var(--glow), .35); }
+  .vfd :global(em) { font-style: normal; color: rgba(var(--glow), .38); text-shadow: none; }   /* the badge text is inserted as HTML, so not scoped */
   .trust-more { margin-left: auto; font-size: 12.5px; color: var(--muted); text-decoration: none; white-space: nowrap; }
   .trust-more:hover { color: #4ade80; }
   .seg { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 14px; padding: 4px; border-radius: 12px;
@@ -271,8 +305,6 @@ cd cl_audit && ./build.sh</code></pre>
   .seg-ind { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 9px; pointer-events: none;
     background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.08)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 3px rgba(0,0,0,.45);
     transition: transform .28s cubic-bezier(.3,.8,.25,1), width .28s cubic-bezier(.3,.8,.25,1), box-shadow .2s, background .2s; }
-  /* only the first point gets the green outline */
-  .seg-ind.first { background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.06)); box-shadow: inset 0 0 0 2px #4ade80, 0 0 12px rgba(74,222,128,.18), 0 1px 3px rgba(0,0,0,.45); }
   .stab { position: relative; z-index: 1; min-width: 0; height: 34px; padding: 0 10px; border: 0; border-radius: 9px; background: none; cursor: pointer;
     font: inherit; font-size: 13px; font-weight: 500; color: #9a9aa0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .2s; }
   .stab:hover { color: #d4d4d8; }
