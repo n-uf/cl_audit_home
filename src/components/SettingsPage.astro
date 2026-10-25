@@ -35,7 +35,7 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
         <span class="tile-text"><b data-acc-name={x.id}>{x.name}</b><span class="sub">{x.dir}</span></span>
       </button>
     ))}
-    <a class="tile tile-plain" href="/install/" title="Add a profile: see Install"><span class="tile-text"><b>New profile</b></span></a>
+    <a class="tile tile-plus" href="/install/" title="New profile (see Install)" aria-label="New profile">+</a>
     <span class="spacer"></span>
     <span class="sub show-emails">Show emails <button type="button" class="mswitch on" role="switch" aria-checked="true" data-toggle-emails aria-label="Show emails"></button></span>
   </div>

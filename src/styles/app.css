@@ -938,6 +938,7 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 /* strip: General and New profile are text-only tiles */
 .settings .strip { gap: 8px; }
 .tile-plain { padding: 5px 12px; min-height: 46px; text-decoration: none; }
+.tile-plus { width: 46px; height: 46px; padding: 0 !important; justify-content: center; font: 300 24px/1 var(--font); text-decoration: none; }   /* New profile, as the app draws it */
 
 /* rows with a stacked control (label above) and the small pairs */
 .settings .srow.stacked { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 6px; padding: 8px 0 10px; }
