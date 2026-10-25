@@ -6,6 +6,7 @@
 
 const NS = "http://www.w3.org/2000/svg";
 const START: [number, number][] = [[34, 12], [78, 61], [12, 40]];   // the demo profiles: 5-hour, week
+const NAMES = ["home", "work", "side"];
 const level = (p: number) => (p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
 const rnd = (a: number, b: number) => a + Math.random() * (b - a);
 let stop: (() => void) | undefined;
@@ -57,7 +58,7 @@ function usageRings() {
       };
       raf = requestAnimationFrame(step);
     };
-    return { to, cancel: () => cancelAnimationFrame(raf) };
+    return { to, cancel: () => cancelAnimationFrame(raf), value: () => shown };
   };
   return { svg, five: ring(9.2), week: ring(5.4) };
 }
@@ -91,7 +92,27 @@ export function initDockLamps() {
   });
   const timers: number[] = [];
   const later = (fn: () => void, ms: number) => { timers.push(window.setTimeout(fn, ms)); };
-  stop = () => { timers.forEach(clearTimeout); pairs.forEach((p) => { p.rings.five.cancel(); p.rings.week.cancel(); }); };
+  // the alert at the right end of the display: while a usage is red (80 % and up), the highest one is named there
+  const alert = document.querySelector<HTMLElement>(".lalert");
+  const watch = window.setInterval(() => {
+    if (!alert) return;
+    let top: { name: string; limit: string; v: number } | null = null;
+    pairs.forEach((p, i) => {
+      for (const [limit, v] of [["5-hour", p.rings.five.value()], ["week", p.rings.week.value()]] as const) {
+        const n = Math.round(v);
+        if (n >= 80 && (!top || n > top.v)) top = { name: NAMES[i], limit, v: n };
+      }
+    });
+    alert.classList.toggle("on", !!top);
+    if (top) {
+      const t = top as { name: string; limit: string; v: number };
+      const text = `${t.name} · ${t.limit} ${t.v}%`;
+      const label = alert.querySelector<HTMLElement>(".la-t");
+      if (label) { if (label.textContent !== text) label.textContent = text; }
+      else alert.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3.6 21.4 20H2.6z" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9.5v5M12 17.3v.1" stroke-width="2" stroke-linecap="round"/></svg>' + `<span class="la-t">${text}</span>`;
+    }
+  }, 400);
+  stop = () => { timers.forEach(clearTimeout); clearInterval(watch); pairs.forEach((p) => { p.rings.five.cancel(); p.rings.week.cancel(); }); };
   document.addEventListener("astro:before-swap", () => stop?.(), { once: true });
 
   if (still) {

@@ -465,8 +465,8 @@ body { overflow: hidden; }
 .page-disp .pd-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 /* the Overview's live little Dock (see dockLamps.ts): pairs of a Claude tile and its usage, in the Dock's proportions
    (icons 10 px apart at 56 px, shelf radius 22 px, icon radius 13 px), scaled from --s */
-.lslot { --s: 18px; display: inline-block; flex: none; vertical-align: middle; }   /* reserves the final width: the words after it never move */
-.lfr { --g: calc(var(--s) * .179); display: inline-flex; align-items: center; gap: var(--g); overflow: hidden; box-sizing: border-box;
+.lslot { --s: 18px; display: inline-flex; justify-content: center; flex: none; vertical-align: middle; }   /* reserves the final width (the words after it never move); the Dock grows from its centre */
+.lfr { --g: calc(var(--s) * .179); display: inline-flex; align-items: center; justify-content: flex-start; gap: var(--g); overflow: hidden; box-sizing: border-box;
   height: calc(var(--s) * 1.29); padding: 0 var(--g); border-radius: calc(var(--s) * .393);
   border: 1px solid rgba(var(--glow), .42); box-shadow: 0 0 4px rgba(var(--glow), .2), inset 0 0 4px rgba(var(--glow), .1);
   transition: width .55s cubic-bezier(.25,.8,.3,1); }
@@ -481,6 +481,12 @@ body { overflow: hidden; }
 /* the usage: two rings bare on the glass, each in its level colour */
 .lu .tr { stroke: rgba(var(--glow), .14); }
 .lu .arc { transition: stroke .9s ease; filter: drop-shadow(0 0 1.5px currentColor); }
+/* the alert at the right end of the Overview's display: shown while a usage is red (see dockLamps.ts) */
+.lalert { display: inline-flex; align-items: center; gap: 7px; flex: none; margin-left: auto; opacity: 0; transition: opacity .7s ease;
+  color: #ef4444; text-shadow: 0 0 3px rgba(239,68,68,.8), 0 0 9px rgba(239,68,68,.35); }
+.lalert.on { opacity: 1; }
+.lalert svg { width: 15px; height: 15px; stroke: #ef4444; filter: drop-shadow(0 0 1.5px #ef4444) drop-shadow(0 0 4px rgba(239,68,68,.45)); }
+.lalert .la-t { font-weight: 600; letter-spacing: .1em; }
 /* the title's secondary part (after " · "): same size and line, lighter and with a softer glow */
 .page-disp .pd-sub { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
 .fascia-slot { grid-column: 1 / -1; display: flex;   /* a page's own controls: their own row under the strip */ align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }
