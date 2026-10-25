@@ -418,7 +418,9 @@ cd cl_audit && ./build.sh</code></pre>
     .sg-h2 { margin-top: 0 !important; }
   }
   /* each key in a plate with its note printed beside it, after a divider (like the hero strip's version) */
-  .start-plate { display: flex; align-items: center; gap: 12px; padding: 7px 14px 7px 9px; justify-self: start; }
+  .start-plate { display: flex; align-items: center; gap: 14px; padding: 0; justify-self: start; }
+  /* no plate behind the key and its note: they sit straight on the panel (all faces) */
+  .start .start-plate, :global(.face-black) .start .start-plate, :global(.face-silver) .start .start-plate { background: none; box-shadow: none; }
   .start-plate .pill, .start-plate .key { flex: none; height: 32px; padding: 0 16px; }
   .start-note { min-width: 0; color: rgba(236,236,238,.7); font-size: 12.5px; line-height: 1.35; }
   :global(.face-silver) .start-note { color: #2e3033; }
