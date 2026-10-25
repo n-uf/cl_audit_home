@@ -219,15 +219,15 @@ const jsonLd = [{
         <div class="start-grid">
           <h4 class="sg-h1">Install</h4>
           <h4 class="sg-h2">Or build from source</h4>
-          <div class="sg-k1 plate start-plate">
+          <div class="sg-k1 key-note">
             <a class="pill dl dim" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
             <span class="divider" aria-hidden="true"></span>
-            <span class="start-note">cl_audit {version} · {requires} · needs Claude Code</span>
+            <span class="note">cl_audit {version} · {requires} · needs Claude Code</span>
           </div>
-          <div class="sg-k2 plate start-plate">
+          <div class="sg-k2 key-note">
             <a class="key" href={repo}>GitHub</a>
             <span class="divider" aria-hidden="true"></span>
-            <span class="start-note">needs the Xcode Command Line Tools</span>
+            <span class="note">needs the Xcode Command Line Tools</span>
           </div>
           <div class="sg-b1 start-box">
             <div><span class="sb-n">01</span><span>Unzip, move to Applications, open</span></div>
@@ -381,30 +381,10 @@ cd cl_audit && ./build.sh</code></pre>
   .trust-note { margin-left: auto; color: var(--muted); font-size: 12.5px; white-space: nowrap; }
   .trust-more { font-size: 12.5px; color: var(--muted); text-decoration: none; white-space: nowrap; }
   .trust-more:hover { color: var(--text); }
-  /* the tabs, as on the production site */
-  .seg { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 14px; padding: 4px; border-radius: 12px;
-    background: rgba(0,0,0,.22); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 2px rgba(0,0,0,.35); }
-  .seg-ind { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 9px; pointer-events: none;
-    background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.08)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 3px rgba(0,0,0,.45);
-    transition: transform .28s cubic-bezier(.3,.8,.25,1), width .28s cubic-bezier(.3,.8,.25,1); }
-  .stab { position: relative; z-index: 1; min-width: 0; height: 34px; padding: 0 10px; border: 0; border-radius: 9px; background: none; cursor: pointer;
-    font: inherit; font-size: 13px; font-weight: 500; color: #9a9aa0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .2s; }
-  .stab:hover { color: #d4d4d8; }
-  .stab[aria-selected="true"] { color: #fff; }
-  .stab:focus-visible { outline: 2px solid rgba(255,255,255,.55); outline-offset: 2px; }
-  .tf-pane { margin-top: 12px; padding: 12px 14px; border-radius: 7px; background: rgba(0,0,0,.26); box-shadow: var(--well); box-sizing: content-box; }
-  .tf-text { transition: opacity .14s ease; }
-  .tf-text.fade { opacity: 0; }
-  .tf-text :global(b) { display: block; margin: 0 0 3px; font-size: 14px; font-weight: 600; letter-spacing: -.005em; color: var(--text); }
-  .tf-text :global(p) { margin: 0; font-size: 13.5px; line-height: 1.6; color: #b4b4ba; max-width: 92ch; }
-  .tf-text :global(code) { font: 12px var(--mono); padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,.07); color: #d4d4d8; }
   @media (max-width: 760px) {
     .trust-head { flex-wrap: wrap; row-gap: 8px; }
     .trust-more { display: none; }
     .trust-note { margin-left: 0; flex-basis: 100%; white-space: normal; }
-    .seg { display: flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
-    .seg::-webkit-scrollbar { display: none; }
-    .stab { flex: none; overflow: visible; }
   }
   @media (max-width: 480px) { .hide-xs { display: none; } }
   /* the Install card: two mirrored columns (label · key with a note · box); stacked when narrow */
@@ -417,20 +397,6 @@ cd cl_audit && ./build.sh</code></pre>
     .start-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "h1 h2" "k1 k2" "b1 b2"; }
     .sg-h2 { margin-top: 0 !important; }
   }
-  /* each key in a plate with its note printed beside it, after a divider (like the hero strip's version) */
-  .start-plate { display: flex; align-items: center; gap: 14px; padding: 0; justify-self: start; }
-  /* no plate behind the key and its note: they sit straight on the panel (all faces) */
-  .start .start-plate, :global(.face-black) .start .start-plate, :global(.face-silver) .start .start-plate { background: none; box-shadow: none; }
-  .start-plate .pill, .start-plate .key { flex: none; height: 32px; padding: 0 16px; }
-  .start-note { min-width: 0; color: rgba(236,236,238,.7); font-size: 12.5px; line-height: 1.35; }
-  :global(.face-silver) .start-note { color: #2e3033; }
-  @container (max-width: 420px) { .start-plate { justify-self: stretch; } }
-  /* the steps in a box like the code's, one line each */
-  .start-box { padding: 11px 14px; border-radius: 6px; background: rgba(0,0,0,.32); box-shadow: var(--well); font-size: 13px; line-height: 1.75; color: #d4d4d8; }
-  .start-box > div { display: grid; grid-template-columns: 26px minmax(0, 1fr); align-items: baseline; }
-  .start-box .sb-n { font: 600 11px var(--mono); color: rgba(255,255,255,.42); }
-  :global(.face-silver) .start-box .sb-n { color: rgba(20,20,20,.5); }
-  .start-box b { color: var(--text); font-weight: 600; }
   .h3 { font-size: 18px; margin-bottom: 12px; }
   .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
   .lane-icons figure { margin: 0; display: grid; justify-items: center; gap: 2px; color: var(--muted); font-size: 10.5px; min-height: 58px; }

@@ -1,0 +1,153 @@
+/* Faceplates (title bar ▸ Face). Std is app.css as it stands; Black and Silver restyle the same parts on every
+   page, mostly through the tokens defined in app.css :root. One block per face, final rules only. */
+
+/* ═══ Black: a black anodised deck plate with a horizontal hairline and a chamfered top edge ═══════════════ */
+.face-black {
+  --win-bg: rgba(0,0,0,.2);
+  --win-shadow: inset 0 1px 2px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04), 0 1px 0 rgba(255,255,255,.06);
+  --chart-bg: rgba(0,0,0,.2);
+  --code-bg: rgba(0,0,0,.2); --code-shadow: var(--win-shadow);
+}
+.face-black .appwin {
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #1d1d1f, #141416 40%, #111113);
+}
+.face-black .fascia { border-bottom-color: #000; box-shadow: 0 1px 0 rgba(255,255,255,.05); }
+.face-black :is(.card, .chart-card) {
+  border-radius: 4px;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #2b2b2d 0%, #1e1e20 60%, #19191b 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 2px 0 rgba(255,255,255,.04), inset 0 -1px 0 rgba(0,0,0,.6),
+    inset 1px 0 0 rgba(255,255,255,.05), inset -1px 0 0 rgba(0,0,0,.4), 0 0 0 1px #050505, 0 6px 16px rgba(0,0,0,.4);
+}
+.face-black .card h4 { color: rgba(255,255,255,.66); }
+/* key strips: recessed black channels; a key on its own sits straight on the plate */
+.face-black :is(.plate:not(.pages), .switch, .chips, .settings .strip) {
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #19191b, #121214);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.75), inset 0 0 0 1px rgba(0,0,0,.5), 0 1px 0 rgba(255,255,255,.07);
+}
+.face-black .plate:not(.pages):has(> :only-child) { padding: 0; background: none; box-shadow: none; }
+.face-black .whatnow-card {
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #2b2b2d, #1e1e20);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 -1px 0 rgba(0,0,0,.6), 0 0 0 1px #000, 0 14px 40px rgba(0,0,0,.6);
+}
+
+/* ═══ Silver: after a silver integrated amplifier ═════════════════════════════════════════════════════════
+   A cool, light brushed plate with dark printing; silver keys with dark legends; black display windows with crisp
+   white text; content windows lit white from behind (bevelled edge, dark printing), like its meter window; the
+   Mac around it in its light appearance. */
+.face-silver {
+  --glow: 238, 241, 243;
+  --alu: repeating-linear-gradient(90deg, rgba(255,255,255,.14) 0 1px, rgba(0,0,0,.03) 1px 2px), linear-gradient(180deg, #ededeb, #c8c8c3);
+  --alu-down: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.03) 1px 2px), linear-gradient(180deg, #dadad6, #bababa);
+  --key-up: inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(0,0,0,.18), 0 0 0 1px #6d6d69, 0 2px 0 #4c4c49, 0 3px 6px rgba(0,0,0,.22);
+  --key-down: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -1px 0 rgba(0,0,0,.15), 0 0 0 1px #6d6d69, 0 1px 0 #4c4c49;
+  --legend: #232323;
+  --link: #a8461a;
+  --win-bg: linear-gradient(180deg, #f6f7f8, #eceef0);
+  --win-shadow: inset 0 0 0 1px rgba(0,0,0,.16), inset 0 3px 5px rgba(0,0,0,.12), inset 0 -2px 0 rgba(255,255,255,.85), 0 1px 0 rgba(255,255,255,.7);
+  --chart-bg: var(--win-bg);
+  --code-bg: linear-gradient(180deg, #040404, #101112); --code-text: #eef1f3;
+  --code-shadow: inset 0 1px 3px rgba(0,0,0,.9), 0 0 0 1px rgba(0,0,0,.5), 0 1px 0 rgba(255,255,255,.6);
+}
+
+/* the Mac around the window */
+.face-silver .desk { background: #ece8ee url("/img/wallpaper-light.svg") center / cover no-repeat; }
+.face-silver .menubar { background: rgba(246,246,244,.72); border-bottom: 0; }
+.face-silver .menubar a, .face-silver .mb-clock, .face-silver .mb-dl.dim, .face-silver .mb-dl.dim:hover { color: #1d1d1f !important; }
+.face-silver.not-mac .mb-na { color: #6e6e73; }
+.face-silver .dock { background: rgba(246,246,244,.5); box-shadow: inset 0 0 0 1px rgba(255,255,255,.6), 0 0 0 1px rgba(0,0,0,.08), 0 10px 40px rgba(0,0,0,.22); }
+.face-silver .dock .sep { background: rgba(0,0,0,.2); }
+.face-silver .run { background: rgba(0,0,0,.6); }
+
+/* the window: a light Mac window's top, the plate, dark printing */
+.face-silver .appwin {
+  --text: #1c1c1e; --soft: #2c2c2f; --muted: #46464b; --faint: #5e5e63; --prose: #2e3033; --chip: rgba(0,0,0,.08);
+  color: var(--text);
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.2) 0 1px, rgba(0,0,0,.025) 1px 2px), linear-gradient(180deg, #d0d2d3, #c2c4c5 45%, #b9bbbc);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 0 0 1px rgba(0,0,0,.2), 0 0 0 .5px rgba(0,0,0,.12), 0 22px 70px rgba(0,0,0,.28);
+}
+.face-silver .appwin .titlebar { background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0)); border-radius: 14px 14px 0 0; }
+.face-silver :is(.appwin .tb-title, .face-pick .lbl, .brand span) { color: rgba(20,20,20,.62); }
+.face-silver .fascia { border-bottom-color: rgba(0,0,0,.35); box-shadow: 0 1px 0 rgba(255,255,255,.5); }
+.face-silver .appwin :is(.hist-head h3) { color: var(--text); }
+.face-silver .appwin .legend-item { color: var(--soft); }
+.face-silver .appwin .legal { color: var(--muted); }
+
+/* panels */
+.face-silver :is(.card, .chart-card) {
+  color: var(--text); border-radius: 4px;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.24) 0 1px, rgba(0,0,0,.025) 1px 2px), linear-gradient(180deg, #e0e2e3 0%, #d0d2d3 55%, #c6c8c9 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.32), 0 3px 10px rgba(0,0,0,.16);
+}
+.face-silver :is(.card, .chart-card) :is(h4, .fam, .share-title, .cc-head b) { color: rgba(30,32,34,.7); }
+.face-silver .card h4::after { background: rgba(0,0,0,.28); box-shadow: 0 1px 0 rgba(255,255,255,.55); }
+.face-silver .card :is(.list > div, .srow, .steps > div) { border-top-color: rgba(0,0,0,.22); box-shadow: inset 0 1px 0 rgba(255,255,255,.45); }
+.face-silver .card .steps > div::before { color: rgba(20,20,20,.5); }
+.face-silver .card .idot { color: rgba(20,20,20,.5); box-shadow: inset 0 0 0 1.2px rgba(20,20,20,.35); }
+.face-silver .settings .srow > span:first-child { color: var(--text); }
+.face-silver .card :is(.more, .more-link, a:not(.key):not(.pill):not(.tile)) { color: var(--link); }
+.face-silver .card .caution { color: #8a4f00; }
+.face-silver .card :is(.danger, .danger.linkish) { color: #b42318; }
+.face-silver .card .ok { color: #11743a; }
+.face-silver :is(.plate, .key-note) .divider, .face-silver .key-note > .divider { background: rgba(0,0,0,.28); box-shadow: 1px 0 0 rgba(255,255,255,.5); }
+
+/* keys: all silver, dark legends (also the ones with their own finish elsewhere) */
+.face-silver :is(.key, .pill, .switch a, .switch button, .tile, .fk, .stepper button, .folder-btn, .wn-x, .faq-list details summary) { text-shadow: 0 1px 0 rgba(255,255,255,.55); }
+.face-silver :is(.acc-actions .pill, .cswitch, .mswitch, .plate.pages .key, .fk) { color: var(--legend); background: var(--alu); box-shadow: var(--key-up); }
+.face-silver :is(.acc-actions .pill:active, .acc-actions .pill[aria-expanded="true"], .cswitch.on, .mswitch.on, .plate.pages .key.on, .plate.pages .key:active, .fk[aria-pressed="true"]) {
+  color: #111; background: var(--alu-down); box-shadow: var(--key-down); }
+.face-silver .tile .sub { color: rgba(30,30,30,.6); }
+.face-silver .pill.quiet { color: rgba(30,30,30,.65); }
+.face-silver :is(.cswitch i, .mswitch::after) { background: #8c8c88; box-shadow: inset 0 1px 1px rgba(0,0,0,.4); }
+.face-silver :is(.cswitch.on i, .mswitch.on::after) { background: rgb(var(--led-on)); box-shadow: 0 0 5px rgba(var(--led-on), .7), 0 0 0 1px rgba(0,60,30,.35); }
+
+/* key strips, the tab track, the Settings profile row: shallow silver recesses */
+.face-silver :is(.plate:not(.pages), .switch, .chips, .settings .strip, .seg) {
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.14) 0 1px, rgba(0,0,0,.03) 1px 2px), linear-gradient(180deg, #a9a9a4, #b9b9b4);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.35), inset 0 0 0 1px rgba(0,0,0,.12), 0 1px 0 rgba(255,255,255,.6);
+}
+.face-silver :is(.plate, .switch, .chips, .settings .strip) .lbl { color: rgba(20,20,20,.62); }
+.face-silver .settings .strip { color: var(--text); }
+.face-silver .seg .stab { color: #3e3e42; text-shadow: 0 1px 0 rgba(255,255,255,.4); }
+.face-silver .seg .stab:hover { color: #1a1a1a; }
+.face-silver .seg .stab[aria-selected="true"] { color: #111; }
+.face-silver .seg-ind { background: var(--alu); box-shadow: var(--key-up); }
+
+/* display windows: black glass, white text */
+.face-silver :is(.disp, .plan, .stepper [data-value], .wn-t) { background: linear-gradient(180deg, #040404, #101112); text-shadow: 0 0 2px rgba(255,255,255,.35); }
+
+/* content windows (lit white): dark printing inside */
+.face-silver .appwin :is(.mini-palette, .dock-mini, .mcard, .hist-mini, .pchip, .lane-mini, .card-prev, .oc-q, .oc-result, .heat-scroll, .tchart, .tf-pane, .start-box, .login-note, .g-tile.on) {
+  --text: #1c1c1e; --soft: #2e3033; --muted: #55585c; --faint: #6c6f73; --prose: #2e3033; --chip: rgba(0,0,0,.08);
+  color: var(--text); text-shadow: none;
+}
+.face-silver .appwin .g-tile.on { background: var(--win-bg); box-shadow: inset 0 0 0 1px rgba(0,0,0,.16); }
+.face-silver .appwin .gallery .lane-mini { background: linear-gradient(180deg, #eceef0, #e6e8ea); box-shadow: inset 0 0 0 1px rgba(0,0,0,.16); }
+.face-silver .appwin :is(.pchip-title, .badge, .oc-head b) { color: rgba(20,22,24,.62); }
+.face-silver .appwin :is(.pchip-sub, .oc-pill) { color: #1c1c1e; text-shadow: none; }
+.face-silver .appwin .pchip.off .pchip-sub { color: rgba(20,22,24,.45); }
+.face-silver .appwin .oc-head { background: rgba(0,0,0,.05); }
+.face-silver .appwin .oc-row { border-top-color: rgba(0,0,0,.08); }
+.face-silver .appwin .oc-label { color: var(--text); }
+.face-silver .appwin .row.sel { background: rgba(0,0,0,.06); box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+.face-silver .appwin .row[data-open-desktop]:hover { background: rgba(0,0,0,.05); }
+.face-silver .appwin .dock-mini .vsep { background: rgba(0,0,0,.2); }
+.face-silver .appwin :is(.mini .track, .share-track) { background: rgba(0,0,0,.1); box-shadow: inset 0 1px 1px rgba(0,0,0,.15); }
+.face-silver .appwin :is(.pn-segs i:not([style]), .pn-bar) { background: rgba(0,0,0,.11); }
+.face-silver .appwin :is(.card, .mcard, .card-prev) :is(.pn-pct, .pn-big) { filter: brightness(.82); }
+.face-silver .appwin .heat-row i { background: rgba(0,0,0,.06); }
+.face-silver .appwin .tline { border-top-color: rgba(0,0,0,.14); }
+.face-silver .appwin .login-note { color: var(--muted); }
+.face-silver .appwin :is(.login-note b, .start-box b) { color: #111; }
+
+/* the app's own dark surfaces stay dark: menus, dialogs, the Dock pop-up preview, the "what this does now" note */
+.face-silver .appwin :is(select.menu, .menu, .more-menu, .dialog, .pn, .whatnow-card) {
+  --text: #ececee; --soft: rgba(236,236,238,.82); --muted: #9a9aa0; --faint: #6e6e74;
+  color: var(--text); text-shadow: none;
+}
+.face-silver .appwin :is(select.menu, .menu, .more-menu, .pn) { background-color: #141517; }
+.face-silver .appwin .pn :is(.pn-segs i:not([style]), .pn-bar) { background: rgba(255,255,255,.1); }
+.face-silver .appwin :is(.pn .pn-pct, .pn .pn-big) { filter: none; }
+.face-silver .whatnow-card { background: linear-gradient(180deg, #2f2f32, #252527); }
+/* macOS's own Privacy & Security row, in the Mac's light appearance */
+.face-silver .appwin .gk { --text: #1d1d1f; --muted: #55585c; color: var(--text); background: #f5f5f7; box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 6px 16px rgba(0,0,0,.12); }
+.face-silver .appwin .gk-btn { background: #fff; color: #1d1d1f; }

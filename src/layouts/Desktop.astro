@@ -44,7 +44,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       <!-- the top strip of the front panel: brand, the display window with the page title, the PAGE keys -->
       <div class="fascia">
         <a class="brand" href="/"><b>cl_audit</b><span>Usage audit for Claude profiles</span></a>
-        {headline && <h1 class="disp page-disp"><em>{current}</em><span class="pd-t">{headMain}{headRest.length > 0 && <span class="pd-sub"> · {headRest.join(" · ")}</span>}</span></h1>}
+        {headline && <h1 class="disp page-disp"><em>{current ?? "404"}</em><span class="pd-t">{headMain}{headRest.length > 0 && <span class="pd-sub"> · {headRest.join(" · ")}</span>}</span></h1>}
         <div class="fascia-slot"><slot name="top" /></div>
         <nav class="plate pages" aria-label="Pages">
           <span class="lbl" aria-hidden="true">Page</span><span class="divider" aria-hidden="true"></span>

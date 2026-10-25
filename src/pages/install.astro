@@ -11,10 +11,11 @@ const description =
     <div class="cols2 lead-row">
       <div class="card dl-card">
         <h4>Download</h4>
-        <div class="dl-row">
-          <span class="plate"><span class="lbl" aria-hidden="true">Mac</span><span class="divider" aria-hidden="true"></span><a class="pill dl big" href={download}><span class="dl-l">Download cl_audit {version}</span><span class="dl-na">Mac only</span></a></span>
-          <span class="disp"><em>Rel</em>{releasedText()}</span>
-          <span class="sub">{requires} · <a href={changelog}>What's new</a></span>
+        <!-- as on the Overview's Install card: the key, a divider, what it is -->
+        <div class="key-note dl-row">
+          <a class="pill dl" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
+          <span class="divider" aria-hidden="true"></span>
+          <span class="note">cl_audit {version} · {releasedText()} · {requires} · <a href={changelog}>What's new</a></span>
         </div>
         <p class="t login-note" style="margin:0 0 12px"><b>Claude login:</b> sign-in happens in Claude's own screens, so cl_audit never sees the password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>How it works</a></p>
         <div class="steps">
@@ -54,7 +55,7 @@ git checkout v{version}   # optional: exactly this release
           “cl_audit &lt;profile&gt;” app per profile, next to it, where Spotlight finds them. <code>./build.sh --no-install</code>
           only builds into the folder. Built on your own Mac, it opens without the Privacy &amp; Security step.
         </p>
-        <div class="btns"><a class="key" href={repo}><span class="led" aria-hidden="true"></span>Source on GitHub</a></div>
+        <div class="key-note"><a class="key" href={repo}>GitHub</a><span class="divider" aria-hidden="true"></span><span class="note">needs the Xcode Command Line Tools</span></div>
       </div>
       <div class="card">
         <h4>Add a profile</h4>
@@ -85,8 +86,7 @@ git checkout v{version}   # optional: exactly this release
 
 <style>
   .drift { margin: 10px 0 0; font-size: 12.5px; }
-  .dl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 2px 0 14px; }
-  .dl-row .sub a { color: #e8a07f; }
+  .dl-row { margin: 2px 0 14px; }
   /* the macOS Privacy & Security row, as macOS draws it */
   .gk { margin: 2px 0 0 46px; border-radius: 9px; background: #2b2b2e; box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 6px 16px rgba(0,0,0,.3); padding: 10px 12px; font-size: 13px; }
   .gk-title { font-weight: 700; margin-bottom: 6px; }
