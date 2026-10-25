@@ -1029,9 +1029,8 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .face-silver .card :is(.pn-segs i:not([style]), .pn-bar) { background: rgba(0,0,0,.16); }
 .face-silver .card .pn-pct, .face-silver .card .pn-big { filter: brightness(.8); }
 /* windows in the silver plate: dark, with the dark theme's text */
-.face-silver .appwin :is(.mini-palette, .dock-mini, .mcard, .hist-mini, .pchip, .tf-pane, .code, .start-box, .lane-mini, .card-prev,
-  .oc-q, .oc-result, .login-note, .seg, .heat-scroll, .tchart, select.menu, .menu, .g-tile.on, .more-menu, .dialog, .pn, .gk,
-  .plate:not(.pages), .switch, .chips, .settings .strip, .whatnow-card) {
+.face-silver .appwin :is(.mini-palette, .dock-mini, .mcard, .hist-mini, .pchip, .code, .lane-mini, .card-prev,
+  .oc-result, .heat-scroll, .tchart, select.menu, .menu, .g-tile.on, .more-menu, .dialog, .pn, .gk, .whatnow-card) {
   --text: #ececee; --soft: rgba(236,236,238,.82); --muted: #9a9aa0; --faint: #6e6e74;
   color: var(--text); background-color: #141517;
 }
@@ -1068,10 +1067,6 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .face-silver .appwin .tb-title, .face-silver .face-pick .lbl, .face-silver .brand span { color: rgba(20,20,20,.62); }
 .face-silver .fascia { border-bottom-color: rgba(0,0,0,.35); box-shadow: 0 1px 0 rgba(255,255,255,.5); }
 .face-silver :is(.card, .chart-card) { box-shadow: inset 0 1px 0 rgba(255,255,255,.9), inset 0 -1px 0 rgba(0,0,0,.2), 0 0 0 1px rgba(0,0,0,.55), 0 4px 12px rgba(0,0,0,.22); }
-.face-silver :is(.plate:not(.pages), .switch, .chips, .settings .strip) {
-  background: linear-gradient(180deg, #2a2a2c, #1f1f21);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,.6), 0 0 0 1px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.55);
-}
 .face-silver .whatnow-card { background: linear-gradient(180deg, #2f2f32, #252527); }
 .face-silver .appwin .hist-head h3 { color: var(--text); }
 .face-silver .appwin .legend-item { color: var(--soft); }
@@ -1084,3 +1079,56 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
   background: rgba(0,0,0,.2);
   box-shadow: inset 0 1px 2px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04), 0 1px 0 rgba(255,255,255,.06);
 }
+/* Silver: the Mac around the window in its light appearance: a light silver-grey desktop, the light menu bar and
+   a light Dock. */
+.face-silver .desk { background: #ece8ee url("/img/wallpaper-light.svg") center / cover no-repeat; }
+.face-silver .menubar { background: rgba(246,246,244,.72); border-bottom-color: rgba(0,0,0,.1); }
+.face-silver .menubar a, .face-silver .mb-clock { color: #1d1d1f; }
+.face-silver .menubar a:hover { color: #000; }
+.face-silver .mb-dl.dim, .face-silver .mb-dl.dim:hover { color: #1d1d1f !important; }
+.face-silver.not-mac .mb-na { color: #6e6e73; }
+.face-silver .appwin { box-shadow: 0 0 0 1px rgba(0,0,0,.45), 0 0 0 2px rgba(255,255,255,.35), 0 30px 90px rgba(0,0,0,.32); }
+.face-silver .dock { background: rgba(246,246,244,.5); box-shadow: inset 0 0 0 1px rgba(255,255,255,.6), 0 0 0 1px rgba(0,0,0,.08), 0 10px 40px rgba(0,0,0,.22); }
+.face-silver .dock .sep { background: rgba(0,0,0,.2); }
+.face-silver .run { background: rgba(0,0,0,.6); }
+
+/* ── Silver, like a silver cassette deck: silver keys with dark legends, shallow silver recesses for the key
+   strips, tabs and text boxes; readouts (switch states, launcher, meters, charts, code, menus) stay dark windows. */
+.face-silver {
+  --alu: repeating-linear-gradient(90deg, rgba(255,255,255,.14) 0 1px, rgba(0,0,0,.03) 1px 2px), linear-gradient(180deg, #ededeb, #c8c8c3);
+  --alu-down: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.03) 1px 2px), linear-gradient(180deg, #dadad6, #bababa);
+  --key-up: inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(0,0,0,.18), 0 0 0 1px #6d6d69, 0 2px 0 #4c4c49, 0 3px 6px rgba(0,0,0,.22);
+  --key-down: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -1px 0 rgba(0,0,0,.15), 0 0 0 1px #6d6d69, 0 1px 0 #4c4c49;
+  --legend: #232323;
+}
+.face-silver :is(.key, .pill, .switch a, .switch button, .tile, .fk, .stepper button, .folder-btn, .wn-x, .faq-list details summary) { text-shadow: 0 1px 0 rgba(255,255,255,.55); }
+/* keys that had their own gunmetal or black finish */
+.face-silver :is(.acc-actions .pill, .cswitch, .mswitch, .plate.pages .key, .fk) { color: var(--legend); background: var(--alu); box-shadow: var(--key-up); }
+.face-silver :is(.acc-actions .pill:active, .acc-actions .pill[aria-expanded="true"], .cswitch.on, .mswitch.on, .plate.pages .key.on, .plate.pages .key:active, .fk[aria-pressed="true"]) {
+  color: #111; background: var(--alu-down); box-shadow: var(--key-down); }
+.face-silver .plate.pages .key.on { color: #111; }
+.face-silver .tile .sub { color: rgba(30,30,30,.6); }
+.face-silver .pill.quiet { color: rgba(30,30,30,.65); }
+.face-silver .cswitch i, .face-silver .mswitch::after { background: #8c8c88; box-shadow: inset 0 1px 1px rgba(0,0,0,.4); }
+.face-silver .cswitch.on i, .face-silver .mswitch.on::after { background: rgb(var(--led-on)); box-shadow: 0 0 5px rgba(var(--led-on), .7), 0 0 0 1px rgba(0,60,30,.35); }
+/* shallow silver recesses: key strips, the login tab track, the Settings profile row */
+.face-silver :is(.plate:not(.pages), .switch, .chips, .settings .strip, .seg) {
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.14) 0 1px, rgba(0,0,0,.03) 1px 2px), linear-gradient(180deg, #a9a9a4, #b9b9b4);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.35), inset 0 0 0 1px rgba(0,0,0,.12), 0 1px 0 rgba(255,255,255,.6);
+}
+.face-silver :is(.plate, .switch, .chips, .settings .strip) .lbl { color: rgba(20,20,20,.62); }
+.face-silver .plate .divider { background: rgba(0,0,0,.28); box-shadow: 1px 0 0 rgba(255,255,255,.5); }
+.face-silver .settings .strip { color: var(--text); }
+.face-silver .seg .stab { color: #3e3e42; text-shadow: 0 1px 0 rgba(255,255,255,.4); }
+.face-silver .seg .stab:hover { color: #1a1a1a; }
+.face-silver .seg .stab[aria-selected="true"] { color: #111; }
+.face-silver .seg-ind { background: var(--alu); box-shadow: var(--key-up); }
+/* text boxes: light silver recesses, dark text */
+.face-silver .appwin :is(.tf-pane, .start-box, .oc-q, .login-note) {
+  background: rgba(0,0,0,.07); box-shadow: inset 0 1px 3px rgba(0,0,0,.28), inset 0 0 0 1px rgba(0,0,0,.08), 0 1px 0 rgba(255,255,255,.55);
+}
+.face-silver .appwin .tf-text p, .face-silver .appwin .start-box { color: var(--soft); }
+.face-silver .appwin .tf-text code { background: rgba(0,0,0,.08); color: #1c1c1e; }
+.face-silver .appwin .start-box .sb-n { color: rgba(20,20,20,.5); }
+.face-silver .appwin .start-box b, .face-silver .appwin .login-note b { color: #111; }
+.face-silver .appwin .login-note { color: var(--muted); }
