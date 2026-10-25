@@ -116,13 +116,14 @@
 .face-silver :is(.disp, .plan, .stepper [data-value], .wn-t) { background: linear-gradient(180deg, #040404, #101112); text-shadow: 0 0 2px rgba(255,255,255,.35); }
 
 /* content windows (lit white): dark printing inside */
-.face-silver .appwin :is(.mini-palette, .dock-mini, .mcard, .hist-mini, .pchip, .lane-mini, .card-prev, .oc-q, .oc-result, .heat-scroll, .tchart, .tf-pane, .start-box, .login-note, .g-tile.on) {
+.face-silver .appwin :is(.mini-palette, .dock-mini, .mcard, .hist-mini, .pchip, .lane-mini, .card-prev, .oc-q, .oc-result, .heat-scroll, .tchart, .tf-pane, .start-box, .login-note, .g-tile.on, .panel-stage .pn) {
   --text: #1c1c1e; --soft: #2e3033; --muted: #55585c; --faint: #6c6f73; --prose: #2e3033; --chip: rgba(0,0,0,.08);
   color: var(--text); text-shadow: none;
 }
 .face-silver .appwin .g-tile.on { background: var(--win-bg); box-shadow: inset 0 0 0 1px rgba(0,0,0,.16); }
 .face-silver .appwin .gallery .lane-mini { background: linear-gradient(180deg, #eceef0, #e6e8ea); box-shadow: inset 0 0 0 1px rgba(0,0,0,.16); }
 .face-silver .appwin :is(.pchip-title, .badge, .oc-head b) { color: rgba(20,22,24,.62); }
+.face-silver .appwin .panel-stage .pn-plan { background: rgba(0,0,0,.08); }
 .face-silver .appwin :is(.pchip-sub, .oc-pill) { color: #1c1c1e; text-shadow: none; }
 .face-silver .appwin .pchip.off .pchip-sub { color: rgba(20,22,24,.45); }
 .face-silver .appwin .oc-head { background: rgba(0,0,0,.05); }
@@ -133,20 +134,18 @@
 .face-silver .appwin .dock-mini .vsep { background: rgba(0,0,0,.2); }
 .face-silver .appwin :is(.mini .track, .share-track) { background: rgba(0,0,0,.1); box-shadow: inset 0 1px 1px rgba(0,0,0,.15); }
 .face-silver .appwin :is(.pn-segs i:not([style]), .pn-bar) { background: rgba(0,0,0,.11); }
-.face-silver .appwin :is(.card, .mcard, .card-prev) :is(.pn-pct, .pn-big) { filter: brightness(.82); }
+.face-silver .appwin :is(.card, .mcard, .card-prev, .panel-stage) :is(.pn-pct, .pn-big) { filter: brightness(.82); }
 .face-silver .appwin .heat-row i { background: rgba(0,0,0,.06); }
 .face-silver .appwin .tline { border-top-color: rgba(0,0,0,.14); }
 .face-silver .appwin .login-note { color: var(--muted); }
 .face-silver .appwin :is(.login-note b, .start-box b) { color: #111; }
 
 /* the app's own dark surfaces stay dark: menus, dialogs, the Dock pop-up preview, the "what this does now" note */
-.face-silver .appwin :is(select.menu, .menu, .more-menu, .dialog, .pn, .whatnow-card) {
+.face-silver .appwin :is(select.menu, .menu, .more-menu, .dialog, .pop .pn, .whatnow-card) {
   --text: #ececee; --soft: rgba(236,236,238,.82); --muted: #9a9aa0; --faint: #6e6e74;
   color: var(--text); text-shadow: none;
 }
-.face-silver .appwin :is(select.menu, .menu, .more-menu, .pn) { background-color: #141517; }
-.face-silver .appwin .pn :is(.pn-segs i:not([style]), .pn-bar) { background: rgba(255,255,255,.1); }
-.face-silver .appwin :is(.pn .pn-pct, .pn .pn-big) { filter: none; }
+.face-silver .appwin :is(select.menu, .menu, .more-menu) { background-color: #141517; }
 .face-silver .whatnow-card { background: linear-gradient(180deg, #2f2f32, #252527); }
 /* macOS's own Privacy & Security row, in the Mac's light appearance */
 .face-silver .appwin .gk { --text: #1d1d1f; --muted: #55585c; color: var(--text); background: #f5f5f7; box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 6px 16px rgba(0,0,0,.12); }

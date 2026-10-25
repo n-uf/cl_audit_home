@@ -103,11 +103,11 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
     </div>
 
     <div class="card c-d"><h4>Dock icon</h4>
-      <div class="srow top"><span>Show in the Dock</span>
-        <span class="dock-ctl">
-          <span class="ctl-pair"><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="showInDock" aria-label="Show in the Dock"></button><span class="sub sm" data-dock-sub>shown in the Dock</span></span>
-          <span class="caution"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M10 6a4 4 0 1 1-1.2-2.8M10 1.5v2.7H7.3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Changing this restarts the Dock (takes the pin out or puts it back)</span>
-        </span>
+      <!-- a plain row (label, its state under it, the switch on the right), the warning as one line under it -->
+      <div class="srow with-note">
+        <span class="sr-label">Show in the Dock<span class="sub sm" data-dock-sub>shown in the Dock</span></span>
+        <button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="showInDock" aria-label="Show in the Dock"></button>
+        <span class="caution"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M10 6a4 4 0 1 1-1.2-2.8M10 1.5v2.7H7.3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Changing this restarts the Dock (takes the pin out or puts it back)</span>
       </div>
       <div class="srow"><span>Open at login</span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="login" aria-label="Open at login"></button></div>
       <div class="srow"><span>Now</span><span class="now"><i class="now-dot"></i><span data-now>running, in the Dock</span></span></div>
