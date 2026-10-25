@@ -16,8 +16,9 @@ const description =
         {accounts.map((a) => (
           <button type="button" class="key sm chip on" data-chip={a.id}><span class="chip-ck" style={`background:${a.color}`}>✓</span>{a.name}</button>
         ))}
+        <span class="divider" aria-hidden="true"></span>
+        <span class="updated">Updated just now</span>
       </span>
-      <span class="updated">Updated just now</span>
     </div>
     <div class="dash-cards">{accounts.map((a) => <AccountCard {...a} />)}</div>
     <History />
@@ -26,6 +27,9 @@ const description =
 
 <style>
   .dash-bar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .dash-bar .divider { width: 1px; align-self: stretch; margin: 0 4px; background: rgba(0,0,0,.45); box-shadow: 1px 0 0 rgba(255,255,255,.08); }
+  .dash-bar .updated { padding-right: 6px; white-space: nowrap; }
+  :global(.face-silver) .dash-bar .divider { background: rgba(0,0,0,.28); box-shadow: 1px 0 0 rgba(255,255,255,.5); }
 </style>
 
 <script>
