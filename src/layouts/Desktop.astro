@@ -99,13 +99,14 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     showFace();
   });
 
-  // The menu bar clock, like the Mac's: "Fri 23 Oct 11:24".
+  // The menu bar clock, like the Mac's.
   const tick = () => {
     const el = document.querySelector<HTMLElement>(".mb-clock");
     if (!el) return;
     const d = new Date();
-    el.textContent = d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }).replace(",", "") +
-      "  " + d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+    // in the visitor's own date and time format, as their Mac shows it (e.g. "Sat 24. Oct  20:50")
+    el.textContent = d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" }).replace(/,/g, "") +
+      "  " + d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
   };
   tick();
   setInterval(tick, 20000);
