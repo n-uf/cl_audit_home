@@ -495,13 +495,15 @@ body { overflow: hidden; }
 .la-sign svg { width: 14px; height: 14px; }
 .la-sign span { font: 600 7.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 /* the Overview's display on narrow screens (too narrow for one line, about 840 px of strip): three rows, OVERVIEW
-   with the alert right after it, the title, the little Dock centred at the bottom. The first row has a fixed
-   height, so the alert never changes the display's size. Plain CSS grid areas, switched by the strip's width. */
+   with the alert's sign right after it and the typed message at the right end, the title, the little Dock centred
+   at the bottom. The first row has a fixed height, so the alert never changes the display's size. Plain CSS grid
+   areas, switched by the strip's width. */
 @container fascia (max-width: 840px) {
   .page-disp:has(.lslot) { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "lb al" "tt tt" "dk dk";
     grid-template-rows: 24px auto auto; row-gap: 6px; column-gap: 12px; align-items: center; height: auto; padding: 8px 12px 10px; white-space: normal; }
   .page-disp:has(.lslot) > em { grid-area: lb; display: inline; }
-  .page-disp:has(.lslot) > .lalert { grid-area: al; justify-self: start; margin-left: 0; }
+  .page-disp:has(.lslot) > .lalert { grid-area: al; justify-self: end; margin-left: 0; }
+  .page-disp:has(.lslot) > .lalert.signs { justify-self: start; }
   .page-disp:has(.lslot) > .pd-t { grid-area: tt; overflow: visible; white-space: normal; }
   .page-disp:has(.lslot) > .lslot { grid-area: dk; justify-self: center; }
 }
