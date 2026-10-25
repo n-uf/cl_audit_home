@@ -266,7 +266,21 @@ cd cl_audit && ./build.sh</code></pre>
 <style>
   .intro-body { min-width: 0; }
   .intro-label { margin-bottom: 12px; }
-  .hero-keys { margin-top: 18px; flex-wrap: wrap; }
+  /* the hero key strip: one row of equal keys; with too little room the printed label goes first, then the
+     keys share each row evenly (never a lone key hanging under a half-empty row) */
+  .intro-body { container-type: inline-size; width: 100%; }
+  .hero-keys { display: inline-flex; flex-wrap: wrap; margin-top: 18px; max-width: 100%; }
+  .hero-keys > .pill, .hero-keys > .key { flex: none; height: 32px; padding: 0 14px; font-size: 11px; }
+  @container (max-width: 660px) {
+    .hero-keys > .lbl, .hero-keys > .divider { display: none; }
+  }
+  @container (max-width: 560px) {
+    .hero-keys > .pill, .hero-keys > .key { padding: 0 10px; font-size: 10.5px; letter-spacing: .08em; }
+  }
+  @container (max-width: 470px) {
+    .hero-keys { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+    .hero-keys > .pill.dl { grid-column: 1 / -1; }
+  }
   .dl-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   .version-disp { gap: 7px; }
   .dl-note { color: var(--muted); font-size: 12.5px; }
@@ -313,7 +327,7 @@ cd cl_audit && ./build.sh</code></pre>
   .hero-row .intro { flex-direction: column; align-items: flex-start; justify-content: center; gap: 14px; }
   .hero-cards :global(.acc) { align-content: start; }
   .hero-row .intro img { display: none; }
-  @media (max-width: 1280px) {
+  @media (max-width: 1340px) {
     .hero-row { grid-template-columns: 1fr; }
     .hero-row .intro { order: -1; flex-direction: row; align-items: center; }
     .hero-row .intro img { display: block; width: 92px; height: 92px; }
