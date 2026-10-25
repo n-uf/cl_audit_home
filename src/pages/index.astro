@@ -322,7 +322,7 @@ cd cl_audit && ./build.sh</code></pre>
         const over = line.offsetWidth - view.clientWidth;
         const next = () => { if (r === run && el.isConnected) show((i + 1) % pages.length); };
         // the current mark drains like a countdown to the next page
-        const countdown = (ms: number) => { const m = marks[i]; if (!m) return; m.style.setProperty("--d", `${ms}ms`); m.classList.remove("run"); void m.offsetWidth; m.classList.add("run"); };
+        const countdown = (ms: number) => { const m = marks[i]; if (!m) return; m.style.setProperty("--d", `${ms}ms`); m.classList.remove("counting"); void m.offsetWidth; m.classList.add("counting"); };
         if (over <= 0 || still) { countdown(HOLD[i] ?? 4500); return later(HOLD[i] ?? 4500, next); }
         countdown(WAIT_START + (over / SPEED) * 1000 + WAIT_END);
         // a page that doesn't fit always scrolls to its end (the pointer over the display only holds the page change)
@@ -399,10 +399,10 @@ cd cl_audit && ./build.sh</code></pre>
   .rel-mark.amber i { background: rgba(251,191,36,.24); }
   .rel-mark.on i::after { content: ""; position: absolute; inset: 0; transform-origin: left; background: rgb(var(--glow)); box-shadow: 0 0 4px rgba(var(--glow), .8); }
   .rel-mark.amber.on i::after { background: #fbbf24; box-shadow: 0 0 4px rgba(251,191,36,.8); }
-  .rel-mark.on.run i::after { animation: rel-drain var(--d, 5s) linear forwards; }
-  #rel:hover .rel-mark.on.run i::after { animation-play-state: paused; }
+  .rel-mark.on.counting i::after { animation: rel-drain var(--d, 5s) linear forwards; }
+  #rel:hover .rel-mark.on.counting i::after { animation-play-state: paused; }
   @keyframes rel-drain { from { transform: scaleX(1); } to { transform: scaleX(0); } }
-  @media (prefers-reduced-motion: reduce) { .rel-mark.on.run i::after { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .rel-mark.on.counting i::after { animation: none; } }
   /* the hero keys: all three in one row, or (too narrow for that) each on its own full-width row with the version
      label beside Download; never a 2 + 1 split */
   .hero-keys { display: flex; width: 100%; flex-wrap: nowrap; margin-top: 10px; }
