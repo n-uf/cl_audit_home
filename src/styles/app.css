@@ -437,6 +437,7 @@ body { overflow: hidden; }
 .appwin .titlebar { padding: 0 18px 0 12px; }
 .face-pick { position: relative; z-index: 1; margin-left: auto; display: inline-flex; align-items: center; gap: 5px; }
 .face-pick .lbl { margin-right: 5px; font-size: 8.5px; color: rgba(255,255,255,.42); }
+.menubar .mb-face { display: none; }   /* the menu bar's copy of the face keys: phones only */
 .fk { position: relative; height: 20px; padding: 0 9px; border: 0; border-radius: 3px; cursor: pointer;
   font: 600 8.5px/1 var(--font); letter-spacing: .12em; text-transform: uppercase; color: rgba(233,233,233,.82);
   background: repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #3b3b3e, #1d1d1f);
@@ -647,10 +648,14 @@ body { overflow: hidden; }
   .desk:not([data-page="overview"]) .dock-bar { display: none; }
   .dock-bar { transition: transform .25s ease, opacity .25s ease; }
   .desk.pin .dock-bar { transform: translateY(calc(100% + 12px)); opacity: 0; pointer-events: none; }
-  /* no window buttons on a phone, and no title-bar row: the face keys sit at the right of the "cl_audit" line */
-  .appwin .titlebar { height: 0; padding: 0; }
-  .appwin .titlebar .lights { display: none; }
-  .face-pick { position: absolute; right: 12px; top: 2px; }
+  /* no title bar and no brand row on a phone (the menu bar names cl_audit); the face keys sit at the right end
+     of the menu bar */
+  .appwin .titlebar { display: none; }
+  .fascia .brand { display: none; }
+  .fascia { grid-template-areas: "disp" "keys"; padding-top: 8px; }
+  .menubar .mb-face { display: inline-flex; margin-left: 4px; }
+  .menubar { gap: 10px; padding: 0 10px 0 14px; }
+
   .appwin { bottom: var(--win-bottom); }
   .desk.ovl .appwin { top: 0; }
   .desk.ovl .apphead { position: absolute; top: 0; left: 0; right: 0; z-index: 3; padding-top: 28px;
@@ -1251,7 +1256,13 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
 @media (max-width: 560px) {
   .dash-bar .strip26 { flex-wrap: wrap; row-gap: 6px; max-width: 100%; }
   .dash-bar .strip26 .vdiv { display: none; }
-  .dash-bar .disp.fixed { width: auto; flex: 1 1 160px; }
+  .dash-bar .disp.fixed { width: auto; }
   .settings .strip .s-status { width: auto; flex: 1 1 200px; }
   .hhead .keys { flex-wrap: wrap; }
+}
+/* upright phones: the dashboard's top strip has the profile keys on one line, Updated and its refresh key on the next */
+@media (max-width: 600px) {
+  .dash-bar .strip26 { width: 100%; flex-wrap: wrap; row-gap: 6px; }
+  .dash-bar .strip26 .vdiv { display: none; }
+  .dash-bar .disp.fixed { width: auto; flex: 1 1 calc(100% - 38px); }
 }

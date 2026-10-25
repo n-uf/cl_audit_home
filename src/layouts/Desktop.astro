@@ -31,6 +31,10 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       <span class="mb-na">Mac only</span>
       <a class="mb-gh" href={repo}>GitHub</a>
       <span class="mb-clock" aria-hidden="true"></span>
+      <!-- phones: the faceplate keys live here, at the right end of the menu bar (the title bar's are hidden there) -->
+      <span class="face-pick mb-face" role="group" aria-label="Faceplate">
+        <button type="button" class="fk" data-face="std" aria-pressed="true">Std</button><button type="button" class="fk" data-face="black" aria-pressed="false">Black</button><button type="button" class="fk" data-face="silver" aria-pressed="false">Silver</button>
+      </span>
     </header>
 
     <div class="appwin" transition:animate="none">
