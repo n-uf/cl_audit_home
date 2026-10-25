@@ -74,7 +74,6 @@ const jsonLd = [{
           <a class="key" href="/install/">Install steps</a>
           <a class="key" href="/dashboard/" title="The dashboard with sample profiles">Demo dashboard</a>
         </div>
-        <span class="dl-note">Source-available · runs locally · no account or server</span>
         <span class="dl-note checked" title={driftNote}>Checked with Claude Code {checkedWith.claudeCode} and the Claude app {checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.</span>
       </div>
     </div>
@@ -85,6 +84,7 @@ const jsonLd = [{
         <!-- a two-part display window: LOGIN dim, SECURITY lit (sketch V4) -->
         <span class="disp trust-disp" aria-hidden="true"><em>Login</em>Security</span>
         <h2 id="trust-title" class="trust-title"><span class="sr-only">Security: </span>How cl_audit handles the Claude login</h2>
+        <span class="trust-note">Source-available · runs locally · no account or server</span>
         <a class="trust-more" href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>Details ›</a>
       </div>
       <!-- the tabs as on the production site: a dark track, plain-text tabs, one raised highlight that slides -->
@@ -282,12 +282,13 @@ cd cl_audit && ./build.sh</code></pre>
     .hero-keys > .key { flex: 1 1 40%; }
   }
   .dl-note { display: block; margin-top: 12px; color: var(--muted); font-size: 12.5px; }
-  .dl-note.checked { margin-top: 4px; cursor: help; }
+  .dl-note.checked { cursor: help; }
   /* the login section: one module; a display badge, a row of keys, a recessed readout */
   .trust { min-width: 0; }
   .trust-head { display: flex; align-items: center; gap: 12px; }
   .trust-title { margin: 0; font-size: 16px; font-weight: 650; letter-spacing: -.01em; color: var(--text); }
-  .trust-more { margin-left: auto; font-size: 12.5px; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .trust-note { margin-left: auto; color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+  .trust-more { font-size: 12.5px; color: var(--muted); text-decoration: none; white-space: nowrap; }
   .trust-more:hover { color: var(--text); }
   /* the tabs, as on the production site */
   .seg { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 14px; padding: 4px; border-radius: 12px;
@@ -309,6 +310,7 @@ cd cl_audit && ./build.sh</code></pre>
   @media (max-width: 760px) {
     .trust-head { flex-wrap: wrap; row-gap: 8px; }
     .trust-more { display: none; }
+    .trust-note { margin-left: 0; flex-basis: 100%; white-space: normal; }
     .seg { display: flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
     .seg::-webkit-scrollbar { display: none; }
     .stab { flex: none; overflow: visible; }
