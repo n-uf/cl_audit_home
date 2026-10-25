@@ -95,7 +95,7 @@ const jsonLd = [{
     </div>
     </div>
 
-    <section class="card trust" id="login" aria-labelledby="trust-title">
+    <section class="card trust" aria-labelledby="trust-title">
       <div class="trust-head">
         <!-- a two-part display window: LOGIN dim, SECURITY lit (sketch V4) -->
         <span class="disp trust-disp" aria-hidden="true"><em>Login</em>Security</span>
@@ -247,7 +247,7 @@ cd cl_audit && ./build.sh</code></pre>
   // cross-fades in the readout below, which keeps the height of its longest explanation, so the page never
   // moves. Arrow keys move between tabs.
   function setupTrust() {
-    const card = document.getElementById("login");
+    const card = document.querySelector<HTMLElement>(".card.trust");
     if (!card || card.dataset.ready) return;
     card.dataset.ready = "1";
     const facts = JSON.parse(document.getElementById("tf-data")!.textContent || "[]") as { tab: string; title: string; text: string }[];
