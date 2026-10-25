@@ -1,12 +1,13 @@
 /* The look of the cl_audit app: its dark window, cards, pills and limit bars. */
 :root {
   --bg: #1d1d1f;            /* around the window */
-  --window: #212121;        /* the app window, as macOS draws it in dark mode */
-  --card: rgba(255, 255, 255, 0.045);
+  --window: #1c1c1e;        /* the app window (the colours of the login-section sketch) */
+  --card: rgba(255, 255, 255, 0.031);   /* reads as #232325 on the window */
+  --card-light: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));  /* soft light from the top */
   --line: rgba(255, 255, 255, 0.07);
   --divider: rgba(255, 255, 255, 0.06);
-  --text: #f2f2f4;
-  --soft: rgba(242, 242, 244, 0.82);
+  --text: #ececee;
+  --soft: rgba(236, 236, 238, 0.82);
   --muted: #9a9aa0;
   --faint: #6e6e74;
   --green: #22c55e;
@@ -107,7 +108,7 @@ code, kbd { font-family: var(--mono); }
 }
 
 /* ── Cards: the app's SCard ─────────────────────────────────────────── */
-.card { background: var(--card); border-radius: var(--radius); box-shadow: inset 0 0 0 1px var(--line); padding: 14px 16px; }
+.card { background: var(--card-light), var(--card); border-radius: var(--radius); box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 rgba(255,255,255,.04); padding: 14px 16px; }
 .card h4, .cap {
   margin: 0 0 8px; font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
 }
