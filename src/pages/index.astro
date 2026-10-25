@@ -83,7 +83,7 @@ const jsonLd = [{
         <a class="trust-more" href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>Details ›</a>
       </div>
       <div class="seg" role="tablist" aria-label="How cl_audit handles the Claude login">
-        <span class="seg-ind" aria-hidden="true"></span>
+        <span class="seg-ind first" aria-hidden="true"></span>
         {trustFacts.map((f, i) => <button type="button" class="stab" role="tab" id={`tf-tab-${i}`} aria-controls="tf-pane" aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-i={i}>{f.tab}</button>)}
       </div>
       <div class="tf-pane" id="tf-pane" role="tabpanel" aria-labelledby="tf-tab-0">
@@ -219,7 +219,7 @@ cd cl_audit && ./build.sh</code></pre>
     const pane = card.querySelector<HTMLElement>(".tf-pane")!, text = card.querySelector<HTMLElement>(".tf-text")!;
     const html = (i: number) => `<b>${facts[i].title}</b><p>${facts[i].text}</p>`;
     let cur = 0, timer = 0;
-    const place = () => { const b = tabs[cur]; ind.style.width = `${b.offsetWidth}px`; ind.style.transform = `translateX(${b.offsetLeft}px)`; };
+    const place = () => { const b = tabs[cur]; ind.style.width = `${b.offsetWidth}px`; ind.style.transform = `translateX(${b.offsetLeft}px)`; ind.classList.toggle("first", cur === 0); };
     const measure = () => {
       const keep = text.innerHTML; let h = 0;
       facts.forEach((_, i) => { text.innerHTML = html(i); h = Math.max(h, text.offsetHeight); });
@@ -269,8 +269,10 @@ cd cl_audit && ./build.sh</code></pre>
   .seg { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 14px; padding: 4px; border-radius: 12px;
     background: rgba(0,0,0,.22); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 2px rgba(0,0,0,.35); }
   .seg-ind { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 9px; pointer-events: none;
-    background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.06)); box-shadow: inset 0 0 0 2px #4ade80, 0 0 12px rgba(74,222,128,.18), 0 1px 3px rgba(0,0,0,.45);
-    transition: transform .28s cubic-bezier(.3,.8,.25,1), width .28s cubic-bezier(.3,.8,.25,1); }
+    background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.08)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 3px rgba(0,0,0,.45);
+    transition: transform .28s cubic-bezier(.3,.8,.25,1), width .28s cubic-bezier(.3,.8,.25,1), box-shadow .2s, background .2s; }
+  /* only the first point gets the green outline */
+  .seg-ind.first { background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.06)); box-shadow: inset 0 0 0 2px #4ade80, 0 0 12px rgba(74,222,128,.18), 0 1px 3px rgba(0,0,0,.45); }
   .stab { position: relative; z-index: 1; min-width: 0; height: 34px; padding: 0 10px; border: 0; border-radius: 9px; background: none; cursor: pointer;
     font: inherit; font-size: 13px; font-weight: 500; color: #9a9aa0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .2s; }
   .stab:hover { color: #d4d4d8; }
