@@ -485,8 +485,15 @@ body { overflow: hidden; }
 .lalert { display: inline-flex; align-items: center; gap: 7px; flex: none; margin-left: auto; opacity: 0; transition: opacity .7s ease;
   color: #ef4444; text-shadow: 0 0 3px rgba(239,68,68,.8), 0 0 9px rgba(239,68,68,.35); }
 .lalert.on { opacity: 1; }
-.lalert svg { width: 15px; height: 15px; stroke: #ef4444; filter: drop-shadow(0 0 1.5px #ef4444) drop-shadow(0 0 4px rgba(239,68,68,.45)); }
+.lalert svg { width: 15px; height: 15px; flex: none; stroke: #ef4444; fill: none; filter: drop-shadow(0 0 1.5px #ef4444) drop-shadow(0 0 4px rgba(239,68,68,.45)); }
+.lalert svg circle { fill: #ef4444; }
+.lalert:empty { display: none; }
 .lalert .la-t { font-weight: 600; letter-spacing: .1em; }
+/* the compact sign that stays while a profile is red: the warning icon with the profile's name under it */
+.lalert.signs { gap: 10px; }
+.la-sign { display: inline-grid; justify-items: center; gap: 1px; line-height: 1; }
+.la-sign svg { width: 14px; height: 14px; }
+.la-sign span { font: 600 7.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 /* the title's secondary part (after " · "): same size and line, lighter and with a softer glow */
 .page-disp .pd-sub { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
 .fascia-slot { grid-column: 1 / -1; display: flex;   /* a page's own controls: their own row under the strip */ align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }

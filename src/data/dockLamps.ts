@@ -92,26 +92,64 @@ export function initDockLamps() {
   });
   const timers: number[] = [];
   const later = (fn: () => void, ms: number) => { timers.push(window.setTimeout(fn, ms)); };
-  // the alert at the right end of the display: while a usage is red (80 % and up), the highest one is named there
+  // the alert at the right end of the display. When a usage first turns red (80 %) and when it reaches 100 %, the
+  // message is typed in ("work · 5-hour 80%") and stays 3 s; then it shrinks to a compact sign, the warning icon with
+  // the profile's name under it, which stays while that profile is red. A 5-hour reset below 80 % clears it, and it
+  // can alert again. Several messages at once wait their turn.
   const alert = document.querySelector<HTMLElement>(".lalert");
+  // a warning sign drawn with care: a triangle with rounded corners, an exclamation bar and a round dot
+  const ICON = '<svg viewBox="0 0 24 24" fill="none"><path d="M10.27 4.1a2 2 0 0 1 3.46 0l7.74 13.4a2 2 0 0 1-1.73 3H4.26a2 2 0 0 1-1.73-3z" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.3v4.6" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1.15" stroke="none"/></svg>';
+  // the alert takes space only while it shows: once faded, it is emptied, so the title has the whole display again
+  const clearWhenOff = () => later(() => { if (alert && !alert.classList.contains("on")) alert.innerHTML = ""; }, 750);
+  const last = new Map<string, number>();
+  const queue: { name: string; limit: string; mark: number }[] = [];
+  let busy = false, shownSigns = "";
+  const red = () => pairs.map((p, i) => (Math.round(Math.max(p.rings.five.value(), p.rings.week.value())) >= 80 ? NAMES[i] : "")).filter(Boolean);
+  const showSigns = () => {   // the compact signs: one per red profile
+    if (!alert || busy) return;
+    const names = red(), key = names.join(",");
+    if (key === shownSigns) return;
+    shownSigns = key;
+    alert.classList.add("signs");
+    if (names.length) { alert.innerHTML = names.map((n) => `<span class="la-sign">${ICON}<span>${n}</span></span>`).join(""); alert.classList.add("on"); }
+    else { alert.classList.remove("on"); clearWhenOff(); }
+  };
+  const showNext = () => {
+    if (!alert || busy || !queue.length) return;
+    busy = true;
+    const m = queue.shift()!;
+    alert.classList.remove("signs");
+    // the longest wording that fits the free space on the display (measured, so the title is never cut)
+    const title = document.querySelector<HTMLElement>(".page-disp .pd-t");
+    const fits = (t: string) => {
+      alert.innerHTML = `${ICON}<span class="la-t">${t}</span>`;
+      return !title || title.scrollWidth <= title.clientWidth;
+    };
+    const words = [`${m.name} · ${m.limit} ${m.mark}%`, `${m.name} ${m.limit === "week" ? "wk" : "5h"} ${m.mark}%`, `${m.mark}%`];
+    const text = words.find(fits) ?? "";
+    alert.innerHTML = `${ICON}<span class="la-t"></span>`;
+    const label = alert.querySelector<HTMLElement>(".la-t")!;
+    label.style.minWidth = "0";
+    alert.classList.add("on");
+    let k = 0;
+    const type = () => {   // typed in, one character at a time
+      label.textContent = text.slice(0, ++k);
+      if (k < text.length) later(type, 45);
+      else later(() => { alert.classList.remove("on"); later(() => { alert.innerHTML = ""; busy = false; shownSigns = "-"; if (queue.length) showNext(); else showSigns(); }, 700); }, 3000);   // 3 s, then the compact sign
+    };
+    later(type, 350);
+  };
   const watch = window.setInterval(() => {
-    if (!alert) return;
-    let top: { name: string; limit: string; v: number } | null = null;
     pairs.forEach((p, i) => {
       for (const [limit, v] of [["5-hour", p.rings.five.value()], ["week", p.rings.week.value()]] as const) {
-        const n = Math.round(v);
-        if (n >= 80 && (!top || n > top.v)) top = { name: NAMES[i], limit, v: n };
+        const key = `${i}:${limit}`, n = Math.round(v), prev = last.get(key) ?? n;
+        last.set(key, n);
+        for (const mark of [80, 100]) if (prev < mark && n >= mark) queue.push({ name: NAMES[i], limit, mark });
       }
     });
-    alert.classList.toggle("on", !!top);
-    if (top) {
-      const t = top as { name: string; limit: string; v: number };
-      const text = `${t.name} · ${t.limit} ${t.v}%`;
-      const label = alert.querySelector<HTMLElement>(".la-t");
-      if (label) { if (label.textContent !== text) label.textContent = text; }
-      else alert.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3.6 21.4 20H2.6z" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9.5v5M12 17.3v.1" stroke-width="2" stroke-linecap="round"/></svg>' + `<span class="la-t">${text}</span>`;
-    }
-  }, 400);
+    showNext();
+    showSigns();
+  }, 200);
   stop = () => { timers.forEach(clearTimeout); clearInterval(watch); pairs.forEach((p) => { p.rings.five.cancel(); p.rings.week.cancel(); }); };
   document.addEventListener("astro:before-swap", () => stop?.(), { once: true });
 
