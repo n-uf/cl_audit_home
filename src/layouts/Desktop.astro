@@ -44,7 +44,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       <!-- the top strip of the front panel: brand, the display window with the page title, the PAGE keys -->
       <div class="fascia">
         <a class="brand" href="/"><b>cl_audit</b><span>Usage audit for Claude profiles</span></a>
-        {headline && <h1 class="disp page-disp"><em>{current ?? "404"}</em><span class="pd-t">{headMain}{headRest.length > 0 && <span class="pd-sub"> · {headRest.join(" · ")}</span>}</span></h1>}
+        {headline && <h1 class="disp page-disp"><em>{current ?? "404"}</em>{page === "overview" && <span class="dk-lamps" aria-hidden="true">{[0, 1, 2].map(() => <><span class="it cw"></span><span class="it us">0</span></>)}</span>}<span class="pd-t">{headMain}{headRest.length > 0 && <span class="pd-sub"> · {headRest.join(" · ")}</span>}</span></h1>}
         <div class="fascia-slot"><slot name="top" /></div>
         <nav class="plate pages" aria-label="Pages">
           <span class="lbl" aria-hidden="true">Page</span><span class="divider" aria-hidden="true"></span>
@@ -75,6 +75,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
   import { initCards } from "../data/cardState";
   import { initWhatNow } from "../data/whatNow";
   import { initDownloadFocus } from "../data/downloadFocus";
+  import { initDockLamps } from "../data/dockLamps";
   // On a computer that isn't a Mac (see Base.astro) the Download keys can't be pressed: no link, out of the tab order.
   const lockDownloads = () => {
     const off = document.documentElement.classList.contains("not-mac");
@@ -83,7 +84,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       if (!off && a.dataset.href) { a.setAttribute("href", a.dataset.href); a.removeAttribute("aria-disabled"); }
     });
   };
-  document.addEventListener("astro:page-load", () => { applyPrefs(); initCards(); initWhatNow(); initDownloadFocus(); lockDownloads(); });
+  document.addEventListener("astro:page-load", () => { applyPrefs(); initCards(); initWhatNow(); initDownloadFocus(); lockDownloads(); initDockLamps(); });
   document.addEventListener("cl:platform", lockDownloads);
 
   // The faceplate switch: shows which one is on and changes it (Base.astro applies the saved one before the first paint).
