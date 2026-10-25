@@ -405,7 +405,7 @@ body { overflow: hidden; }
   .fascia { grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-areas: "brand disp slot keys"; }
   .fascia-slot { grid-area: slot; }
 }
-@media (max-width: 1440px) { .fascia .page-disp > em { display: none; } }   /* the lit PAGE key names the page */
+@media (min-width: 1301px) and (max-width: 1420px) { .fascia .page-disp > em { display: none; } }   /* too narrow for both; the lit PAGE key names the page */
 @media (max-width: 1300px) {
   .fascia { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "brand keys" "disp disp"; }
   .fascia .page-disp > em { display: inline; }
