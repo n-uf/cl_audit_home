@@ -1139,6 +1139,57 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 }
 .face-silver .appwin .tf-text p, .face-silver .appwin .start-box { color: var(--soft); }
 .face-silver .appwin .tf-text code { background: rgba(0,0,0,.08); color: #1c1c1e; }
-.face-silver .appwin .start-box .sb-n { color: rgba(20,20,20,.5); }
 .face-silver .appwin .start-box b, .face-silver .appwin .login-note b { color: #111; }
 .face-silver .appwin .login-note { color: var(--muted); }
+
+/* ── Silver, after a silver integrated amplifier: a cool, light brushed plate; black display windows with crisp
+   white text; content windows lit white from behind (bevelled edge, dark printing), like its meter window. ── */
+.face-silver { --glow: 238, 241, 243; }
+.face-silver .appwin {
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.2) 0 1px, rgba(0,0,0,.025) 1px 2px), linear-gradient(180deg, #d0d2d3, #c2c4c5 45%, #b9bbbc);
+}
+.face-silver :is(.card, .chart-card) {
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.24) 0 1px, rgba(0,0,0,.025) 1px 2px), linear-gradient(180deg, #e0e2e3 0%, #d0d2d3 55%, #c6c8c9 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.32), 0 3px 10px rgba(0,0,0,.16);
+}
+.face-silver :is(.card, .chart-card) :is(h4, .fam, .share-title, .cc-head b) { color: rgba(30,32,34,.7); }
+/* display windows: black glass, white text, a faint glow */
+.face-silver :is(.disp, .plan, .stepper [data-value], .wn-t) {
+  background: linear-gradient(180deg, #040404, #101112);
+  text-shadow: 0 0 2px rgba(255,255,255,.35);
+}
+.face-silver .appwin .code { background: linear-gradient(180deg, #040404, #101112); color: #eef1f3; box-shadow: inset 0 1px 3px rgba(0,0,0,.9), 0 0 0 1px rgba(0,0,0,.5), 0 1px 0 rgba(255,255,255,.6); }
+/* content windows: lit white from behind */
+.face-silver .appwin :is(.mini-palette, .dock-mini, .mcard, .hist-mini, .pchip, .lane-mini, .card-prev, .oc-q, .oc-result,
+  .heat-scroll, .tchart, .tf-pane, .start-box, .login-note, .g-tile.on) {
+  --text: #1c1c1e; --soft: #2e3033; --muted: #55585c; --faint: #6c6f73;
+  color: var(--text); text-shadow: none;
+  background: linear-gradient(180deg, #f6f7f8, #eceef0);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.16), inset 0 3px 5px rgba(0,0,0,.12), inset 0 -2px 0 rgba(255,255,255,.85), 0 1px 0 rgba(255,255,255,.7);
+}
+.face-silver .appwin .g-tile.on { color: var(--text); box-shadow: inset 0 0 0 1px rgba(0,0,0,.16); }
+.face-silver .appwin .gallery .lane-mini { background: linear-gradient(180deg, #eceef0, #e6e8ea); box-shadow: inset 0 0 0 1px rgba(0,0,0,.16); }
+/* printing inside the white windows */
+.face-silver .appwin .pchip-title, .face-silver .appwin .badge, .face-silver .appwin .oc-head b { color: rgba(20,22,24,.62); }
+.face-silver .appwin .pchip-sub { color: #1c1c1e; text-shadow: none; }
+.face-silver .appwin .pchip.off .pchip-sub { color: rgba(20,22,24,.45); }
+.face-silver .appwin .oc-pill { color: #1c1c1e; text-shadow: none; }
+.face-silver .appwin .oc-head { background: rgba(0,0,0,.05); }
+.face-silver .appwin .oc-row { border-top-color: rgba(0,0,0,.08); }
+.face-silver .appwin .oc-label { color: var(--text); }
+.face-silver .appwin .row.sel { background: rgba(0,0,0,.06); box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+.face-silver .appwin .row[data-open-desktop]:hover { background: rgba(0,0,0,.05); }
+.face-silver .appwin .dock-mini .vsep { background: rgba(0,0,0,.2); }
+.face-silver .appwin :is(.mini .track, .share-track) { background: rgba(0,0,0,.1); box-shadow: inset 0 1px 1px rgba(0,0,0,.15); }
+.face-silver .appwin :is(.mcard, .card-prev, .card) :is(.pn-segs i:not([style]), .pn-bar) { background: rgba(0,0,0,.11); }
+.face-silver .appwin :is(.mcard, .card-prev) :is(.pn-pct, .pn-big) { filter: brightness(.82); }
+.face-silver .appwin .heat-row i { background: rgba(0,0,0,.06); }
+.face-silver .appwin .tline { border-top-color: rgba(0,0,0,.14); }
+.face-silver .appwin .pchip .cswitch { box-shadow: var(--key-up); }
+/* Silver: the window's top like a light Mac window: a soft outline (no hard black edge on the light desktop), a
+   light top highlight, a slightly lighter title-bar band, and no line under the menu bar */
+.face-silver .menubar { border-bottom: 0; }
+.face-silver .appwin {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 0 0 1px rgba(0,0,0,.2), 0 0 0 .5px rgba(0,0,0,.12), 0 22px 70px rgba(0,0,0,.28);
+}
+.face-silver .appwin .titlebar { background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0)); border-radius: 14px 14px 0 0; }

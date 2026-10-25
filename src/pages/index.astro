@@ -219,12 +219,14 @@ const jsonLd = [{
         <div class="start-grid">
           <h4 class="sg-h1">Install</h4>
           <h4 class="sg-h2">Or build from source</h4>
-          <div class="sg-k1 start-keyrow">
-            <span class="plate"><a class="pill dl dim" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a></span>
+          <div class="sg-k1 plate start-plate">
+            <a class="pill dl dim" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
+            <span class="divider" aria-hidden="true"></span>
             <span class="start-note">cl_audit {version} · {requires} · needs Claude Code</span>
           </div>
-          <div class="sg-k2 start-keyrow">
-            <span class="plate"><a class="key" href={repo}>GitHub</a></span>
+          <div class="sg-k2 plate start-plate">
+            <a class="key" href={repo}>GitHub</a>
+            <span class="divider" aria-hidden="true"></span>
             <span class="start-note">needs the Xcode Command Line Tools</span>
           </div>
           <div class="sg-b1 start-box">
@@ -415,13 +417,17 @@ cd cl_audit && ./build.sh</code></pre>
     .start-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "h1 h2" "k1 k2" "b1 b2"; }
     .sg-h2 { margin-top: 0 !important; }
   }
-  .start-keyrow { display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; }
-  .start-keyrow .pill, .start-keyrow .key { height: 32px; padding: 0 16px; }
-  .start-note { color: var(--muted); font-size: 12.5px; }
+  /* each key in a plate with its note printed beside it, after a divider (like the hero strip's version) */
+  .start-plate { display: flex; align-items: center; gap: 12px; padding: 7px 14px 7px 9px; justify-self: start; }
+  .start-plate .pill, .start-plate .key { flex: none; height: 32px; padding: 0 16px; }
+  .start-note { min-width: 0; color: rgba(236,236,238,.7); font-size: 12.5px; line-height: 1.35; }
+  :global(.face-silver) .start-note { color: #2e3033; }
+  @container (max-width: 420px) { .start-plate { justify-self: stretch; } }
   /* the steps in a box like the code's, one line each */
   .start-box { padding: 11px 14px; border-radius: 6px; background: rgba(0,0,0,.32); box-shadow: var(--well); font-size: 13px; line-height: 1.75; color: #d4d4d8; }
   .start-box > div { display: grid; grid-template-columns: 26px minmax(0, 1fr); align-items: baseline; }
   .start-box .sb-n { font: 600 11px var(--mono); color: rgba(255,255,255,.42); }
+  :global(.face-silver) .start-box .sb-n { color: rgba(20,20,20,.5); }
   .start-box b { color: var(--text); font-weight: 600; }
   .h3 { font-size: 18px; margin-bottom: 12px; }
   .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
