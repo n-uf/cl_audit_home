@@ -151,11 +151,16 @@ code, kbd { font-family: var(--mono); }
 .login-note b { color: var(--text); }
 .login-note a { color: #e8a07f; }
 
-/* the menu bar's Download (macOS menu bar): a tiny aluminium key with its LED while it is the prominent one */
-.mb-dl { display: inline-flex; align-items: center; gap: 6px; height: 18px; padding: 0 8px; border-radius: 3px; white-space: nowrap; text-decoration: none;
-  font: 600 9.5px/1 var(--font); letter-spacing: .1em; text-transform: uppercase; color: #232323 !important;
-  background: var(--alu-light); box-shadow: 0 0 0 1px #111, inset 0 1px 0 rgba(255,255,255,.7); transition: background .25s, color .25s; }
-.mb-dl::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: rgb(var(--led)); box-shadow: 0 0 5px rgba(var(--led), .9); }
+/* the menu bar's Download: while it is the prominent one, a small aluminium key with the orange light slot,
+   like the page's Download keys; otherwise plain menu-bar text */
+.mb-dl { position: relative; display: inline-flex; align-items: center; height: 22px; padding: 3px 12px 0; border-radius: 4px; white-space: nowrap; text-decoration: none;
+  font: 700 10px/1 var(--font); letter-spacing: .12em; text-transform: uppercase; color: #1d1d1d !important;
+  background: var(--alu-light); box-shadow: inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(0,0,0,.25), 0 0 0 1px #0d0d0d, 0 1px 0 #000, 0 0 14px rgba(255,122,61,.22);
+  transition: background .25s, color .25s, box-shadow .25s; }
+.mb-dl::before { content: ""; position: absolute; left: 5px; right: 5px; top: 3px; height: 2px; border-radius: 2px;
+  background: linear-gradient(180deg, #ffb08a, #ff7a3d 60%, #f0612a); box-shadow: 0 0 3px rgba(255,122,61,.85), 0 0 8px rgba(255,122,61,.55); }
+.mb-dl:hover { filter: brightness(1.05); }
+.mb-dl:active { transform: translateY(1px); }
 .mb-dl > span { display: none; }
 .mb-dl.dim { padding: 0; height: auto; background: none; box-shadow: none; color: #e8e8ea !important; font: 13px var(--font); letter-spacing: 0; text-transform: none; }
 .mb-dl.dim::before { display: none; }
@@ -490,10 +495,10 @@ body { overflow: hidden; }
 .steps { counter-reset: s; display: grid; gap: 0; }
 .steps > div { counter-increment: s; display: grid; grid-template-columns: 34px 1fr; gap: 12px; padding: 11px 0; border-top: 1px solid rgba(0,0,0,.45); box-shadow: inset 0 1px 0 rgba(255,255,255,.035); }
 .steps > div:first-child { border-top: 0; box-shadow: none; }
+/* the step number: printed on the plate, like a front panel's numbering (no display window) */
 .steps > div::before {
-  content: counter(s, decimal-leading-zero); height: 22px; margin-top: 1px; border-radius: 4px; display: grid; place-items: center;
-  background: linear-gradient(180deg, #030607, #0c1517); box-shadow: inset 0 1px 3px rgba(0,0,0,.9), 0 0 0 1px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.07);
-  font: 600 10.5px/1 var(--mono); letter-spacing: .08em; color: rgb(var(--glow)); text-shadow: 0 0 3px rgba(var(--glow), .75), 0 0 9px rgba(var(--glow), .35);
+  content: counter(s, decimal-leading-zero); padding-top: 3px;
+  font: 600 11px/1 var(--mono); letter-spacing: .08em; color: rgba(255,255,255,.42);
 }
 .steps b { display: block; font-size: 14.5px; }
 .steps span b { display: inline; font-size: inherit; color: var(--text); }
@@ -538,7 +543,9 @@ body { overflow: hidden; }
 }
 
 /* code: a dark recessed screen */
-.code { margin: 0; padding: 12px 14px; border-radius: 7px; background: #0b0d0e; box-shadow: var(--well); color: #d8f6f2; font-size: 13px; line-height: 1.7; overflow-x: auto; max-width: 100%; }
+/* code: a plain dark recess in the plate (not a display window) */
+.code { margin: 0; padding: 11px 14px; border-radius: 6px; overflow-x: auto; max-width: 100%;
+  background: rgba(0,0,0,.32); box-shadow: var(--well); color: #d4d4d8; font-size: 12.5px; line-height: 1.75; }
 
 /* ── Each account's Claude desktop app window ───────────────────────── */
 .dapp {

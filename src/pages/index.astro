@@ -197,13 +197,17 @@ const jsonLd = [{
     </div>
 
     <div class="start-row">
-      <div class="card">
+      <div class="card start">
         <h4>Install</h4>
         <div class="plate start-keys"><a class="pill dl dim" href={download}>Download cl_audit {version}</a><a class="key" href="/install/">Install steps</a></div>
-        <p class="t">Unzip, move to Applications, open. On first launch, allow it once in System Settings ▸ Privacy &amp; Security. Or build from source:</p>
+        <p class="start-req">{requires} · needs Claude Code</p>
+        <div class="steps start-steps">
+          <div><div><b>Unzip, move to Applications, open</b></div></div>
+          <div><div><b>First launch: allow it once</b><span>System Settings ▸ Privacy &amp; Security ▸ Open Anyway</span></div></div>
+        </div>
+        <h4 class="start-sub">Or build from source</h4>
         <pre class="code"><code>git clone {repo}.git
 cd cl_audit && ./build.sh</code></pre>
-        <div class="srow" style="margin-top:6px"><span>Requires</span><span class="v">{requires} · Claude Code</span></div>
       </div>
     </div>
 
@@ -315,8 +319,15 @@ cd cl_audit && ./build.sh</code></pre>
     .stab { flex: none; overflow: visible; }
   }
   @media (max-width: 480px) { .hide-xs { display: none; } }
-  .start-keys { display: flex; flex-wrap: wrap; margin: 2px 0 4px; }
-  .start-keys > .pill, .start-keys > .key { flex: 1 1 auto; height: 32px; }
+  /* the Install card: the keys, what it needs, two steps, the build commands */
+  .start-keys { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+  .start-req { margin: 8px 0 0; color: var(--muted); font-size: 12.5px; }
+  .start-keys > .pill, .start-keys > .key { height: 32px; }
+  .start-steps { margin-top: 8px; }
+  .start-steps > div { padding: 8px 0; }
+  .start-steps b { font-size: 14px; }
+  .start-steps span { display: block; font-size: 13px; }
+  .start-sub { margin: 10px 0 8px; }
   .start-row { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 720px; }
   .h3 { font-size: 18px; margin-bottom: 12px; }
   .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
