@@ -473,17 +473,14 @@ body { overflow: hidden; }
 .lp { display: inline-flex; gap: var(--g); flex: none; transform: scale(.35) translateY(30%); opacity: 0;
   transition: transform .7s cubic-bezier(.3,1.45,.5,1), opacity .35s ease; }
 .lp.in { transform: none; opacity: 1; }
-/* the Claude tile, like the app icon: warm gradient, a highlight at the top-left, a soft glow */
-.ltile { width: var(--s); height: var(--s); border-radius: calc(var(--s) * .232); flex: none;
-  background: radial-gradient(120% 90% at 30% 15%, rgba(255,255,255,.32), rgba(255,255,255,0) 55%), linear-gradient(160deg, #f0a46c, #d9733f 55%, #b5532d);
-  box-shadow: inset 0 0 0 .5px rgba(255,255,255,.18), inset 0 -2px 4px rgba(0,0,0,.18), 0 0 6px rgba(255,140,80,.35); }
-/* the usage, like a phone's battery widget: a dark icon with a ring in the level colour and the figure */
-.lu { width: var(--s); height: var(--s); border-radius: calc(var(--s) * .232); flex: none; display: block;
-  background: linear-gradient(180deg, #121416, #07090a); box-shadow: inset 0 0 0 .6px rgba(255,255,255,.14), inset 0 1px 0 rgba(255,255,255,.06); }
-.lu svg { display: block; width: 100%; height: 100%; }
-.lu .tr { stroke: rgba(255,255,255,.12); }
+/* the Claude window as a display pictogram: thin lines lit in warm orange on the glass */
+.lpict, .lu { width: var(--s); height: var(--s); flex: none; display: block; }
+.lpict svg, .lu svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.lpict .o { stroke: rgb(255,150,95); filter: drop-shadow(0 0 1.5px rgb(255,150,95)) drop-shadow(0 0 4px rgba(255,150,95,.45)); }
+.lpict .of { fill: rgb(255,150,95); filter: drop-shadow(0 0 1.5px rgb(255,150,95)) drop-shadow(0 0 4px rgba(255,150,95,.45)); }
+/* the usage: two rings bare on the glass, each in its level colour */
+.lu .tr { stroke: rgba(var(--glow), .14); }
 .lu .arc { transition: stroke .9s ease; filter: drop-shadow(0 0 1.5px currentColor); }
-.lu text { font: 700 8.6px var(--mono); fill: #eef1f3; letter-spacing: -.04em; text-shadow: none; }
 /* the title's secondary part (after " · "): same size and line, lighter and with a softer glow */
 .page-disp .pd-sub { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
 .fascia-slot { grid-column: 1 / -1; display: flex;   /* a page's own controls: their own row under the strip */ align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }
