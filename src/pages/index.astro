@@ -253,27 +253,28 @@ cd cl_audit && ./build.sh</code></pre>
   .dl-note { display: block; color: var(--muted); font-size: 12.5px; }
   .dl-note.checked { margin-top: 2px; cursor: help; }
   /* the login section (sketch D1): a green bar on the title, text tabs with a sliding highlight */
-  .trust { min-width: 0; padding: 16px 18px 18px; background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015)), var(--card, #232325);
+  /* colours as in the sketch: a solid, slightly lifted panel and softer whites */
+  .trust { min-width: 0; padding: 16px 18px 18px; background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015)), #232325;
     box-shadow: inset 0 0 0 1px rgba(255,255,255,.07), inset 0 1px 0 rgba(255,255,255,.04); }
   .trust-head { display: flex; align-items: center; gap: 12px; }
-  .trust-title { position: relative; margin: 0; padding-left: 12px; font-size: 16px; font-weight: 650; letter-spacing: -.01em; color: var(--text); }
+  .trust-title { position: relative; margin: 0; padding-left: 12px; font-size: 16px; font-weight: 650; letter-spacing: -.01em; color: #ececee; }
   .trust-title::before { content: ""; position: absolute; left: 0; top: 3px; bottom: 3px; width: 3px; border-radius: 3px; background: #4ade80; box-shadow: 0 0 10px rgba(74,222,128,.45); }
   .trust-more { margin-left: auto; font-size: 12.5px; color: var(--muted); text-decoration: none; white-space: nowrap; }
   .trust-more:hover { color: #4ade80; }
   .seg { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 14px; padding: 4px; border-radius: 12px;
     background: rgba(0,0,0,.22); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 2px rgba(0,0,0,.35); }
   .seg-ind { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 9px; pointer-events: none;
-    background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.08)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 3px rgba(0,0,0,.45);
+    background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.06)); box-shadow: inset 0 0 0 2px #4ade80, 0 0 12px rgba(74,222,128,.18), 0 1px 3px rgba(0,0,0,.45);
     transition: transform .28s cubic-bezier(.3,.8,.25,1), width .28s cubic-bezier(.3,.8,.25,1); }
   .stab { position: relative; z-index: 1; min-width: 0; height: 34px; padding: 0 10px; border: 0; border-radius: 9px; background: none; cursor: pointer;
     font: inherit; font-size: 13px; font-weight: 500; color: #9a9aa0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .2s; }
   .stab:hover { color: #d4d4d8; }
   .stab[aria-selected="true"] { color: #fff; }
-  .stab:focus-visible { outline: 2px solid #4ade80; outline-offset: 1px; }
+  .stab:focus-visible { outline: 2px solid rgba(255,255,255,.55); outline-offset: 2px; }
   .tf-pane { margin-top: 12px; padding: 0 2px; }
   .tf-text { transition: opacity .16s ease, transform .16s ease; }
   .tf-text.fade { opacity: 0; transform: translateY(2px); }
-  .tf-text b { display: block; margin: 1px 0 3px; font-size: 14px; font-weight: 600; letter-spacing: -.005em; color: var(--text); }
+  .tf-text b { display: block; margin: 1px 0 3px; font-size: 14px; font-weight: 600; letter-spacing: -.005em; color: #ececee; }
   .tf-text p { margin: 0; font-size: 13.5px; line-height: 1.6; color: #a8a8ae; max-width: 92ch; }
   .tf-text code { font: 12px var(--mono, ui-monospace, Menlo, monospace); padding: 1px 5px; border-radius: 5px; background: rgba(255,255,255,.07); color: #d4d4d8; }
   @media (max-width: 760px) {
