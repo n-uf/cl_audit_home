@@ -70,7 +70,7 @@ const jsonLd = [{
       {accounts.slice(0, 2).map((a) => <AccountCard {...a} />)}
     </div>
     <div class="card intro">
-      <div class="intro-body">
+      <div class="intro-body intro-grid">
         <h4 class="intro-label">What it does</h4>
         <p class="intro-text"><img class="intro-ico" src="/img/app-icon.png" alt="The cl_audit app icon" width="72" height="72" />
           cl_audit runs several Claude desktop apps side by side on one Mac, each with its own sign-in, and shows
@@ -348,6 +348,23 @@ cd cl_audit && ./build.sh</code></pre>
   .intro-text { margin: 0; color: var(--soft); font-size: 15.5px; line-height: 1.6; max-width: 72ch; }
   /* the release display and the key strip below it, both as wide as the intro; the keys share the strip */
   .intro-body { container-type: inline-size; width: 100%; }
+  /* with room (intro full width, 880 px+): the text on the left, the release display and the keys on the right, in one row */
+  .hero-row .intro { container: intro / inline-size; }
+  @container intro (min-width: 880px) {
+    .intro-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "label label" "text disp" "text keys"; column-gap: 24px; align-content: center; }
+    .intro-grid > .intro-label { grid-area: label; }
+    .intro-grid > .intro-text { grid-area: text; align-self: center; }
+    .intro-grid > .version-disp { grid-area: disp; align-self: end; margin-top: 0; }
+    .intro-grid > .hero-keys { grid-area: keys; align-self: start; flex-wrap: nowrap; }
+    .intro-grid > .hero-keys > :is(.hk-ver, .divider) { display: none; }   /* the display above already shows the version */
+    .intro-grid > .hero-keys > :is(.pill, .key) { padding: 0 11px; font-size: 10px; letter-spacing: .08em; }
+    .intro-grid > .version-disp { max-width: 100%; }
+  }
+  /* side layout with a narrow right half: Download full width, the other two keys under it */
+  @container intro (min-width: 880px) and (max-width: 1180px) {
+    .intro-grid > .hero-keys { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .intro-grid > .hero-keys > .pill.dl { grid-column: 1 / -1; }
+  }
   /* the release display: one line in a window, page marks at the right end */
   .version-disp { display: flex; width: 100%; height: 30px; margin-top: 18px; padding: 0 10px; gap: 6px; font-size: 10.5px; letter-spacing: .08em; cursor: pointer; }
   .rel-view { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; }
