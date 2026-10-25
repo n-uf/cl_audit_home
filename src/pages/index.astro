@@ -293,6 +293,7 @@ cd cl_audit && ./build.sh</code></pre>
   // The release display: shows a page; a page wider than the window waits, scrolls steadily to its end and waits
   // again; then a plain refresh to the next page. The pointer over it holds it; a click moves on at once. With
   // "reduce motion" nothing scrolls (the full text is in the tooltip and for screen readers).
+  // The page changes only after a long page has scrolled to its end.
   function setupRel() {
     const el = document.getElementById("rel");
     if (!el || el.dataset.ready) return;
@@ -305,7 +306,7 @@ cd cl_audit && ./build.sh</code></pre>
     choose();
     const view = el.querySelector<HTMLElement>(".rel-view")!, marks = [...el.querySelectorAll<HTMLElement>(".rel-mark")];
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const SPEED = 45, WAIT_START = 2000, WAIT_END = 2500, HOLD = [6000, 4500, 4500];
+    const SPEED = 45, WAIT_START = 1200, WAIT_END = 2500, HOLD = [6000, 4500, 4500];
     let i = 0, timer = 0, run = 0, hold = false;
     const later = (ms: number, fn: () => void) => { clearTimeout(timer); timer = window.setTimeout(() => (hold ? later(ms, fn) : fn()), ms); };
     const show = (k: number) => {
@@ -321,13 +322,16 @@ cd cl_audit && ./build.sh</code></pre>
         const over = line.offsetWidth - view.clientWidth;
         const next = () => { if (r === run && el.isConnected) show((i + 1) % pages.length); };
         if (over <= 0 || still) return later(HOLD[i] ?? 4500, next);
-        later(WAIT_START, () => {
+        // a page that doesn't fit always scrolls to its end (the pointer over the display only holds the page change)
+        clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          if (r !== run || !el.isConnected) return;
           const t = over / SPEED;
           line.style.setProperty("--t", `${t}s`);
           line.classList.add("scroll");
           line.style.transform = `translateX(${-over}px)`;
           later(t * 1000 + WAIT_END, next);
-        });
+        }, WAIT_START);
       }, k === i && !el.dataset.started ? 0 : 120);
       el.dataset.started = "1";
     };
