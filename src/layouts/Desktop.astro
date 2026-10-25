@@ -106,7 +106,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
   // Phones: the window's head (title bar, brand, display, PAGE keys) lies over the content, which scrolls under it
   // (.desk.ovl; until it is measured the head sits in the normal flow, in the same place). Scrolling down slides
   // the menu bar, title bar and brand away and leaves the display and the PAGE keys at the top (.desk.pin);
-  // scrolling up, or reaching the top, slides them back. Only moved, never resized, so the scroll stays smooth.
+  // it stays compact while scrolling up, and only reaching the top slides them back. Only moved, never resized, so the scroll stays smooth.
   const phone = matchMedia("(max-width: 600px)");
   let headSeen: ResizeObserver | undefined;
   const initPin = () => {
@@ -140,9 +140,8 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     content.addEventListener("scroll", () => {
       const y = content.scrollTop;
       if (!desk.classList.contains("ovl")) { lastY = y; return; }
-      if (y < 12) pin(false);
-      else if (y > lastY + 6 && y > 40) pin(true);
-      else if (y < lastY - 6) pin(false);
+      if (y < 12) pin(false);   // back at the top: the whole head again
+      else if (y > lastY + 6 && y > 40) pin(true);   // scrolling up keeps it compact
       if (y < 12 || Math.abs(y - lastY) > 6) lastY = y;
     }, { passive: true });
     // a key reached with the keyboard while hidden brings the head back

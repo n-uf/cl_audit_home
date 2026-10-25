@@ -636,7 +636,7 @@ body { overflow: hidden; }
 
 /* phones: the window's head lies over the content (.desk.ovl, set by Desktop.astro once it has measured the head:
    --head-h), so the content scrolls under it. Scrolling down slides the menu bar, title bar and brand away and
-   leaves the display and the PAGE keys at the top (.desk.pin, --pin-shift); scrolling up brings them back. Only
+   leaves the display and the PAGE keys at the top (.desk.pin, --pin-shift); only reaching the top brings them back. Only
    transforms: nothing is resized, so the scroll never jumps. */
 .apphead { flex: none; }
 @media (max-width: 600px) {
