@@ -17,7 +17,7 @@ const description =
           <a class="pill dl big" href={download}><span aria-hidden="true">↓</span> Download cl_audit {version}</a>
           <span class="sub">Released {releasedText()} · {requires} · <a href={changelog}>What's new</a></span>
         </div>
-        <p class="t login-note" style="margin:0 0 12px"><b>Claude login:</b> sign-in happens in Claude's own screens, so cl_audit never sees the password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href={`${repo}#how-cl_audit-handles-the-claude-login`}>How it works</a></p>
+        <p class="t login-note" style="margin:0 0 12px"><b>Claude login:</b> sign-in happens in Claude's own screens, so cl_audit never sees the password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>How it works</a></p>
         <div class="steps">
           <div><div><b>Unzip it and move cl_audit to Applications</b><span>Double-click <code>cl_audit.zip</code> in Downloads, then drag cl_audit into the Applications folder.</span></div></div>
           <div><div><b>Open it; macOS asks once</b><span>cl_audit isn't signed with an Apple Developer ID yet, so the first time macOS says it can't verify the app. Click Done.</span></div></div>
