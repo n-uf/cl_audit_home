@@ -12,9 +12,9 @@ const kinds: Range[] = ["24h", "7d", "30d"];
   <div class="hist-head hhead">
     <h3>Usage history</h3>
     <span class="keys" role="group" aria-label="Charts shown">
-      <button type="button" class="key k lt" data-chart-key="heat" aria-pressed="true">When you use Claude</button>
-      <button type="button" class="key k lt" data-chart-key="tokens" aria-pressed="true"><span data-tokens-title>Tokens per day</span></button>
-      <button type="button" class="key k lt" data-chart-key="shares" aria-pressed="true">Where it goes</button>
+      <button type="button" class="key k lt" data-chart-key="heat" aria-pressed="true" aria-label="When you use Claude"><span class="kfull">When you use Claude</span><span class="kshort" aria-hidden="true">When</span></button>
+      <button type="button" class="key k lt" data-chart-key="tokens" aria-pressed="true"><span class="kfull" data-tokens-title>Tokens per day</span><span class="kshort" aria-hidden="true">Tokens</span></button>
+      <button type="button" class="key k lt" data-chart-key="shares" aria-pressed="true" aria-label="Where it goes"><span class="kfull">Where it goes</span><span class="kshort" aria-hidden="true">Where</span></button>
     </span>
     <span class="grow"></span>
     {kinds.map((k) => <span class="hist-total disp h26" data-range={k} set:html={totalsHTML(k)} />)}

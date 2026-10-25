@@ -1266,3 +1266,17 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
   .dash-bar .strip26 .vdiv { display: none; }
   .dash-bar .disp.fixed { width: auto; flex: 1 1 calc(100% - 38px); }
 }
+/* Usage history header: the short chart-key names only on upright phones, where the header is three lines:
+   the title with the period keys, the totals, then the three chart keys side by side */
+.hhead .kshort { display: none; }
+@media (max-width: 600px) {
+  .hhead { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "title period" "totals totals" "keys keys"; gap: 10px; align-items: center; }
+  .hhead h3 { grid-area: title; font-size: 17px; }
+  .hhead .grow { display: none; }
+  .hhead .hist-total { grid-area: totals; justify-content: center; }
+  .hhead > .strip26 { grid-area: period; }
+  .hhead .keys { grid-area: keys; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .hhead .keys .key { width: 100%; padding: 0 6px; }
+  .hhead .kfull { display: none; }
+  .hhead .kshort { display: inline; }
+}
