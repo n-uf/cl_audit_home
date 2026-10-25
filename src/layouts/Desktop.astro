@@ -34,6 +34,8 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     </header>
 
     <div class="appwin" transition:animate="none">
+      <!-- the window's head: the title bar and the top strip (on phones an overlay over the content, see app.css) -->
+      <div class="apphead">
       <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="tb-title">cl_audit</span>
         <!-- the panels' faceplate: the standard one, or a black or silver cassette-deck plate (remembered in this browser) -->
         <span class="face-pick" role="group" aria-label="Faceplate">
@@ -50,6 +52,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
           <span class="lbl" aria-hidden="true">Page</span><span class="divider" aria-hidden="true"></span>
           {nav.map(([id, label, href]) => <a href={href} class:list={["key", "sm", { on: id === page }]} aria-current={id === page ? "page" : undefined}><span class="led" aria-hidden="true"></span>{label}</a>)}
         </nav>
+      </div>
       </div>
       <main class="content" transition:animate="fade">
         <slot />
@@ -100,42 +103,54 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     showFace();
   });
 
-  // Phones: scrolling the page down leaves only the display and the PAGE keys, pinned at the top of the window;
-  // scrolling up (or reaching the top) brings back the menu bar, title bar, brand and the page's own keys.
-  // Styles in app.css (.desk.pin).
+  // Phones: the window's head (title bar, brand, display, PAGE keys) lies over the content, which scrolls under it
+  // (.desk.ovl; until it is measured the head sits in the normal flow, in the same place). Scrolling down slides
+  // the menu bar, title bar and brand away and leaves the display and the PAGE keys at the top (.desk.pin);
+  // scrolling up, or reaching the top, slides them back. Only moved, never resized, so the scroll stays smooth.
   const phone = matchMedia("(max-width: 600px)");
+  let headSeen: ResizeObserver | undefined;
   const initPin = () => {
+    headSeen?.disconnect();
     const desk = document.querySelector<HTMLElement>(".desk");
     const content = desk?.querySelector<HTMLElement>(".content");
-    if (!desk || !content) return;
-    let lastY = content.scrollTop, quietUntil = 0;
+    const head = desk?.querySelector<HTMLElement>(".apphead");
+    if (!desk || !content || !head) return;
+    const MENU = 28;   // the menu bar's height, which the head makes room for in the overlay
+    const overlay = () => {
+      if (!phone.matches) { desk.classList.remove("ovl", "pin"); return; }
+      const h = head.offsetHeight + (desk.classList.contains("ovl") ? 0 : MENU);
+      desk.style.setProperty("--head-h", `${h}px`);
+      desk.classList.add("ovl");
+    };
+    overlay();
+    headSeen = new ResizeObserver(() => { if (desk.classList.contains("ovl")) desk.style.setProperty("--head-h", `${head.offsetHeight}px`); });
+    headSeen.observe(head);
+    phone.onchange = () => { overlay(); };
+    let lastY = content.scrollTop;
     const pin = (on: boolean) => {
       if (on === desk.classList.contains("pin")) return;
       if (on) {
-        const win = desk.querySelector<HTMLElement>(".appwin"), disp = desk.querySelector<HTMLElement>(".page-disp");
-        if (!win || !disp) return;
-        // the window moves up so that the display sits 10 px under the top of the screen
-        desk.style.setProperty("--pin-top", `${10 - (disp.getBoundingClientRect().top - win.getBoundingClientRect().top)}px`);
+        const disp = head.querySelector<HTMLElement>(".page-disp");
+        if (!disp) return;
+        // the head moves up so that the display sits 10 px under the top of the screen
+        desk.style.setProperty("--pin-shift", `${disp.getBoundingClientRect().top - head.getBoundingClientRect().top - 10}px`);
       }
       desk.classList.toggle("pin", on);
-      quietUntil = performance.now() + 350;   // the window's own resize scrolls a little: not a gesture
     };
     content.addEventListener("scroll", () => {
       const y = content.scrollTop;
-      if (!phone.matches) { pin(false); lastY = y; return; }
-      if (performance.now() < quietUntil) { lastY = y; return; }
+      if (!desk.classList.contains("ovl")) { lastY = y; return; }
       if (y < 12) pin(false);
-      else if (y > lastY + 6 && y > 40 && content.scrollHeight - content.clientHeight > 240) pin(true);
+      else if (y > lastY + 6 && y > 40) pin(true);
       else if (y < lastY - 6) pin(false);
       if (y < 12 || Math.abs(y - lastY) > 6) lastY = y;
     }, { passive: true });
-    // a key reached with the keyboard while hidden brings the strip back
+    // a key reached with the keyboard while hidden brings the head back
     desk.addEventListener("focusin", (e) => {
-      if ((e.target as HTMLElement).closest(".menubar, .titlebar, .brand, .fascia-slot")) pin(false);
+      if ((e.target as HTMLElement).closest(".menubar, .titlebar, .brand")) pin(false);
     });
   };
   document.addEventListener("astro:page-load", initPin);
-  phone.addEventListener("change", () => { if (!phone.matches) document.querySelector(".desk")?.classList.remove("pin"); });
 
   // The menu bar clock, like the Mac's.
   const tick = () => {
