@@ -9,7 +9,7 @@ const description =
 <Desktop title={title} description={description} page="install" headline="Download or build from source">
   <div class="content-inner">
     <!-- two columns that each flow on their own (no rows, so a short card leaves no gap): installing it and
-         adding a profile on the left; what it needs, building it yourself and keeping it up to date on the right.
+         adding a profile on the left; building it yourself, what it needs and keeping it up to date on the right.
          One column on narrow windows, in reading order (the i-* order classes). -->
     <div class="install-cols">
       <div class="col-stack">
@@ -32,7 +32,7 @@ const description =
             <div class="gk-row"><span>“cl_audit” was blocked to protect your Mac.</span><span class="gk-btn">Open Anyway</span></div>
           </div>
         </div>
-        <div class="card i-3">
+        <div class="card i-4">
           <h4>Add a profile</h4>
           <div class="steps">
             <div><div><b>Open cl_audit, then Settings ▸ New profile</b><span>A page opens in the same window: the profile, its Claude Code folder, and a summary with the steps to do.</span></div></div>
@@ -46,6 +46,20 @@ const description =
       </div>
       <div class="col-stack">
         <div class="card i-2">
+          <h4>Or build it from source</h4>
+          <p class="t">Review the source, then build on the Mac:</p>
+          <pre class="code"><code>git clone {repo}.git
+cd cl_audit
+git checkout v{version}   # optional: exactly this release
+./build.sh</code></pre>
+          <p class="t">
+            build.sh compiles cl_audit, installs it in /Applications and updates the Dock icon apps: one
+            “cl_audit &lt;profile&gt;” app per profile, next to it, where Spotlight finds them. <code>./build.sh --no-install</code> only
+            builds into the folder. Built on your own Mac, it opens without the Privacy &amp; Security step.
+          </p>
+          <div class="key-note"><a class="key" href={repo}>GitHub</a><span class="divider" aria-hidden="true"></span><span class="note">needs the Xcode Command Line Tools</span></div>
+        </div>
+        <div class="card i-3">
           <h4>Requires</h4>
           <div class="srow"><span>Checked with</span><span class="v">Claude Code {checkedWith.claudeCode} · Claude app {checkedWith.claudeApp}</span></div>
           <div class="srow"><span>Mac</span><span class="v">Apple silicon</span></div>
@@ -55,20 +69,6 @@ const description =
           <div class="srow"><span>Plans</span><span class="v">Pro, Max or Team (plans with usage limits)</span></div>
           <div class="srow"><span>To build it yourself</span><span class="v">Xcode Command Line Tools · <code>xcode-select --install</code></span></div>
           <p class="t drift">{driftNote}</p>
-        </div>
-        <div class="card i-4">
-          <h4>Or build it from source</h4>
-          <p class="t">Review the source, then build on the Mac:</p>
-          <pre class="code"><code>git clone {repo}.git
-  cd cl_audit
-  git checkout v{version}   # optional: exactly this release
-  ./build.sh</code></pre>
-          <p class="t">
-            build.sh compiles cl_audit, installs it in /Applications and updates the Dock icon apps: one
-            “cl_audit &lt;profile&gt;” app per profile, next to it, where Spotlight finds them. <code>./build.sh --no-install</code>
-            only builds into the folder. Built on your own Mac, it opens without the Privacy &amp; Security step.
-          </p>
-          <div class="key-note"><a class="key" href={repo}>GitHub</a><span class="divider" aria-hidden="true"></span><span class="note">needs the Xcode Command Line Tools</span></div>
         </div>
         <div class="card i-5">
           <h4>Update, remove, uninstall</h4>
@@ -92,6 +92,7 @@ const description =
     .col-stack { display: contents; }
     .i-1 { order: 1; } .i-2 { order: 2; } .i-3 { order: 3; } .i-4 { order: 4; } .i-5 { order: 5; }
   }
+  .card .t + .key-note { margin-top: 12px; }   /* the GitHub key a little apart from the text above it */
   .drift { margin: 10px 0 0; font-size: 12.5px; }
   .dl-row { margin: 2px 0 14px; }
   /* the macOS Privacy & Security row, as macOS draws it */
