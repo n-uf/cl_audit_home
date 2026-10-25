@@ -4,7 +4,7 @@ import Row from "../components/Row.astro";
 import AccountCard from "../components/AccountCard.astro";
 import AccIcon from "../components/AccIcon.astro";
 import { accounts } from "../data/demo";
-import { repo, site, version, released, releasedText, changelog, download, requires, checkedWith, driftNote } from "../data/site";
+import { repo, site, version, released, releasedText, changelog, download, requires, checkedWith } from "../data/site";
 import { cardLimitsHTML } from "../data/panelView";
 
 const title = "cl_audit — run several Claude profiles on macOS, with usage limits in the Dock";
@@ -25,6 +25,14 @@ const trustFacts: { tab: string; title: string; text: string }[] = [
     text: "cl_audit has no server of its own, collects no statistics and needs no account. Its code is open: the login is read in <code>Login.read</code> (Sources/Model.swift)." },
 ];
 const lane = ["plenty left", "", "half used", "", "at the limit"];
+// The release display above the hero keys: three pages it steps through (a plain refresh, with page marks; a
+// click moves on). A page longer than the window scrolls to its end first. Page 3 is a note, marked amber.
+const relPages: { html: string; amber?: boolean }[] = [
+  { html: `<span>cl_audit ${version}</span> <em>·</em> <span>${releasedText()}</span> <em>·</em> <span class="sub">${requires}</span>` },
+  { html: `<em>Checked with</em> <span>Claude Code ${checkedWith.claudeCode}</span> <em>·</em> <span>Claude app ${checkedWith.claudeApp}</span>` },
+  { html: `<em class="amber">Note</em> <span class="sub">newer Claude versions may need a cl_audit update</span>`, amber: true },
+];
+const relText = `cl_audit ${version} · ${releasedText()} · ${requires}. Checked with Claude Code ${checkedWith.claudeCode} and the Claude app ${checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.`;
 const spark = [[10, 4, 6], [14, 2, 8], [6, 22, 3], [5, 24, 2], [7, 26, 4], [9, 20, 3], [3, 8, 1]];
 
 const jsonLd = [{
@@ -67,14 +75,18 @@ const jsonLd = [{
           usage history comes from Claude Code's session logs on the Mac.
         </p>
         <!-- the release in a display window, then the actions as one key strip (sketch T4); both full width -->
-        <div class="disp version-disp"><span>cl_audit {version}</span><em>·</em><span>{releasedText()}</span><em class="vd-req">·</em><span class="vd-req">{requires}</span></div>
+        <div class="disp version-disp" id="rel" title={relText} aria-hidden="true">
+          <span class="rel-view"><span class="rel-line" set:html={relPages[0].html} /></span>
+          <span class="rel-marks">{relPages.map((p, i) => <i class:list={{ on: i === 0, amber: p.amber }} />)}</span>
+        </div>
+        <p class="sr-only">{relText}</p>
+        <script type="application/json" id="rel-data" set:html={JSON.stringify(relPages.map((p) => p.html))} />
         <div class="plate hero-keys">
           <span class="lbl hk-ver" title={`cl_audit ${version}`}>{version}</span><span class="divider" aria-hidden="true"></span>
           <a class="pill dl big" href={download}>Download for Mac</a>
           <a class="key" href="/install/">Install steps</a>
           <a class="key" href="/dashboard/" title="The dashboard with sample profiles">Demo dashboard</a>
         </div>
-        <span class="dl-note checked" title={driftNote}>Checked with Claude Code {checkedWith.claudeCode} and the Claude app {checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.</span>
       </div>
     </div>
     </div>
@@ -199,15 +211,22 @@ const jsonLd = [{
     <div class="start-row">
       <div class="card start">
         <h4>Install</h4>
-        <div class="plate start-keys"><a class="pill dl dim" href={download}>Download cl_audit {version}</a><a class="key" href="/install/">Install steps</a></div>
-        <p class="start-req">{requires} · needs Claude Code</p>
-        <div class="steps start-steps">
-          <div><div><b>Unzip, move to Applications, open</b></div></div>
-          <div><div><b>First launch: allow it once</b><span>System Settings ▸ Privacy &amp; Security ▸ Open Anyway</span></div></div>
-        </div>
-        <h4 class="start-sub">Or build from source</h4>
-        <pre class="code"><code>git clone {repo}.git
+        <div class="start-cols">
+          <div>
+            <div class="plate start-keys"><a class="pill dl dim" href={download}>Download cl_audit {version}</a></div>
+            <p class="start-req">{requires} · needs Claude Code</p>
+            <div class="steps start-steps">
+              <div><div><b>Unzip, move to Applications, open</b></div></div>
+              <div><div><b>First launch: allow it once</b><span>System Settings ▸ Privacy &amp; Security ▸ Open Anyway</span></div></div>
+            </div>
+          </div>
+          <div>
+            <h4 class="start-sub">Or build from source</h4>
+            <pre class="code"><code>git clone {repo}.git
 cd cl_audit && ./build.sh</code></pre>
+            <a class="key src-key" href={repo}>GitHub</a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -262,6 +281,49 @@ cd cl_audit && ./build.sh</code></pre>
     place(); measure();
   }
   document.addEventListener("astro:page-load", setupTrust);
+
+  // The release display: shows a page; a page wider than the window waits, scrolls steadily to its end and waits
+  // again; then a plain refresh to the next page. The pointer over it holds it; a click moves on at once. With
+  // "reduce motion" nothing scrolls (the full text is in the tooltip and for screen readers).
+  function setupRel() {
+    const el = document.getElementById("rel");
+    if (!el || el.dataset.ready) return;
+    el.dataset.ready = "1";
+    const pages = JSON.parse(document.getElementById("rel-data")?.textContent || "[]") as string[];
+    const view = el.querySelector<HTMLElement>(".rel-view")!, marks = [...el.querySelectorAll<HTMLElement>(".rel-marks i")];
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const SPEED = 45, WAIT_START = 2000, WAIT_END = 2500, HOLD = [6000, 4500, 4500];
+    let i = 0, timer = 0, run = 0, hold = false;
+    const later = (ms: number, fn: () => void) => { clearTimeout(timer); timer = window.setTimeout(() => (hold ? later(ms, fn) : fn()), ms); };
+    const show = (k: number) => {
+      const r = ++run;
+      i = k;
+      el.classList.add("blank");
+      window.setTimeout(() => {
+        if (r !== run || !el.isConnected) return;
+        view.innerHTML = `<span class="rel-line">${pages[i]}</span>`;
+        marks.forEach((m, n) => m.classList.toggle("on", n === i));
+        el.classList.remove("blank");
+        const line = view.firstElementChild as HTMLElement;
+        const over = line.offsetWidth - view.clientWidth;
+        const next = () => { if (r === run && el.isConnected) show((i + 1) % pages.length); };
+        if (over <= 0 || still) return later(HOLD[i] ?? 4500, next);
+        later(WAIT_START, () => {
+          const t = over / SPEED;
+          line.style.setProperty("--t", `${t}s`);
+          line.classList.add("scroll");
+          line.style.transform = `translateX(${-over}px)`;
+          later(t * 1000 + WAIT_END, next);
+        });
+      }, k === i && !el.dataset.started ? 0 : 120);
+      el.dataset.started = "1";
+    };
+    el.addEventListener("mouseenter", () => (hold = true));
+    el.addEventListener("mouseleave", () => (hold = false));
+    el.addEventListener("click", () => show((i + 1) % pages.length));
+    show(0);
+  }
+  document.addEventListener("astro:page-load", setupRel);
 </script>
 
 <style>
@@ -270,8 +332,19 @@ cd cl_audit && ./build.sh</code></pre>
   .intro-text { margin: 0; color: var(--soft); font-size: 15.5px; line-height: 1.6; max-width: 72ch; }
   /* the release display and the key strip below it, both as wide as the intro; the keys share the strip */
   .intro-body { container-type: inline-size; width: 100%; }
-  .version-disp { display: flex; width: 100%; height: 30px; margin-top: 18px; gap: 7px; font-size: 11px; letter-spacing: .12em; }
-  @container (max-width: 580px) { .version-disp .vd-req { display: none; } }
+  /* the release display: one line in a window, page marks at the right end */
+  .version-disp { display: flex; width: 100%; height: 30px; margin-top: 18px; padding: 0 10px; gap: 6px; font-size: 10.5px; letter-spacing: .08em; cursor: pointer; }
+  .rel-view { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; }
+  .rel-line { display: inline-block; }
+  .rel-line.scroll { transition: transform var(--t, 4s) linear; }
+  .version-disp.blank .rel-line { visibility: hidden; }
+  .version-disp :global(.sub) { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
+  .version-disp :global(em.amber) { color: #fbbf24; text-shadow: 0 0 3px rgba(251,191,36,.7), 0 0 9px rgba(251,191,36,.3); }
+  .rel-marks { flex: none; display: inline-flex; gap: 3px; }
+  .rel-marks i { width: 5px; height: 5px; border-radius: 1px; background: rgba(var(--glow), .18); }
+  .rel-marks i.on { background: rgb(var(--glow)); box-shadow: 0 0 4px rgba(var(--glow), .8); }
+  .rel-marks i.amber { background: rgba(251,191,36,.22); }
+  .rel-marks i.amber.on { background: #fbbf24; box-shadow: 0 0 4px rgba(251,191,36,.8); }
   .hero-keys { display: flex; width: 100%; flex-wrap: wrap; margin-top: 10px; }
   .hero-keys > .pill, .hero-keys > .key { flex: 1 1 auto; height: 32px; padding: 0 16px; font-size: 11px; }
   .hero-keys > .pill.dl { padding-top: 4px; }
@@ -284,8 +357,6 @@ cd cl_audit && ./build.sh</code></pre>
     .hero-keys > .pill.dl { flex: 1 1 auto; }
     .hero-keys > .key { flex: 1 1 40%; }
   }
-  .dl-note { display: block; margin-top: 12px; color: var(--muted); font-size: 12.5px; }
-  .dl-note.checked { cursor: help; }
   /* the login section: one module; a display badge, a row of keys, a recessed readout */
   .trust { min-width: 0; }
   .trust-head { display: flex; align-items: center; gap: 12px; }
@@ -320,15 +391,20 @@ cd cl_audit && ./build.sh</code></pre>
   }
   @media (max-width: 480px) { .hide-xs { display: none; } }
   /* the Install card: the keys, what it needs, two steps, the build commands */
-  .start-keys { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+  .start-keys { display: inline-flex; flex-wrap: wrap; gap: 8px; max-width: 100%; }
   .start-req { margin: 8px 0 0; color: var(--muted); font-size: 12.5px; }
-  .start-keys > .pill, .start-keys > .key { height: 32px; }
+  .start-keys > .pill, .start-keys > .key { height: 32px; padding: 0 16px; }
   .start-steps { margin-top: 8px; }
   .start-steps > div { padding: 8px 0; }
   .start-steps b { font-size: 14px; }
   .start-steps span { display: block; font-size: 13px; }
   .start-sub { margin: 10px 0 8px; }
-  .start-row { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 720px; }
+  .start-row { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .start { container-type: inline-size; }
+  .start-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px 28px; }
+  .start-cols > * { min-width: 0; }
+  .src-key { margin-top: 10px; height: 30px; padding: 0 16px; }
+  @container (min-width: 860px) { .start-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .start-cols .start-sub { margin-top: 0; } }
   .h3 { font-size: 18px; margin-bottom: 12px; }
   .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
   .lane-icons figure { margin: 0; display: grid; justify-items: center; gap: 2px; color: var(--muted); font-size: 10.5px; min-height: 58px; }
