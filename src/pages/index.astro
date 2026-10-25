@@ -321,7 +321,10 @@ cd cl_audit && ./build.sh</code></pre>
         const line = view.firstElementChild as HTMLElement;
         const over = line.offsetWidth - view.clientWidth;
         const next = () => { if (r === run && el.isConnected) show((i + 1) % pages.length); };
-        if (over <= 0 || still) return later(HOLD[i] ?? 4500, next);
+        // the current mark drains like a countdown to the next page
+        const countdown = (ms: number) => { const m = marks[i]; if (!m) return; m.style.setProperty("--d", `${ms}ms`); m.classList.remove("run"); void m.offsetWidth; m.classList.add("run"); };
+        if (over <= 0 || still) { countdown(HOLD[i] ?? 4500); return later(HOLD[i] ?? 4500, next); }
+        countdown(WAIT_START + (over / SPEED) * 1000 + WAIT_END);
         // a page that doesn't fit always scrolls to its end (the pointer over the display only holds the page change)
         clearTimeout(timer);
         timer = window.setTimeout(() => {
@@ -377,22 +380,29 @@ cd cl_audit && ./build.sh</code></pre>
     .intro-grid > .hero-keys > :is(.pill, .key) { padding: 0 14px; }
   }
   /* the release display: one line in a window, page marks at the right end */
-  .version-disp { display: flex; width: 100%; height: 30px; margin-top: 18px; padding: 0 10px; gap: 6px; font-size: 10.5px; letter-spacing: .08em; cursor: pointer; }
+  .version-disp { display: flex; width: 100%; height: 30px; margin-top: 18px; padding: 0 10px; gap: 4px; font-size: 10.5px; letter-spacing: .08em; cursor: pointer; }
   .rel-view { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; }
-  .rel-line { display: inline-block; }
-  .rel-line.scroll { transition: transform var(--t, 4s) linear; }
-  .version-disp.blank .rel-line { visibility: hidden; }
+  /* the line is re-inserted by the script, so these reach it through :global (scoped styles would miss it) */
+  .rel-view :global(.rel-line) { display: inline-block; }
+  .rel-view :global(.rel-line.scroll) { transition: transform var(--t, 4s) linear; }
+  .version-disp.blank :global(.rel-line) { visibility: hidden; }
   .version-disp :global(.sub) { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
   .version-disp :global(em.amber) { color: #fbbf24; text-shadow: 0 0 3px rgba(251,191,36,.7), 0 0 9px rgba(251,191,36,.3); }
-  .rel-marks { flex: none; display: inline-flex; gap: 2px; margin-right: -4px; }
-  .rel-mark { display: grid; place-items: center; width: 15px; height: 22px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 3px; }
-  .rel-mark:hover { background: rgba(var(--glow), .08); }
+  /* page marks: compact keys; the current one drains like a countdown to the next page (paused while the pointer
+     is on the display) */
+  .rel-marks { flex: none; display: inline-flex; gap: 0; margin-right: -3px; }
+  .rel-mark { display: grid; place-items: center; width: 10px; height: 20px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 2px; }
+  .rel-mark:hover i { filter: brightness(1.6); }
   :global(.not-mac) .rel-marks { display: none; }
-  :global(.not-mac) #rel:not([data-started]) .rel-line { visibility: hidden; }   /* no release line flashing before the reason */
-  .rel-mark i { width: 9px; height: 4px; border-radius: 1px; background: rgba(var(--glow), .18); }
-  .rel-mark.on i { background: rgb(var(--glow)); box-shadow: 0 0 4px rgba(var(--glow), .8); }
-  .rel-mark.amber i { background: rgba(251,191,36,.22); }
-  .rel-mark.amber.on i { background: #fbbf24; box-shadow: 0 0 4px rgba(251,191,36,.8); }
+  :global(.not-mac) #rel:not([data-started]) :global(.rel-line) { visibility: hidden; }   /* no release line flashing before the reason */
+  .rel-mark i { position: relative; overflow: hidden; width: 6px; height: 3px; border-radius: 1px; background: rgba(var(--glow), .2); }
+  .rel-mark.amber i { background: rgba(251,191,36,.24); }
+  .rel-mark.on i::after { content: ""; position: absolute; inset: 0; transform-origin: left; background: rgb(var(--glow)); box-shadow: 0 0 4px rgba(var(--glow), .8); }
+  .rel-mark.amber.on i::after { background: #fbbf24; box-shadow: 0 0 4px rgba(251,191,36,.8); }
+  .rel-mark.on.run i::after { animation: rel-drain var(--d, 5s) linear forwards; }
+  #rel:hover .rel-mark.on.run i::after { animation-play-state: paused; }
+  @keyframes rel-drain { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+  @media (prefers-reduced-motion: reduce) { .rel-mark.on.run i::after { animation: none; } }
   /* the hero keys: all three in one row, or (too narrow for that) each on its own full-width row with the version
      label beside Download; never a 2 + 1 split */
   .hero-keys { display: flex; width: 100%; flex-wrap: nowrap; margin-top: 10px; }
