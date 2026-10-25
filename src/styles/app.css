@@ -838,7 +838,7 @@ select.menu option { background: #2c2c2f; color: var(--text); }
 .gallery { grid-template-columns: repeat(4, 1fr); gap: 0 4px; }
 .g-tile { padding: 8px 2px 8px; gap: 4px; border-radius: 12px; font-size: 11.5px; }
 .g-tile img { width: 48px; height: 48px; }
-.g-tile.on { background: #121315; color: #fff; font-weight: 600; border-radius: 8px 8px 0 0; }
+.g-tile.on { position: relative; z-index: 1; margin-bottom: -1px; background: #121315; color: #fff; font-weight: 600; border-radius: 8px 8px 0 0; }   /* reaches 1 px into the preview strip: one piece, no seam */
 .gallery .lane-mini { grid-column: 1 / -1; margin: 0 0 6px; border-radius: 8px; padding: 10px 12px 8px; background: #121315; box-shadow: none; }
 .gallery .lane-mini[data-col="0"] { border-top-left-radius: 0; }
 .gallery .lane-mini[data-last="true"] { border-top-right-radius: 0; }

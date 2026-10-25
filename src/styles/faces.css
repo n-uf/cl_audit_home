@@ -132,7 +132,9 @@
   --text: #1c1c1e; --soft: #2e3033; --muted: #55585c; --faint: #6c6f73; --prose: #2e3033; --chip: rgba(0,0,0,.08);
   color: var(--text); text-shadow: none;
 }
-.face-silver .appwin .g-tile.on { background: var(--win-bg); box-shadow: inset 0 0 0 1px rgba(0,0,0,.16); }
+/* the chosen icon's tab and the preview strip under it are one lit window: the tab's outline runs along its top and
+   sides only and the tab covers the strip's top edge under it */
+.face-silver .appwin .g-tile.on { background: var(--win-bg); box-shadow: none; border: 1px solid rgba(0,0,0,.16); border-bottom: 0; padding: 7px 1px 9px; }
 .face-silver .appwin .gallery .lane-mini { background: linear-gradient(180deg, #eceef0, #e6e8ea); box-shadow: inset 0 0 0 1px rgba(0,0,0,.16); }
 .face-silver .appwin :is(.pchip-title, .badge, .oc-head b) { color: rgba(20,22,24,.62); }
 .face-silver .appwin .panel-stage .pn-plan { background: rgba(0,0,0,.08); }
