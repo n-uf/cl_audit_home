@@ -1077,3 +1077,10 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .face-silver .appwin .legend-item { color: var(--soft); }
 .face-silver .appwin .legal { color: var(--muted); }
 .face-silver .fk { box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 0 0 1px #3a3a38, 0 1px 0 rgba(255,255,255,.4); }
+/* Black: a key on its own sits straight on the plate (only strips of several keys keep a channel); text windows
+   (steps, code, readouts, lists) are a step lighter than the channels, with a fine edge. */
+.face-black .plate:not(.pages):has(> :only-child) { padding: 0; background: none; box-shadow: none; }
+.face-black .appwin :is(.code, .start-box, .tf-pane, .login-note, .mini-palette, .dock-mini, .mcard, .hist-mini, .lane-mini, .card-prev, .oc-q, .oc-result, .pchip) {
+  background: rgba(0,0,0,.2);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04), 0 1px 0 rgba(255,255,255,.06);
+}
