@@ -67,8 +67,10 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
       <div class="srow" data-peekrow><span>Show usage for</span><span class="stepper"><button type="button" data-step="peek" data-dir="-1" aria-label="Shorter">−</button><span data-value="peek">3 s</span><button type="button" data-step="peek" data-dir="1" aria-label="Longer">＋</button></span></div>
       <div class="srow"><span>Press and hold <i class="idot" title="Press and hold the icon for its details panel and a short menu. Double-click or ⌥-click also opens the panel; right-click shows the full menu.">i</i></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="hold" aria-label="Press and hold"></button></div>
       <div class="srow stacked"><span>Panel design</span>
-        <span class="switch small-switch" role="group" aria-label="Panel design">{panels.map(([k, n]) => <button type="button" data-panel={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
-        <div class="panel-stage"><div data-panel-prev set:html={panelHTML("home", "segments", { large: false })} /></div>
+        <div class="design-pane">
+          <span class="switch small-switch" role="group" aria-label="Panel design">{panels.map(([k, n]) => <button type="button" data-panel={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
+          <div class="panel-stage"><div data-panel-prev set:html={panelHTML("home", "segments", { large: false })} /></div>
+        </div>
       </div>
     </div>
 
@@ -132,8 +134,10 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
   <div class="g-grid" data-general-view hidden>
     <div class="card"><h4>Dashboard cards <i class="idot" title="One card style for every profile on the dashboard. Each profile's panel design is set in its profile settings.">i</i></h4>
       <div class="srow stacked"><span>Card style</span>
-        <span class="switch small-switch" role="group" aria-label="Card style">{designs.map(([k, n]) => <button type="button" data-card-style={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
-        <div class="card-prev" data-card-prev set:html={limitsHTML("sample", "segments", false)} />
+        <div class="design-pane">
+          <span class="switch small-switch" role="group" aria-label="Card style">{designs.map(([k, n]) => <button type="button" data-card-style={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
+          <div class="card-prev" data-card-prev set:html={limitsHTML("sample", "segments", false)} />
+        </div>
       </div>
     </div>
     <div class="card"><h4>About</h4>

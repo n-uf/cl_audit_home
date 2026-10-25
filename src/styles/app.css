@@ -98,12 +98,12 @@ code, kbd { font-family: var(--mono); }
 
 /* the LED: only a lit LED is shown on a key (current page, chosen range or design); keys without one stay plain,
    like the hero keys */
-.led, .switch a::before, .switch button::before {
+.led {
   content: ""; width: 6px; height: 6px; border-radius: 50%; flex: none;
   background: #6b5a52; box-shadow: inset 0 1px 1px rgba(0,0,0,.45);
   transition: background .2s, box-shadow .2s;
 }
-.led.lit, .key.on .led, .key[aria-selected="true"] .led, .switch .on::before {
+.led.lit, .key.on .led, .key[aria-selected="true"] .led {
   background: rgb(var(--led)); box-shadow: 0 0 6px rgba(var(--led), .9), 0 0 0 1px rgba(120,40,0,.25);
 }
 /* Download: the key with the orange light slot along its top edge, as on the production site. Only one is
@@ -156,6 +156,12 @@ code, kbd { font-family: var(--mono); }
   box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.4), 0 0 0 1px #0b0b0c, 0 4px 12px rgba(0,0,0,.35);
 }
 .switch .on { font-weight: 600; }
+/* the wide LED: a light strip along the top edge of a chosen key (options, ranges, profile tiles, Show keys) */
+.switch .on, .tile.sel, .chip.on { padding-top: 3px; }
+.switch .on::before, .tile.sel::before, .chip.on .chip-ck {
+  content: ""; position: absolute; left: 5px; right: 5px; top: 3px; height: 2px; border-radius: 2px;
+  background: linear-gradient(180deg, #ffb08a, #ff7a3d 60%, #f0612a); box-shadow: 0 0 3px rgba(255,122,61,.8), 0 0 8px rgba(255,122,61,.45);
+}
 
 /* the display window: recessed glass with glowing monospace text (VFD); <em> is the dim part */
 .disp {
@@ -270,9 +276,9 @@ code, kbd { font-family: var(--mono); }
 .dash .history { margin-top: 10px; }
 
 .chip { gap: 7px; }
-.chip-ck { width: 6px; height: 6px; border-radius: 50%; font-size: 0; color: transparent; box-shadow: 0 0 6px currentColor; }
-.chip.on .chip-ck { box-shadow: 0 0 6px rgba(255,255,255,.35), 0 0 0 1px rgba(0,0,0,.25); }
-.chip:not(.on) .chip-ck { background: #6b5a52 !important; box-shadow: inset 0 1px 1px rgba(0,0,0,.45); }
+.chip-ck { font-size: 0; color: transparent; }
+.chip:not(.on) .chip-ck { display: none; }
+.chip.on .chip-ck { box-shadow: 0 0 1px rgba(0,0,0,.4); filter: saturate(1.2) brightness(1.1); }
 .chip.on { transform: translateY(1px); background: var(--alu-down); box-shadow: var(--key-down); }
 
 /* ── Usage history ─────────────────────────────────────────────────── */
@@ -331,10 +337,7 @@ code, kbd { font-family: var(--mono); }
   background: var(--alu); box-shadow: var(--key-up); transition: transform .06s, box-shadow .06s, filter .15s; }
 .tile:hover { filter: brightness(1.05); }
 .tile:active { transform: translateY(1px); box-shadow: var(--key-down); }
-.tile::after { content: ""; width: 6px; height: 6px; border-radius: 50%; margin-left: 4px; flex: none; background: #6b5a52; box-shadow: inset 0 1px 1px rgba(0,0,0,.45); }
 .tile.sel { transform: translateY(1px); background: var(--alu-down); box-shadow: var(--key-down); }
-.tile.sel::after { background: rgb(var(--led)); box-shadow: 0 0 6px rgba(var(--led), .9); }
-a.tile::after { display: none; }
 .tile div { display: grid; line-height: 1.25; }
 .tile b { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .tile .sub { font-size: 11px; color: rgba(241,241,240,.62); }
@@ -1021,7 +1024,14 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
    The preview keeps the height of the tallest design, so the cards below it stay where they are. */
 .card-limits { min-width: 0; }
 .mcard .card-limits .pn-limits { gap: 6px; }
-.card-prev { margin-top: 8px; padding: 12px; border-radius: 7px; background: rgba(0,0,0,.26); box-shadow: var(--well); min-height: 162px; display: grid; align-content: start; }
+.card-prev { padding: 12px; border-radius: 6px; min-height: 162px; display: grid; align-content: start; }
+/* a design picker: the keys and, under them, their preview, together in one pane */
+.design-pane { display: grid; gap: 7px; width: 100%; padding: 7px; border-radius: 8px;
+  background: var(--grain), linear-gradient(180deg, #48484b, #333336);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.4), 0 0 0 1px #0b0b0c, 0 4px 12px rgba(0,0,0,.35); }
+.design-pane > .switch { padding: 0; background: none !important; box-shadow: none !important; }
+.design-pane .panel-stage { margin: 0; }
+.design-pane .panel-stage .pn:not(.large), .design-pane .card-prev { border-radius: 5px; }
 
 /* ── Shared parts used on several pages (styled once here, themed through the tokens above) ──────────────── */
 /* content windows */
