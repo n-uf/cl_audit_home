@@ -6,7 +6,8 @@
 The font is NOT in the repo. Use Inter's variable font from Google Fonts (family Inter, axes opsz + wght;
 https://fonts.google.com/specimen/Inter) or the rsms/inter GitHub release; the picture uses the weight axis
 at optical size 14, as a plain "Inter" web font does. The four icons are the site's own pictures
-(public/img/lane-0 is replaced by the app's no-data icon, rendered with UsageDock --render-preview).
+(the first is the cl_audit app's own icon, rendered with UsageDock --render-app-icon; build the app with
+`./build.sh --no-install` first).
 Edit HEAD1/HEAD2/SUB below to change the wording."""
 import argparse, os, subprocess, tempfile
 import numpy as np
@@ -58,7 +59,7 @@ def scene(icons):
 
 with tempfile.TemporaryDirectory() as tmp:
     usage = os.path.join(tmp, "usage.png")
-    subprocess.run([args.app, "--render-preview", usage, "bars", "USAGE", "-", "-"], check=True)
+    subprocess.run([args.app, "--render-app-icon", usage, "panel", "456"], check=True)   # the default app icon (Front panel)
     im = scene([(usage, 327), (f"{IMG}/dock-home.png", 483), (f"{IMG}/dock-work.png", 621), (f"{IMG}/dock-side.png", 759)])
 d = ImageDraw.Draw(im)
 text(d, "cl_audit", font(28, 700), 600, 117, (158, 158, 158), 0.28)
