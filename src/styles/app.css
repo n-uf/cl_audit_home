@@ -986,12 +986,13 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .wn-x:active { transform: translateY(1px); box-shadow: var(--key-down); }
 @media (prefers-reduced-motion: reduce) { .whatnow-card { transition: none; } }
 
-/* ── Settings layout, as the app (26.10.2): the profile's cards, its Dock icon's cards, then Icon; three columns
-   from 1180 px, two from 800 (Icon under the Dock icon's cards), one below in that order. Cards keep their natural
-   height. General: Emails, Face, Dashboard cards, About | Dock. */
+/* ── Settings layout: the profile and whether its Dock icon runs (Profile · Claude Code · Updates and alerts ·
+   Dock icon), what it does (Opening and closing · Dock icon clicks), how it looks (Icon). Three columns from
+   1180 px, about equal in height; two from 800 (Icon under the second); one below, in that order. Cards keep their
+   natural height. General: Emails, Face, Dashboard cards, About | Dock. */
 .s-grid { column-count: 3; column-gap: 12px; }
 .s-grid > .card { break-inside: avoid; -webkit-column-break-inside: avoid; margin: 0 0 12px; display: block; }
-.s-grid > .c-d { break-before: column; -webkit-column-break-before: always; }
+.s-grid > .c-o { break-before: column; -webkit-column-break-before: always; }
 .s-grid > .c-i { break-before: column; -webkit-column-break-before: always; }
 .g-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
 .g-col { display: grid; gap: 12px; align-content: start; min-width: 0; }

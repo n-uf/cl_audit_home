@@ -3,9 +3,9 @@
 // General. Choices are remembered in this browser and show up across the site (icon style in the Dock,
 // cards and launcher; profile colour; the Claude open dot; how long a Dock click shows the usage).
 // The server renders the "home" profile; src/pages/settings.astro fills the controls in.
-// Cards, as in the app (26.10.2), in reading order: the profile (Profile · Claude Code · Updates and alerts), its
-// Dock icon (Dock icon · Opening and closing · Dock icon clicks), then Icon. Three columns from 1180 px; two
-// (Icon under the Dock icon's cards) from 800; one below.
+// Cards in reading order: the profile and whether its Dock icon runs (Profile · Claude Code · Updates and alerts ·
+// Dock icon), what the Dock icon does (Opening and closing · Dock icon clicks), then Icon. Three columns of about
+// equal height from 1180 px; two (Icon under the second) from 800; one below.
 import { accounts } from "../data/demo";
 import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices } from "../data/prefs";
 import { panelHTML, limitsHTML, designs } from "../data/panelView";

@@ -8,76 +8,75 @@ const description =
 ---
 <Desktop title={title} description={description} page="install" headline="Download or build from source">
   <div class="content-inner">
-    <div class="cols2 lead-row">
-      <div class="card dl-card">
-        <h4>Download</h4>
-        <!-- as on the Overview's Install card: the key, a divider, what it is -->
-        <div class="key-note dl-row">
-          <a class="pill dl" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
-          <span class="divider" aria-hidden="true"></span>
-          <span class="note">cl_audit {version} · {releasedText()} · {requires} · <a href={changelog}>What's new</a></span>
+    <!-- two columns that each flow on their own (no rows, so a short card leaves no gap): installing it and
+         adding a profile on the left; what it needs, building it yourself and keeping it up to date on the right.
+         One column on narrow windows, in reading order (the i-* order classes). -->
+    <div class="install-cols">
+      <div class="col-stack">
+        <div class="card dl-card i-1">
+          <h4>Download</h4>
+          <!-- as on the Overview's Install card: the key, a divider, what it is -->
+          <div class="key-note dl-row">
+            <a class="pill dl" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
+            <span class="divider" aria-hidden="true"></span>
+            <span class="note">cl_audit {version} · {releasedText()} · {requires} · <a href={changelog}>What's new</a></span>
+          </div>
+          <p class="t login-note" style="margin:0 0 12px"><b>Claude login:</b> sign-in happens in Claude's own screens, so cl_audit never sees the password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>How it works</a></p>
+          <div class="steps">
+            <div><div><b>Unzip it and move cl_audit to Applications</b><span>Double-click <code>cl_audit.zip</code> in Downloads, then drag cl_audit into the Applications folder.</span></div></div>
+            <div><div><b>Open it; macOS asks once</b><span>cl_audit isn't signed with an Apple Developer ID yet, so the first time macOS says it can't verify the app. Click Done.</span></div></div>
+            <div><div><b>Allow it in Privacy &amp; Security</b><span>Open System Settings ▸ Privacy &amp; Security, scroll down and click <b>Open Anyway</b> next to cl_audit, then confirm. You only do this once; the Dock icon apps cl_audit makes for your profiles open without asking.</span></div></div>
+          </div>
+          <div class="gk" aria-hidden="true">
+            <div class="gk-title">Privacy &amp; Security</div>
+            <div class="gk-row"><span>“cl_audit” was blocked to protect your Mac.</span><span class="gk-btn">Open Anyway</span></div>
+          </div>
         </div>
-        <p class="t login-note" style="margin:0 0 12px"><b>Claude login:</b> sign-in happens in Claude's own screens, so cl_audit never sees the password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>How it works</a></p>
-        <div class="steps">
-          <div><div><b>Unzip it and move cl_audit to Applications</b><span>Double-click <code>cl_audit.zip</code> in Downloads, then drag cl_audit into the Applications folder.</span></div></div>
-          <div><div><b>Open it; macOS asks once</b><span>cl_audit isn't signed with an Apple Developer ID yet, so the first time macOS says it can't verify the app. Click Done.</span></div></div>
-          <div><div><b>Allow it in Privacy &amp; Security</b><span>Open System Settings ▸ Privacy &amp; Security, scroll down and click <b>Open Anyway</b> next to cl_audit, then confirm. You only do this once; the Dock icon apps cl_audit makes for your profiles open without asking.</span></div></div>
-        </div>
-        <div class="gk" aria-hidden="true">
-          <div class="gk-title">Privacy &amp; Security</div>
-          <div class="gk-row"><span>“cl_audit” was blocked to protect your Mac.</span><span class="gk-btn">Open Anyway</span></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h4>Requires</h4>
-        <div class="srow"><span>Checked with</span><span class="v">Claude Code {checkedWith.claudeCode} · Claude app {checkedWith.claudeApp}</span></div>
-        <div class="srow"><span>Mac</span><span class="v">Apple silicon</span></div>
-        <div class="srow"><span>macOS</span><span class="v">13 Ventura or later</span></div>
-        <div class="srow"><span>Per profile</span><span class="v">Claude Code, signed in</span></div>
-        <div class="srow"><span>Optional</span><span class="v">the Claude app, for Claude windows</span></div>
-        <div class="srow"><span>Plans</span><span class="v">Pro, Max or Team (plans with usage limits)</span></div>
-        <div class="srow"><span>To build it yourself</span><span class="v">Xcode Command Line Tools · <code>xcode-select --install</code></span></div>
-        <p class="t drift">{driftNote}</p>
-      </div>
-    </div>
-
-    <div class="cols2">
-      <div class="card">
-        <h4>Or build it from source</h4>
-        <p class="t">Review the source, then build on the Mac:</p>
-        <pre class="code"><code>git clone {repo}.git
-cd cl_audit
-git checkout v{version}   # optional: exactly this release
-./build.sh</code></pre>
-        <p class="t">
-          build.sh compiles cl_audit, installs it in /Applications and updates the Dock icon apps: one
-          “cl_audit &lt;profile&gt;” app per profile, next to it, where Spotlight finds them. <code>./build.sh --no-install</code>
-          only builds into the folder. Built on your own Mac, it opens without the Privacy &amp; Security step.
-        </p>
-        <div class="key-note"><a class="key" href={repo}>GitHub</a><span class="divider" aria-hidden="true"></span><span class="note">needs the Xcode Command Line Tools</span></div>
-      </div>
-      <div class="card">
-        <h4>Add a profile</h4>
-        <div class="steps">
-          <div><div><b>Open cl_audit, then Settings ▸ New profile</b><span>A page opens in the same window: the profile, its Claude Code folder, and a summary with the steps to do.</span></div></div>
-          <div><div><b>Choose its Claude Code folder</b><span>A new one (<code>~/.claude-&lt;name&gt;</code>, optionally sharing instructions, agents, skills, commands or memory from another folder) or an existing one, such as <code>~/.claude</code>.</span></div></div>
-          <div><div><b>Its Claude window comes with the folder</b><span>With <code>~/.claude</code>, the usual Claude app; with any other folder, its own Claude window, with its own sign-in, chats and settings.</span></div></div>
-          <div><div><b>Quit the Claude app until the folder is set up</b><span>While it is open it writes its own sign-in and settings. The page lists its windows and checks every 2 seconds. Claude Code in Terminal doesn't get in the way.</span></div></div>
-          <div><div><b>Sign in, in two parts</b><span>Claude Code first (Terminal runs <code>claude auth login</code> for the folder), then its own Claude window, signed in to the same claude.ai account. “Finish now” leaves sign-in for later.</span></div></div>
-          <div><div><b>Put its Dock icon in the Dock</b><span>cl_audit installs the profile's Dock icon and starts it. Drag it into the Dock, or let Settings ▸ General ▸ Dock pin it for you (experimental: it rewrites the Dock's pin list and restarts the Dock).</span></div></div>
+        <div class="card i-3">
+          <h4>Add a profile</h4>
+          <div class="steps">
+            <div><div><b>Open cl_audit, then Settings ▸ New profile</b><span>A page opens in the same window: the profile, its Claude Code folder, and a summary with the steps to do.</span></div></div>
+            <div><div><b>Choose its Claude Code folder</b><span>A new one (<code>~/.claude-&lt;name&gt;</code>, optionally sharing instructions, agents, skills, commands or memory from another folder) or an existing one, such as <code>~/.claude</code>.</span></div></div>
+            <div><div><b>Its Claude window comes with the folder</b><span>With <code>~/.claude</code>, the usual Claude app; with any other folder, its own Claude window, with its own sign-in, chats and settings.</span></div></div>
+            <div><div><b>Quit the Claude app until the folder is set up</b><span>While it is open it writes its own sign-in and settings. The page lists its windows and checks every 2 seconds. Claude Code in Terminal doesn't get in the way.</span></div></div>
+            <div><div><b>Sign in, in two parts</b><span>Claude Code first (Terminal runs <code>claude auth login</code> for the folder), then its own Claude window, signed in to the same claude.ai account. “Finish now” leaves sign-in for later.</span></div></div>
+            <div><div><b>Put its Dock icon in the Dock</b><span>cl_audit installs the profile's Dock icon and starts it. Drag it into the Dock, or let Settings ▸ General ▸ Dock pin it for you (experimental: it rewrites the Dock's pin list and restarts the Dock).</span></div></div>
+          </div>
         </div>
       </div>
-
-    </div>
-
-    <div class="cols2">
-      <div class="card">
-        <h4>Update, remove, uninstall</h4>
-        <div class="steps">
-          <div><div><b>Update</b><span>Download the new zip and replace cl_audit in Applications (<a href={changelog}>what's new</a>), or run <code>git pull && ./build.sh</code> in the cl_audit folder. The Dock icon apps follow, and profiles and settings are kept.</span></div></div>
-          <div><div><b>Remove a profile</b><span>Settings ▸ the profile ▸ Remove profile… removes its Dock icon app and what macOS keeps for it, plus its saved usage. “Delete its folders too” also signs its Claude Code folder out and deletes it and its Claude window's own folder; the default <code>~/.claude</code> and the usual Claude app's data are never deleted.</span></div></div>
-          <div><div><b>Uninstall</b><span>Remove every profile, then delete cl_audit from /Applications and the folder <code>~/Library/Application Support/usage-n-uf</code>, where profiles are saved.</span></div></div>
+      <div class="col-stack">
+        <div class="card i-2">
+          <h4>Requires</h4>
+          <div class="srow"><span>Checked with</span><span class="v">Claude Code {checkedWith.claudeCode} · Claude app {checkedWith.claudeApp}</span></div>
+          <div class="srow"><span>Mac</span><span class="v">Apple silicon</span></div>
+          <div class="srow"><span>macOS</span><span class="v">13 Ventura or later</span></div>
+          <div class="srow"><span>Per profile</span><span class="v">Claude Code, signed in</span></div>
+          <div class="srow"><span>Optional</span><span class="v">the Claude app, for Claude windows</span></div>
+          <div class="srow"><span>Plans</span><span class="v">Pro, Max or Team (plans with usage limits)</span></div>
+          <div class="srow"><span>To build it yourself</span><span class="v">Xcode Command Line Tools · <code>xcode-select --install</code></span></div>
+          <p class="t drift">{driftNote}</p>
+        </div>
+        <div class="card i-4">
+          <h4>Or build it from source</h4>
+          <p class="t">Review the source, then build on the Mac:</p>
+          <pre class="code"><code>git clone {repo}.git
+  cd cl_audit
+  git checkout v{version}   # optional: exactly this release
+  ./build.sh</code></pre>
+          <p class="t">
+            build.sh compiles cl_audit, installs it in /Applications and updates the Dock icon apps: one
+            “cl_audit &lt;profile&gt;” app per profile, next to it, where Spotlight finds them. <code>./build.sh --no-install</code>
+            only builds into the folder. Built on your own Mac, it opens without the Privacy &amp; Security step.
+          </p>
+          <div class="key-note"><a class="key" href={repo}>GitHub</a><span class="divider" aria-hidden="true"></span><span class="note">needs the Xcode Command Line Tools</span></div>
+        </div>
+        <div class="card i-5">
+          <h4>Update, remove, uninstall</h4>
+          <div class="steps">
+            <div><div><b>Update</b><span>Download the new zip and replace cl_audit in Applications (<a href={changelog}>what's new</a>), or run <code>git pull && ./build.sh</code> in the cl_audit folder. The Dock icon apps follow, and profiles and settings are kept.</span></div></div>
+            <div><div><b>Remove a profile</b><span>Settings ▸ the profile ▸ Remove profile… removes its Dock icon app and what macOS keeps for it, plus its saved usage. “Delete its folders too” also signs its Claude Code folder out and deletes it and its Claude window's own folder; the default <code>~/.claude</code> and the usual Claude app's data are never deleted.</span></div></div>
+            <div><div><b>Uninstall</b><span>Remove every profile, then delete cl_audit from /Applications and the folder <code>~/Library/Application Support/usage-n-uf</code>, where profiles are saved.</span></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -85,6 +84,14 @@ git checkout v{version}   # optional: exactly this release
 </Desktop>
 
 <style>
+  .install-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: start; min-width: 0; }
+  .install-cols .card { min-width: 0; }   /* long code lines scroll inside their box instead of widening the page */
+  .col-stack { display: grid; gap: 14px; align-content: start; min-width: 0; }
+  @media (max-width: 860px) {
+    .install-cols { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
+    .col-stack { display: contents; }
+    .i-1 { order: 1; } .i-2 { order: 2; } .i-3 { order: 3; } .i-4 { order: 4; } .i-5 { order: 5; }
+  }
   .drift { margin: 10px 0 0; font-size: 12.5px; }
   .dl-row { margin: 2px 0 14px; }
   /* the macOS Privacy & Security row, as macOS draws it */
