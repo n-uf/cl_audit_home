@@ -63,6 +63,22 @@ const ogImage = new URL("/og.png", Astro.site);
         apply();
         document.addEventListener("astro:after-swap", apply);
       })();
+      // the panels' faceplate (standard, black or silver), chosen in the window's title bar; a per-browser convenience
+      (function () {
+        var w = window, root = document.documentElement, KEY = "cl_audit.face";
+        try { w.__clFace = localStorage.getItem(KEY) || "std"; } catch (e) { w.__clFace = "std"; }
+        function apply() {
+          root.classList.toggle("face-black", w.__clFace === "black");
+          root.classList.toggle("face-silver", w.__clFace === "silver");
+        }
+        w.__clSetFace = function (f) {
+          w.__clFace = f === "black" || f === "silver" ? f : "std";
+          try { localStorage.setItem(KEY, w.__clFace); } catch (e) {}
+          apply();
+        };
+        apply();
+        document.addEventListener("astro:after-swap", apply);
+      })();
     </script>
   </head>
   <body>

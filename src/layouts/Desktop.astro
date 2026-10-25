@@ -34,7 +34,13 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     </header>
 
     <div class="appwin" transition:animate="none">
-      <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="tb-title">cl_audit</span></div>
+      <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="tb-title">cl_audit</span>
+        <!-- the panels' faceplate: the standard one, or a black or silver cassette-deck plate (remembered in this browser) -->
+        <span class="face-pick" role="group" aria-label="Faceplate">
+          <span class="lbl" aria-hidden="true">Face</span>
+          <button type="button" class="fk" data-face="std" aria-pressed="true">Std</button><button type="button" class="fk" data-face="black" aria-pressed="false">Black</button><button type="button" class="fk" data-face="silver" aria-pressed="false">Silver</button>
+        </span>
+      </div>
       <!-- the top strip of the front panel: brand, the display window with the page title, the PAGE keys -->
       <div class="fascia">
         <a class="brand" href="/"><b>cl_audit</b><span>Usage audit for Claude profiles</span></a>
@@ -79,6 +85,19 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
   };
   document.addEventListener("astro:page-load", () => { applyPrefs(); initCards(); initWhatNow(); initDownloadFocus(); lockDownloads(); });
   document.addEventListener("cl:platform", lockDownloads);
+
+  // The faceplate switch: shows which one is on and changes it (Base.astro applies the saved one before the first paint).
+  const showFace = () => {
+    const face = (window as any).__clFace || "std";
+    document.querySelectorAll<HTMLButtonElement>(".fk").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.face === face)));
+  };
+  document.addEventListener("astro:page-load", showFace);
+  document.addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>(".fk");
+    if (!b) return;
+    (window as any).__clSetFace?.(b.dataset.face);
+    showFace();
+  });
 
   // The menu bar clock, like the Mac's: "Fri 23 Oct 11:24".
   const tick = () => {
