@@ -22,7 +22,7 @@ const current = nav.find(([id]) => id === page)?.[1];
 const [headMain, ...headRest] = (headline ?? "").split(" · ");
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
-  <div class="desk">
+  <div class="desk" data-page={page}>
     <header class="menubar" transition:persist="menubar">
       <a class="mb-brand" href="/"><img src="/favicon.png" alt="" width="16" height="16" />cl_audit</a>
       <nav class="mb-links" aria-label="Site">{nav.map(([, label, href]) => <a href={href}>{label}</a>)}</nav>
@@ -103,11 +103,11 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     showFace();
   });
 
-  // Phones: the window's head (title bar, brand, display, PAGE keys) lies over the content, which scrolls under it
+  // Phones (upright or on their side): the window's head (title bar, brand, display, PAGE keys) lies over the content, which scrolls under it
   // (.desk.ovl; until it is measured the head sits in the normal flow, in the same place). Scrolling down slides
   // the menu bar, title bar and brand away and leaves the display and the PAGE keys at the top (.desk.pin);
   // it stays compact while scrolling up, and only reaching the top slides them back. Only moved, never resized, so the scroll stays smooth.
-  const phone = matchMedia("(max-width: 600px)");
+  const phone = matchMedia("(max-width: 600px), (max-height: 500px)");   // a phone upright or on its side (as in app.css)
   let headSeen: ResizeObserver | undefined;
   const initPin = () => {
     headSeen?.disconnect();

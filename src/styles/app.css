@@ -634,22 +634,27 @@ body { overflow: hidden; }
   .plate.pages .key { padding: 0 4px; font-size: 9px; letter-spacing: .04em; }
 }
 
-/* phones: the window's head lies over the content (.desk.ovl, set by Desktop.astro once it has measured the head:
-   --head-h), so the content scrolls under it. Scrolling down slides the menu bar, title bar and brand away and
-   leaves the display and the PAGE keys at the top (.desk.pin, --pin-shift); only reaching the top brings them back. Only
-   transforms: nothing is resized, so the scroll never jumps. */
+/* phones, upright or on their side: the window's head lies over the content (.desk.ovl, set by Desktop.astro once it
+   has measured the head: --head-h), so the content scrolls under it. Scrolling down slides the menu bar, title bar
+   and brand away and leaves the display and the PAGE keys at the top (.desk.pin, --pin-shift); only reaching the
+   top brings them back. Only transforms: nothing is resized, so the scroll never jumps. The Dock shows only on
+   the Overview; the other pages' window reaches the bottom of the screen. */
 .apphead { flex: none; }
-@media (max-width: 600px) {
+@media (max-width: 600px), (max-height: 500px) {
+  .desk { --win-bottom: 74px; }
+  .desk:not([data-page="overview"]) { --win-bottom: 0px; }
+  .desk:not([data-page="overview"]) .dock-bar { display: none; }
+  .appwin { bottom: var(--win-bottom); }
   .desk.ovl .appwin { top: 0; }
   .desk.ovl .apphead { position: absolute; top: 0; left: 0; right: 0; z-index: 3; padding-top: 28px;
-    background: inherit; background-size: 100% calc(100dvh - 74px); background-position: 0 0;   /* the window's own plate */
+    background: inherit; background-size: 100% calc(100dvh - var(--win-bottom)); background-position: 0 0;   /* the window's own plate */
     transition: transform .25s ease, box-shadow .25s ease; }
   .desk.ovl .content { padding-top: calc(var(--head-h, 0px) + 12px); scroll-padding-top: calc(var(--head-h, 0px) + 12px); }
   .menubar { transition: transform .25s ease; }
   .desk.pin .menubar { transform: translateY(-100%); }
   .desk.pin .apphead { transform: translateY(calc(-1 * var(--pin-shift, 0px))); box-shadow: 0 8px 16px rgba(0,0,0,.35); }
 }
-@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   .menubar, .desk.ovl .apphead { transition: none; }
 }
 
@@ -1148,3 +1153,18 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .start-box > div { display: grid; grid-template-columns: 26px minmax(0, 1fr); align-items: baseline; }
 .start-box .sb-n { font: 600 11px var(--mono); color: var(--faint); }
 .start-box b { color: var(--text); font-weight: 600; }
+
+/* ── Touch screens ──────────────────────────────────────────────────── */
+/* no zooming (with the viewport tag in Base.astro), no pull-to-refresh or page bounce, the text size kept on
+   rotation, no grey flash on tap */
+html { touch-action: pan-x pan-y; overscroll-behavior: none; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color: transparent; }
+/* the window's controls and the Dock behave like an app's: a long press neither selects their text nor opens the
+   link/image menu */
+.menubar, .titlebar, .plate.pages, .key, .pill, .fk, .tile, .chip, .mswitch, .cswitch, .dock-bar, .dock img {
+  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+/* a tap is not a hover: the Dock's icons don't stay lifted and their name labels don't stay up after a tap */
+@media (hover: none) {
+  .dock-item:hover img, .dock-item:hover .app-tile, .dock-item:hover .ico { transform: none; }
+  .dock-item .tip { display: none; }
+}

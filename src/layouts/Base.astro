@@ -16,7 +16,8 @@ const ogImage = new URL("/og.png", Astro.site);
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- laid out for the screen like an app: no zooming (pinch, double-tap, or a text field's zoom on focus) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -63,6 +64,11 @@ const ogImage = new URL("/og.png", Astro.site);
         } catch (e) { w.__clSys = "mac"; }
         apply();
         document.addEventListener("astro:after-swap", apply);
+      })();
+      // Safari on iPhone ignores user-scalable=no for pinching: stop its pinch gesture itself
+      (function () {
+        var stop = function (e) { e.preventDefault(); };
+        ["gesturestart", "gesturechange", "gestureend"].forEach(function (t) { document.addEventListener(t, stop, { passive: false }); });
       })();
       // the panels' faceplate (standard, black or silver), chosen in the window's title bar; a per-browser convenience
       (function () {
