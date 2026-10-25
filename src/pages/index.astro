@@ -391,13 +391,13 @@ cd cl_audit && ./build.sh</code></pre>
   /* page marks: compact keys; the current one drains like a countdown to the next page (paused while the pointer
      is on the display) */
   .rel-marks { flex: none; display: inline-flex; gap: 0; margin-right: -3px; }
-  .rel-mark { display: grid; place-items: center; width: 10px; height: 20px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 2px; }
+  .rel-mark { display: grid; place-items: center; width: 11px; height: 20px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 2px; }
   .rel-mark:hover i { filter: brightness(1.6); }
   :global(.not-mac) .rel-marks { display: none; }
   :global(.not-mac) #rel:not([data-started]) :global(.rel-line) { visibility: hidden; }   /* no release line flashing before the reason */
-  .rel-mark i { position: relative; overflow: hidden; width: 6px; height: 3px; border-radius: 1px; background: rgba(var(--glow), .2); }
+  .rel-mark i { position: relative; overflow: hidden; width: 8px; height: 5px; border-radius: 1.5px; background: rgba(var(--glow), .2); }
   .rel-mark.amber i { background: rgba(251,191,36,.24); }
-  .rel-mark.on i::after { content: ""; position: absolute; inset: 0; transform-origin: left; background: rgb(var(--glow)); box-shadow: 0 0 4px rgba(var(--glow), .8); }
+  .rel-mark.on i::after { content: ""; position: absolute; inset: 0; transform-origin: right;   /* drains from the left: what is left sits on the right */ background: rgb(var(--glow)); box-shadow: 0 0 4px rgba(var(--glow), .8); }
   .rel-mark.amber.on i::after { background: #fbbf24; box-shadow: 0 0 4px rgba(251,191,36,.8); }
   .rel-mark.on.counting i::after { animation: rel-drain var(--d, 5s) linear forwards; }
   #rel:hover .rel-mark.on.counting i::after { animation-play-state: paused; }
