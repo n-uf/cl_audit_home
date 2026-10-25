@@ -26,12 +26,12 @@ const open = !!a.winOpen;   // the demo's starting state; data/cardState.ts take
   <div class="chips2" role="group" aria-label={`Claude window and Dock icon of ${a.name}`}>
     <div class:list={["pchip", "chip-w", { off: !open }]} data-chip-w>
       <span class={glyphW} aria-hidden="true"></span>
-      <span class="pchip-text"><span class="pchip-title">Claude window</span><span class="pchip-sub" data-sub>{open ? "open" : "closed"}</span></span>
+      <span class="pchip-text"><span class="pchip-title">Claude window</span><span class="pchip-sub" data-sub><b>{open ? "open" : "closed"}</b></span></span>
       <button type="button" class:list={["cswitch", { on: open }]} role="switch" aria-checked={open ? "true" : "false"} aria-label={`Claude window of ${a.name}`} data-win-switch={a.id}><i></i></button>
     </div>
     <div class="pchip chip-d" data-chip-d>
       <span class="chip-glyph chip-glyph-d" aria-hidden="true"></span>
-      <span class="pchip-text"><span class="pchip-title">Dock icon</span><span class="pchip-sub" data-sub>running</span></span>
+      <span class="pchip-text"><span class="pchip-title">Dock icon</span><span class="pchip-sub" data-sub><b>running</b></span></span>
       <button type="button" class="cswitch on" role="switch" aria-checked="true" aria-label={`Dock icon of ${a.name}`} data-dock-switch={a.id}><i></i></button>
     </div>
   </div>

@@ -17,21 +17,55 @@ let ticker = 0;
 
 const follows = (id: string) => loadPrefs()[id as AccountId];
 
-function winSub(s: S) {
-  return s.winBusy === "opening" ? "opening…" : s.winBusy === "quitting" ? "quitting…" : s.win ? "open" : "closed";
+// A switch's state as the card's readout shows it: a short state word that always fits, and an optional detail
+// after it (it scrolls in the space left on the line when it doesn't fit; see fitTick).
+type Sub = [word: string, detail: string];
+function winSub(s: S): Sub {
+  return [s.winBusy === "opening" ? "opening…" : s.winBusy === "quitting" ? "quitting…" : s.win ? "open" : "closed", ""];
 }
-function dockSub(id: string, s: S) {
-  if (s.dockBusy === "starting") return "starting…";
-  if (s.dockBusy === "quitting") return "quitting…";
+function dockSub(id: string, s: S): Sub {
+  if (s.dockBusy === "starting") return ["starting…", ""];
+  if (s.dockBusy === "quitting") return ["quitting…", ""];
   if (s.dock && s.quitAt) {
     const t = (s.quitAt - Date.now()) / 1000;
-    return t < 0.5 ? "quitting…" : `quits in ${Math.ceil(t)} s`;
+    return t < 0.5 ? ["quitting…", ""] : [`quits ${Math.ceil(t)} s`, "after the window"];
   }
-  if (s.dock) return "running";
-  return follows(id).iconFollows && !s.win && !s.winBusy ? "waits for the window" : "stopped · no alerts";
+  if (s.dock) return ["running", ""];
+  return follows(id).iconFollows && !s.win && !s.winBusy ? ["waiting", "for the window"] : ["stopped", "no alerts"];
 }
 
-function paint(chip: HTMLElement | null, sw: HTMLElement | null, on: boolean, busy: boolean, sub: string) {
+/** Makes a detail scroll (seamless loop, starts after a pause) only when it is longer than its space. */
+function fitTick(tick: HTMLElement) {
+  const span = tick.firstElementChild as HTMLElement | null;
+  if (!span) return;
+  tick.classList.remove("moving");
+  const one = span.offsetWidth;
+  if (one <= tick.clientWidth) return;
+  tick.classList.add("moving");
+  const gap = parseFloat(getComputedStyle(span, "::after").paddingLeft) || 0;
+  const shift = one - 6 + gap;   // one copy (without its 6 px lead) plus the gap to the next copy
+  span.style.setProperty("--shift", `-${shift}px`);
+  span.style.setProperty("--dur", `${Math.max(4, shift / 16)}s`);
+}
+export function fitTicks() { document.querySelectorAll<HTMLElement>(".pchip-sub .tick").forEach(fitTick); }
+
+function setSub(el: HTMLElement, [word, detail]: Sub) {
+  let w = el.querySelector<HTMLElement>("b");
+  if (!w) { el.textContent = ""; w = document.createElement("b"); el.append(w); }
+  if (w.textContent !== word) w.textContent = word;
+  const shown = el.querySelector<HTMLElement>(".tick");
+  if ((shown?.dataset.detail ?? "") === detail) return;
+  shown?.remove();
+  if (!detail) return;
+  const tick = document.createElement("span");
+  tick.className = "tick"; tick.dataset.detail = detail;
+  const span = document.createElement("span");
+  span.textContent = `· ${detail}`; span.dataset.t = `· ${detail}`;
+  tick.append(span); el.append(tick);
+  fitTick(tick);
+}
+
+function paint(chip: HTMLElement | null, sw: HTMLElement | null, on: boolean, busy: boolean, sub: Sub) {
   if (!chip || !sw) return;
   chip.classList.toggle("off", !on);
   sw.classList.toggle("on", on);
@@ -40,7 +74,7 @@ function paint(chip: HTMLElement | null, sw: HTMLElement | null, on: boolean, bu
   sw.toggleAttribute("aria-busy", busy);
   (sw as HTMLButtonElement).disabled = busy;
   const el = chip.querySelector<HTMLElement>("[data-sub]");
-  if (el && el.textContent !== sub) el.textContent = sub;
+  if (el) setSub(el, sub);
 }
 
 export function renderCards() {
@@ -141,6 +175,7 @@ export function initCards() {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") document.querySelectorAll<HTMLElement>(".more-menu").forEach((m) => (m.hidden = true));
     });
+    window.addEventListener("resize", fitTicks);
   }
   renderCards();
   if (Object.values(state).some((s) => s.quitAt)) startTicker();
