@@ -638,12 +638,19 @@ body { overflow: hidden; }
    has measured the head: --head-h), so the content scrolls under it. Scrolling down slides the menu bar, title bar
    and brand away and leaves the display and the PAGE keys at the top (.desk.pin, --pin-shift); only reaching the
    top brings them back. Only transforms: nothing is resized, so the scroll never jumps. The Dock shows only on
-   the Overview; the other pages' window reaches the bottom of the screen. */
+   the Overview, and only while it is scrolled to its top; the window always reaches the bottom of the screen. */
 .apphead { flex: none; }
 @media (max-width: 600px), (max-height: 500px) {
-  .desk { --win-bottom: 74px; }
-  .desk:not([data-page="overview"]) { --win-bottom: 0px; }
+  /* the window reaches the bottom of the screen; on the Overview the Dock floats over it while the page is at its
+     top and slides away as soon as it scrolls (.desk.pin), coming back only at the top */
+  .desk { --win-bottom: 0px; }
   .desk:not([data-page="overview"]) .dock-bar { display: none; }
+  .dock-bar { transition: transform .25s ease, opacity .25s ease; }
+  .desk.pin .dock-bar { transform: translateY(calc(100% + 12px)); opacity: 0; pointer-events: none; }
+  /* no window buttons on a phone, and no title-bar row: the face keys sit at the right of the "cl_audit" line */
+  .appwin .titlebar { height: 0; padding: 0; }
+  .appwin .titlebar .lights { display: none; }
+  .face-pick { position: absolute; right: 12px; top: 2px; }
   .appwin { bottom: var(--win-bottom); }
   .desk.ovl .appwin { top: 0; }
   .desk.ovl .apphead { position: absolute; top: 0; left: 0; right: 0; z-index: 3; padding-top: 28px;
@@ -655,7 +662,7 @@ body { overflow: hidden; }
   .desk.pin .apphead { transform: translateY(calc(-1 * var(--pin-shift, 0px))); box-shadow: 0 8px 16px rgba(0,0,0,.35); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .menubar, .desk.ovl .apphead { transition: none; }
+  .menubar, .desk.ovl .apphead, .dock-bar { transition: none; }
 }
 
 /* code: a dark recessed screen */
