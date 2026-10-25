@@ -463,20 +463,6 @@ body { overflow: hidden; }
 .fascia .page-disp { grid-area: disp; margin: -4px 0; min-width: 0; height: auto; align-self: stretch; min-height: 32px; padding: 0 16px; gap: 12px; border-radius: 6px;   /* fills the row and 4 px of the strip's padding above and below: taller, without making the strip taller */
   font-size: 12px; font-weight: 600; letter-spacing: .1em; }
 .page-disp .pd-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-/* the Overview's lamps: a small Dock in the Dock's own proportions, scaled from the icon size --s (Dock: 56 px icons,
-   10 px apart, shelf padding 6 / 10 / 13 px, shelf radius 22 px, icon radius 13 px, a 4 px running dot); see dockLamps.ts */
-.dk-lamps { --s: 15px; display: inline-flex; align-items: flex-start; flex: none; gap: calc(var(--s) * .179);
-  padding: calc(var(--s) * .107) calc(var(--s) * .179) calc(var(--s) * .232); border-radius: calc(var(--s) * .393);
-  border: 1px solid rgba(var(--glow), .42); box-shadow: 0 0 4px rgba(var(--glow), .25), inset 0 0 4px rgba(var(--glow), .12); }
-.dk-lamps .it { position: relative; width: var(--s); height: var(--s); border-radius: calc(var(--s) * .232); opacity: .13; transition: opacity 1s ease; }
-.dk-lamps.on .it { opacity: 1; }
-.dk-lamps .it::after { content: ""; position: absolute; left: 50%; bottom: calc(var(--s) * -.196); width: 2px; height: 2px; margin-left: -1px; border-radius: 50%; background: rgba(var(--glow), .7); }
-.dk-lamps .cw { background: rgb(255,150,95); }
-.dk-lamps.on .cw { box-shadow: 0 0 3px rgb(255,150,95), 0 0 8px rgba(255,150,95,.5); }
-.dk-lamps .us { --lv: 74,222,128; display: grid; place-items: center; box-shadow: inset 0 0 0 1.2px rgb(var(--lv));
-  font: 700 6.5px/1 var(--mono); letter-spacing: -.03em; color: rgb(var(--lv)); font-variant-numeric: tabular-nums; text-shadow: none;
-  transition: opacity 1s ease, color .9s ease, box-shadow .9s ease; }
-.dk-lamps.on .us { box-shadow: inset 0 0 0 1.2px rgb(var(--lv)), 0 0 3px rgba(var(--lv),.7), inset 0 0 4px rgba(var(--lv),.25); text-shadow: 0 0 3px rgba(var(--lv),.8); }
 /* the title's secondary part (after " · "): same size and line, lighter and with a softer glow */
 .page-disp .pd-sub { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
 .fascia-slot { grid-column: 1 / -1; display: flex;   /* a page's own controls: their own row under the strip */ align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }
@@ -511,12 +497,6 @@ body { overflow: hidden; }
   .fascia { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "brand keys" "disp disp"; }
   .fascia .page-disp { margin: 0; }
   .fascia .page-disp > em { display: inline; }
-}
-/* the Overview's display also holds the lamps: it gets its own full-width row earlier, so the title stays whole */
-@media (min-width: 1301px) and (max-width: 1500px) {
-  .fascia:has(.dk-lamps) { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "brand keys" "disp disp"; }
-  .fascia:has(.dk-lamps) .page-disp { margin: 0; }
-  .fascia:has(.dk-lamps) .page-disp > em { display: inline; }
 }
 
 .content { flex: 1; overflow: auto; padding: 18px; overscroll-behavior: contain; }
