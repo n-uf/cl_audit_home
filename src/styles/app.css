@@ -463,6 +463,27 @@ body { overflow: hidden; }
 .fascia .page-disp { grid-area: disp; margin: -4px 0; min-width: 0; height: auto; align-self: stretch; min-height: 32px; padding: 0 16px; gap: 12px; border-radius: 6px;   /* fills the row and 4 px of the strip's padding above and below: taller, without making the strip taller */
   font-size: 12px; font-weight: 600; letter-spacing: .1em; }
 .page-disp .pd-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+/* the Overview's live little Dock (see dockLamps.ts): pairs of a Claude tile and its usage, in the Dock's proportions
+   (icons 10 px apart at 56 px, shelf radius 22 px, icon radius 13 px), scaled from --s */
+.lslot { --s: 18px; display: inline-block; flex: none; vertical-align: middle; }   /* reserves the final width: the words after it never move */
+.lfr { --g: calc(var(--s) * .179); display: inline-flex; align-items: center; gap: var(--g); overflow: hidden; box-sizing: border-box;
+  height: calc(var(--s) * 1.29); padding: 0 var(--g); border-radius: calc(var(--s) * .393);
+  border: 1px solid rgba(var(--glow), .42); box-shadow: 0 0 4px rgba(var(--glow), .2), inset 0 0 4px rgba(var(--glow), .1);
+  transition: width .55s cubic-bezier(.25,.8,.3,1); }
+.lp { display: inline-flex; gap: var(--g); flex: none; transform: scale(.35) translateY(30%); opacity: 0;
+  transition: transform .7s cubic-bezier(.3,1.45,.5,1), opacity .35s ease; }
+.lp.in { transform: none; opacity: 1; }
+/* the Claude tile, like the app icon: warm gradient, a highlight at the top-left, a soft glow */
+.ltile { width: var(--s); height: var(--s); border-radius: calc(var(--s) * .232); flex: none;
+  background: radial-gradient(120% 90% at 30% 15%, rgba(255,255,255,.32), rgba(255,255,255,0) 55%), linear-gradient(160deg, #f0a46c, #d9733f 55%, #b5532d);
+  box-shadow: inset 0 0 0 .5px rgba(255,255,255,.18), inset 0 -2px 4px rgba(0,0,0,.18), 0 0 6px rgba(255,140,80,.35); }
+/* the usage, like a phone's battery widget: a dark icon with a ring in the level colour and the figure */
+.lu { width: var(--s); height: var(--s); border-radius: calc(var(--s) * .232); flex: none; display: block;
+  background: linear-gradient(180deg, #121416, #07090a); box-shadow: inset 0 0 0 .6px rgba(255,255,255,.14), inset 0 1px 0 rgba(255,255,255,.06); }
+.lu svg { display: block; width: 100%; height: 100%; }
+.lu .tr { stroke: rgba(255,255,255,.12); }
+.lu .arc { transition: stroke .9s ease; filter: drop-shadow(0 0 1.5px currentColor); }
+.lu text { font: 700 8.6px var(--mono); fill: #eef1f3; letter-spacing: -.04em; text-shadow: none; }
 /* the title's secondary part (after " · "): same size and line, lighter and with a softer glow */
 .page-disp .pd-sub { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
 .fascia-slot { grid-column: 1 / -1; display: flex;   /* a page's own controls: their own row under the strip */ align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }
@@ -497,6 +518,12 @@ body { overflow: hidden; }
   .fascia { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "brand keys" "disp disp"; }
   .fascia .page-disp { margin: 0; }
   .fascia .page-disp > em { display: inline; }
+}
+/* the Overview's display also holds the little Dock: it gets its own full-width row earlier, so the title stays whole */
+@media (min-width: 1301px) and (max-width: 1560px) {
+  .fascia:has(.lslot) { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "brand keys" "disp disp"; }
+  .fascia:has(.lslot) .page-disp { margin: 0; }
+  .fascia:has(.lslot) .page-disp > em { display: inline; }
 }
 
 .content { flex: 1; overflow: auto; padding: 18px; overscroll-behavior: contain; }
