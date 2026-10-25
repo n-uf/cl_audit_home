@@ -784,9 +784,17 @@ select.menu option { background: #2c2c2f; color: var(--text); }
 .chip-glyph { display: none; }
 .no-window .chip-w, .no-window [data-open-desktop] { display: none; }
 /* working on it: the key already where it goes, its LED blinking, no clicks */
+/* the card's switch keys: gunmetal, like the card's other keys; the LED shows on/off */
+.cswitch { width: 30px; height: 22px; border-radius: 4px;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, rgba(0,0,0,.06) 1px 2px), linear-gradient(180deg, #74746f, #52524e);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -1px 0 rgba(0,0,0,.35), 0 0 0 1px #2e2e2c, 0 2px 0 #121211, 0 3px 6px rgba(0,0,0,.5); }
+.cswitch.on, .cswitch:active {
+  transform: translateY(1px); background: repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, rgba(0,0,0,.06) 1px 2px), linear-gradient(180deg, #6a6a65, #4a4a46);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.2), inset 0 -1px 0 rgba(0,0,0,.3), 0 0 0 1px #2e2e2c, 0 1px 0 #121211, 0 2px 4px rgba(0,0,0,.45); }
+.cswitch i { background: #3a3532; box-shadow: inset 0 1px 1px rgba(0,0,0,.55); }
 .cswitch.busy { cursor: default; }
 .cswitch.busy i { animation: led-blink .5s steps(1) infinite; background: rgb(var(--led)); box-shadow: 0 0 6px rgba(var(--led), .9); }
-@keyframes led-blink { 50% { background: #6b5a52; box-shadow: inset 0 1px 1px rgba(0,0,0,.45); } }
+@keyframes led-blink { 50% { background: #3a3532; box-shadow: inset 0 1px 1px rgba(0,0,0,.45); } }
 @media (prefers-reduced-motion: reduce) { .cswitch.busy i { animation-duration: 1.6s; } }
 
 .more-wrap { position: relative; display: inline-block; }
