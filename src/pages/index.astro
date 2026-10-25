@@ -209,23 +209,25 @@ const jsonLd = [{
     </div>
 
     <div class="start-row">
+      <!-- two mirrored columns: label, a key with what it needs, then a box with the steps or the commands -->
       <div class="card start">
-        <div class="start-cols">
-          <div>
-            <h4>Install</h4>
-            <div class="plate start-keys"><a class="pill dl dim" href={download}>Download for Mac</a></div>
-            <p class="start-req">cl_audit {version} · {requires} · needs Claude Code</p>
-            <div class="steps start-steps">
-              <div><div><b>Unzip, move to Applications, open</b></div></div>
-              <div><div><b>First launch: allow it once</b><span>System Settings ▸ Privacy &amp; Security ▸ Open Anyway</span></div></div>
-            </div>
+        <div class="start-grid">
+          <h4 class="sg-h1">Install</h4>
+          <h4 class="sg-h2">Or build from source</h4>
+          <div class="sg-k1 start-keyrow">
+            <span class="plate"><a class="pill dl dim" href={download}>Download for Mac</a></span>
+            <span class="start-note">cl_audit {version} · {requires} · needs Claude Code</span>
           </div>
-          <div>
-            <h4 class="start-sub">Or build from source</h4>
-            <pre class="code"><code>git clone {repo}.git
+          <div class="sg-k2 start-keyrow">
+            <span class="plate"><a class="key" href={repo}>GitHub</a></span>
+            <span class="start-note">needs the Xcode Command Line Tools</span>
+          </div>
+          <div class="sg-b1 start-box">
+            <div><span class="sb-n">01</span><span>Unzip, move to Applications, open</span></div>
+            <div><span class="sb-n">02</span><span>First launch: System Settings ▸ Privacy &amp; Security ▸ <b>Open Anyway</b></span></div>
+          </div>
+          <pre class="sg-b2 code"><code>git clone {repo}.git
 cd cl_audit && ./build.sh</code></pre>
-            <a class="key src-key" href={repo}>GitHub</a>
-          </div>
         </div>
       </div>
     </div>
@@ -390,21 +392,24 @@ cd cl_audit && ./build.sh</code></pre>
     .stab { flex: none; overflow: visible; }
   }
   @media (max-width: 480px) { .hide-xs { display: none; } }
-  /* the Install card: the keys, what it needs, two steps, the build commands */
-  .start-keys { display: inline-flex; flex-wrap: wrap; gap: 8px; max-width: 100%; }
-  .start-req { margin: 8px 0 0; color: var(--muted); font-size: 12.5px; }
-  .start-keys > .pill, .start-keys > .key { height: 32px; padding: 0 16px; }
-  .start-steps { margin-top: 8px; }
-  .start-steps > div { padding: 8px 0; }
-  .start-steps b { font-size: 14px; }
-  .start-steps span { display: block; font-size: 13px; }
-  .start-sub { margin: 10px 0 8px; }
+  /* the Install card: two mirrored columns (label · key with a note · box); stacked when narrow */
   .start-row { display: grid; grid-template-columns: minmax(0, 1fr); }
   .start { container-type: inline-size; }
-  .start-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px 28px; }
-  .start-cols > * { min-width: 0; }
-  .src-key { margin-top: 10px; height: 30px; padding: 0 16px; }
-  @container (min-width: 860px) { .start-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .start-cols .start-sub { margin-top: 0; } }
+  .start-grid { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "h1" "k1" "b1" "h2" "k2" "b2"; gap: 10px 28px; }
+  .start-grid > * { min-width: 0; margin: 0; }
+  .sg-h1 { grid-area: h1; } .sg-h2 { grid-area: h2; margin-top: 10px !important; } .sg-k1 { grid-area: k1; } .sg-k2 { grid-area: k2; } .sg-b1 { grid-area: b1; } .sg-b2 { grid-area: b2; }
+  @container (min-width: 860px) {
+    .start-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "h1 h2" "k1 k2" "b1 b2"; }
+    .sg-h2 { margin-top: 0 !important; }
+  }
+  .start-keyrow { display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; }
+  .start-keyrow .pill, .start-keyrow .key { height: 32px; padding: 0 16px; }
+  .start-note { color: var(--muted); font-size: 12.5px; }
+  /* the steps in a box like the code's, one line each */
+  .start-box { padding: 11px 14px; border-radius: 6px; background: rgba(0,0,0,.32); box-shadow: var(--well); font-size: 13px; line-height: 1.75; color: #d4d4d8; }
+  .start-box > div { display: grid; grid-template-columns: 26px minmax(0, 1fr); align-items: baseline; }
+  .start-box .sb-n { font: 600 11px var(--mono); color: rgba(255,255,255,.42); }
+  .start-box b { color: var(--text); font-weight: 600; }
   .h3 { font-size: 18px; margin-bottom: 12px; }
   .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
   .lane-icons figure { margin: 0; display: grid; justify-items: center; gap: 2px; color: var(--muted); font-size: 10.5px; min-height: 58px; }
