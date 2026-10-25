@@ -342,12 +342,16 @@ cd cl_audit && ./build.sh</code></pre>
     el.addEventListener("click", () => show((i + 1) % pages.length));
     // the window's width changes with the layout (resizing, rotating a tablet): measure the current page again, so a
     // page that no longer fits starts scrolling (and one that fits again stops)
-    let lastW = view.clientWidth;
+    // (waits until resizing has stopped, so dragging a window edge doesn't keep restarting the page)
+    let lastW = view.clientWidth, settle = 0;
     new ResizeObserver(() => {
-      if (!el.isConnected || Math.abs(view.clientWidth - lastW) < 2) return;
-      lastW = view.clientWidth;
-      clearTimeout(timer);
-      show(i);
+      clearTimeout(settle);
+      settle = window.setTimeout(() => {
+        if (!el.isConnected || Math.abs(view.clientWidth - lastW) < 2) return;
+        lastW = view.clientWidth;
+        clearTimeout(timer);
+        show(i);
+      }, 300);
     }).observe(view);
     document.addEventListener("cl:platform", () => { choose(); show(0); });
     show(0);
@@ -367,7 +371,7 @@ cd cl_audit && ./build.sh</code></pre>
     .intro-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "label label" "text text" "disp keys"; column-gap: 12px; }
     .intro-grid > .intro-label { grid-area: label; }
     .intro-grid > .intro-text { grid-area: text; }
-    .intro-grid > .version-disp { grid-area: disp; height: 46px; }
+    .intro-grid > .version-disp { grid-area: disp; align-self: center; }   /* same 30 px as when stacked, centred on the keys */
     .intro-grid > .hero-keys { grid-area: keys; width: auto; flex-wrap: nowrap; margin-top: 18px; }
     .intro-grid > .hero-keys > :is(.hk-ver, .divider) { display: none; }   /* the display beside it already shows the version */
     .intro-grid > .hero-keys > :is(.pill, .key) { padding: 0 14px; }
