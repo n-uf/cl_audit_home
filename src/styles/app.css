@@ -404,9 +404,8 @@ body { overflow: hidden; }
 .fascia .page-disp { grid-area: disp; margin: 0; min-width: 0; height: 32px; padding: 0 14px; gap: 12px; border-radius: 5px;   /* as tall as the PAGE keys */
   font-size: 12px; font-weight: 600; letter-spacing: .1em; }
 .page-disp .pd-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-/* the page name: a small boxed annunciator, like a receiver display's mode indicator */
-.page-disp > em { flex: none; padding: 3px 6px 3px 7px; border-radius: 3px; font-size: 9.5px; letter-spacing: .16em; line-height: 1;
-  color: rgba(var(--glow), .55); box-shadow: inset 0 0 0 1px rgba(var(--glow), .28); }
+/* the title's secondary part (after " · "): same size and line, lighter and with a softer glow */
+.page-disp .pd-sub { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
 .fascia-slot { grid-column: 1 / -1; display: flex;   /* its own row below, unless there is room (1600 px+) */ align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }
 .fascia-slot:empty { display: none; }
 .plate.pages { grid-area: keys; justify-self: end; }
@@ -510,7 +509,7 @@ body { overflow: hidden; }
   .mb-links, .mb-clock, .mb-gh { display: none; }
   .appwin { top: 28px; left: 0; right: 0; bottom: 74px; border-radius: 0; }
   .fascia { grid-template-columns: minmax(0, 1fr); grid-template-areas: "brand" "disp" "keys"; row-gap: 9px; padding: 2px 12px 10px; }
-  .fascia .page-disp { height: auto; min-height: 36px; padding: 8px 12px; white-space: normal; line-height: 1.5; flex-wrap: wrap; row-gap: 6px; font-size: 11.5px; }
+  .fascia .page-disp { height: auto; min-height: 36px; padding: 8px 12px; white-space: normal; line-height: 1.5; flex-wrap: wrap; row-gap: 0; font-size: 11.5px; }
   .page-disp .pd-t { overflow: visible; }
   .plate.pages { justify-self: stretch; display: flex; gap: 5px; padding: 0; }
   .plate.pages > .lbl, .plate.pages > .divider { display: none; }
