@@ -16,7 +16,7 @@ export function rangeHTML(kind: Range, ids: AccountId[] = allIds): string {
       empty(r.title, "input + cache writes + output · cache reads not counted");
   }
   const heat = `
-    <div class="chart-card">
+    <div class="chart-card" data-chart="heat">
       <div class="cc-head"><b>When you use Claude</b><span>replies per hour · colour mixes the profiles</span></div>
       <div class="heat-scroll"><div class="heat${r.days > 10 ? " dense" : ""}">
         <span></span>
@@ -26,7 +26,7 @@ export function rangeHTML(kind: Range, ids: AccountId[] = allIds): string {
     </div>`;
   const total = (b: (typeof r.bars)[number]) => b.parts.reduce((a, p) => a + p.tokens, 0);
   const chart = `
-    <div class="chart-card">
+    <div class="chart-card" data-chart="tokens">
       <div class="cc-head"><b>${r.title}</b><span>input + cache writes + output · cache reads not counted</span></div>
       <div class="tchart">
         <div class="tgrid">${[3, 2, 1, 0].map((k) => `<div class="tline"><span>${formatTokens((r.top / 3) * k)}</span></div>`).join("")}</div>
@@ -37,6 +37,12 @@ export function rangeHTML(kind: Range, ids: AccountId[] = allIds): string {
       </div>
     </div>`;
   return heat + chart;
+}
+
+/** The totals as the app's display shows them: the replies lit, the tokens dim. */
+export function totalsHTML(kind: Range, ids: AccountId[] = allIds): string {
+  const [replies, tokens] = totalsText(kind, ids).split(" · ");
+  return `${replies} <em>· ${tokens}</em>`;
 }
 
 /** "1,202 replies · 33.1M tokens" for one period. */

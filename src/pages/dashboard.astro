@@ -11,13 +11,16 @@ const description =
 <Desktop title={title} description={description} page="dashboard" headline="Sample data · 3 profiles">
   <div class="content-inner dash" id="dash" data-range="7d">
     <!-- the app's own header row, as in cl_audit: which profiles are shown, and when it last updated -->
+    <!-- as the app's top strip: a key per profile (latched while shown, its strip in the profile's colour), then
+         the last update in a fixed-width display with a refresh key; every control 26 px on one centre line -->
     <div class="dash-bar">
-      <span class="chips" role="group" aria-label="Profiles shown"><span class="lbl">Show</span>
+      <span class="strip26" role="group" aria-label="Profiles shown">
         {accounts.map((a) => (
-          <button type="button" class="key sm chip on" data-chip={a.id}><span class="chip-ck" style={`background:${a.color}`}>✓</span>{a.name}</button>
+          <button type="button" class="key k lt" data-chip={a.id} style={`--lamp:${a.color}`} aria-pressed="true" title={`Hide ${a.name} from the dashboard`}>{a.name}</button>
         ))}
-        <span class="divider" aria-hidden="true"></span>
-        <span class="updated">Updated just now</span>
+        <span class="vdiv" aria-hidden="true"></span>
+        <span class="disp fixed" data-updated>Updated <em>· just now</em></span>
+        <button type="button" class="key k sq" data-refresh-all title="Refresh now" aria-label="Refresh now">↻</button>
       </span>
     </div>
     <div class="dash-cards">{accounts.map((a) => <AccountCard {...a} />)}</div>
@@ -27,27 +30,45 @@ const description =
 
 <style>
   .dash-bar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-  .dash-bar .divider { width: 1px; align-self: stretch; margin: 0 4px; background: rgba(0,0,0,.45); box-shadow: 1px 0 0 rgba(255,255,255,.08); }
-  .dash-bar .updated { padding-right: 6px; white-space: nowrap; }
-  :global(.face-silver) .dash-bar .divider { background: rgba(0,0,0,.28); box-shadow: 1px 0 0 rgba(255,255,255,.5); }
+  .no-charts { margin: 0; padding: 18px; text-align: center; border-radius: 6px; background: var(--win-bg); box-shadow: var(--win-shadow); }
 </style>
 
 <script>
-  import { rangeHTML, sharesHTML, totalsText } from "../data/historyView";
+  import { rangeHTML, sharesHTML, totalsHTML } from "../data/historyView";
   import { allIds, type AccountId, type Range } from "../data/demo";
 
   const KEY = "cl_audit.dashboardHidden";
+  const CHARTS = "cl_audit.dashboardCharts";   // charts switched off with their keys
+  const loadCharts = (): string[] => { try { return JSON.parse(localStorage.getItem(CHARTS) || "[]"); } catch { return []; } };
+
+  /** Shows the charts whose keys are latched; the tokens key names the period's chart (per hour for 24 h). */
+  function applyCharts(dash: HTMLElement) {
+    const off = loadCharts();
+    dash.querySelectorAll<HTMLButtonElement>("[data-chart-key]").forEach((b) => {
+      const on = !off.includes(b.dataset.chartKey!);
+      b.classList.toggle("lt", on); b.setAttribute("aria-pressed", String(on));
+    });
+    dash.querySelectorAll<HTMLElement>("[data-chart]").forEach((c) => (c.hidden = off.includes(c.dataset.chart!)));
+    const none = dash.querySelector<HTMLElement>(".no-charts");
+    if (none) none.hidden = off.length < 3;
+    const t = dash.querySelector<HTMLElement>("[data-tokens-title]");
+    if (t) t.textContent = dash.dataset.range === "24h" ? "Tokens per hour" : "Tokens per day";
+  }
   const load = (): string[] => { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch { return []; } };
   const save = (v: string[]) => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} };
 
   function render(dash: HTMLElement, hidden: string[]) {
     const ids = allIds.filter((id) => !hidden.includes(id)) as AccountId[];
-    document.querySelectorAll<HTMLButtonElement>("[data-chip]").forEach((b) => b.classList.toggle("on", !hidden.includes(b.dataset.chip!)));
+    document.querySelectorAll<HTMLButtonElement>("[data-chip]").forEach((b) => {
+      const on = !hidden.includes(b.dataset.chip!);
+      b.classList.toggle("lt", on); b.setAttribute("aria-pressed", String(on));
+    });
     dash.querySelectorAll<HTMLElement>(".dash-cards [data-account]").forEach((c) => (c.hidden = hidden.includes(c.dataset.account!)));
     dash.querySelectorAll<HTMLElement>(".legend-item").forEach((l) => (l.hidden = hidden.includes(l.dataset.account!)));
     dash.querySelectorAll<HTMLElement>(".range-block").forEach((el) => (el.innerHTML = rangeHTML(el.dataset.range as Range, ids)));
     dash.querySelectorAll<HTMLElement>(".range-shares").forEach((el) => (el.innerHTML = sharesHTML(el.dataset.range as Range, ids)));
-    dash.querySelectorAll<HTMLElement>(".hist-total").forEach((el) => (el.textContent = totalsText(el.dataset.range as Range, ids)));
+    dash.querySelectorAll<HTMLElement>(".hist-total").forEach((el) => (el.innerHTML = totalsHTML(el.dataset.range as Range, ids)));
+    applyCharts(dash);
   }
 
   function setup() {
@@ -56,10 +77,27 @@ const description =
     dash.dataset.ready = "1";
     let hidden = load();
     if (hidden.length) render(dash, hidden);
+    applyCharts(dash);
+    dash.querySelectorAll<HTMLButtonElement>("[data-chart-key]").forEach((b) =>
+      b.addEventListener("click", () => {
+        const id = b.dataset.chartKey!, off = loadCharts();
+        const next = off.includes(id) ? off.filter((x) => x !== id) : [...off, id];
+        try { localStorage.setItem(CHARTS, JSON.stringify(next)); } catch {}
+        applyCharts(dash);
+      }),
+    );
+    // Refresh: the display says Updating… for a moment, as the app's does
+    dash.querySelector("[data-refresh-all]")?.addEventListener("click", () => {
+      const d = dash.querySelector<HTMLElement>("[data-updated]");
+      if (!d) return;
+      d.innerHTML = "Updating…";
+      setTimeout(() => (d.innerHTML = "Updated <em>· just now</em>"), 1200);
+    });
     dash.querySelectorAll<HTMLButtonElement>("[data-pick]").forEach((b) =>
       b.addEventListener("click", () => {
         dash.dataset.range = b.dataset.pick!;
-        dash.querySelectorAll("[data-pick]").forEach((x) => x.classList.toggle("on", x === b));
+        dash.querySelectorAll("[data-pick]").forEach((x) => x.classList.toggle("lt", x === b));
+        applyCharts(dash);
       }),
     );
     document.querySelectorAll<HTMLButtonElement>("[data-chip]").forEach((b) =>

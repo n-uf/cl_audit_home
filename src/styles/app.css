@@ -986,25 +986,23 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .wn-x:active { transform: translateY(1px); box-shadow: var(--key-down); }
 @media (prefers-reduced-motion: reduce) { .whatnow-card { transition: none; } }
 
-/* ── Settings layout: three columns from 1180 px, two from 800, one below (like the app) ────────────
-   Cards flow top to bottom in columns; forced breaks put Icon alone in the middle, Dock icon and Opening
-   and closing in the right column (three columns) or under Icon (two). Cards keep their natural height,
-   so one with a tall preview (the Pace panel) just grows. */
+/* ── Settings layout, as the app (26.10.2): the profile's cards, its Dock icon's cards, then Icon; three columns
+   from 1180 px, two from 800 (Icon under the Dock icon's cards), one below in that order. Cards keep their natural
+   height. General: Emails, Face, Dashboard cards, About | Dock. */
 .s-grid { column-count: 3; column-gap: 12px; }
 .s-grid > .card { break-inside: avoid; -webkit-column-break-inside: avoid; margin: 0 0 12px; display: block; }
-.s-grid > .c-i { break-before: column; -webkit-column-break-before: always; }
 .s-grid > .c-d { break-before: column; -webkit-column-break-before: always; }
+.s-grid > .c-i { break-before: column; -webkit-column-break-before: always; }
 .g-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.g-col { display: grid; gap: 12px; align-content: start; min-width: 0; }
 @media (max-width: 1179px) {
   .s-grid { column-count: 2; }
-  .s-grid > .c-d { break-before: auto; -webkit-column-break-before: auto; }
+  .s-grid > .c-i { break-before: auto; -webkit-column-break-before: auto; }
   .g-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 799px) {
   .s-grid { column-count: auto; display: flex; flex-direction: column; gap: 12px; }
   .s-grid > .card { margin: 0; }
-  .s-grid > .c-p { order: 1; } .s-grid > .c-c { order: 2; } .s-grid > .c-i { order: 3; } .s-grid > .c-d { order: 4; }
-  .s-grid > .c-o { order: 5; } .s-grid > .c-u { order: 6; } .s-grid > .c-k { order: 7; }
   .g-grid { grid-template-columns: minmax(0, 1fr); }
 }
 .s-grid > .card, .g-grid > .card { min-width: 0; }
@@ -1167,4 +1165,85 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
 @media (hover: none) {
   .dock-item:hover img, .dock-item:hover .app-tile, .dock-item:hover .ico { transform: none; }
   .dock-item .tip { display: none; }
+}
+
+/* ── 26.10.2: the app's front-panel parts on the demo pages (as cl_audit draws them) ─────────────────────── */
+/* one sunken strip, every control 26 px on one centre line; a latched key stays level, its strip lit */
+.strip26 { display: inline-flex; align-items: center; gap: 6px; padding: 4px; border-radius: 6px; flex-wrap: nowrap;
+  background: var(--grain), linear-gradient(180deg, #48484b, #333336);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.4), 0 0 0 1px #0b0b0c, 0 4px 12px rgba(0,0,0,.35); }
+.face-black .strip26 { background: repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #19191b, #121214);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.75), inset 0 0 0 1px rgba(0,0,0,.5), 0 1px 0 rgba(255,255,255,.07); }
+.face-silver .strip26 { background: repeating-linear-gradient(0deg, rgba(255,255,255,.14) 0 1px, rgba(0,0,0,.03) 1px 2px), linear-gradient(180deg, #a9a9a4, #b9b9b4);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.35), inset 0 0 0 1px rgba(0,0,0,.12), 0 1px 0 rgba(255,255,255,.6); }
+.strip26 .key, .strip26 .disp, .h26 { height: 26px !important; }
+.k { position: relative; height: 26px; padding: 0 11px; font-size: 10px; letter-spacing: .1em; transform: none !important; }
+.k.lt { background: var(--alu-down); box-shadow: var(--key-down); }
+.k.lt::before { content: ""; position: absolute; left: 5px; right: 5px; top: 3px; height: 2px; border-radius: 2px;
+  background: var(--lamp, #ff7a3d); box-shadow: 0 0 3px var(--lamp, #ff7a3d), 0 0 7px var(--lamp, #ff7a3d); }
+.k.sq { width: 26px; padding: 0; }
+.vdiv { width: 1px; align-self: stretch; margin: 2px 3px; background: rgba(0,0,0,.5); box-shadow: 1px 0 0 rgba(255,255,255,.07); }
+.face-silver .vdiv { background: rgba(0,0,0,.28); box-shadow: 1px 0 0 rgba(255,255,255,.5); }
+.disp.fixed { width: 206px; }
+.disp.fill { flex: 1; width: auto; }
+.disp .g { color: rgb(var(--led-on)); text-shadow: 0 0 3px rgba(var(--led-on), .7); }
+.disp .a { color: #ffb24a; text-shadow: 0 0 3px rgba(255,170,60,.7); }
+.face-silver .disp .g { color: #11743a; text-shadow: none; }
+.face-silver .disp .a { color: #a85f00; text-shadow: none; }
+.disp.amber { color: #ffb24a; text-shadow: 0 0 3px rgba(255,170,60,.7); }
+.face-silver .disp.amber { color: #a85f00; text-shadow: none; }
+/* black totals glass on Silver too (the site already does this for .hist-total) */
+.hhead { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.hhead h3 { margin: 0; font-size: 19px; font-weight: 600; }
+.hhead .keys { display: inline-flex; gap: 6px; }
+.hhead .grow { flex: 1; min-width: 8px; }
+/* the black totals glass on Silver: its dim part light too */
+.face-silver .hist-total.disp em { color: rgba(238,241,243,.42) !important; }
+/* LED switch in transition: locked, pulsing, not faded */
+@keyframes pg { 0%, 100% { background: rgba(var(--led-on), .25); box-shadow: none; } 50% { background: rgb(var(--led-on)); box-shadow: 0 0 6px rgba(var(--led-on), .85); } }
+@keyframes pa { 0%, 100% { background: rgba(255,178,74,.25); box-shadow: none; } 50% { background: #ffb24a; box-shadow: 0 0 6px rgba(255,178,74,.85); } }
+.mswitch.pulse-on::after { animation: pg 1.1s ease-in-out infinite; }
+.mswitch.pulse-off::after { animation: pa 1.1s ease-in-out infinite; }
+.mswitch.pulse-on, .mswitch.pulse-off { pointer-events: none; }
+.states { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.state-cap { font-size: 11.5px; color: var(--muted); margin: 6px 2px 0; }
+/* faded Dock-only cards */
+.faded > :not(.notinuse):not(h4) { opacity: .45; pointer-events: none; }
+.notinuse { display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 10px; margin: 0 0 8px; border-radius: 6px; background: var(--win-bg); box-shadow: var(--win-shadow); }
+.face-silver .notinuse .lbl { color: rgba(20,20,20,.62); }
+.notinuse .lbl { white-space: normal; line-height: 1.35; flex: 1; font-size: 8.5px; }
+/* the Together table without squares */
+.oc-row.ce { grid-template-columns: minmax(0, 150px) 12px minmax(0, 1fr); }
+.oc-row.ce .arr { color: var(--faint); font-size: 10px; }
+.oc-row.ce .left { color: var(--faint); font-size: 11px; }
+/* face card */
+.facecards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.fcard { display: grid; gap: 7px; justify-items: center; padding: 7px 7px 4px; border-radius: 6px; }
+.fcard.on { background: var(--win-bg); box-shadow: var(--win-shadow); }
+.fpic { width: 100%; height: 44px; border-radius: 4px; position: relative; overflow: hidden; box-shadow: 0 0 0 1px rgba(0,0,0,.4); }
+.fpic i { position: absolute; left: 8px; top: 8px; width: 30px; height: 11px; border-radius: 2px; }
+.fpic b { position: absolute; left: 44px; right: 8px; top: 8px; height: 11px; border-radius: 2px; }
+.fpic u { position: absolute; left: 8px; right: 8px; bottom: 8px; height: 5px; border-radius: 1px; background: linear-gradient(90deg, #22c55e 0 45%, #f59e0b 45% 58%, rgba(0,0,0,.3) 58%); }
+
+/* Settings (26.10.2): the strip's saved display, General's Dock row, the chosen face's card, faded Dock-only cards */
+.settings .strip .s-status { width: 246px; height: 30px; flex: none; }
+.dock-order { align-items: flex-start; padding-top: 8px; }
+.dock-order .do-t { display: inline-flex !important; align-items: center; gap: 8px; }
+.dock-order .disp { height: 18px; font-size: 9px; padding: 0 7px; }
+.fcard:has(.fk[aria-pressed="true"]) { background: var(--win-bg); box-shadow: var(--win-shadow); }
+.facecards .fk { height: 22px; padding: 0 12px; font-size: 9px; }
+.facecards .fk[aria-pressed="true"]::before { top: 3px; height: 2px; }
+.card[data-dock-only].faded > :not(.notinuse):not(h4) { opacity: .45; pointer-events: none; }
+.card[data-dock-only].faded .lane-mini { opacity: .45; }
+.mswitch.pulse-on, .mswitch.pulse-off { cursor: default; }
+.oc-row.ce .oc-label { color: var(--soft); }
+.face-silver .oc-row.ce .oc-label { color: var(--text); }
+
+/* phones: the dashboard's top strip wraps, its Updated display taking the rest of the line */
+@media (max-width: 560px) {
+  .dash-bar .strip26 { flex-wrap: wrap; row-gap: 6px; max-width: 100%; }
+  .dash-bar .strip26 .vdiv { display: none; }
+  .dash-bar .disp.fixed { width: auto; flex: 1 1 160px; }
+  .settings .strip .s-status { width: auto; flex: 1 1 200px; }
+  .hhead .keys { flex-wrap: wrap; }
 }

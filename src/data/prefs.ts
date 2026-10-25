@@ -96,7 +96,8 @@ export function applyPrefs(p = loadPrefs()) {
     root.classList.toggle(`dot-${a.id}`, pr.dot);
     root.style.setProperty(`--frame-${a.id}`, pr.frame ? (pr.frame === "usage" ? levelHex(a.five) : tileColors[pr.frame] ?? "transparent") : "transparent");
     // a profile without a Claude window has no window switch and no "Open window" on its card
-    document.querySelectorAll<HTMLElement>(`.acc[data-account="${a.id}"]`).forEach((c) => c.classList.toggle("no-window", pr.window === "None"));
+    // every profile has a Claude window now (26.10.2); a choice of "None" saved by an older visit is ignored
+    document.querySelectorAll<HTMLElement>(`.acc[data-account="${a.id}"]`).forEach((c) => c.classList.remove("no-window"));
     document.querySelectorAll<HTMLImageElement>(`img[data-acc-icon="${a.id}"]`).forEach((img) => {
       const src = iconSrc(a.id, pr.style, pr.iconColor);
       if (img.getAttribute("src") !== src) img.src = src;

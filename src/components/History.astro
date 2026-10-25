@@ -2,25 +2,33 @@
 // "Usage history" as the app draws it: heatmap, tokens chart, where it goes, legend. The Show chips in the
 // top bar re-draw it in the browser for the selected profiles (see dashboard.astro).
 import { accounts, type Range } from "../data/demo";
-import { rangeHTML, sharesHTML, totalsText } from "../data/historyView";
+import { rangeHTML, sharesHTML, totalsHTML } from "../data/historyView";
 
 const kinds: Range[] = ["24h", "7d", "30d"];
 ---
 <div class="history" id="history">
-  <div class="hist-head">
+  <!-- one line, as the app: the title, which charts to show (a key each, latched while shown), the totals in a
+       display window and the period as three keys; two lines when narrow -->
+  <div class="hist-head hhead">
     <h3>Usage history</h3>
-    <span class="spacer"></span>
-    {kinds.map((k) => <span class="hist-total disp" data-range={k}>{totalsText(k)}</span>)}
-    <span class="switch range-picker" role="tablist" aria-label="Period">
-      <button type="button" data-pick="24h">24 h</button>
-      <button type="button" data-pick="7d" class="on">7 d</button>
-      <button type="button" data-pick="30d">30 d</button>
+    <span class="keys" role="group" aria-label="Charts shown">
+      <button type="button" class="key k lt" data-chart-key="heat" aria-pressed="true">When you use Claude</button>
+      <button type="button" class="key k lt" data-chart-key="tokens" aria-pressed="true"><span data-tokens-title>Tokens per day</span></button>
+      <button type="button" class="key k lt" data-chart-key="shares" aria-pressed="true">Where it goes</button>
+    </span>
+    <span class="grow"></span>
+    {kinds.map((k) => <span class="hist-total disp h26" data-range={k} set:html={totalsHTML(k)} />)}
+    <span class="strip26" role="tablist" aria-label="Period">
+      <button type="button" class="key k" data-pick="24h">24 h</button>
+      <button type="button" class="key k lt" data-pick="7d">7 d</button>
+      <button type="button" class="key k" data-pick="30d">30 d</button>
     </span>
   </div>
+  <p class="no-charts sub" hidden>All charts are hidden; pick one above.</p>
 
   {kinds.map((k) => <div class="range-block" data-range={k} set:html={rangeHTML(k)} />)}
 
-  <div class="chart-card">
+  <div class="chart-card" data-chart="shares">
     <div class="cc-head"><b>Where it goes</b><span>share of tokens in the period</span></div>
     {kinds.map((k) => <div class="shares range-shares" data-range={k} set:html={sharesHTML(k)} />)}
   </div>

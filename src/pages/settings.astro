@@ -4,7 +4,7 @@ import SettingsPage from "../components/SettingsPage.astro";
 
 const title = "Settings — cl_audit: icon styles, panels and options for each Claude profile";
 const description =
-  "cl_audit's Settings: for each profile, its name, colour and Claude Code folder, its Claude window, what a click on its Dock icon does, refresh and notification options, 13 icon styles and 5 panel designs, and how its Dock icon and Claude window open and quit together.";
+  "cl_audit's Settings: for each profile, its name, colour and Claude Code folder, refresh and notification options, its Dock icon (in the Dock or in the background, what a click does, 13 icon styles and 5 panel designs) and how its Dock icon and Claude window open and quit together; in General, Show emails, the window's face and the dashboard's card style.";
 ---
 <Desktop title={title} description={description} page="settings" headline="Profile and general settings">
   <div class="content-inner">
@@ -41,23 +41,15 @@ const description =
     const $$ = <T extends Element = HTMLElement>(sel: string) => [...root.querySelectorAll<T>(sel)];
 
     // ── "What this does now": the plain-language note for a changed setting (never for visual ones) ──
-    type K = "renew" | "window" | "dataDir" | "refresh" | "notify" | "notifyAt" | "click" | "peek" | "hold" | "showInDock" | "login";
+    type K = "renew" | "refresh" | "notify" | "notifyAt" | "click" | "peek" | "hold" | "showInDock" | "login";
     const say = (k: K) => {
       const pr = p(), n = who();
       const on = (v: boolean) => (v ? "on" : "off");
       switch (k) {
         case "renew":
-          return showWhatNow("Renew if expired", on(pr.renew), pr.renew
-            ? `When ${n}'s Claude Code login expires, cl_audit renews it with one tiny Claude Code request (it uses a little usage).`
-            : "An expired login stays expired until you sign in again; the card shows Sign in…");
-        case "window":
-          return showWhatNow("Claude window", pr.window, pr.window === "Standard"
-            ? "Opens the standard Claude app with whatever account it is signed in to. Only one profile can use it."
-            : pr.window === "Separate"
-              ? `Opens ${n}'s own Claude app, with its own sign-in and data folder, side by side with the others.`
-              : `No Claude window: ${n} is Claude Code in Terminal only. A click shows its usage.`);
-        case "dataDir":
-          return showWhatNow("Data folder", pr.dataDir, `${n}'s own Claude window keeps its sign-in and data in this folder.`);
+          return showWhatNow("Renew sign-in", on(pr.renew), pr.renew
+            ? `When ${n}'s access key runs out, the Dock icon runs Claude Code once with a tiny prompt so it fetches a fresh one (a sliver of usage).`
+            : `When ${n}'s access key runs out, the usage waits until you next use Claude Code.`);
         case "refresh":
           return showWhatNow("Refresh every", pr.refresh, `Asks Anthropic for ${n}'s usage every ${pr.refresh}. It doesn't use any of your limits.`);
         case "notify": case "notifyAt":
@@ -71,15 +63,15 @@ const description =
               ? `A click on the Dock icon brings ${n}'s Claude window forward right away.`
               : "A click on the Dock icon shows the details panel; open Claude from there.");
         case "peek":
-          return showWhatNow("Show usage for", secs(pr.peek), `After a click the usage stays up for ${secs(pr.peek)}, then the Claude window comes forward.`);
+          return showWhatNow("Usage shows for", secs(pr.peek), `After a click the usage stays up for ${secs(pr.peek)}, then the Claude window comes forward.`);
         case "hold":
           return showWhatNow("Press and hold", on(pr.hold), pr.hold
             ? "Press and hold the Dock icon for the details panel next to a short menu."
             : "Press and hold shows only the Dock menu.");
         case "showInDock":
           return showWhatNow("Show in the Dock", on(pr.showInDock), pr.showInDock
-            ? "The Dock icon gets its tile back. The Dock restarts to put the pin where it was."
-            : "The Dock icon keeps running without a tile, so it still refreshes and alerts. The Dock restarts to take its pin out.");
+            ? "The Dock icon is pinned in the Dock again, there even while it's stopped. The Dock restarts to put the pin back."
+            : "The Dock icon keeps running in the background, so it still refreshes and alerts. The Dock restarts to take its pin out. Its Icon and Dock icon clicks settings wait until it's back.");
         case "login":
           return showWhatNow("Open at login", on(pr.login), pr.login
             ? `${n}'s Dock icon starts when you log in to your Mac.`
@@ -91,31 +83,52 @@ const description =
     const ocHTML = (pr: Prefs) => {
       const i = pr.iconFollows, w = pr.windowFollows;
       const title = i ? (w ? "Together" : "The Dock icon follows the window") : w ? "The window follows the Dock icon" : "Independent";
+      // cause → what then happens to the other one (or that it's left alone)
       const rows: [boolean, string, string | null, string | null][] = [
-        [true, "You open the window", i ? "Dock icon starts" : null, null],
-        [true, "You quit the window", i ? "Dock icon quits" : null, "10 s later"],
-        [false, "You start the Dock icon", w ? "window opens" : null, "not at login"],
-        [false, "You quit the Dock icon", w ? "window quits" : null, i ? "or ⌥ Quit and keep" : "Claude may ask"],
+        [true, "Claude window opens", i ? "Dock icon starts" : null, null],
+        [true, "Claude window quits", i ? "Dock icon quits" : null, "10 s later"],
+        [false, "Dock icon starts", w ? "Claude window opens" : null, "not at login"],
+        [false, "Dock icon quits", w ? "Claude window quits" : null, i ? "or ⌥ Quit and keep" : "Claude may ask"],
       ];
       const esc = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
       return `<div class="oc-head"><b>${title}</b><span>${esc(who())}</span></div>` + rows.map(([win, label, effect, note]) =>
-        `<div class="oc-row"><i class="oc-glyph ${win ? "w" : "d"}"></i><span class="oc-label">${label}</span><span class="oc-eff">${
-          effect ? `<span class="oc-pill">${effect}</span>${note ? `<span class="oc-note">${note}</span>` : ""}` : `<span class="oc-none">not touched</span>`
+        `<div class="oc-row ce"><span class="oc-label">${label}</span><span class="arr">→</span><span class="oc-eff">${
+          effect ? `<span class="oc-pill">${effect}</span>${note ? `<span class="oc-note">${note}</span>` : ""}` : `<span class="left">${win ? "Dock icon" : "Claude window"} left alone</span>`
         }</span></div>`).join("");
     };
 
     const setSwitch = (el: Element | null | undefined, on: boolean) => { el?.classList.toggle("on", on); el?.setAttribute("aria-checked", String(on)); };
 
-    // The data folders to choose from: those other profiles use are marked and can't be picked.
-    const fillDataFolders = () => {
-      const sel = $<HTMLSelectElement>('[data-field="dataDir"]')!;
-      const names = [...new Set([...accounts.map((x) => prefs[x.id].dataDir), p().dataDir, `Claude-${acc}`])];
-      sel.innerHTML = names.map((nm) => {
-        const owner = accounts.find((x) => x.id !== acc && prefs[x.id].dataDir === nm && prefs[x.id].window !== "None");
-        const label = nm === `Claude-${acc}` && nm !== p().dataDir && !accounts.some((x) => prefs[x.id].dataDir === nm) ? `New: ${nm}` : nm + (owner ? `  —  used by ${owner.name}` : "");
-        return `<option value="${nm}"${owner ? " disabled" : ""}>${label}</option>`;
-      }).join("");
-      sel.value = p().dataDir;
+    // Show in the Dock while the change is applied (in the app the Dock icon app and the Dock restart): the
+    // switch pulses, green turning on and amber turning off, and takes no clicks; it isn't faded
+    let dockBusy: "on" | "off" | null = null;
+    const nowHTML = (pr: Prefs) => dockBusy
+      ? `<span class="a">Restarting the Dock…</span>`
+      : `<span class="g">Running</span> <em class="${pr.showInDock ? "g" : "a"}">· ${pr.showInDock ? "in the Dock" : "hidden"}</em>`;
+    const setDock = (on: boolean) => {
+      if (dockBusy) return;
+      p().showInDock = on; commit();
+      dockBusy = on ? "on" : "off";
+      show(); say("showInDock");
+      setTimeout(() => { dockBusy = null; show(); }, 2200);
+    };
+
+    // A name or label: kept in the field while typing, saved on Return or leaving it (Esc puts it back), as the app
+    let editing: { field: "name" | "label"; was: string } | null = null;
+    const status = (html: string, ms = 0) => {
+      const s = $("[data-status]"); if (!s) return;
+      s.innerHTML = html;
+      if (ms) setTimeout(() => { if (!editing) s.innerHTML = "Saved <em>· as you change</em>"; }, ms);
+    };
+    const saveEdit = (input: HTMLInputElement) => {
+      if (!editing || editing.field !== input.dataset.field) return;
+      const f = editing.field, v = f === "label" ? input.value.toUpperCase().replace(/\s/g, "").slice(0, 6) : input.value.trim();
+      editing = null;
+      if (!v || v === (f === "name" ? p().name : p().label)) { input.value = f === "name" ? p().name : p().label; status("Saved <em>· as you change</em>"); return; }
+      p()[f] = v; commit();
+      $$<HTMLElement>(`[data-acc-name="${acc}"]`).forEach((el) => (el.textContent = p().name));
+      status("<span class=\"a\">Saving…</span>");
+      setTimeout(() => { show(); status(`<span class="g">Saved</span> <em>· ${f === "name" ? "Dock icon renamed" : "icon label changed"}</em>`, 4000); }, 700);
     };
 
     // Fill every control from the selected profile's settings.
@@ -141,18 +154,20 @@ const description =
       $$<HTMLElement>('[data-text="dir"]').forEach((e) => (e.textContent = a.dir));
       $$<HTMLElement>('[data-text="email"]').forEach((e) => (e.textContent = a.email));
       $$<HTMLElement>('[data-text="name"]').forEach((e) => (e.textContent = who()));
-      for (const f of ["click", "window", "refresh"] as const) $<HTMLSelectElement>(`[data-field="${f}"]`)!.value = pr[f];
+      for (const f of ["click", "refresh"] as const) $<HTMLSelectElement>(`[data-field="${f}"]`)!.value = pr[f];
       for (const f of ["renew", "hold", "notify", "login", "showInDock"] as const) setSwitch($(`[data-switch="${f}"]`), pr[f]);
       $('[data-value="peek"]')!.textContent = secs(pr.peek);
       $('[data-value="notifyAt"]')!.textContent = `${pr.notifyAt}%`;
       $("[data-notify-step]")!.hidden = !pr.notify;
       $("[data-peekrow]")!.hidden = pr.click !== "Usage, then Claude";
-      // Dock icon
-      $("[data-dock-sub]")!.textContent = pr.showInDock ? "shown in the Dock" : "runs in the background; still refreshes and alerts";
-      $("[data-now]")!.textContent = pr.showInDock ? "running, in the Dock" : "running, hidden";
-      $(".now-dot")!.classList.toggle("hid", !pr.showInDock);
-      // Opening and closing (only with a Claude window)
-      $("[data-openclose]")!.hidden = pr.window === "None";
+      // Dock icon: the Now display, the switch while a change is applied, and the Dock-only cards while hidden
+      $("[data-now]")!.innerHTML = nowHTML(pr);
+      const sw = $('[data-switch="showInDock"]');
+      sw?.classList.toggle("pulse-on", dockBusy === "on"); sw?.classList.toggle("pulse-off", dockBusy === "off");
+      $$<HTMLElement>("[data-dock-only]").forEach((c) => {
+        c.classList.toggle("faded", !pr.showInDock);
+        c.querySelector<HTMLElement>(".notinuse")!.hidden = pr.showInDock;
+      });
       $$<HTMLInputElement>('input[name="oc-icon"]').forEach((r) => (r.checked = r.value === (pr.iconFollows ? "1" : "0")));
       $$<HTMLInputElement>('input[name="oc-window"]').forEach((r) => (r.checked = r.value === (pr.windowFollows ? "1" : "0")));
       $("[data-oc-result]")!.innerHTML = ocHTML(pr);
@@ -170,8 +185,6 @@ const description =
       tiles[Math.min(tiles.length, (Math.floor(i / cols) + 1) * cols) - 1].after(lanes);
       lanes.dataset.col = String(i % cols);
       lanes.dataset.last = String(i % cols === cols - 1 || i === tiles.length - 1 && tiles.length % cols === 0);
-      $("[data-datarow]")!.hidden = pr.window !== "Separate";
-      fillDataFolders();
       $$<HTMLElement>("[data-panel]").forEach((b) => b.classList.toggle("on", b.dataset.panel === pr.panel));
       $("[data-panel-prev]")!.innerHTML = panelHTML(acc, pr.panel as Design, { large: false, name: pr.name });
     };
@@ -190,8 +203,10 @@ const description =
       if ((b = pick("[data-dot]"))) { p().dot = b.dataset.dot === "1"; commit(); show(); return; }
       if ((b = pick("[data-switch]"))) {
         const k = b.dataset.switch as "renew" | "hold" | "notify" | "login" | "showInDock";
+        if (k === "showInDock") { setDock(!p().showInDock); return; }
         p()[k] = !p()[k]; commit(); show(); say(k); return;
       }
+      if (pick("[data-show-dock]")) { setDock(true); return; }
       if ((b = pick("[data-step]"))) {
         const dir = +b.dataset.dir!;
         if (b.dataset.step === "peek") {
@@ -220,23 +235,28 @@ const description =
       const f = t.dataset.field as keyof Prefs | undefined;
       if (f && t.tagName === "SELECT") {
         (p() as any)[f] = t.value; commit(); show();
-        if (f === "window" || f === "dataDir" || f === "refresh" || f === "click") say(f);
+        if (f === "refresh" || f === "click") say(f);
       }
     });
+    // a name or label edit: saved on Return or leaving the field, Esc puts it back
     root.addEventListener("input", (e) => {
-      // typing a name or label is not a setting with an effect to explain: no note
+      const t = e.target as HTMLInputElement, f = t.dataset.field;
+      if (f !== "name" && f !== "label") return;
+      if (f === "label") t.value = t.value.toUpperCase().replace(/\s/g, "").slice(0, 6);
+      if (!editing) editing = { field: f, was: f === "name" ? p().name : p().label };
+    });
+    root.addEventListener("keydown", (e) => {
       const t = e.target as HTMLInputElement;
-      if (t.dataset.field === "name") {
-        p().name = t.value || accounts.find((x) => x.id === acc)!.name; commit();
-        $$<HTMLElement>(`[data-acc-name="${acc}"]`).forEach((el) => (el.textContent = p().name));
-        $$<HTMLElement>('[data-text="name"]').forEach((el) => (el.textContent = who()));
-        const r = $("[data-oc-result]"); if (r) r.innerHTML = ocHTML(p());
-        $("[data-panel-prev]")!.innerHTML = panelHTML(acc, p().panel as Design, { large: false, name: p().name });
-      }
-      if (t.dataset.field === "label") { t.value = t.value.toUpperCase().replace(/\s/g, "").slice(0, 6); p().label = t.value; commit(); }
+      if (t.dataset.field !== "name" && t.dataset.field !== "label") return;
+      if (e.key === "Enter") { e.preventDefault(); saveEdit(t); t.blur(); }
+      if (e.key === "Escape" && editing) { t.value = editing.was; editing = null; t.blur(); }
+    });
+    root.addEventListener("focusout", (e) => {
+      const t = e.target as HTMLInputElement;
+      if (t.dataset.field === "name" || t.dataset.field === "label") saveEdit(t);
     });
 
-    // Show emails (the strip's switch and General's), shared with the rest of the site
+    // Show emails (General), shared with the rest of the site
     const sws = $$("[data-toggle-emails]");
     const syncEmails = () => sws.forEach((s) => setSwitch(s, !document.documentElement.classList.contains("hide-emails")));
     syncEmails();

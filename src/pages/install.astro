@@ -60,11 +60,11 @@ git checkout v{version}   # optional: exactly this release
       <div class="card">
         <h4>Add a profile</h4>
         <div class="steps">
-          <div><div><b>Open cl_audit, then Settings ▸ New profile</b><span>A page opens in the same window: the profile and its Claude window, its Claude Code folder, and a summary with the live icon and the steps to do.</span></div></div>
+          <div><div><b>Open cl_audit, then Settings ▸ New profile</b><span>A page opens in the same window: the profile, its Claude Code folder, and a summary with the steps to do.</span></div></div>
           <div><div><b>Choose its Claude Code folder</b><span>A new one (<code>~/.claude-&lt;name&gt;</code>, optionally sharing instructions, agents, skills, commands or memory from another folder) or an existing one, such as <code>~/.claude</code>.</span></div></div>
-          <div><div><b>Choose its Claude window</b><span>The standard one (only while no other profile uses it), a separate one with its own sign-in and data folder, or none, for Claude Code in Terminal only.</span></div></div>
+          <div><div><b>Its Claude window comes with the folder</b><span>With <code>~/.claude</code>, the usual Claude app; with any other folder, its own Claude window, with its own sign-in, chats and settings.</span></div></div>
           <div><div><b>Quit the Claude app until the folder is set up</b><span>While it is open it writes its own sign-in and settings. The page lists its windows and checks every 2 seconds. Claude Code in Terminal doesn't get in the way.</span></div></div>
-          <div><div><b>Sign in, in two parts</b><span>Claude Code first (Terminal runs <code>claude auth login</code> for the folder), then, with a separate window, that window, signed in to the same claude.ai account. “Finish now” leaves sign-in for later.</span></div></div>
+          <div><div><b>Sign in, in two parts</b><span>Claude Code first (Terminal runs <code>claude auth login</code> for the folder), then its own Claude window, signed in to the same claude.ai account. “Finish now” leaves sign-in for later.</span></div></div>
           <div><div><b>Put its Dock icon in the Dock</b><span>cl_audit installs the profile's Dock icon and starts it. Drag it into the Dock, or let Settings ▸ General ▸ Dock pin it for you (experimental: it rewrites the Dock's pin list and restarts the Dock).</span></div></div>
         </div>
       </div>
@@ -76,7 +76,7 @@ git checkout v{version}   # optional: exactly this release
         <h4>Update, remove, uninstall</h4>
         <div class="steps">
           <div><div><b>Update</b><span>Download the new zip and replace cl_audit in Applications (<a href={changelog}>what's new</a>), or run <code>git pull && ./build.sh</code> in the cl_audit folder. The Dock icon apps follow, and profiles and settings are kept.</span></div></div>
-          <div><div><b>Remove a profile</b><span>Settings ▸ the profile ▸ Remove profile… removes its Dock icon app and what macOS keeps for it, plus its saved usage. “Delete its folders too” also signs its Claude Code folder out and deletes it and its Claude window's data folder; the default <code>~/.claude</code> and the standard window are never deleted.</span></div></div>
+          <div><div><b>Remove a profile</b><span>Settings ▸ the profile ▸ Remove profile… removes its Dock icon app and what macOS keeps for it, plus its saved usage. “Delete its folders too” also signs its Claude Code folder out and deletes it and its Claude window's own folder; the default <code>~/.claude</code> and the usual Claude app's data are never deleted.</span></div></div>
           <div><div><b>Uninstall</b><span>Remove every profile, then delete cl_audit from /Applications and the folder <code>~/Library/Application Support/usage-n-uf</code>, where profiles are saved.</span></div></div>
         </div>
       </div>

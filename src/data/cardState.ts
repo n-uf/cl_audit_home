@@ -137,7 +137,7 @@ export function setDock(id: string, on: boolean, byFollow = false) {
   }, BUSY_MS);
   if (!byFollow) {
     const pr = follows(id);
-    if (pr.windowFollows && pr.window !== "None") setTimeout(() => setWin(id, on, true), 0);
+    if (pr.windowFollows) setTimeout(() => setWin(id, on, true), 0);
   }
 }
 

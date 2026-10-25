@@ -5,7 +5,7 @@ export const faq: [string, string][] = [
   ["What's the difference between a profile and an account?",
    "A profile is one Claude setup in cl_audit: a Claude Code folder with its sign-in, a Claude window and a Dock icon. An account is only the claude.ai account a profile is signed in to. Several profiles can use one account; each profile has its own folder, settings and Dock icon."],
   ["Can I run several Claude windows at the same time?",
-   "Yes. A profile can have a separate Claude window, with its own sign-in and data folder, next to the standard one (only one profile can use the standard window). Its Claude Code folder keeps its own sign-in too, through CLAUDE_CONFIG_DIR."],
+   "Yes. Every profile has its own Claude window: the profile using ~/.claude opens the usual Claude app, and every other profile its own Claude window, with its own sign-in, chats and settings, side by side with the others. Its Claude Code folder keeps its own sign-in too, through CLAUDE_CONFIG_DIR."],
   ["What do the two switches on a card do?",
    "Claude window opens or quits the profile's Claude window. Dock icon starts or quits the profile's Dock icon. Pins are never touched, so the Dock doesn't restart, but while the Dock icon is stopped the profile doesn't refresh or alert. A flipped switch stays where you put it, with a spinner, until the change is done. In a profile's settings, Opening and closing lets the two follow each other."],
   ["Why does hiding the Dock icon restart the Dock?",

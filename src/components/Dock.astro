@@ -34,7 +34,7 @@ import AccIcon from "./AccIcon.astro";
   let open: HTMLElement | null = null;
   let timer = 0;
   const close = () => { clearTimeout(timer); open?.setAttribute("hidden", ""); open = null; };
-  // A peek hides itself after the profile's "Show usage for" time (3 s by default); it waits while the pointer is over it.
+  // A peek hides itself after the profile's "Usage shows for" time (3 s by default); it waits while the pointer is over it.
   const autoHide = (ms: number) => { clearTimeout(timer); timer = window.setTimeout(() => { if (open && !open.matches(":hover")) close(); else autoHide(ms); }, ms); };
   // cl_audit's own icon: bring it to the front, like clicking a running app (closes other windows and pop-ups).
   bar.querySelector<HTMLButtonElement>("[data-front-app]")?.addEventListener("click", (e) => {
