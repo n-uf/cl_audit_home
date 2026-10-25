@@ -13,7 +13,7 @@ interface Props { title: string; description: string; page: Page; jsonLd?: objec
 const { title, description, page, jsonLd } = Astro.props;
 
 const nav: [Page, string, string][] = [
-  ["overview", "Overview", "/"], ["dashboard", "Dashboard", "/dashboard/"], ["settings", "Settings", "/settings/"],
+  ["overview", "Overview", "/"], ["dashboard", "Demo dashboard", "/dashboard/"], ["settings", "Settings", "/settings/"],
   ["install", "Install", "/install/"], ["faq", "FAQ", "/faq/"],
 ];
 const current = nav.find(([id]) => id === page)?.[1];
