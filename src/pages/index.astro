@@ -70,10 +70,9 @@ const jsonLd = [{
       {accounts.slice(0, 2).map((a) => <AccountCard {...a} />)}
     </div>
     <div class="card intro">
-      <img src="/img/app-icon.png" alt="The cl_audit app icon" width="92" height="92" />
       <div class="intro-body">
         <h4 class="intro-label">What it does</h4>
-        <p class="intro-text">
+        <p class="intro-text"><img class="intro-ico" src="/img/app-icon.png" alt="The cl_audit app icon" width="72" height="72" />
           cl_audit runs several Claude desktop apps side by side on one Mac, each with its own sign-in, and shows
           every profile's 5-hour and weekly usage in the Dock and on a dashboard. A profile is one Claude setup: a
           Claude Code folder with its sign-in, a Claude window and a Dock icon. Limits are read from Anthropic;
@@ -82,7 +81,7 @@ const jsonLd = [{
         <!-- the release in a display window, then the actions as one key strip (sketch T4); both full width -->
         <div class="disp version-disp" id="rel" title={relText} aria-hidden="true">
           <span class="rel-view"><span class="rel-line" set:html={relPages[0].html} /></span>
-          <span class="rel-marks">{relPages.map((p, i) => <i class:list={{ on: i === 0, amber: p.amber }} />)}</span>
+          <span class="rel-marks">{relPages.map((p, i) => <button type="button" tabindex="-1" class:list={["rel-mark", { on: i === 0, amber: p.amber }]} data-page={i} title={`Page ${i + 1}`}><i /></button>)}</span>
         </div>
         <p class="sr-only">{relText}</p>
         <script type="application/json" id="rel-data" set:html={JSON.stringify({ pages: relPages.map((p) => p.html), reason: relReason })} />
@@ -304,7 +303,7 @@ cd cl_audit && ./build.sh</code></pre>
     let pages = data.pages;
     const choose = () => { pages = notMac() ? [data.reason[document.documentElement.dataset.sys || "other"] ?? data.reason.other] : data.pages; };
     choose();
-    const view = el.querySelector<HTMLElement>(".rel-view")!, marks = [...el.querySelectorAll<HTMLElement>(".rel-marks i")];
+    const view = el.querySelector<HTMLElement>(".rel-view")!, marks = [...el.querySelectorAll<HTMLElement>(".rel-mark")];
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const SPEED = 45, WAIT_START = 2000, WAIT_END = 2500, HOLD = [6000, 4500, 4500];
     let i = 0, timer = 0, run = 0, hold = false;
@@ -332,6 +331,8 @@ cd cl_audit && ./build.sh</code></pre>
       }, k === i && !el.dataset.started ? 0 : 120);
       el.dataset.started = "1";
     };
+    // a page mark is a small key: it shows that page at once
+    marks.forEach((m) => m.addEventListener("click", (e) => { e.stopPropagation(); show(+(m.dataset.page || 0)); }));
     el.addEventListener("mouseenter", () => (hold = true));
     el.addEventListener("mouseleave", () => (hold = false));
     el.addEventListener("click", () => show((i + 1) % pages.length));
@@ -355,13 +356,15 @@ cd cl_audit && ./build.sh</code></pre>
   .version-disp.blank .rel-line { visibility: hidden; }
   .version-disp :global(.sub) { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
   .version-disp :global(em.amber) { color: #fbbf24; text-shadow: 0 0 3px rgba(251,191,36,.7), 0 0 9px rgba(251,191,36,.3); }
-  .rel-marks { flex: none; display: inline-flex; gap: 3px; }
+  .rel-marks { flex: none; display: inline-flex; gap: 2px; margin-right: -4px; }
+  .rel-mark { display: grid; place-items: center; width: 15px; height: 22px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 3px; }
+  .rel-mark:hover { background: rgba(var(--glow), .08); }
   :global(.not-mac) .rel-marks { display: none; }
   :global(.not-mac) #rel:not([data-started]) .rel-line { visibility: hidden; }   /* no release line flashing before the reason */
-  .rel-marks i { width: 5px; height: 5px; border-radius: 1px; background: rgba(var(--glow), .18); }
-  .rel-marks i.on { background: rgb(var(--glow)); box-shadow: 0 0 4px rgba(var(--glow), .8); }
-  .rel-marks i.amber { background: rgba(251,191,36,.22); }
-  .rel-marks i.amber.on { background: #fbbf24; box-shadow: 0 0 4px rgba(251,191,36,.8); }
+  .rel-mark i { width: 9px; height: 4px; border-radius: 1px; background: rgba(var(--glow), .18); }
+  .rel-mark.on i { background: rgb(var(--glow)); box-shadow: 0 0 4px rgba(var(--glow), .8); }
+  .rel-mark.amber i { background: rgba(251,191,36,.22); }
+  .rel-mark.amber.on i { background: #fbbf24; box-shadow: 0 0 4px rgba(251,191,36,.8); }
   .hero-keys { display: flex; width: 100%; flex-wrap: wrap; margin-top: 10px; }
   .hero-keys > .pill, .hero-keys > .key { flex: 1 1 auto; height: 32px; padding: 0 16px; font-size: 11px; }
   .hero-keys > .pill.dl { padding-top: 4px; }
@@ -406,16 +409,16 @@ cd cl_audit && ./build.sh</code></pre>
   .hero-cards { display: grid; grid-template-columns: repeat(2, minmax(352px, 372px)); gap: 14px; }
   .hero-row .intro { flex-direction: column; align-items: flex-start; justify-content: center; gap: 14px; }
   .hero-cards :global(.acc) { align-content: start; }
-  .hero-row .intro img { display: none; }
+  /* the app icon sits in the text, which flows around it (shown once the intro has the full width) */
+  .intro-ico { display: none; float: left; width: 72px; height: 72px; margin: 4px 16px 6px 0; }
   @media (max-width: 1340px) {
     .hero-row { grid-template-columns: 1fr; }
-    .hero-row .intro { order: -1; flex-direction: row; align-items: center; }
-    .hero-row .intro img { display: block; width: 92px; height: 92px; }
+    .hero-row .intro { order: -1; }
+    .intro-ico { display: block; }
     .hero-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 860px) {
-    .hero-row .intro { flex-direction: column; align-items: flex-start; }
-    .hero-row .intro img { display: none; }
+    .intro-ico { width: 56px; height: 56px; margin-right: 12px; }
     .hero-cards { grid-template-columns: 1fr; }
   }
 </style>
