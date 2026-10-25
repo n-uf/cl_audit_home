@@ -1280,3 +1280,10 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
   .hhead .kfull { display: none; }
   .hhead .kshort { display: inline; }
 }
+/* the Together table on phones: the cause on its own line, "→ effect" under it */
+@media (max-width: 480px) {
+  .oc-row.ce { grid-template-columns: 12px minmax(0, 1fr); row-gap: 2px; padding-top: 7px; padding-bottom: 7px; }
+  .oc-row.ce .oc-label { grid-column: 1 / -1; }
+  .oc-row.ce .arr { grid-column: 1; }
+  .oc-row.ce .oc-eff { grid-column: 2; }
+}
