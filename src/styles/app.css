@@ -454,7 +454,7 @@ body { overflow: hidden; }
 /* the top strip: brand with a printed sub-label, the display window with the page title (the page's h1),
    page-specific controls (the dashboard's Show keys) and the PAGE key strip. A grid, so the display takes the
    free width and the strip rearranges in rows when it runs out of room. */
-.fascia { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "brand disp keys";
+.fascia { container: fascia / inline-size; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "brand disp keys";
   align-items: center; column-gap: 16px; row-gap: 10px; padding: 4px 18px 12px; flex: none; min-width: 0;
   border-bottom: 1px solid rgba(0,0,0,.6); box-shadow: 0 1px 0 rgba(255,255,255,.04); }
 .brand { grid-area: brand; display: grid; line-height: 1.1; text-decoration: none; }
@@ -494,6 +494,17 @@ body { overflow: hidden; }
 .la-sign { display: inline-grid; justify-items: center; gap: 1px; line-height: 1; }
 .la-sign svg { width: 14px; height: 14px; }
 .la-sign span { font: 600 7.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+/* the Overview's display on narrow screens (too narrow for one line, about 840 px of strip): three rows, OVERVIEW
+   with the alert at the top-right, the title, the little Dock centred at the bottom. The first row has a fixed
+   height, so the alert never changes the display's size. Plain CSS grid areas, switched by the strip's width. */
+@container fascia (max-width: 840px) {
+  .page-disp:has(.lslot) { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "lb al" "tt tt" "dk dk";
+    grid-template-rows: 24px auto auto; row-gap: 6px; align-items: center; height: auto; padding: 8px 12px 10px; white-space: normal; }
+  .page-disp:has(.lslot) > em { grid-area: lb; display: inline; }
+  .page-disp:has(.lslot) > .lalert { grid-area: al; justify-self: end; margin-left: 0; }
+  .page-disp:has(.lslot) > .pd-t { grid-area: tt; overflow: visible; white-space: normal; }
+  .page-disp:has(.lslot) > .lslot { grid-area: dk; justify-self: center; }
+}
 /* the title's secondary part (after " · "): same size and line, lighter and with a softer glow */
 .page-disp .pd-sub { font-weight: 400; color: rgba(var(--glow), .72); text-shadow: 0 0 2px rgba(var(--glow), .45), 0 0 6px rgba(var(--glow), .18); }
 .fascia-slot { grid-column: 1 / -1; display: flex;   /* a page's own controls: their own row under the strip */ align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }

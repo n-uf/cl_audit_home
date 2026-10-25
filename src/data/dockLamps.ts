@@ -123,7 +123,8 @@ export function initDockLamps() {
     const title = document.querySelector<HTMLElement>(".page-disp .pd-t");
     const fits = (t: string) => {
       alert.innerHTML = `${ICON}<span class="la-t">${t}</span>`;
-      return !title || title.scrollWidth <= title.clientWidth;
+      const disp = alert.parentElement;   // the title is never cut, and the alert never sticks out of the display
+      return (!title || title.scrollWidth <= title.clientWidth) && (!disp || disp.scrollWidth <= disp.clientWidth);
     };
     const words = [`${m.name} · ${m.limit} ${m.mark}%`, `${m.name} ${m.limit === "week" ? "wk" : "5h"} ${m.mark}%`, `${m.mark}%`];
     const text = words.find(fits) ?? "";
