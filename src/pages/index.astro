@@ -385,17 +385,18 @@ cd cl_audit && ./build.sh</code></pre>
   .rel-mark.on i { background: rgb(var(--glow)); box-shadow: 0 0 4px rgba(var(--glow), .8); }
   .rel-mark.amber i { background: rgba(251,191,36,.22); }
   .rel-mark.amber.on i { background: #fbbf24; box-shadow: 0 0 4px rgba(251,191,36,.8); }
-  .hero-keys { display: flex; width: 100%; flex-wrap: wrap; margin-top: 10px; }
+  /* the hero keys: all three in one row, or (too narrow for that) each on its own full-width row with the version
+     label beside Download; never a 2 + 1 split */
+  .hero-keys { display: flex; width: 100%; flex-wrap: nowrap; margin-top: 10px; }
   .hero-keys > .pill, .hero-keys > .key { flex: 1 1 auto; height: 32px; padding: 0 16px; font-size: 11px; }
   .hero-keys > .pill.dl { padding-top: 4px; }
   .hk-ver { padding: 0 2px 0 4px; font-family: var(--mono); letter-spacing: .1em; }
-  @container (max-width: 620px) {
+  @container (max-width: 570px) {
     .hero-keys > .pill, .hero-keys > .key { padding: 0 10px; font-size: 10.5px; letter-spacing: .08em; }
   }
-  @container (max-width: 470px) {
-    /* phone: the version and Download on the first row, the other two keys sharing the second */
-    .hero-keys > .pill.dl { flex: 1 1 auto; }
-    .hero-keys > .key { flex: 1 1 40%; }
+  @container (max-width: 510px) {
+    .hero-keys { flex-wrap: wrap; row-gap: 8px; }
+    .hero-keys > .key { flex: 1 1 100%; }
   }
   /* the login section: one module; a display badge, a row of keys, a recessed readout */
   .trust { min-width: 0; }
