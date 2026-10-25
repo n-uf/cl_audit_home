@@ -632,6 +632,21 @@ body { overflow: hidden; }
   .plate.pages .key { padding: 0 4px; font-size: 9px; letter-spacing: .04em; }
 }
 
+/* phones: while the page scrolls down, only the display and the PAGE keys stay, pinned at the top of the window;
+   the menu bar, the title bar, the brand and the page's own keys slide away, and come back on scrolling up (the
+   .pin class and --pin-top are set by Desktop.astro) */
+@media (max-width: 600px) {
+  .menubar { transition: transform .25s ease; }
+  .appwin { transition: top .25s ease; }
+  .fascia-slot { max-height: 48px; transition: max-height .25s ease, opacity .2s ease, margin .25s ease; }
+  .desk.pin .menubar { transform: translateY(-100%); }
+  .desk.pin .appwin { top: var(--pin-top, 0px); }
+  .desk.pin .fascia-slot { max-height: 0; opacity: 0; overflow: hidden; margin-top: -9px; pointer-events: none; }
+}
+@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+  .menubar, .appwin, .fascia-slot { transition: none; }
+}
+
 /* code: a dark recessed screen */
 /* code: a plain dark recess in the plate (not a display window) */
 .code { margin: 0; padding: 11px 14px; border-radius: 6px; overflow-x: auto; max-width: 100%;

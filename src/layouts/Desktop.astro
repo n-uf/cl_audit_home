@@ -100,6 +100,43 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     showFace();
   });
 
+  // Phones: scrolling the page down leaves only the display and the PAGE keys, pinned at the top of the window;
+  // scrolling up (or reaching the top) brings back the menu bar, title bar, brand and the page's own keys.
+  // Styles in app.css (.desk.pin).
+  const phone = matchMedia("(max-width: 600px)");
+  const initPin = () => {
+    const desk = document.querySelector<HTMLElement>(".desk");
+    const content = desk?.querySelector<HTMLElement>(".content");
+    if (!desk || !content) return;
+    let lastY = content.scrollTop, quietUntil = 0;
+    const pin = (on: boolean) => {
+      if (on === desk.classList.contains("pin")) return;
+      if (on) {
+        const win = desk.querySelector<HTMLElement>(".appwin"), disp = desk.querySelector<HTMLElement>(".page-disp");
+        if (!win || !disp) return;
+        // the window moves up so that the display sits 10 px under the top of the screen
+        desk.style.setProperty("--pin-top", `${10 - (disp.getBoundingClientRect().top - win.getBoundingClientRect().top)}px`);
+      }
+      desk.classList.toggle("pin", on);
+      quietUntil = performance.now() + 350;   // the window's own resize scrolls a little: not a gesture
+    };
+    content.addEventListener("scroll", () => {
+      const y = content.scrollTop;
+      if (!phone.matches) { pin(false); lastY = y; return; }
+      if (performance.now() < quietUntil) { lastY = y; return; }
+      if (y < 12) pin(false);
+      else if (y > lastY + 6 && y > 40 && content.scrollHeight - content.clientHeight > 240) pin(true);
+      else if (y < lastY - 6) pin(false);
+      if (y < 12 || Math.abs(y - lastY) > 6) lastY = y;
+    }, { passive: true });
+    // a key reached with the keyboard while hidden brings the strip back
+    desk.addEventListener("focusin", (e) => {
+      if ((e.target as HTMLElement).closest(".menubar, .titlebar, .brand, .fascia-slot")) pin(false);
+    });
+  };
+  document.addEventListener("astro:page-load", initPin);
+  phone.addEventListener("change", () => { if (!phone.matches) document.querySelector(".desk")?.classList.remove("pin"); });
+
   // The menu bar clock, like the Mac's.
   const tick = () => {
     const el = document.querySelector<HTMLElement>(".mb-clock");
