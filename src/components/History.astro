@@ -10,7 +10,7 @@ const kinds: Range[] = ["24h", "7d", "30d"];
   <div class="hist-head">
     <h3>Usage history</h3>
     <span class="spacer"></span>
-    {kinds.map((k) => <span class="hist-total sub" data-range={k}>{totalsText(k)}</span>)}
+    {kinds.map((k) => <span class="hist-total disp" data-range={k}>{totalsText(k)}</span>)}
     <span class="switch range-picker" role="tablist" aria-label="Period">
       <button type="button" data-pick="24h">24 h</button>
       <button type="button" data-pick="7d" class="on">7 d</button>

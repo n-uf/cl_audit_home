@@ -16,6 +16,7 @@ const nav: [Page, string, string][] = [
   ["overview", "Overview", "/"], ["dashboard", "Dashboard", "/dashboard/"], ["settings", "Settings", "/settings/"],
   ["install", "Install", "/install/"], ["faq", "FAQ", "/faq/"],
 ];
+const current = nav.find(([id]) => id === page)?.[1];
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
   <div class="desk">
@@ -23,19 +24,22 @@ const nav: [Page, string, string][] = [
       <a class="mb-brand" href="/"><img src="/favicon.png" alt="" width="16" height="16" />cl_audit</a>
       <nav class="mb-links" aria-label="Site">{nav.map(([, label, href]) => <a href={href}>{label}</a>)}</nav>
       <span class="spacer"></span>
-      <a class:list={["mb-dl", { dim: page === "overview" || page === "install" }]} href={download} title={`cl_audit ${version} for Mac`}><span aria-hidden="true">↓</span> Download for Mac</a>
+      <a class:list={["mb-dl", { dim: page === "overview" || page === "install" }]} href={download} title={`cl_audit ${version} for Mac`}><span aria-hidden="true">↓ </span>Download for Mac</a>
       <a class="mb-gh" href={repo}>GitHub</a>
       <span class="mb-clock" aria-hidden="true"></span>
     </header>
 
     <div class="appwin" transition:animate="none">
       <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="tb-title">cl_audit</span></div>
-      <div class="topbar">
-        <a class="title" href="/">cl_audit</a>
-        <slot name="top"><span class="tagline hide-sm">Usage audit for all your Claude profiles</span></slot>
+      <!-- the top strip of the front panel: brand, a display window naming the page, the PAGE keys -->
+      <div class="fascia">
+        <a class="brand" href="/"><b>cl_audit</b><span>Usage audit · all Claude profiles</span></a>
+        {current && <span class="disp page-disp" aria-hidden="true"><em>Page</em>{current}</span>}
+        <slot name="top" />
         <span class="spacer"></span>
-        <nav class="switch pages" aria-label="Pages">
-          {nav.map(([id, label, href]) => <a href={href} class:list={{ on: id === page }} aria-current={id === page ? "page" : undefined}>{label}</a>)}
+        <nav class="plate pages" aria-label="Pages">
+          <span class="lbl" aria-hidden="true">Page</span><span class="divider" aria-hidden="true"></span>
+          {nav.map(([id, label, href]) => <a href={href} class:list={["key", "sm", { on: id === page }]} aria-current={id === page ? "page" : undefined}><span class="led" aria-hidden="true"></span>{label}</a>)}
         </nav>
       </div>
       <main class="content" transition:animate="fade">

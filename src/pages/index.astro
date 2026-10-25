@@ -58,32 +58,40 @@ const jsonLd = [{
     </div>
     <div class="card intro">
       <img src="/img/app-icon.png" alt="The cl_audit app icon" width="92" height="92" />
-      <div>
+      <div class="intro-body">
+        <h4 class="intro-label">cl_audit for Mac</h4>
         <h1>Every Claude profile, side by side on your Mac.</h1>
         <p>
           A profile is one Claude setup: its Claude Code folder and sign-in, its Claude window and its Dock icon.
           cl_audit shows each profile's usage limits live in the Dock and on a dashboard, with figures read
           directly from Anthropic.
         </p>
-        <div class="btns">
-          <a class="pill dl big" href={download}><span aria-hidden="true">↓</span> Download for Mac</a>
-          <a class="pill" href="/install/">Install steps</a>
-          <a class="pill quiet" href="/dashboard/">Open the dashboard</a>
+        <!-- the actions as one key strip (sketch T4) -->
+        <div class="plate hero-keys">
+          <span class="lbl" aria-hidden="true">cl_audit</span><span class="divider" aria-hidden="true"></span>
+          <a class="pill dl big" href={download}>Download for Mac</a>
+          <a class="key" href="/install/"><span class="led" aria-hidden="true"></span>Install steps</a>
+          <a class="key" href="/dashboard/"><span class="led" aria-hidden="true"></span>Dashboard</a>
         </div>
-        <span class="note dl-note">cl_audit {version} · {releasedText()} · {requires} · free and source-available · runs entirely on your Mac</span>
-        <span class="note dl-note checked" title={driftNote}>Checked with Claude Code {checkedWith.claudeCode} and the Claude app {checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.</span>
+        <div class="dl-meta">
+          <span class="disp version-disp"><span>cl_audit {version}</span><em>·</em><span>{releasedText()}</span><em class="hide-xs">·</em><span class="hide-xs">{requires}</span></span>
+          <span class="dl-note">free and source-available · runs entirely on your Mac</span>
+        </div>
+        <span class="dl-note checked" title={driftNote}>Checked with Claude Code {checkedWith.claudeCode} and the Claude app {checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.</span>
       </div>
     </div>
     </div>
 
     <section class="card trust" id="login" aria-labelledby="trust-title">
       <div class="trust-head">
-        <span class="sbadge" aria-hidden="true"><span><i></i>Security</span></span>
+        <!-- a two-part display window: LOGIN dim, SECURITY lit (sketch V4) -->
+        <span class="disp trust-disp" aria-hidden="true"><em>Login</em>Security</span>
         <h2 id="trust-title" class="trust-title"><span class="sr-only">Security: </span>How cl_audit handles the Claude login</h2>
         <a class="trust-more" href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>Details ›</a>
       </div>
+      <!-- the tabs as on the production site: a dark track, plain-text tabs, one raised highlight that slides -->
       <div class="seg" role="tablist" aria-label="How cl_audit handles the Claude login">
-        <span class="seg-ind first" aria-hidden="true"></span>
+        <span class="seg-ind" aria-hidden="true"></span>
         {trustFacts.map((f, i) => <button type="button" class="stab" role="tab" id={`tf-tab-${i}`} aria-controls="tf-pane" aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-i={i}>{f.tab}</button>)}
       </div>
       <div class="tf-pane" id="tf-pane" role="tabpanel" aria-labelledby="tf-tab-0">
@@ -193,7 +201,7 @@ const jsonLd = [{
     <div class="start-row">
       <div class="card">
         <h4>Get started</h4>
-        <div class="btns" style="margin:2px 0 8px"><a class="pill dl dim" href={download}><span aria-hidden="true">↓</span> Download cl_audit {version}</a></div>
+        <div class="btns" style="margin:2px 0 8px"><a class="pill dl dim" href={download}>Download cl_audit {version}</a></div>
         <p class="t">Unzip, move it to Applications and open it; the first time, allow it once in Privacy &amp; Security. Or build it yourself:</p>
         <pre class="code"><code>git clone {repo}.git
 cd cl_audit && ./build.sh</code></pre>
@@ -207,8 +215,9 @@ cd cl_audit && ./build.sh</code></pre>
 </Desktop>
 
 <script>
-  // The login section: tabs with a sliding highlight; the explanation cross-fades and the section keeps
-  // the height of its longest explanation, so the page never moves. Arrow keys move between tabs.
+  // The login section: tabs with a sliding highlight (as on the production site); the explanation
+  // cross-fades in the readout below, which keeps the height of its longest explanation, so the page never
+  // moves. Arrow keys move between tabs.
   function setupTrust() {
     const card = document.getElementById("login");
     if (!card || card.dataset.ready) return;
@@ -219,7 +228,7 @@ cd cl_audit && ./build.sh</code></pre>
     const pane = card.querySelector<HTMLElement>(".tf-pane")!, text = card.querySelector<HTMLElement>(".tf-text")!;
     const html = (i: number) => `<b>${facts[i].title}</b><p>${facts[i].text}</p>`;
     let cur = 0, timer = 0;
-    const place = () => { const b = tabs[cur]; ind.style.width = `${b.offsetWidth}px`; ind.style.transform = `translateX(${b.offsetLeft}px)`; ind.classList.toggle("first", cur === 0); };
+    const place = () => { const b = tabs[cur]; ind.style.width = `${b.offsetWidth}px`; ind.style.transform = `translateX(${b.offsetLeft}px)`; };
     const measure = () => {
       const keep = text.innerHTML; let h = 0;
       facts.forEach((_, i) => { text.innerHTML = html(i); h = Math.max(h, text.offsetHeight); });
@@ -231,10 +240,15 @@ cd cl_audit && ./build.sh</code></pre>
       tabs.forEach((b, k) => { b.setAttribute("aria-selected", String(k === i)); b.tabIndex = k === i ? 0 : -1; });
       pane.setAttribute("aria-labelledby", tabs[i].id);
       place();
-      if (focus) { tabs[i].focus(); tabs[i].scrollIntoView({ block: "nearest", inline: "nearest" }); }
+      if (focus) {
+        tabs[i].focus({ preventScroll: true });
+        // on a phone the track scrolls sideways: bring the tab into view inside it, never scroll the page
+        const b = tabs[i];
+        if (b.offsetLeft < seg.scrollLeft || b.offsetLeft + b.offsetWidth > seg.scrollLeft + seg.clientWidth) seg.scrollTo({ left: b.offsetLeft - 8 });
+      }
       clearTimeout(timer);
       text.classList.add("fade");
-      timer = window.setTimeout(() => { text.innerHTML = html(i); text.classList.remove("fade"); }, 140);
+      timer = window.setTimeout(() => { text.innerHTML = html(i); text.classList.remove("fade"); }, 120);
     };
     tabs.forEach((b, k) => b.addEventListener("click", () => pick(k)));
     seg.addEventListener("keydown", (e) => {
@@ -250,45 +264,44 @@ cd cl_audit && ./build.sh</code></pre>
 </script>
 
 <style>
-  .pill.big { padding: 10px 20px; font-size: 15.5px; }
-  .dl-note { display: block; color: var(--muted); font-size: 12.5px; }
-  .dl-note.checked { margin-top: 2px; cursor: help; }
-  /* the login section (sketch D1): a green bar on the title, text tabs with a sliding highlight */
-  .trust { min-width: 0; padding: 16px 18px 18px; }   /* colours come from .card (the site's tokens) */
+  .intro-body { min-width: 0; }
+  .intro-label { margin-bottom: 12px; }
+  .hero-keys { margin-top: 18px; flex-wrap: wrap; }
+  .dl-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .version-disp { gap: 7px; }
+  .dl-note { color: var(--muted); font-size: 12.5px; }
+  .dl-note.checked { display: block; margin-top: 6px; cursor: help; }
+  /* the login section: one module; a display badge, a row of keys, a recessed readout */
+  .trust { min-width: 0; }
   .trust-head { display: flex; align-items: center; gap: 12px; }
-  .trust-title { position: relative; margin: 0; font-size: 16px; font-weight: 650; letter-spacing: -.01em; color: var(--text); }
-  /* the Security badge (sketch S3): one segment, like the chosen tab, with a green status dot */
-  .sbadge { display: inline-flex; padding: 3px; border-radius: 9px; flex: none;
-    background: rgba(0,0,0,.22); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 2px rgba(0,0,0,.35); }
-  .sbadge > span { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 10px; border-radius: 6px; white-space: nowrap;
-    font-size: 12px; font-weight: 600; letter-spacing: .01em; color: #fff;
-    background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.06)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 3px rgba(0,0,0,.45); }
-  .sbadge i { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,.18), 0 0 8px rgba(74,222,128,.6); }
+  .trust-title { margin: 0; font-size: 16px; font-weight: 650; letter-spacing: -.01em; color: var(--text); }
   .trust-more { margin-left: auto; font-size: 12.5px; color: var(--muted); text-decoration: none; white-space: nowrap; }
-  .trust-more:hover { color: #4ade80; }
+  .trust-more:hover { color: var(--text); }
+  /* the tabs, as on the production site */
   .seg { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 14px; padding: 4px; border-radius: 12px;
     background: rgba(0,0,0,.22); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 2px rgba(0,0,0,.35); }
   .seg-ind { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 9px; pointer-events: none;
     background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.08)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 3px rgba(0,0,0,.45);
-    transition: transform .28s cubic-bezier(.3,.8,.25,1), width .28s cubic-bezier(.3,.8,.25,1), box-shadow .2s, background .2s; }
-  /* only the first point gets the green outline */
-  .seg-ind.first { background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.06)); box-shadow: inset 0 0 0 2px #4ade80, 0 0 12px rgba(74,222,128,.18), 0 1px 3px rgba(0,0,0,.45); }
+    transition: transform .28s cubic-bezier(.3,.8,.25,1), width .28s cubic-bezier(.3,.8,.25,1); }
   .stab { position: relative; z-index: 1; min-width: 0; height: 34px; padding: 0 10px; border: 0; border-radius: 9px; background: none; cursor: pointer;
     font: inherit; font-size: 13px; font-weight: 500; color: #9a9aa0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .2s; }
   .stab:hover { color: #d4d4d8; }
   .stab[aria-selected="true"] { color: #fff; }
   .stab:focus-visible { outline: 2px solid rgba(255,255,255,.55); outline-offset: 2px; }
-  .tf-pane { margin-top: 12px; padding: 0 2px; }
-  .tf-text { transition: opacity .16s ease, transform .16s ease; }
-  .tf-text.fade { opacity: 0; transform: translateY(2px); }
-  .tf-text b { display: block; margin: 1px 0 3px; font-size: 14px; font-weight: 600; letter-spacing: -.005em; color: var(--text); }
-  .tf-text p { margin: 0; font-size: 13.5px; line-height: 1.6; color: #a8a8ae; max-width: 92ch; }
-  .tf-text code { font: 12px var(--mono, ui-monospace, Menlo, monospace); padding: 1px 5px; border-radius: 5px; background: rgba(255,255,255,.07); color: #d4d4d8; }
+  .tf-pane { margin-top: 12px; padding: 12px 14px; border-radius: 7px; background: rgba(0,0,0,.26); box-shadow: var(--well); box-sizing: content-box; }
+  .tf-text { transition: opacity .14s ease; }
+  .tf-text.fade { opacity: 0; }
+  .tf-text :global(b) { display: block; margin: 0 0 3px; font-size: 14px; font-weight: 600; letter-spacing: -.005em; color: var(--text); }
+  .tf-text :global(p) { margin: 0; font-size: 13.5px; line-height: 1.6; color: #b4b4ba; max-width: 92ch; }
+  .tf-text :global(code) { font: 12px var(--mono); padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,.07); color: #d4d4d8; }
   @media (max-width: 760px) {
+    .trust-head { flex-wrap: wrap; row-gap: 8px; }
+    .trust-more { display: none; }
     .seg { display: flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
     .seg::-webkit-scrollbar { display: none; }
     .stab { flex: none; overflow: visible; }
   }
+  @media (max-width: 480px) { .hide-xs { display: none; } }
   .start-row { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 720px; }
   .h3 { font-size: 18px; margin-bottom: 12px; }
   .lane-icons { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 6px; }
@@ -308,6 +321,7 @@ cd cl_audit && ./build.sh</code></pre>
   }
   @media (max-width: 860px) {
     .hero-row .intro { flex-direction: column; align-items: flex-start; }
+    .hero-row .intro img { display: none; }
     .hero-cards { grid-template-columns: 1fr; }
   }
 </style>
