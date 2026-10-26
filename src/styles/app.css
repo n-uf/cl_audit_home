@@ -863,6 +863,14 @@ select.menu option { background: #2c2c2f; color: var(--text); }
 .lane-caps span:nth-child(3) { text-align: right; }
 .lane-mini .lane-row { display: grid; grid-template-columns: repeat(5, 1fr); justify-items: center; margin-top: 6px; }
 .lane-mini .lane-row img { width: 40px; height: 40px; }
+/* 26.10.4: the Dock icon as it looks while not running comes first, then a thin divider, then the five steps */
+.lane-grid { display: grid; grid-template-columns: auto 1px minmax(0, 1fr); column-gap: 12px; margin-top: 8px; }
+.lane-grid .lane-bar { margin-top: 0; }
+.lane-nr { display: grid; grid-template-rows: auto 1fr; justify-items: center; }
+.lane-cap { margin-top: 7px; font-size: 11px; color: var(--muted); white-space: nowrap; }
+.lane-nr .ico { align-self: end; }
+.lane-nr img { width: 40px; height: 40px; }
+.lane-div { background: var(--muted); opacity: .3; }
 .fam { margin: 10px 0 4px; }
 
 /* ── The usage panel (the app's DetailsView), in five designs ───────── */
@@ -1301,3 +1309,14 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
 .face-silver .ai-opt.on { background: linear-gradient(180deg, #a9a9a4, #b9b9b4); box-shadow: inset 0 1px 3px rgba(0,0,0,.3); }
 .ai-sizes { display: flex; align-items: flex-end; gap: 14px; padding: 4px 2px 2px; }
 
+
+/* 26.10.5 refresh key while updating: a pulsing green LED in place of the arrow; no clicks */
+.key.busy { pointer-events: none; }
+.rled { display: inline-block; width: 7px; height: 7px; border-radius: 50%; animation: pg 1.1s ease-in-out infinite; }
+/* 26.10.5 dashboard while starting: the history reads the session files (charts empty, the totals say so) */
+.dash.reading .heat-day, .dash.reading .heat-row { visibility: hidden; }
+.dash.reading [data-chart="tokens"] { position: relative; }
+.dash.reading [data-chart="tokens"] .tchart { visibility: hidden; }
+.dash.reading [data-chart="tokens"]::after { content: "Reading the session files…"; position: absolute; inset: 40px 0 0; display: grid; place-items: center; font-size: 12px; color: var(--muted); }
+.dash.reading .range-shares .share { visibility: hidden; height: 0; margin: 0; overflow: hidden; }
+.dash.reading .range-shares > div::after { content: "–"; color: var(--muted); }

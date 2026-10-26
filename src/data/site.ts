@@ -4,7 +4,7 @@ export const site = "https://cl-audit.n-uf.com";
 
 // The current cl_audit release. Update on each cl_audit release (version from the app's VERSION file,
 // date from its CHANGELOG.md); the footer, the Install page and the structured data read these.
-export const version = "26.10.3";
+export const version = "26.10.5";
 export const released = "2026-10-25";
 export const changelog = `${repo}/blob/main/CHANGELOG.md`;
 /** The latest release's ready-built app; GitHub redirects this to the newest release's zip. */

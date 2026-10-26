@@ -25,6 +25,17 @@ const description =
     </div>
     <div class="dash-cards">{accounts.map((a) => <AccountCard {...a} />)}</div>
     <History />
+    <!-- 26.10.5: until the first scan of the session files is done, the history says it's reading them (once per
+         visit; set before the first paint so the numbers don't flash) -->
+    <script is:inline>
+      (function () {
+        try { if (sessionStorage.getItem("cl_audit.scanned")) return; } catch (e) { return; }
+        var d = document.getElementById("dash");
+        if (!d) return;
+        d.classList.add("reading");
+        d.querySelectorAll(".hist-total").forEach(function (el) { el.innerHTML = "Reading… <em>· session files</em>"; });
+      })();
+    </script>
   </div>
 </Desktop>
 
@@ -76,8 +87,17 @@ const description =
     if (!dash || dash.dataset.ready) return;
     dash.dataset.ready = "1";
     let hidden = load();
-    if (hidden.length) render(dash, hidden);
+    if (hidden.length || dash.classList.contains("reading")) render(dash, hidden);
     applyCharts(dash);
+    // the first scan "finishes": the totals and charts come in
+    if (dash.classList.contains("reading")) {
+      dash.querySelectorAll<HTMLElement>(".hist-total").forEach((el) => (el.innerHTML = "Reading… <em>· session files</em>"));
+      setTimeout(() => {
+        dash.classList.remove("reading");
+        try { sessionStorage.setItem("cl_audit.scanned", "1"); } catch {}
+        render(dash, load());
+      }, 1600);
+    }
     dash.querySelectorAll<HTMLButtonElement>("[data-chart-key]").forEach((b) =>
       b.addEventListener("click", () => {
         const id = b.dataset.chartKey!, off = loadCharts();
@@ -89,9 +109,12 @@ const description =
     // Refresh: the display says Updating… for a moment, as the app's does
     dash.querySelector("[data-refresh-all]")?.addEventListener("click", () => {
       const d = dash.querySelector<HTMLElement>("[data-updated]");
-      if (!d) return;
+      const k = dash.querySelector<HTMLElement>("[data-refresh-all]")!;
+      if (!d || k.classList.contains("busy")) return;
+      // while updating, the key's arrow becomes a pulsing green LED and it takes no clicks (26.10.5)
       d.innerHTML = "Updating…";
-      setTimeout(() => (d.innerHTML = "Updated <em>· just now</em>"), 1200);
+      k.classList.add("busy"); k.innerHTML = '<i class="rled" aria-hidden="true"></i>';
+      setTimeout(() => { d.innerHTML = "Updated <em>· just now</em>"; k.classList.remove("busy"); k.textContent = "↻"; }, 1400);
     });
     dash.querySelectorAll<HTMLButtonElement>("[data-pick]").forEach((b) =>
       b.addEventListener("click", () => {

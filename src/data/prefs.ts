@@ -102,7 +102,7 @@ const usageStyles: string[] = manifest.usageStyles;
 const colourPart = (style: Style, color: string) =>
   !tintStyles.includes(style) ? "" : `-${color === "usage" && !usageStyles.includes(style) ? "graphite" : color in tileColors ? color : "orange"}`;
 export const iconSrc = (id: AccountId, style: Style, color: string = defaults[id].iconColor) => `/img/acc/${id}-${style}${colourPart(style, color)}.png`;
-export const laneSrc = (id: AccountId, style: Style, i: number, color: string = defaults[id].iconColor) => `/img/acc/lane-${id}-${style}${colourPart(style, color)}-${i}.png`;
+export const laneSrc = (id: AccountId, style: Style, i: number | string, color: string = defaults[id].iconColor) => `/img/acc/lane-${id}-${style}${colourPart(style, color)}-${i}.png`;
 export const defaultStyle = (id: AccountId) => defaults[id].style;
 export const defaultColor = (id: AccountId) => colors[defaults[id].color];
 

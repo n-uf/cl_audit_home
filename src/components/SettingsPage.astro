@@ -110,10 +110,16 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
         </div>
       ))}
       <div class="lane-mini" data-lane>
-        <div class="lane-head"><b>Preview</b> <span class="sub">as the limit fills up</span></div>
-        <div class="lane-bar"><i style="background:var(--green)"></i><i style="background:var(--green)"></i><i style="background:var(--amber)"></i><i style="background:var(--red)"></i><i style="background:var(--red)"></i></div>
-        <div class="lane-caps"><span>plenty left</span><span>half used</span><span>at limit</span></div>
-        <div class="lane-row">{lane.map((_, i) => <AccIcon id="home" src={laneSrc("home", "bars", i)} size={40} lane={i} />)}</div>
+        <div class="lane-head"><b>Preview</b> <span class="sub">not running, then as the limit fills up</span></div>
+        <div class="lane-grid">
+          <div class="lane-nr"><span class="lane-cap">not running</span><AccIcon id="home" src={laneSrc("home", "bars", "x")} size={40} lane="x" nodot /></div>
+          <i class="lane-div" aria-hidden="true"></i>
+          <div class="lane-live">
+            <div class="lane-bar"><i style="background:var(--green)"></i><i style="background:var(--green)"></i><i style="background:var(--amber)"></i><i style="background:var(--red)"></i><i style="background:var(--red)"></i></div>
+            <div class="lane-caps"><span>plenty left</span><span>half used</span><span>at limit</span></div>
+            <div class="lane-row">{lane.map((_, i) => <AccIcon id="home" src={laneSrc("home", "bars", i)} size={40} lane={i} />)}</div>
+          </div>
+        </div>
       </div>
       <div class="srow stacked"><span>Colour <i class="idot" title="The colour of this profile's Dock icon: its label and tiles. By usage (the last swatch): it follows the 5-hour level, green to red. The profile's colour inside cl_audit is under Profile.">i</i></span>
         <span class="swatches" data-swatches="iconColor">{Object.entries(tileColors).map(([k, hex]) => <button type="button" data-icon-color={k} style={`background:${swatchBg(hex)}`} aria-label={k === "usage" ? "By usage" : k} title={k === "usage" ? "By usage" : k} />)}</span></div>

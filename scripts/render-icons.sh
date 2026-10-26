@@ -12,6 +12,7 @@
 # What it writes
 #   public/img/acc/ID-STYLE[-COLOUR].png            128 px, shown at up to 56 px (2x)
 #   public/img/acc/lane-ID-STYLE[-COLOUR]-N.png     80 px, the Settings preview at 40 px (2x), N = 0..4
+#   public/img/acc/lane-ID-STYLE[-COLOUR]-x.png     80 px, the same Dock icon while not running (no numbers)
 #   src/data/icon-manifest.json                     which styles the colour changes (read by prefs.ts)
 #
 # "-COLOUR" is only there for styles whose picture depends on the colour (found by rendering each style in
@@ -42,7 +43,8 @@ have_pq=0; command -v pngquant >/dev/null && have_pq=1
 
 # The demo profiles (src/data/demo.ts): id, icon label, 5-hour %, week %, the profile's own colour.
 profiles="home:HOME:34:12:orange work:WORK:78:61:teal side:SIDE:12:40:purple"
-# The preview lane (5-hour %:week %), from plenty left to the limit.
+# The preview lane (5-hour %:week %), from plenty left to the limit. "-" (no number) draws the icon as it
+# looks while its app isn't running.
 lane="5:12 30:45 58:62 84:78 97:94"
 styles="bars rings number twinRings segmented pace statusTile gauge worst statusBar thinBars batteries gaugeBar"
 accents="orange yellow lime teal cyan blue indigo purple fuchsia pink"
@@ -76,10 +78,12 @@ for p in $profiles; do
     if [ -z "$colours" ]; then   # one picture for every colour (drawn in the profile's own colour)
       echo "$out/$id-$s.png 128 $s $label $five $week $own" >> "$jobs"
       n=0; for st in $lane; do echo "$out/lane-$id-$s-$n.png 80 $s $label ${st%%:*} ${st##*:} $own" >> "$jobs"; n=$((n+1)); done
+      echo "$out/lane-$id-$s-x.png 80 $s $label - - $own" >> "$jobs"
     else
       for c in $colours; do
         echo "$out/$id-$s-$c.png 128 $s $label $five $week $c" >> "$jobs"
         n=0; for st in $lane; do echo "$out/lane-$id-$s-$c-$n.png 80 $s $label ${st%%:*} ${st##*:} $c" >> "$jobs"; n=$((n+1)); done
+        echo "$out/lane-$id-$s-$c-x.png 80 $s $label - - $c" >> "$jobs"
       done
     fi
   done
