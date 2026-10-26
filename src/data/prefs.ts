@@ -1,7 +1,7 @@
 // The demo's Settings, per profile, remembered in this browser (like the app's accounts.json, but local
 // to the visitor). Applied on every page: icon style and colour (Dock, cards, strip, launcher), profile colour, the card style, the
-// Claude open dot, how long a Dock click shows the usage before opening Claude, and whether a profile has
-// a Claude window at all.
+// Claude open dot, how long a Dock click shows the usage before opening Claude, and what a profile includes
+// (Usage in the Dock, Claude window).
 import { accounts, type AccountId } from "./demo";
 import { limitsHTML, type Design } from "./panelView";
 import manifest from "./icon-manifest.json";   // written by scripts/render-icons.sh
@@ -31,15 +31,16 @@ export type Prefs = {
   iconColor: string;       // the icon's colour (Settings ▸ Icon): picks the rendered picture (see iconSrc)
   frame: string;           // "" = no frame, else a tile colour; drawn as a ring over the icons in CSS
   dot: boolean;            // Claude open dot: an orange dot on the icon while the profile's Claude window is open
-  showInDock: boolean;     // Dock icon ▸ Show in the Dock
+  showInDock: boolean;     // Profile ▸ Usage in the Dock: a Dock icon shows the usage (off: read in the background)
+  win: boolean;            // Profile ▸ Claude window: the profile has one (off: none; both off = usage only)
   iconFollows: boolean;    // Opening and closing: the Dock icon starts and quits with the Claude window
   windowFollows: boolean;  // Opening and closing: the Claude window opens and quits with the Dock icon
 };
 
 const defaults: Record<AccountId, Prefs> = {
-  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 3, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments", dataDir: "Claude", iconColor: "orange", frame: "", dot: true, showInDock: true, iconFollows: false, windowFollows: false },
-  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, iconFollows: false, windowFollows: false },
-  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, iconFollows: false, windowFollows: false },
+  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 3, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments", dataDir: "Claude", iconColor: "orange", frame: "", dot: true, showInDock: true, win: true, iconFollows: false, windowFollows: false },
+  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, win: true, iconFollows: false, windowFollows: false },
+  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, win: true, iconFollows: false, windowFollows: false },
 };
 
 /** General settings ▸ Dashboard cards: one card style for every profile card (dashboard and Overview). */
@@ -114,11 +115,18 @@ export function applyPrefs(p = loadPrefs()) {
   for (const a of accounts) {
     const pr = p[a.id];
     root.style.setProperty(`--acc-${a.id}`, colors[pr.color] ?? pr.color);
-    root.classList.toggle(`dot-${a.id}`, pr.dot);
+    root.classList.toggle(`dot-${a.id}`, pr.dot && pr.win);   // no window, no Claude open dot
     root.style.setProperty(`--frame-${a.id}`, pr.frame ? (pr.frame === "usage" ? levelHex(a.five) : tileColors[pr.frame] ?? "transparent") : "transparent");
-    // a profile without a Claude window has no window switch and no "Open window" on its card
-    // every profile has a Claude window now (26.10.2); a choice of "None" saved by an older visit is ignored
-    document.querySelectorAll<HTMLElement>(`.acc[data-account="${a.id}"]`).forEach((c) => c.classList.remove("no-window"));
+    // the two switches in Profile: without a Claude window a card has no window switch and no Open/Show window;
+    // with both off (usage only) one display says so instead of the switches, and only "⋯" is left.
+    // In the Dock: no Dock icon tile without Usage in the Dock, no Claude tile without a Claude window.
+    const usageOnly = !pr.showInDock && !pr.win;
+    document.querySelectorAll<HTMLElement>(`.acc[data-account="${a.id}"]`).forEach((c) => {
+      c.classList.toggle("no-window", !pr.win && !usageOnly);
+      c.classList.toggle("usage-only", usageOnly);
+    });
+    document.querySelectorAll<HTMLElement>(`.dock-item[data-pop="${a.id}"]`).forEach((t) => (t.hidden = !pr.showInDock));
+    document.querySelectorAll<HTMLElement>(`.dock-item[data-open-desktop="${a.id}"]`).forEach((t) => (t.hidden = !pr.win));
     document.querySelectorAll<HTMLImageElement>(`img[data-acc-icon="${a.id}"]`).forEach((img) => {
       const src = iconSrc(a.id, pr.style, pr.iconColor);
       if (img.getAttribute("src") !== src) img.src = src;

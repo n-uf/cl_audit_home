@@ -15,7 +15,11 @@ const w = window as any;
 const state: Record<string, S> = (w.__clState ??= Object.fromEntries(accounts.map((a) => [a.id, { win: !!a.winOpen, dock: true }])));
 let ticker = 0;
 
-const follows = (id: string) => loadPrefs()[id as AccountId];
+// Opening and closing links a profile's Dock icon and Claude window; without a window there's nothing to link
+const follows = (id: string) => {
+  const pr = loadPrefs()[id as AccountId];
+  return { ...pr, iconFollows: pr.win && pr.iconFollows, windowFollows: pr.win && pr.windowFollows };
+};
 
 // A switch's state as the card's readout shows it: a short state word that always fits, and an optional detail
 // after it (it scrolls in the space left on the line when it doesn't fit; see fitTick).

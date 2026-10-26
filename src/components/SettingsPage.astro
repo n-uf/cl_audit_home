@@ -3,8 +3,9 @@
 // General. Choices are remembered in this browser and show up across the site (icon style in the Dock,
 // cards and launcher; profile colour; the Claude open dot; how long a Dock click shows the usage).
 // The server renders the "home" profile; src/pages/settings.astro fills the controls in.
-// Cards in reading order: the profile and whether its Dock icon runs (Profile · Claude Code · Updates and alerts ·
-// Dock icon), what the Dock icon does (Opening and closing · Dock icon clicks), then Icon. Three columns of about
+// Cards in reading order: the profile and what it includes (Profile with its two keys · Claude Code · Updates and
+// alerts), what the Dock icon does (Opening and closing · Dock icon clicks), then Icon. What the profile is doing
+// now shows in the strip's display. Three columns of about
 // equal height from 1180 px; two (Icon under the second) from 800; one below.
 import { accounts } from "../data/demo";
 import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices, appIconStyles, appIconSrc, appIconDefault } from "../data/prefs";
@@ -32,7 +33,7 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
     {accounts.map((x, i) => (
       <button type="button" class:list={["tile", { sel: i === 0 }]} data-select-acc={x.id}>
         <AccIcon id={x.id} src={x.icon} size={34} />
-        <span class="tile-text"><b data-acc-name={x.id}>{x.name}</b><span class="sub">{x.dir}</span></span>
+        <span class="tile-text"><b data-acc-name={x.id}>{x.name}</b><span class="sub" data-tile-sub={x.id}>{x.dir}</span></span>
       </button>
     ))}
     <a class="tile tile-plus" href="/install/" title="New profile (see Install)" aria-label="New profile">+</a>
@@ -47,6 +48,11 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
       <label class="srow erow"><span>Name <i class="idot" title="What cl_audit calls this profile; its Dock icon app is “cl_audit <name>”. Saved when you press Return or click elsewhere (Esc puts it back); saving restarts that Dock icon.">i</i></span><span class="fcol"><input class="field" data-field="name" value={a.name} maxlength="20" /><span class="fmsg" data-msg="name" aria-live="polite"></span></span></label>
       <label class="srow erow"><span>Icon label <i class="idot" title="Up to 6 letters printed on this profile's Dock icon, like MAIN or WORK, so you can tell the icons apart. Saved when you press Return or click elsewhere (Esc puts it back).">i</i></span><span class="fcol"><input class="field" data-field="label" value="HOME" maxlength="6" /><span class="fmsg" data-msg="label" aria-live="polite"></span></span></label>
       <div class="srow"><span>Colour <i class="idot" title="This profile's colour inside cl_audit: the dot by its name on the dashboard and in the launcher, its Show key, its share of the history charts and the dot on its usage panel. The Dock icon's own colour is under Icon.">i</i></span><span class="swatches" data-swatches="color">{Object.entries(colors).map(([k, hex]) => <button type="button" data-color={k} class:list={{ on: k === "orange" }} style={`background:${hex}`} aria-label={k} title={k} />)}</span></div>
+      <!-- what the profile includes: two keys, each with a line saying what the current choice does (both off = usage only) -->
+      <div class="srow incl"><div class="tg2">
+        <div class="tgc"><button type="button" class="key k tk" data-incl="dock" aria-pressed="true">Usage in the Dock</button><small class="ksub" data-incl-line="dock"></small></div>
+        <div class="tgc"><button type="button" class="key k tk" data-incl="win" aria-pressed="true">Claude window</button><small class="ksub" data-incl-line="win"></small></div>
+      </div></div>
       <div class="srow end"><button type="button" class="danger linkish" data-remove>Remove profile…</button></div>
     </div>
 
@@ -61,14 +67,13 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
       <div class="srow"><span>Notify at <i class="idot" title="A Mac notification when this profile's 5-hour or weekly usage reaches this level. Off: no notifications.">i</i></span><span class="ctl-pair"><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="notify" aria-label="Notify at"></button><span class="stepper" data-notify-step><button type="button" data-step="notifyAt" data-dir="-1" aria-label="Lower">−</button><span data-value="notifyAt">90%</span><button type="button" data-step="notifyAt" data-dir="1" aria-label="Higher">＋</button></span></span></div>
     </div>
 
-    <div class="card c-d"><h4>Dock icon</h4>
-      <div class="srow"><span>Show in the Dock <i class="idot" title="On: pinned in the Dock, there even while it's stopped (a click starts it). Off: no place in the Dock; it still runs in the background, refreshing and alerting. Changing this restarts the Dock, which takes the pin out or puts it back. (A demo: nothing in your Dock changes.)">i</i></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="showInDock" aria-label="Show in the Dock"></button></div>
-      <div class="srow"><span>Open at login <i class="idot" title="Starts this Dock icon when you log in to the Mac, so its usage refreshes and alerts keep working without opening cl_audit.">i</i></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="login" aria-label="Open at login"></button></div>
-      <!-- one display, the row's full width whatever it says -->
-      <div class="srow"><span>Now</span><span class="disp fill" data-now></span></div>
-    </div>
-
     <div class="card c-o" data-openclose><h4>Opening and closing</h4>
+      <!-- usage only (no Dock icon): the whole card fades; a Dock icon without a window: only the two questions -->
+      <div class="notinuse" data-oc-strip="all" hidden><span class="lbl">Not in use · usage only starts at login on its own</span><button type="button" class="key k" data-show-dock>Show in the Dock</button></div>
+      <div class="oc-body" data-oc-body>
+      <div class="srow"><span class="lab2"><span>Open at login <i class="idot" title="Starts this profile's Dock icon when you log in to the Mac, so its usage refreshes and alerts keep working without opening cl_audit. A usage only profile always starts at login.">i</i></span><small class="ksub">starts the Dock icon when you log in to the Mac</small></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="login" aria-label="Open at login"></button></div>
+      <div class="notinuse" data-oc-strip="win" hidden><span class="lbl">Not in use · add a Claude window to link the two</span><button type="button" class="key k" data-add-win>Add Claude window</button></div>
+      <div class="oc-links" data-oc-links>
       <fieldset class="oc-q">
         <legend>When <span data-text="name">home</span>'s Claude window opens or quits</legend>
         <label class="oc-opt"><input type="radio" name="oc-icon" value="0" /><span class="oc-radio"></span><span><span class="oc-t">leave the Dock icon alone</span></span></label>
@@ -80,6 +85,8 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
         <label class="oc-opt"><input type="radio" name="oc-window" value="1" /><span class="oc-radio"></span><span><span class="oc-t">open or quit the Claude window too</span><span class="oc-n">not at login; Claude asks about unsent work</span></span></label>
       </fieldset>
       <div class="oc-result" data-oc-result></div>
+      </div>
+      </div>
     </div>
 
     <div class="card c-k" data-dock-only><h4>Dock icon clicks <i class="idot" title="What a click on this profile's Dock icon does, and how the usage panel it opens looks. Double-click or ⌥-click always opens the large panel.">i</i></h4>
@@ -95,8 +102,7 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
       </div>
     </div>
 
-    <div class="card c-i" data-dock-only><h4>Icon</h4>
-      <div class="notinuse" hidden><span class="lbl">Not in use · show in the Dock to see it</span><button type="button" class="key k" data-show-dock>Show in the Dock</button></div>
+    <div class="card c-i"><h4>Icon</h4>
       {families.map(([fam, list]) => (
         <div class="fam-block">
           <div class="fam">{fam}</div>

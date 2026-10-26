@@ -1,6 +1,7 @@
 ---
 // A profile's dashboard card, as the app draws it: icon and name, one row of two switches (its Claude
-// window and its Dock icon), both limits, and the buttons. The switches work in the demo: the script in
+// window and its Dock icon; only the Dock icon one without a window; none for a usage only profile, which
+// gets one display instead), both limits, and the buttons. The switches work in the demo: the script in
 // data/cardState.ts moves them, with a spinner, and keeps the state across pages.
 import { cardLimitsHTML } from "../data/panelView";
 import type { AccountId } from "../data/demo";
@@ -35,6 +36,9 @@ const open = !!a.winOpen;   // the demo's starting state; data/cardState.ts take
       <button type="button" class="cswitch on" role="switch" aria-checked="true" aria-label={`Dock icon of ${a.name}`} data-dock-switch={a.id}><i></i></button>
     </div>
   </div>
+
+  <!-- a usage only profile (Usage in the Dock and Claude window both off): no switches, one display says so -->
+  <div class="watchbar"><span class="pchip-title">Profile</span><span class="disp watch-disp"><span class="g">Usage only</span> <em>· not in the Dock · no window</em></span></div>
 
   <Fragment set:html={cardLimitsHTML(a.id as AccountId, "segments")} />
   <div class="acc-actions">
