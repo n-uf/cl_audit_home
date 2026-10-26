@@ -1321,3 +1321,23 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
 .dash.reading [data-chart="tokens"]::after { content: "Reading the session files…"; position: absolute; inset: 40px 0 0; display: grid; place-items: center; font-size: 12px; color: var(--muted); }
 .dash.reading .range-shares .share { visibility: hidden; height: 0; margin: 0; overflow: hidden; }
 .dash.reading .range-shares > div::after { content: "–"; color: var(--muted); }
+/* Name and Icon label, as the app (build 92): a typed value not saved yet gets an amber hairline and, under it like
+   a validation message, "Return saves · Esc undoes" with clickable key caps; one that can't be saved a red hairline
+   and the reason. The row's label stays level with the typed text. */
+:root { --caution: #f59e0b; --danger: #f87171; }
+.face-silver { --caution: #8a4f00; --danger: #b42318; }
+.settings .srow.erow { align-items: flex-start; padding: 6px 0; }
+.settings .srow.erow > span:first-child { height: 23px; }
+.fcol { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; min-width: 0; }
+input.field.pending, input.field.pending:focus { box-shadow: 0 1px 0 var(--caution); }
+input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--danger); }
+.fmsg { font-size: 11px; line-height: 1.3; white-space: nowrap; text-align: right; }
+.fmsg:empty { display: none; }
+.fmsg.pending { color: var(--caution); }
+.fmsg.problem { color: var(--danger); white-space: normal; }
+.fmsg .kcap { font: 600 10px/1 -apple-system, BlinkMacSystemFont, system-ui, sans-serif; padding: 1px 4px; margin: 0 1px; border-radius: 3px; color: inherit; cursor: pointer;
+  border: .75px solid color-mix(in srgb, currentColor 55%, transparent); background: color-mix(in srgb, currentColor 12%, transparent); }
+.fmsg .kcap:hover { background: color-mix(in srgb, currentColor 24%, transparent); border-color: currentColor; }
+.fmsg .kcap:active { transform: translateY(1px); background: color-mix(in srgb, currentColor 32%, transparent); }
+.fmsg .kcap:focus-visible { outline: 1px solid currentColor; outline-offset: 1px; }
+.disp .r { color: var(--danger); text-shadow: none; }

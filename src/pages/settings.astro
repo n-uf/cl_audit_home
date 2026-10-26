@@ -113,20 +113,52 @@ const description =
       setTimeout(() => { dockBusy = null; show(); }, 2200);
     };
 
-    // A name or label: kept in the field while typing, saved on Return or leaving it (Esc puts it back), as the app
-    let editing: { field: "name" | "label"; was: string } | null = null;
+    // A name or label, as the app: kept in the field while typing (amber line and "Return saves · Esc undoes" under
+    // it), saved on Return or leaving it, Esc puts the saved text back. A value that can't be saved gets a red line
+    // and the reason. Each typed value belongs to the profile it was typed for, so switching tabs saves it there.
+    type EF = "name" | "label";
+    type Draft = { owner: AccountId; value: string; problem: string };
+    const drafts: Record<EF, Draft | null> = { name: null, label: null };
+    const tidy = (f: EF, v: string) => (f === "label" ? v.toUpperCase().replace(/\s/g, "").slice(0, 6) : v);
+    const fieldEl = (f: EF) => $<HTMLInputElement>(`[data-field="${f}"]`)!;
+    const idle = "Saved <em>· as you change</em>";
+    let flash = 0;
     const status = (html: string, ms = 0) => {
       const s = $("[data-status]"); if (!s) return;
+      clearTimeout(flash);
       s.innerHTML = html;
-      if (ms) setTimeout(() => { if (!editing) s.innerHTML = "Saved <em>· as you change</em>"; }, ms);
+      if (ms) flash = window.setTimeout(() => statusIdle(), ms);
     };
-    const saveEdit = (input: HTMLInputElement) => {
-      if (!editing || editing.field !== input.dataset.field) return;
-      const f = editing.field, v = f === "label" ? input.value.toUpperCase().replace(/\s/g, "").slice(0, 6) : input.value.trim();
-      editing = null;
-      if (!v || v === (f === "name" ? p().name : p().label)) { input.value = f === "name" ? p().name : p().label; status("Saved <em>· as you change</em>"); return; }
-      p()[f] = v; commit();
-      $$<HTMLElement>(`[data-acc-name="${acc}"]`).forEach((el) => (el.textContent = p().name));
+    const statusIdle = () => status((["name", "label"] as EF[]).some((f) => drafts[f]?.problem) ? '<span class="r">Not saved</span> <em>· see below</em>' : idle);
+    const paintField = (f: EF) => {
+      const input = fieldEl(f), msg = $<HTMLElement>(`[data-msg="${f}"]`)!, d = drafts[f];
+      const mine = d && d.owner === acc ? d : null;
+      const pending = !!mine && !mine.problem && mine.value !== prefs[mine.owner][f];
+      input.classList.toggle("pending", pending);
+      input.classList.toggle("problem", !!mine?.problem);
+      msg.className = "fmsg" + (mine?.problem ? " problem" : pending ? " pending" : "");
+      if (mine?.problem) msg.textContent = mine.problem;
+      else if (pending) msg.innerHTML = '<button type="button" class="kcap" data-cap="save" title="Save it">Return</button> saves · <button type="button" class="kcap" data-cap="undo" title="Put the saved text back">Esc</button> undoes';
+      else msg.textContent = "";
+    };
+    const revertEdit = (f: EF) => {
+      const d = drafts[f]; drafts[f] = null;
+      if (!d || d.owner === acc) fieldEl(f).value = p()[f];
+      paintField(f); statusIdle();
+    };
+    const saveEdit = (f: EF) => {
+      const d = drafts[f]; if (!d) return;
+      const pr = prefs[d.owner], v = f === "name" ? d.value.trim() : d.value;
+      if (v === pr[f]) { revertEdit(f); return; }
+      if (f === "name") {
+        const other = accounts.find((x) => x.id !== d.owner && prefs[x.id].name.trim().toLowerCase() === v.toLowerCase());
+        d.problem = !v ? "Give the profile a name." : other ? `Another profile is called “${prefs[other.id].name}”` : "";
+      } else d.problem = v ? "" : "Give the icon a label.";
+      if (d.problem) { paintField(f); statusIdle(); return; }
+      pr[f] = v; drafts[f] = null; commit();
+      if (d.owner === acc) fieldEl(f).value = v;
+      paintField(f);
+      $$<HTMLElement>(`[data-acc-name="${d.owner}"]`).forEach((el) => (el.textContent = pr.name));
       status("<span class=\"a\">Saving…</span>");
       setTimeout(() => { show(); status(`<span class="g">Saved</span> <em>· ${f === "name" ? "Dock icon renamed" : "icon label changed"}</em>`, 4000); }, 700);
     };
@@ -169,8 +201,10 @@ const description =
       }
       const a = accounts.find((x) => x.id === acc)!;
       const pr = p();
-      $<HTMLInputElement>('[data-field="name"]')!.value = pr.name;
-      $<HTMLInputElement>('[data-field="label"]')!.value = pr.label;
+      for (const f of ["name", "label"] as const) {
+        if (drafts[f]?.owner !== acc) fieldEl(f).value = pr[f];
+        paintField(f);
+      }
       $$<HTMLElement>("[data-color]").forEach((b) => b.classList.toggle("on", b.dataset.color === pr.color));
       $$<HTMLElement>("[data-icon-color]").forEach((b) => b.classList.toggle("on", b.dataset.iconColor === pr.iconColor));
       $$<HTMLElement>("[data-frame]").forEach((b) => b.classList.toggle("on", b.dataset.frame === pr.frame));
@@ -217,7 +251,14 @@ const description =
       const t = e.target as HTMLElement;
       const pick = (sel: string) => t.closest<HTMLElement>(sel);
       let b: HTMLElement | null;
+      if ((b = pick("[data-cap]"))) {
+        const f = b.closest<HTMLElement>("[data-msg]")!.dataset.msg as EF;
+        if (b.dataset.cap === "save") saveEdit(f); else revertEdit(f);
+        fieldEl(f).focus(); return;
+      }
       if ((b = pick("[data-select-acc]"))) {
+        // a value typed but not saved goes to the profile it was typed for; one that can't be saved is dropped
+        for (const f of ["name", "label"] as const) { saveEdit(f); if (drafts[f]) revertEdit(f); }
         if (b.dataset.selectAcc === "general") general = true; else { general = false; acc = b.dataset.selectAcc as AccountId; }
         show(); return;
       }
@@ -264,23 +305,25 @@ const description =
         if (f === "refresh" || f === "click") say(f);
       }
     });
-    // a name or label edit: saved on Return or leaving the field, Esc puts it back
+    // a name or label edit: saved on Return or leaving the field, Esc puts it back (the field keeps the focus)
+    const isEF = (t: EventTarget | null): t is HTMLInputElement => t instanceof HTMLInputElement && (t.dataset.field === "name" || t.dataset.field === "label");
     root.addEventListener("input", (e) => {
-      const t = e.target as HTMLInputElement, f = t.dataset.field;
-      if (f !== "name" && f !== "label") return;
-      if (f === "label") t.value = t.value.toUpperCase().replace(/\s/g, "").slice(0, 6);
-      if (!editing) editing = { field: f, was: f === "name" ? p().name : p().label };
+      const t = e.target; if (!isEF(t)) return;
+      const f = t.dataset.field as EF, v = tidy(f, t.value);
+      if (v !== t.value) t.value = v;
+      drafts[f] = { owner: acc, value: v, problem: "" };
+      paintField(f); statusIdle();
     });
     root.addEventListener("keydown", (e) => {
-      const t = e.target as HTMLInputElement;
-      if (t.dataset.field !== "name" && t.dataset.field !== "label") return;
-      if (e.key === "Enter") { e.preventDefault(); saveEdit(t); t.blur(); }
-      if (e.key === "Escape" && editing) { t.value = editing.was; editing = null; t.blur(); }
+      const t = e.target; if (!isEF(t)) return;
+      if (e.key === "Enter") { e.preventDefault(); saveEdit(t.dataset.field as EF); }
+      if (e.key === "Escape") { e.preventDefault(); revertEdit(t.dataset.field as EF); }
     });
     root.addEventListener("focusout", (e) => {
-      const t = e.target as HTMLInputElement;
-      if (t.dataset.field === "name" || t.dataset.field === "label") saveEdit(t);
+      const t = e.target; if (isEF(t)) saveEdit(t.dataset.field as EF);
     });
+    // the key caps under a field don't take the focus from it (a click on them isn't "clicking elsewhere")
+    root.addEventListener("mousedown", (e) => { if ((e.target as HTMLElement).closest("[data-cap]")) e.preventDefault(); });
 
     // Show emails (General), shared with the rest of the site
     const sws = $$("[data-toggle-emails]");
