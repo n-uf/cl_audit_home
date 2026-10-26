@@ -53,6 +53,25 @@ export function saveCardStyle(d: Design) {
   try { localStorage.setItem(CARD_KEY, d); } catch {}
 }
 
+/** General settings ▸ App icon: cl_audit's own icon (images drawn by the app: build/UsageDock --render-app-icon). */
+export const appIconStyles: [string, string][] = [["panel", "Front panel"], ["stack", "Stack"], ["meter", "VU meter"], ["levels", "Level meter"], ["knob", "Knob"], ["monogram", "Monogram"]];
+export const panelChoices: [keyof AppIcon, string, [string, string][]][] = [
+  ["plate", "Plate", [["grey", "Grey"], ["greyLit", "Lit frame"], ["orange", "Orange"]]],
+  ["display", "Display", [["cyan", "Cyan"], ["bluish", "Bluish"], ["orange", "Orange"], ["levels", "Levels"]]],
+  ["keys", "Keys", [["classic", "Classic"], ["graphite", "Graphite"], ["strip", "Strip"], ["round", "Round"], ["tonal", "Plate"], ["wide", "Wide"]]],
+  ["slot", "Slot", [["lit", "Lit"], ["light", "Light"], ["dark", "Dark"]]],
+];
+export type AppIcon = { style: string; plate: string; display: string; keys: string; slot: string };
+const APP_ICON_KEY = "cl_audit.appIcon";
+export const appIconDefault: AppIcon = { style: "panel", plate: "grey", display: "cyan", keys: "classic", slot: "lit" };
+export function loadAppIcon(): AppIcon {
+  try { const v = JSON.parse(localStorage.getItem(APP_ICON_KEY) || "null"); if (v && typeof v === "object") return { ...appIconDefault, ...v }; } catch {}
+  return { ...appIconDefault };
+}
+export function saveAppIcon(a: AppIcon) { try { localStorage.setItem(APP_ICON_KEY, JSON.stringify(a)); } catch {} }
+export const appIconSrc = (a: AppIcon) =>
+  `/img/app-icons/${a.style === "panel" ? `panel-${a.plate}-${a.display}-${a.keys}-${a.slot}` : a.style}.png`;
+
 /** The app offers these refresh intervals. */
 export const refreshChoices = ["2 min", "5 min", "10 min", "15 min"];
 
@@ -90,6 +109,8 @@ export const defaultColor = (id: AccountId) => colors[defaults[id].color];
 /** Puts the saved choices on the page: icons, profile colours, names. */
 export function applyPrefs(p = loadPrefs()) {
   const root = document.documentElement;
+  // the Dock's cl_audit tile shows the chosen app icon, as in the app while it runs
+  document.querySelectorAll<HTMLImageElement>("[data-front-app] img").forEach((img) => (img.src = appIconSrc(loadAppIcon())));
   for (const a of accounts) {
     const pr = p[a.id];
     root.style.setProperty(`--acc-${a.id}`, colors[pr.color] ?? pr.color);

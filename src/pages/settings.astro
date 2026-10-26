@@ -4,7 +4,7 @@ import SettingsPage from "../components/SettingsPage.astro";
 
 const title = "Settings — cl_audit: icon styles, panels and options for each Claude profile";
 const description =
-  "cl_audit's Settings: for each profile, its name, colour and Claude Code folder, refresh and notification options, its Dock icon (in the Dock or in the background, what a click does, 13 icon styles and 5 panel designs) and how its Dock icon and Claude window open and quit together; in General, Show emails, the window's face and the dashboard's card style.";
+  "cl_audit's Settings: for each profile, its name, colour and Claude Code folder, refresh and notification options, its Dock icon (in the Dock or in the background, what a click does, 13 icon styles and 5 panel designs) and how its Dock icon and Claude window open and quit together; in General, Show emails, the window's face, the app's own icon and the dashboard's card style.";
 ---
 <Desktop title={title} description={description} page="settings" headline="Profile and general settings">
   <div class="content-inner">
@@ -14,7 +14,7 @@ const description =
 
 <script>
   import { accounts, type AccountId } from "../data/demo";
-  import { applyPrefs, loadPrefs, savePrefs, loadCardStyle, saveCardStyle, iconSrc, laneSrc, type Prefs, type Style } from "../data/prefs";
+  import { applyPrefs, loadPrefs, savePrefs, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, type AppIcon, type Prefs, type Style } from "../data/prefs";
   import { panelHTML, limitsHTML, type Design } from "../data/panelView";
   import { showWhatNow } from "../data/whatNow";
 
@@ -131,6 +131,29 @@ const description =
       setTimeout(() => { show(); status(`<span class="g">Saved</span> <em>· ${f === "name" ? "Dock icon renamed" : "icon label changed"}</em>`, 4000); }, 700);
     };
 
+    // General ▸ App icon: the chosen design's tile, and under its row a lane with Front panel's four choices (each
+    // a small icon with that one choice changed) or, for the other designs, the icon at Dock sizes
+    const showAppIcon = () => {
+      const ai = loadAppIcon();
+      $$<HTMLElement>("[data-ai-style]").forEach((b) => b.classList.toggle("on", b.dataset.aiStyle === ai.style));
+      const panelImg = $<HTMLImageElement>('[data-ai-img="panel"]'); if (panelImg) panelImg.src = appIconSrc({ ...ai, style: "panel" });
+      const lane = $("[data-ai-lane]")!;
+      if (ai.style === "panel") {
+        lane.innerHTML = panelChoices.map(([k, title, opts]) => `<div class="ai-row"><span class="ai-t">${title}</span><span class="ai-opts">${
+          opts.map(([v, n]) => `<button type="button" class="ai-opt${ai[k] === v ? " on" : ""}" data-ai-opt="${k}" data-ai-val="${v}" title="${title}: ${n}"><img src="${appIconSrc({ ...ai, [k]: v } as AppIcon)}" alt="" width="30" height="30" /><span>${n}</span></button>`).join("")
+        }</span></div>`).join("");
+      } else {
+        const src = appIconSrc(ai);
+        lane.innerHTML = `<div class="lane-head"><b>Preview</b> <span class="sub">at Dock sizes</span></div><div class="ai-sizes">${
+          [48, 40, 32, 24].map((s) => `<img src="${src}" alt="" width="${s}" height="${s}" />`).join("")}</div>`;
+      }
+      // the lane joins the chosen tile: right after that tile's row (rows of three)
+      const tiles = $$<HTMLElement>("[data-ai-style]"), i = tiles.findIndex((t) => t.dataset.aiStyle === ai.style), cols = 3;
+      tiles[Math.min(tiles.length, (Math.floor(i / cols) + 1) * cols) - 1].after(lane);
+      lane.dataset.col = String(i % cols);
+      lane.dataset.last = String(i % cols === cols - 1);
+    };
+
     // Fill every control from the selected profile's settings.
     const show = () => {
       $$<HTMLElement>("[data-select-acc]").forEach((t) => t.classList.toggle("sel", general ? t.dataset.selectAcc === "general" : t.dataset.selectAcc === acc));
@@ -141,6 +164,7 @@ const description =
         const cs = loadCardStyle();
         $$<HTMLElement>("[data-card-style]").forEach((b) => b.classList.toggle("on", b.dataset.cardStyle === cs));
         $("[data-card-prev]")!.innerHTML = limitsHTML("sample", cs, false);
+        showAppIcon();
         return;
       }
       const a = accounts.find((x) => x.id === acc)!;
@@ -219,6 +243,8 @@ const description =
         return;
       }
       if ((b = pick("[data-style]"))) { p().style = b.dataset.style as Style; commit(); show(); return; }
+      if ((b = pick("[data-ai-style]"))) { saveAppIcon({ ...loadAppIcon(), style: b.dataset.aiStyle! }); applyPrefs(prefs); showAppIcon(); return; }
+      if ((b = pick("[data-ai-opt]"))) { saveAppIcon({ ...loadAppIcon(), [b.dataset.aiOpt!]: b.dataset.aiVal! } as AppIcon); applyPrefs(prefs); showAppIcon(); return; }
       if ((b = pick("[data-card-style]"))) { saveCardStyle(b.dataset.cardStyle as Design); applyPrefs(prefs); show(); return; }
       if ((b = pick("[data-panel]"))) { p().panel = b.dataset.panel!; commit(); show(); return; }
       if (pick("[data-demo-switch]")) { const s = pick("[data-demo-switch]")!; setSwitch(s, !s.classList.contains("on")); return; }

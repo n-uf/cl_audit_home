@@ -7,7 +7,7 @@
 // Dock icon), what the Dock icon does (Opening and closing · Dock icon clicks), then Icon. Three columns of about
 // equal height from 1180 px; two (Icon under the second) from 800; one below.
 import { accounts } from "../data/demo";
-import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices } from "../data/prefs";
+import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices, appIconStyles, appIconSrc, appIconDefault } from "../data/prefs";
 import { panelHTML, limitsHTML, designs } from "../data/panelView";
 import { version, releasedText, changelog } from "../data/site";
 import AccIcon from "./AccIcon.astro";
@@ -141,6 +141,18 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
           <div class="fcard" data-face-card="silver"><div class="fpic" style="background:linear-gradient(180deg,#e0e2e3,#c6c8c9)"><i style="background:linear-gradient(180deg,#ededeb,#c8c8c3)"></i><b style="background:#f6f7f8"></b><u></u></div><button type="button" class="fk" data-face="silver" aria-pressed="false">Silver</button></div>
         </div>
         <p class="g-note">The look of this window, its settings and the dashboard. Silver is a light face: the window takes the Mac's light appearance. The Dock icons keep their own designs.</p>
+      </div>
+      <!-- cl_audit's own icon: six designs; the chosen tile's lane holds Front panel's choices or the Dock-size preview -->
+      <div class="card" data-appicon><h4>App icon</h4>
+        <div class="gallery ai-gallery">
+          {appIconStyles.map(([k, n]) => (
+            <button type="button" class:list={["g-tile", { on: k === "panel" }]} data-ai-style={k}>
+              <img src={appIconSrc({ ...appIconDefault, style: k })} data-ai-img={k} alt="" width="48" height="48" loading="lazy" /><span>{n}</span>
+            </button>
+          ))}
+          <div class="lane-mini ai-lane" data-ai-lane></div>
+        </div>
+        <p class="g-note">The cl_audit icon in the Dock and the app switcher, so it stands apart from the profile Dock icons. While cl_audit isn't running, the Dock shows the plain Front panel.</p>
       </div>
       <div class="card"><h4>Dashboard cards <i class="idot" title="One card style for every profile on the dashboard. Each profile's panel design is set in its profile settings.">i</i></h4>
         <div class="srow stacked"><span>Card style</span>

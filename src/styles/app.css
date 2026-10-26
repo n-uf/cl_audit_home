@@ -1287,3 +1287,17 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
   .oc-row.ce .arr { grid-column: 1; }
   .oc-row.ce .oc-eff { grid-column: 2; }
 }
+/* General ▸ App icon: designs in rows of three; the lane under the chosen one holds Front panel's four rows of
+   choices (small icons, the chosen one on a strip surface) or the icon at Dock sizes */
+.ai-gallery { grid-template-columns: repeat(3, 1fr); }
+.ai-lane { display: grid; gap: 8px; }
+.ai-row { display: grid; grid-template-columns: 54px minmax(0, 1fr); align-items: center; gap: 8px; }
+.ai-t { font: 600 9.5px/1.2 var(--font); letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+.face-silver .ai-t { color: rgba(20,20,20,.62); }
+.ai-opts { display: flex; flex-wrap: wrap; gap: 4px; }
+.ai-opt { display: grid; justify-items: center; gap: 2px; padding: 4px 4px 3px; border: 0; border-radius: 5px; background: none; color: var(--muted); font: 9.5px/1.1 var(--font); cursor: pointer; min-width: 44px; }
+.ai-opt img { width: 30px; height: 30px; }
+.ai-opt.on { color: var(--text); font-weight: 600; background: var(--grain), linear-gradient(180deg, #48484b, #333336); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 0 0 1px #0b0b0c; }
+.face-silver .ai-opt.on { background: linear-gradient(180deg, #a9a9a4, #b9b9b4); box-shadow: inset 0 1px 3px rgba(0,0,0,.3); }
+.ai-sizes { display: flex; align-items: flex-end; gap: 14px; padding: 4px 2px 2px; }
+
