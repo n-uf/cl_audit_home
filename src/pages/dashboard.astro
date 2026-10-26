@@ -111,9 +111,9 @@ const description =
       const d = dash.querySelector<HTMLElement>("[data-updated]");
       const k = dash.querySelector<HTMLElement>("[data-refresh-all]")!;
       if (!d || k.classList.contains("busy")) return;
-      // while updating, the key's arrow becomes a pulsing green LED and it takes no clicks (26.10.5)
+      // while updating, the key's arrow itself lights up green and pulses like an LED; it takes no clicks (26.10.6)
       d.innerHTML = "Updating…";
-      k.classList.add("busy"); k.innerHTML = '<i class="rled" aria-hidden="true"></i>';
+      k.classList.add("busy"); k.innerHTML = '<span class="rlit" aria-hidden="true">↻</span>';
       setTimeout(() => { d.innerHTML = "Updated <em>· just now</em>"; k.classList.remove("busy"); k.textContent = "↻"; }, 1400);
     });
     dash.querySelectorAll<HTMLButtonElement>("[data-pick]").forEach((b) =>

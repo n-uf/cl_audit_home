@@ -1310,9 +1310,10 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
 .ai-sizes { display: flex; align-items: flex-end; gap: 14px; padding: 4px 2px 2px; }
 
 
-/* 26.10.5 refresh key while updating: a pulsing green LED in place of the arrow; no clicks */
+/* 26.10.6 refresh key while updating: the arrow itself lit LED green, glowing and pulsing; no clicks */
 .key.busy { pointer-events: none; }
-.rled { display: inline-block; width: 7px; height: 7px; border-radius: 50%; animation: pg 1.1s ease-in-out infinite; }
+.rlit { color: rgb(var(--led-on)) !important; text-shadow: 0 0 3px rgba(var(--led-on), .85); animation: rlit 1.1s ease-in-out infinite; }
+@keyframes rlit { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
 /* 26.10.5 dashboard while starting: the history reads the session files (charts empty, the totals say so) */
 .dash.reading .heat-day, .dash.reading .heat-row { visibility: hidden; }
 .dash.reading [data-chart="tokens"] { position: relative; }
