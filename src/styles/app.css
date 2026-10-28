@@ -1416,6 +1416,16 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .disp.xs { height: 18px; padding: 0 7px; font-size: 9px; }
 .g-note.caution { color: #f59e0b; font-size: 11px; }
 .face-silver .g-note.caution { color: #8a4f00; }
+/* As the app's settings rows: a 128 px label, the value starts right after it on one shared line (not at the card's right edge) */
+.settings .srow:not(.stacked):not(.incl):not(.end) { justify-content: flex-start; }
+.settings .srow:not(.stacked):not(.incl):not(.end) > :first-child { flex: none; width: 128px; }
+.settings .srow:not(.stacked):not(.incl):not(.end) > .v { text-align: left; }
+.settings .srow:not(.stacked):not(.incl):not(.end) > .fcol { align-items: flex-start; }
+.settings .srow:not(.stacked):not(.incl):not(.end) > .fcol > .field { text-align: left; }
+/* the profile colour's swatches stay on one line after the 128 px label, as in the app */
+.settings .srow:not(.stacked):not(.incl):not(.end) > .swatches { gap: 6px; }
+.settings .srow:not(.stacked):not(.incl):not(.end) > .swatches > * { width: 16px; height: 16px; }
+@media (max-width: 520px) { .settings .srow:not(.stacked):not(.incl):not(.end) { gap: 6px; } }
 .g-col .srow > span:first-child { white-space: nowrap; }
 .g-col > .card { min-width: 0; }
 .g-col .srow > :last-child { min-width: 0; }
