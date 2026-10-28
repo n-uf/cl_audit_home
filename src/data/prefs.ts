@@ -3,7 +3,7 @@
 // Claude open dot, how long a Dock click shows the usage before opening Claude, and what a profile includes
 // (Usage in the Dock, Claude window).
 import { accounts, type AccountId } from "./demo";
-import { limitsHTML, type Design } from "./panelView";
+import { limitsHTML, backWords, type Design } from "./panelView";
 import manifest from "./icon-manifest.json";   // written by scripts/render-icons.sh
 
 export const styles = [
@@ -33,14 +33,18 @@ export type Prefs = {
   dot: boolean;            // Claude open dot: an orange dot on the icon while the profile's Claude window is open
   showInDock: boolean;     // Profile ▸ Usage in the Dock: a Dock icon shows the usage (off: read in the background)
   win: boolean;            // Profile ▸ Claude window: the profile has one (off: none; both off = usage only)
-  iconFollows: boolean;    // Opening and closing: the Dock icon starts and quits with the Claude window
-  windowFollows: boolean;  // Opening and closing: the Claude window opens and quits with the Dock icon
+  dockRuns: DockRuns;      // Opening and closing ▸ Dock icon runs: At login, With its window, When started (26.10.11)
+  windowFollows: boolean;  // Opening and closing ▸ Claude window: opens and quits with the Dock icon
+  notifyBack: boolean;     // Updates and alerts ▸ Notify when back: one alert when a full limit resets
+  iconFollows?: boolean;   // before 26.10.11 (read once to carry it over into dockRuns)
 };
+export type DockRuns = "login" | "window" | "started";
+export const dockRunsChoices: [DockRuns, string][] = [["login", "At login"], ["window", "With its window"], ["started", "When started"]];
 
 const defaults: Record<AccountId, Prefs> = {
-  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 3, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments", dataDir: "Claude", iconColor: "orange", frame: "", dot: true, showInDock: true, win: true, iconFollows: false, windowFollows: false },
-  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, win: true, iconFollows: false, windowFollows: false },
-  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, win: true, iconFollows: false, windowFollows: false },
+  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 3, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments", dataDir: "Claude", iconColor: "orange", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, notifyBack: true },
+  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, notifyBack: true },
+  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, win: true, dockRuns: "started", windowFollows: false, notifyBack: true },
 };
 
 /** General settings ▸ Dashboard cards: one card style for every profile card (dashboard and Overview). */
@@ -83,7 +87,12 @@ export function loadPrefs(): Record<AccountId, Prefs> {
   try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch {}
   const out = {} as Record<AccountId, Prefs>;
   for (const a of accounts) {
-    out[a.id] = { ...defaults[a.id], ...(saved[a.id] ?? {}) };   // fields added later get their defaults
+    const sv = saved[a.id] ?? {};
+    out[a.id] = { ...defaults[a.id], ...sv };   // fields added later get their defaults
+    // carried over as the app does (26.10.11): Open at login on → At login; "start or quit the Dock icon too" → With
+    // its window; both off → When started ("open or quit the Claude window too" stays the window switch)
+    if (sv.dockRuns === undefined && (sv.login !== undefined || sv.iconFollows !== undefined))
+      out[a.id].dockRuns = sv.login ? "login" : sv.iconFollows ? "window" : "started";
     if (!refreshChoices.includes(out[a.id].refresh)) out[a.id].refresh = "2 min";   // earlier versions offered 1 min
   }
   return out;
@@ -116,7 +125,7 @@ export function applyPrefs(p = loadPrefs()) {
     const pr = p[a.id];
     root.style.setProperty(`--acc-${a.id}`, colors[pr.color] ?? pr.color);
     root.classList.toggle(`dot-${a.id}`, pr.dot && pr.win);   // no window, no Claude open dot
-    root.style.setProperty(`--frame-${a.id}`, pr.frame ? (pr.frame === "usage" ? levelHex(a.five) : tileColors[pr.frame] ?? "transparent") : "transparent");
+    root.style.setProperty(`--frame-${a.id}`, a.five >= 100 ? "transparent" : pr.frame ? (pr.frame === "usage" ? levelHex(a.five) : tileColors[pr.frame] ?? "transparent") : "transparent");
     // the two switches in Profile: without a Claude window a card has no window switch and no Open/Show window;
     // with both off (usage only) one display says so instead of the switches, and only "⋯" is left.
     // In the Dock: no Dock icon tile without Usage in the Dock, no Claude tile without a Claude window.
@@ -128,7 +137,8 @@ export function applyPrefs(p = loadPrefs()) {
     document.querySelectorAll<HTMLElement>(`.dock-item[data-pop="${a.id}"]`).forEach((t) => (t.hidden = !pr.showInDock));
     document.querySelectorAll<HTMLElement>(`.dock-item[data-open-desktop="${a.id}"]`).forEach((t) => (t.hidden = !pr.win));
     document.querySelectorAll<HTMLImageElement>(`img[data-acc-icon="${a.id}"]`).forEach((img) => {
-      const src = iconSrc(a.id, pr.style, pr.iconColor);
+      // while a limit is full the Dock icon is the countdown, whatever the style (the demo's full profile)
+      const src = a.five >= 100 ? a.icon : iconSrc(a.id, pr.style, pr.iconColor);
       if (img.getAttribute("src") !== src) img.src = src;
     });
   }
@@ -139,6 +149,8 @@ export function applyPrefs(p = loadPrefs()) {
     el.dataset.design = design;
     el.innerHTML = limitsHTML(el.dataset.cardLimits as AccountId, design, false);
   });
+  // "back at 15:28": counted from the visitor's clock (the demo's full limit resets this many minutes from now)
+  document.querySelectorAll<HTMLElement>("[data-back-min]").forEach((el) => (el.textContent = backWords(+el.dataset.backMin!)));
   (window as any).clPeekMs = (id: AccountId) => Math.round((p[id]?.peek ?? 0.75) * 1000) + 400;
   (window as any).clClick = (id: AccountId) => p[id]?.click ?? "Usage, then Claude";
   let showEmails = true;

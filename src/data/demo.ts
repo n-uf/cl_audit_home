@@ -1,6 +1,8 @@
 // Demo data for the site's copy of the cl_audit window: three made-up profiles and their usage
 // history. Generated at build time from a fixed seed, so it looks the same on every build, with dates
 // that count back from the build day like the real app.
+// "work" has its 5-hour limit full (26.10.11): its card shows when it's back, and its Dock icon is the countdown
+// (public/img/acc/work-full.png, drawn by the app's Painter).
 
 export type AccountId = "home" | "work" | "side";
 
@@ -8,7 +10,7 @@ export const accounts = [
   { id: "home" as AccountId, name: "home", label: "HOME", email: "you@example.com", plan: "Max", hex: "#d97757", color: "var(--acc-home)", tint: "t-orange",
     icon: "/img/acc/home-bars-orange.png", dir: "~/.claude", data: "~/Library/Application Support/Claude", five: 34, fiveWhen: "in 3 h 12 min", week: 12, weekWhen: "in 6 days", fiveLeftMin: 192, weekLeftMin: 6 * 1440 + 200, updated: "just now", winOpen: true },
   { id: "work" as AccountId, name: "work", label: "WORK", email: "you@work.example", plan: "Team", hex: "#14b8a6", color: "var(--acc-work)", tint: "t-teal",
-    icon: "/img/acc/work-rings.png", dir: "~/.claude-work", data: "~/Library/Application Support/Claude-work", five: 78, fiveWhen: "in 41 min", week: 61, weekWhen: "in 3 days", fiveLeftMin: 41, weekLeftMin: 3 * 1440 + 300, updated: "1 min ago", winOpen: true },
+    icon: "/img/acc/work-full.png", dir: "~/.claude-work", data: "~/Library/Application Support/Claude-work", five: 100, fiveWhen: "in 1h 42m", week: 61, weekWhen: "in 3 days", fiveLeftMin: 102, weekLeftMin: 3 * 1440 + 300, updated: "1 min ago", winOpen: true },
   { id: "side" as AccountId, name: "side", label: "SIDE", email: "side@example.com", plan: "Pro", hex: "#8b5cf6", color: "var(--acc-side)", tint: "t-purple",
     icon: "/img/acc/side-statusBar.png", dir: "~/.claude-side", data: "~/Library/Application Support/Claude-side", five: 12, fiveWhen: "in 4 h 40 min", week: 40, weekWhen: "in 5 days", fiveLeftMin: 280, weekLeftMin: 5 * 1440 + 90, updated: "2 min ago", winOpen: false },
 ];

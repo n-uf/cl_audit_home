@@ -18,7 +18,10 @@ let ticker = 0;
 // Opening and closing links a profile's Dock icon and Claude window; without a window there's nothing to link
 const follows = (id: string) => {
   const pr = loadPrefs()[id as AccountId];
-  return { ...pr, iconFollows: pr.win && pr.iconFollows, windowFollows: pr.win && pr.windowFollows };
+  // Dock icon runs With its window: it starts and quits with the window; the window switch: the window opens and
+  // quits with the Dock icon. Neither without a window, and nothing without a Dock icon (26.10.10)
+  const linked = pr.win && pr.showInDock;
+  return { ...pr, iconFollows: linked && pr.dockRuns === "window", windowFollows: linked && pr.windowFollows };
 };
 
 // A switch's state as the card's readout shows it: a short state word that always fits, and an optional detail
@@ -35,7 +38,8 @@ function dockSub(id: string, s: S): Sub {
     return t < 0.5 ? ["quitting…", ""] : [`quits ${Math.ceil(t)} s`, "after the window"];
   }
   if (s.dock) return ["running", ""];
-  return follows(id).iconFollows && !s.win && !s.winBusy ? ["waiting", "for the window"] : ["stopped", "no alerts"];
+  // a stopped Dock icon never stops the usage or alerts: cl_audit's background agent reads every profile (26.10.11)
+  return follows(id).iconFollows && !s.win && !s.winBusy ? ["starts", "with its window"] : ["stopped", ""];
 }
 
 /** Makes a detail scroll (seamless loop, starts after a pause) only when it is longer than its space. */

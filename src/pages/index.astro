@@ -143,8 +143,8 @@ const jsonLd = [{
         </div>
         <p class="t">
           Each profile's Dock icon shows its 5-hour and weekly limits. A click shows the usage for a moment, then
-          opens its Claude window. Options: 13 icon styles, 5 panel designs, a notification at a set level, a dot
-          while its Claude window is open.
+          opens its Claude window. While a limit is full it counts down to when the profile is back. Options: 13 icon styles, 5 panel
+          designs, a notification at a set level and one when it's back, a dot while its Claude window is open.
         </p>
         <a class="more" href="/settings/">Icon styles in Settings ›</a>
       </article>
@@ -185,9 +185,10 @@ const jsonLd = [{
         <h4>Card switches</h4>
         <div class="list">
           <div><b>Claude window</b><span>Opens or quits the profile's Claude window.</span></div>
-          <div><b>Dock icon</b><span>Starts or quits the profile's Dock icon. The Dock is not restarted. While stopped, the profile doesn't refresh or alert.</span></div>
+          <div><b>Dock icon</b><span>Starts or quits the profile's Dock icon. The Dock is not restarted, and the usage keeps being read: cl_audit's background agent reads every profile and sends the alerts.</span></div>
           <div><b>Usage only</b><span>A profile with no Dock icon and no Claude window: one display instead of the switches. Its usage still shows on the dashboard, in the launcher and in alerts.</span></div>
-          <div><b>Opening and closing</b><span>A profile setting: the Dock icon follows its window, the window follows its Dock icon, or both.</span></div>
+          <div><b>A limit full</b><span>The card says when the profile is back (in 1h 42m, back at 15:28) and the Dock icon counts down; an alert comes when it's back.</span></div>
+          <div><b>Opening and closing</b><span>A profile setting: the Dock icon runs at login, with its window or when started, and the Claude window can open and quit with it.</span></div>
         </div>
         <a class="more" href="/dashboard/">Switches in the demo ›</a>
       </div>

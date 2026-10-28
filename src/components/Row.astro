@@ -1,13 +1,18 @@
 ---
 import { levelColor } from "./level";
 import AccIcon from "./AccIcon.astro";
+import { accounts } from "../data/demo";
+import { countdownWords } from "../data/panelView";
 interface Props { id?: string; icon: string; name: string; color: string; five: number; week: number; key: string; sel?: boolean; open?: boolean }
 const r = Astro.props;
+// while a limit is full, one red value on the name line: how long until it's back (as the app's launcher)
+const acc = accounts.find((a) => a.id === r.id);
+const full = acc && acc.five >= 100 ? countdownWords(acc.fiveLeftMin) : null;
 ---
 <div class:list={["row", { sel: r.sel }]} data-open-desktop={r.id} role={r.id ? "button" : undefined} tabindex={r.id ? 0 : undefined}>
   <AccIcon id={r.id!} src={r.icon} size={42} loading="lazy" />
   <div class="meta">
-    <div class="nm"><span class="dot" style={`background:${r.color};width:7px;height:7px`} />{r.name}<span class="badge" data-win-badge={r.id} hidden={!r.open}>open</span></div>
+    <div class="nm"><span class="dot" style={`background:${r.color};width:7px;height:7px`} />{r.name}<span class="badge" data-win-badge={r.id} hidden={!r.open}>open</span>{full && <span class="lfull" title="5-hour full">{full}</span>}</div>
     {[["5h", r.five], ["wk", r.week]].map(([tag, p]) => (
       <div class="mini"><span class="tag">{tag}</span><span class="track"><i style={`width:${p}%;background:${levelColor(p as number)};box-shadow:0 0 6px ${levelColor(p as number)}`} /></span><span class="p" style={`color:${levelColor(p as number)}`}>{p}%</span></div>
     ))}

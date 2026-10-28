@@ -64,6 +64,7 @@ const sample: L[] = [
 
 /** The limits part of a panel in one design (`"sample"`: the app's sample figures, for the card style preview). */
 export function limitsHTML(id: AccountId | "sample", design: Design, large: boolean) {
+  if (id !== "sample" && fullLimit(id)) return fullHTML(id, design);
   const ls = id === "sample" ? sample : limits(id);
   const draw = { glow, rings: ring, numbers: number, segments, pace }[design];
   const cls = design === "rings" ? "pn-limits rings" : design === "numbers" ? "pn-limits numbers" : "pn-limits";
@@ -72,7 +73,45 @@ export function limitsHTML(id: AccountId | "sample", design: Design, large: bool
 
 export const designs: [Design, string][] = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["segments", "Segments"], ["pace", "Pace"]];
 
-/** The profile's two limits as a dashboard card draws them: the small panel design, one for every card. */
+// ── When a limit is full (100 %): the limits on the left and one box on the right, as the app's AtLimit.swift ──
+/** "15:28" today, "Thu 09:00" within 6 days, "11 Nov" this year, "12 Jan 2027" another year (TimeWords.when). */
+export function whenWords(d: Date, now = new Date()) {
+  const day = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+  const days = Math.round(Math.abs(day(d) - day(now)) / 86400000);
+  const hm = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  const mon = d.toLocaleString("en-GB", { month: "short" }), wd = d.toLocaleString("en-GB", { weekday: "short" });
+  return days === 0 ? hm : days <= 6 ? `${wd} ${hm}` : d.getFullYear() === now.getFullYear() ? `${d.getDate()} ${mon}` : `${d.getDate()} ${mon} ${d.getFullYear()}`;
+}
+/** "back at 15:28" today, else "back Thu 09:00", "back 11 Nov" (TimeWords.back); the demo counts from now. */
+export function backWords(minLeft: number, now = new Date()) {
+  const d = new Date(now.getTime() + minLeft * 60000);
+  return (day0(d) === day0(now) ? "back at " : "back ") + whenWords(d, now);
+}
+const day0 = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+/** "19m", "1h 42m", "2d 19h", "16 days" (TimeWords.countdown). */
+export const countdownWords = (m: number) => (m < 60 ? `${m}m` : m < 1440 ? `${Math.floor(m / 60)}h ${m % 60}m` : m < 8 * 1440 ? `${Math.floor(m / 1440)}d ${Math.floor((m % 1440) / 60)}h` : `${Math.floor(m / 1440)} days`);
+/** The full limit that holds a profile back (of the full ones, the one that resets last), or none. */
+export function fullLimit(id: AccountId) {
+  const ls = limits(id).filter((l) => l.p >= 100).sort((a, b) => b.left - a.left);
+  if (!ls.length) return null;
+  return { name: ls[0].name, other: ls[1]?.name, left: ls[0].left };
+}
+function fullHTML(id: AccountId, design: Design) {
+  const f = fullLimit(id)!;
+  const rows = limits(id).map((l) => {
+    const hot = l.p >= 100;
+    const words = hot ? (l.name === f.name ? "full" : `full · resets ${whenWords(new Date(Date.now() + l.left * 60000))}`) : `in ${short(l.left)}`;
+    const meter = design === "segments"
+      ? `<div class="pn-segs fl-segs">${Array.from({ length: 12 }, (_, i) => { const z = ((i + 1) / 12) * 100, c = z > 80 ? "#ef4444" : z > 50 ? "#f59e0b" : "#22c55e"; return i < Math.round((l.p / 100) * 12) ? `<i style="background:${c};box-shadow:0 0 5px ${c}80"></i>` : "<i></i>"; }).join("")}</div>`
+      : bar(l, 6, true);
+    return `<div class="fl-row"><div class="fl-name"><b>${l.name}</b><span class="${hot ? "fl-hot" : ""}">${words}</span></div>${meter}${pct(l, 12.5)}</div>`;
+  }).join("");
+  const title = `${f.name} full${f.other ? ` · ${f.other} too` : ""}`;
+  return `<div class="fl"><div class="fl-rows">${rows}</div><div class="fl-box"><b class="fl-title">${title}</b><span class="fl-in"><small>in</small> ${countdownWords(f.left)}</span><span class="fl-back" data-back-min="${f.left}">${backWords(f.left)}</span></div></div>`;
+}
+
+/** The profile's two limits as a dashboard card draws them: the small panel design, one for every card; while a
+ *  limit is full, the limits on the left and the box saying when it's back on the right. */
 export function cardLimitsHTML(id: AccountId, design: Design) {
   const a = accounts.find((x) => x.id === id)!;
   return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="img" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}</div>`;

@@ -46,6 +46,7 @@ const description =
 
 <script>
   import { rangeHTML, sharesHTML, totalsHTML } from "../data/historyView";
+  import { loadPrefs } from "../data/prefs";
   import { allIds, type AccountId, type Range } from "../data/demo";
 
   const KEY = "cl_audit.dashboardHidden";
@@ -83,6 +84,13 @@ const description =
   }
 
   function setup() {
+    // the strip's one display: "Updated · just now"; hovering it says what cl_audit's background agent reads (26.10.11)
+    const upd = document.querySelector<HTMLElement>("[data-updated]");
+    if (upd) {
+      const mins = Object.values(loadPrefs()).map((p) => parseInt(p.refresh));
+      const lo = Math.min(...mins), hi = Math.max(...mins), n = mins.length;
+      upd.title = `Reading usage for ${n} profile${n === 1 ? "" : "s"}, every ${lo === hi ? lo : `${lo}–${hi}`} min, in the background`;
+    }
     const dash = document.getElementById("dash");
     if (!dash || dash.dataset.ready) return;
     dash.dataset.ready = "1";

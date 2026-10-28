@@ -15,7 +15,7 @@ const description =
 <script>
   import { accounts, type AccountId } from "../data/demo";
   import { applyPrefs, loadPrefs, savePrefs, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, type AppIcon, type Prefs, type Style } from "../data/prefs";
-  import { panelHTML, limitsHTML, type Design } from "../data/panelView";
+  import { panelHTML, limitsHTML, whenWords, type Design } from "../data/panelView";
   import { showWhatNow } from "../data/whatNow";
 
   const PEEK = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -41,7 +41,7 @@ const description =
     const $$ = <T extends Element = HTMLElement>(sel: string) => [...root.querySelectorAll<T>(sel)];
 
     // ── "What this does now": the plain-language note for a changed setting (never for visual ones) ──
-    type K = "renew" | "refresh" | "notify" | "notifyAt" | "click" | "peek" | "hold" | "login";
+    type K = "renew" | "refresh" | "notify" | "notifyAt" | "click" | "peek" | "hold" | "notifyBack";
     const say = (k: K) => {
       const pr = p(), n = who();
       const on = (v: boolean) => (v ? "on" : "off");
@@ -68,30 +68,17 @@ const description =
           return showWhatNow("Press and hold", on(pr.hold), pr.hold
             ? "Press and hold the Dock icon for the details panel next to a short menu."
             : "Press and hold shows only the Dock menu.");
-        case "login":
-          return showWhatNow("Open at login", on(pr.login), pr.login
-            ? `${n}'s Dock icon starts when you log in to your Mac.`
-            : `${n}'s Dock icon starts only when you start it, or with its Claude window.`);
+        case "notifyBack":
+          return showWhatNow("Notify when back", on(pr.notifyBack), pr.notifyBack
+            ? `One alert when ${n}'s full 5-hour or weekly limit resets (“Claude ${n} is back”).`
+            : `No alert when ${n}'s full limit resets; the card still shows when it's back.`);
       }
     };
 
-    // ── Opening and closing: the table of what each action does to the other thing ──
-    const ocHTML = (pr: Prefs) => {
-      const i = pr.iconFollows, w = pr.windowFollows;
-      const title = i ? (w ? "Together" : "The Dock icon follows the window") : w ? "The window follows the Dock icon" : "Independent";
-      // cause → what then happens to the other one (or that it's left alone)
-      const rows: [boolean, string, string | null, string | null][] = [
-        [true, "Claude window opens", i ? "Dock icon starts" : null, null],
-        [true, "Claude window quits", i ? "Dock icon quits" : null, "10 s later"],
-        [false, "Dock icon starts", w ? "Claude window opens" : null, "not at login"],
-        [false, "Dock icon quits", w ? "Claude window quits" : null, i ? "or ⌥ Quit and keep" : "Claude may ask"],
-      ];
-      const esc = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
-      return `<div class="oc-head"><b>${title}</b><span>${esc(who())}</span></div>` + rows.map(([win, label, effect, note]) =>
-        `<div class="oc-row ce"><span class="oc-label">${label}</span><span class="arr">→</span><span class="oc-eff">${
-          effect ? `<span class="oc-pill">${effect}</span>${note ? `<span class="oc-note">${note}</span>` : ""}` : `<span class="left">${win ? "Dock icon" : "Claude window"} left alone</span>`
-        }</span></div>`).join("");
-    };
+    // ── Opening and closing (26.10.11): the line under "Dock icon runs" follows the choice ──
+    const runsLine = (pr: Prefs) => pr.dockRuns === "window" && !pr.win
+      ? `With its window: ${who()} has no Claude window, so its Dock icon runs only when you start it.`
+      : "At login: always there, from when you log in. With its window: starts and quits with the Claude window. When started: only when you start it.";
 
     const setSwitch = (el: Element | null | undefined, on: boolean) => { el?.classList.toggle("on", on); el?.setAttribute("aria-checked", String(on)); };
 
@@ -100,7 +87,7 @@ const description =
     // display: Saving…, then Restarting the Dock… (Usage in the Dock only; the keys wait), then Saved and what changed.
     const inclLine = {
       dock: (on: boolean) => on ? "A Dock icon shows this profile's usage; click it for details."
-        : "No Dock icon. Usage still shows on the dashboard, in the launcher and in alerts. Its app is kept, so it comes back as it was.",
+        : "No Dock icon. Usage still shows on the dashboard, in the launcher and in alerts; turn it back on and the icon returns to its place.",
       win: (on: boolean) => on ? "A Claude window for this profile, signed in to its account; open it from the dashboard or the Dock icon."
         : "No Claude window. Its sign-in is kept, so turning it back on needs no new sign-in.",
     };
@@ -181,8 +168,8 @@ const description =
       setTimeout(() => { show(); status(`<span class="g">Saved</span> <em>· ${f === "name" ? "Dock icon renamed" : "icon label changed"}</em>`, 4000); }, 700);
     };
 
-    // General ▸ App icon: the chosen design's tile, and under its row a lane with Front panel's four choices (each
-    // a small icon with that one choice changed) or, for the other designs, the icon at Dock sizes
+    // General ▸ App icon: six designs in one sunken row (the chosen one raised), then one pane with Front panel's four
+    // choices as label rows (each a small icon with that one choice changed), or the chosen design at Dock sizes
     const showAppIcon = () => {
       const ai = loadAppIcon();
       $$<HTMLElement>("[data-ai-style]").forEach((b) => b.classList.toggle("on", b.dataset.aiStyle === ai.style));
@@ -194,14 +181,30 @@ const description =
         }</span></div>`).join("");
       } else {
         const src = appIconSrc(ai);
-        lane.innerHTML = `<div class="lane-head"><b>Preview</b> <span class="sub">at Dock sizes</span></div><div class="ai-sizes">${
-          [48, 40, 32, 24].map((s) => `<img src="${src}" alt="" width="${s}" height="${s}" />`).join("")}</div>`;
+        lane.innerHTML = `<div class="ai-row"><span class="ai-t">Dock sizes</span><span class="ai-sizes">${
+          [48, 40, 32, 24].map((s) => `<img src="${src}" alt="" width="${s}" height="${s}" />`).join("")}</span></div>`;
       }
-      // the lane joins the chosen tile: right after that tile's row (rows of three)
-      const tiles = $$<HTMLElement>("[data-ai-style]"), i = tiles.findIndex((t) => t.dataset.aiStyle === ai.style), cols = 3;
-      tiles[Math.min(tiles.length, (Math.floor(i / cols) + 1) * cols) - 1].after(lane);
-      lane.dataset.col = String(i % cols);
-      lane.dataset.last = String(i % cols === cols - 1);
+    };
+
+    // General: in two columns App icon goes under column 1 and Dock under column 2; otherwise both in column 3
+    const twoCols = window.matchMedia("(min-width: 800px) and (max-width: 1179px)");
+    const placeGeneral = () => {
+      const col = (n: number) => $(`[data-gcol="${n}"]`)!;
+      const icon = $('[data-gcard="appicon"]')!, dock = $('[data-gcard="dock"]')!;
+      if (twoCols.matches) { col(1).append(icon); col(2).append(dock); } else col(3).append(icon, dock);
+    };
+    twoCols.addEventListener("change", placeGeneral);
+    // Usage in the background: how many profiles the agent reads and how often; About ▸ Clean-up: its last run
+    const showGeneralState = () => {
+      const mins = accounts.map((x) => parseInt(prefs[x.id].refresh)), lo = Math.min(...mins), hi = Math.max(...mins);
+      // one line, as the app: the first wording that fits the card (a display never shrinks its text)
+      const fit = (el: HTMLElement, htmls: string[]) => {
+        for (const h of htmls) { el.innerHTML = h; if (el.scrollWidth <= el.clientWidth + 1) return; }
+      };
+      const n = `${mins.length} profiles`, every = `${lo === hi ? lo : `${lo}–${hi}`} min`;
+      fit($("[data-usage-disp]")!, [`· ${n} · every ${every}`, `· ${n} · ${every}`, `· ${n}`].map((d) => `<span class="g">Reading usage</span> <em>${d}</em>`));
+      const when = whenWords(new Date(Date.now() - 3 * 3600000));
+      fit($("[data-cleanup]")!, [`Cleaned up 2 leftovers · ${when}`, `2 removed · ${when}`]);
     };
 
     // Fill every control from the selected profile's settings.
@@ -220,7 +223,7 @@ const description =
         const cs = loadCardStyle();
         $$<HTMLElement>("[data-card-style]").forEach((b) => b.classList.toggle("on", b.dataset.cardStyle === cs));
         $("[data-card-prev]")!.innerHTML = limitsHTML("sample", cs, false);
-        showAppIcon();
+        showAppIcon(); placeGeneral(); showGeneralState();
         return;
       }
       const a = accounts.find((x) => x.id === acc)!;
@@ -237,7 +240,7 @@ const description =
       $$<HTMLElement>('[data-text="email"]').forEach((e) => (e.textContent = a.email));
       $$<HTMLElement>('[data-text="name"]').forEach((e) => (e.textContent = who()));
       for (const f of ["click", "refresh"] as const) $<HTMLSelectElement>(`[data-field="${f}"]`)!.value = pr[f];
-      for (const f of ["renew", "hold", "notify", "login"] as const) setSwitch($(`[data-switch="${f}"]`), pr[f]);
+      for (const f of ["renew", "hold", "notify", "notifyBack", "windowFollows"] as const) setSwitch($(`[data-switch="${f}"]`), pr[f]);
       $('[data-value="peek"]')!.textContent = secs(pr.peek);
       $('[data-value="notifyAt"]')!.textContent = `${pr.notifyAt}%`;
       $("[data-notify-step]")!.hidden = !pr.notify;
@@ -261,9 +264,9 @@ const description =
         c.classList.toggle("faded", !pr.showInDock);
         c.querySelector<HTMLElement>(".notinuse")!.hidden = pr.showInDock;
       });
-      $$<HTMLInputElement>('input[name="oc-icon"]').forEach((r) => (r.checked = r.value === (pr.iconFollows ? "1" : "0")));
-      $$<HTMLInputElement>('input[name="oc-window"]').forEach((r) => (r.checked = r.value === (pr.windowFollows ? "1" : "0")));
-      $("[data-oc-result]")!.innerHTML = ocHTML(pr);
+      $$<HTMLElement>("[data-runs]").forEach((b) => b.classList.toggle("on", b.dataset.runs === pr.dockRuns));
+      $("[data-runs-line]")!.textContent = runsLine(pr);
+      $("[data-oc-usage]")!.hidden = pr.showInDock;
       // icon gallery: this profile's icons, the chosen style, and the preview lane under its row
       $$<HTMLElement>(".c-i .ico").forEach((e) => (e.dataset.ico = acc));
       $$<HTMLImageElement>("[data-gallery]").forEach((img) => (img.src = iconSrc(acc, img.dataset.gallery as Style, pr.iconColor)));
@@ -302,9 +305,10 @@ const description =
       if (pick("[data-frame]")) { p().frame = pick("[data-frame]")!.dataset.frame!; commit(); show(); return; }
       if ((b = pick("[data-dot]"))) { p().dot = b.dataset.dot === "1"; commit(); show(); return; }
       if ((b = pick("[data-switch]"))) {
-        const k = b.dataset.switch as "renew" | "hold" | "notify" | "login";
-        p()[k] = !p()[k]; commit(); show(); say(k); return;
+        const k = b.dataset.switch as "renew" | "hold" | "notify" | "notifyBack" | "windowFollows";
+        p()[k] = !p()[k]; commit(); show(); if (k !== "windowFollows") say(k); return;
       }
+      if ((b = pick("[data-runs]"))) { p().dockRuns = b.dataset.runs as Prefs["dockRuns"]; commit(); show(); return; }
       if ((b = pick("[data-incl]"))) { toggleIncl(b.dataset.incl as "dock" | "win"); return; }
       if (pick("[data-show-dock]")) { if (!p().showInDock) toggleIncl("dock"); return; }
       if (pick("[data-add-win]")) { if (!p().win) toggleIncl("win"); return; }
@@ -326,15 +330,12 @@ const description =
       if ((b = pick("[data-panel]"))) { p().panel = b.dataset.panel!; commit(); show(); return; }
       if (pick("[data-demo-switch]")) { const s = pick("[data-demo-switch]")!; setSwitch(s, !s.classList.contains("on")); return; }
       if (pick("[data-remove]")) { $("[data-dialog]")!.hidden = false; return; }
+      if (pick("[data-uninstall]")) { $("[data-udialog]")!.hidden = false; return; }
+      if (pick("[data-udialog-close]") || t.matches("[data-udialog]")) { $("[data-udialog]")!.hidden = true; return; }
       if (pick("[data-dialog-close]") || t.matches("[data-dialog]")) { $("[data-dialog]")!.hidden = true; return; }
     });
     root.addEventListener("change", (e) => {
       const t = e.target as HTMLSelectElement | HTMLInputElement;
-      if (t instanceof HTMLInputElement && (t.name === "oc-icon" || t.name === "oc-window")) {
-        // Opening and closing shows its own table, so no note
-        if (t.name === "oc-icon") p().iconFollows = t.value === "1"; else p().windowFollows = t.value === "1";
-        commit(); show(); return;
-      }
       const f = t.dataset.field as keyof Prefs | undefined;
       if (f && t.tagName === "SELECT") {
         (p() as any)[f] = t.value; commit(); show();
