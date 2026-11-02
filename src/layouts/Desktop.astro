@@ -59,8 +59,9 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       </div>
       </div>
       <!-- Phones: lay the head over the content before the first paint, as initPin (below) does once the page has loaded,
-           so the content doesn't jump up 184 px at that moment. initPin keeps --head-h up to date from then on. -->
-      <script is:inline>
+           so the content doesn't jump up 184 px at that moment. initPin keeps --head-h up to date from then on.
+           data-astro-rerun: the ClientRouter runs it again after each page swap (it skips repeated inline scripts otherwise). -->
+      <script is:inline data-astro-rerun>
         (function () {
           var desk = document.querySelector(".desk"), head = desk && desk.querySelector(".apphead");
           if (!head || !matchMedia("(max-width: 600px), (max-height: 500px)").matches) return;
