@@ -7,8 +7,12 @@ import { accounts } from "../data/demo";
 import { repo, site, version, released, releasedText, changelog, download, requires, checkedWith } from "../data/site";
 import { cardLimitsHTML } from "../data/panelView";
 
-const title = "cl_audit — run several Claude profiles on macOS, with usage limits in the Dock";
+// title and description: what a search result shows (Google cuts titles near 60 characters, descriptions near 155)
+const title = "cl_audit: Claude usage limits in your Mac's Dock";
 const description =
+  "See each Claude profile's 5-hour and weekly usage limits live in your Mac's Dock, and run several Claude setups side by side. Free and source-available.";
+// the fuller summary, for the structured data (not shown in search results)
+const appDescription =
   "cl_audit gives each of your Claude setups on macOS its own profile: a Claude Code folder, an optional separate Claude window and a Dock icon that shows its usage limits live. One dashboard with switches for every profile, figures read directly from Anthropic. Free and source-available.";
 
 // The login section on the Overview: tabs, each with a plain explanation (text may hold <code>).
@@ -44,7 +48,7 @@ const jsonLd = [{
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   name: "cl_audit",
-  description,
+  description: appDescription,
   applicationCategory: "DeveloperApplication",
   operatingSystem: "macOS 13 or later",
   softwareVersion: version,
