@@ -4,9 +4,9 @@ import AccountCard from "../components/AccountCard.astro";
 import History from "../components/History.astro";
 import { accounts } from "../data/demo";
 
-const title = "Dashboard — cl_audit: Claude usage limits and history for every profile";
+const title = "cl_audit dashboard: Claude limits and usage history";
 const description =
-  "The cl_audit dashboard: each Claude profile's 5-hour limit and weekly limit, read directly from Anthropic, with switches for its Claude window and Dock icon, plus usage history: when you use Claude, tokens per day, and which projects, models and apps they went to.";
+  "Every Claude profile on one dashboard: 5-hour and weekly limits read from Anthropic, switches for its Claude window and Dock icon, and usage history.";
 ---
 <Desktop title={title} description={description} page="dashboard" headline="Sample data · 3 profiles">
   <div class="content-inner dash" id="dash" data-range="7d">
