@@ -58,6 +58,16 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
         </nav>
       </div>
       </div>
+      <!-- Phones: lay the head over the content before the first paint, as initPin (below) does once the page has loaded,
+           so the content doesn't jump up 184 px at that moment. initPin keeps --head-h up to date from then on. -->
+      <script is:inline>
+        (function () {
+          var desk = document.querySelector(".desk"), head = desk && desk.querySelector(".apphead");
+          if (!head || !matchMedia("(max-width: 600px), (max-height: 500px)").matches) return;
+          desk.style.setProperty("--head-h", head.offsetHeight + (desk.classList.contains("ovl") ? 0 : 28) + "px");
+          desk.classList.add("ovl");
+        })();
+      </script>
       <main class="content" transition:animate="fade">
         <slot />
       </main>
