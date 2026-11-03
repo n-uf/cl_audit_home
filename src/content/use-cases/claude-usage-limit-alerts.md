@@ -95,7 +95,7 @@ The first time, macOS asks once whether cl_audit may send notifications. Missed 
 
 ## Claude usage alerts for every account, from one agent
 
-This is why the alerts matter most when you run [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). A small background agent inside cl_audit reads every profile's usage and sends every alert. The cl_audit window, the Dock icons and the Claude windows only show what the agent saved.
+This is why the alerts matter most when you run [several Claude accounts side by side](/use-cases/multiple-claude-accounts/). A small background agent inside cl_audit reads every profile's usage and sends every alert. The cl_audit window, the Dock icons and the Claude windows only show what the agent saved.
 
 In practice:
 
@@ -118,4 +118,4 @@ The limits themselves are shared. Anthropic's page says Claude and Claude Code c
 
 ## Next steps
 
-The [Claude Code usage history](/use-cases/claude-code-usage-history/) page covers the other half: when you use Claude and where the tokens go, by project and model. To see a profile card at 100%, open the [demo dashboard](/dashboard/). The whole app is on the [Claude usage tracker for Mac](/) page. When you're ready, [download cl_audit](/install/), add a profile for each account and set a level.
+The [Claude Code usage history](/use-cases/claude-code-usage-history/) page covers the other half: when you use Claude and where the tokens go, by project and model. To see a profile card at 100%, open the [demo dashboard](/dashboard/). The whole app is on the page for [a free Mac app for Claude limits](/). When you're ready, [download cl_audit](/install/), add a profile for each account and set a level.
