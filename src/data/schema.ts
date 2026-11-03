@@ -60,15 +60,17 @@ export function webPage({ path, name, description, type = "WebPage", published, 
   };
 }
 
-interface ArticleInfo { path: string; headline: string; description: string; published: Date; updated: Date }
+interface ArticleInfo { path: string; headline: string; description: string; published: Date; updated: Date; image?: string }
 
-export function article({ path, headline, description, published, updated }: ArticleInfo) {
+export function article({ path, headline, description, published, updated, image }: ArticleInfo) {
   return {
     "@context": ctx,
     "@type": "Article",
     "@id": `${abs(path)}#article`,
     headline,
     description,
+    // the article's first image, else the site's share image (Google prefers articles with an image)
+    image: abs(image ?? "/og.png"),
     datePublished: day(published),
     dateModified: day(updated),
     inLanguage: "en",

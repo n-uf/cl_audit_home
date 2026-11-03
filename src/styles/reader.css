@@ -50,6 +50,10 @@
 .prose h2::after { content: ""; flex: 1 0 24px; height: 1px; background: rgba(0,0,0,.5); box-shadow: 0 1px 0 rgba(255,255,255,.05); }
 .prose h3 { margin: 24px 0 8px; font-size: 16.5px; line-height: 1.35; color: var(--text); }
 .prose p { margin: 0 0 14px; }
+/* images (src/data/images.ts): captures of the site's demo, at their own size or narrower, never wider */
+.prose figure.shot { margin: 20px 0 22px; }
+.prose figure.shot img { display: block; max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 0 1px rgba(0,0,0,.5), 0 8px 22px rgba(0,0,0,.35); }
+.prose figure.shot figcaption { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.5; }
 .prose a:not(.key):not(.pill) { color: var(--link); text-underline-offset: 2px; }
 .prose a:not(.key):not(.pill):hover { text-decoration-thickness: 2px; }
 /* in-text action buttons (src/data/actions.ts): a reason, then the Download key and one more on a key plate */

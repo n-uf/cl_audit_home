@@ -116,8 +116,8 @@ export function withActions(html: string, page: string, mainKeyword: string): st
   let last = 0, target = step();
   const near = (b: Block) => Math.abs(b.cum - target);
   while (picks.length < MAX && target < total - TAIL) {
-    // never between a sentence and the list, table or code it introduces ("…these:" then a list)
-    const leadsIn = (b: Block) => ["ul", "ol", "table", "pre"].includes(b.nextTag) || /:\s*(<\/[^>]+>\s*)*$/.test(b.text.replace(/<\/p>\s*$/, "").trimEnd());
+    // never between a sentence and the list, table, code or image it introduces ("…these:" then a list)
+    const leadsIn = (b: Block) => ["ul", "ol", "table", "pre", "figure"].includes(b.nextTag) || /:\s*(<\/[^>]+>\s*)*$/.test(b.text.replace(/<\/p>\s*$/, "").trimEnd());
     const ok = (b: Block) => b.cum >= HEAD && b.cum <= total - TAIL && b.cum - last >= MIN_GAP && near(b) <= WINDOW && !leadsIn(b);
     // the best anchor paragraph near the mark; ties go to the one closest to it
     const anchors = bs.filter((b) => ok(b) && score(b) > 0).sort((x, y) => score(y) - score(x) || near(x) - near(y));

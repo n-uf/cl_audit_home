@@ -7,6 +7,7 @@ import "../../styles/reader.css";
 import { getPosts, pathOf, dateText, kindLabel } from "../../data/content";
 import { orgNode, webPage, breadcrumbs } from "../../data/schema";
 import { withActions } from "../../data/actions";
+import { withImages, firstImage } from "../../data/images";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -18,8 +19,9 @@ export async function getStaticPaths() {
 }
 const { posts, entry } = Astro.props;
 const rendered = entry ? await render(entry) : undefined;
-// the body with its action buttons (src/data/actions.ts); the plain component if there is no rendered HTML
-const html = entry?.rendered?.html ? withActions(entry.rendered.html, pathOf("blog", entry.id), entry.data.mainKeyword) : undefined;
+// the body with its images as sized figures (src/data/images.ts), then its action buttons (src/data/actions.ts);
+// the plain component if there is no rendered HTML
+const html = entry?.rendered?.html ? withActions(withImages(entry.rendered.html), pathOf("blog", entry.id), entry.data.mainKeyword) : undefined;
 
 const title = "Claude usage blog: limits, resets, tracking";
 const description = "Guides on Claude's usage limits and how to track them on a Mac: when limits reset, how to check usage, and how to use several accounts.";
@@ -30,7 +32,7 @@ const jsonLd = [
 ];
 ---
 {entry && rendered ? (
-  <Reader entry={entry} section="blog" headings={rendered.headings}>{html ? <Fragment set:html={html} /> : <rendered.Content />}</Reader>
+  <Reader entry={entry} section="blog" headings={rendered.headings} image={html ? firstImage(html) : undefined}>{html ? <Fragment set:html={html} /> : <rendered.Content />}</Reader>
 ) : (
   <Desktop title={title} description={description} page="blog" headline="Guides for Claude usage" jsonLd={jsonLd}>
     <div class="content-inner reader">
