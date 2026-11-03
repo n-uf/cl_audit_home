@@ -64,7 +64,8 @@ const jsonLd = [{
     "A dashboard with a card per profile: switches for its Claude window and Dock icon, limits read directly from Anthropic, usage history",
   ],
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  author: { "@type": "Organization", name: "n-uf", url: "https://n-uf.com" },
+  // the same node id on every n-uf site, so search engines see one maker
+  author: { "@type": "Organization", "@id": "https://n-uf.com/#org", name: "n-uf", url: "https://n-uf.com", sameAs: ["https://github.com/n-uf"] },
 }];
 ---
 <Desktop title={title} description={description} page="overview" headline="Claude apps side by side · each one's usage in the Dock" jsonLd={jsonLd}>
