@@ -5,7 +5,7 @@ h1: "Claude usage limits explained: the 5-hour and weekly limits"
 mainKeyword: "claude usage limits"
 kind: what-is
 published: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-03
 author: n-uf
 takeaways:
   - "Paid Claude plans have two usage limits: a session limit that resets every five hours and a weekly limit that resets once a week."
