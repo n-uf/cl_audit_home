@@ -1,6 +1,6 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
-import { repo, version, releasedText, changelog, download, requires, checkedWith, driftNote } from "../data/site";
+import { repo, version, releasedText, changelog, download, requires, checkedWith, driftNote, stage } from "../data/site";
 
 const title = "Install cl_audit, a free Claude usage app for Mac";
 const description =
@@ -19,7 +19,7 @@ const description =
           <div class="key-note dl-row">
             <a class="pill dl" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
             <span class="divider" aria-hidden="true"></span>
-            <span class="note">cl_audit {version} · {releasedText()} · {requires} · <a href={changelog}>What's new</a></span>
+            <span class="note">cl_audit {version}{stage && ` ${stage}`} · {releasedText()} · {requires} · <a href={changelog}>What's new</a></span>
           </div>
           <p class="t login-note" style="margin:0 0 12px"><b>Claude login:</b> sign-in happens in Claude's own screens, so cl_audit never sees the password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>How it works</a></p>
           <div class="steps">

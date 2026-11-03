@@ -8,6 +8,10 @@ export const version = "26.10.11";
 export const released = "2026-10-27";
 export const build = "134";   // the release's build number (About shows "26.10.11 · build 134")
 export const changelog = `${repo}/blob/main/CHANGELOG.md`;
+/** The release stage the site shows next to the version (Overview display and At a glance, Install). Set to ""
+ *  when cl_audit leaves alpha and every label goes. GitHub releases stay normal releases: the Download link
+ *  (releases/latest) skips pre-releases. */
+export const stage = "alpha";
 /** The latest release's ready-built app; GitHub redirects this to the newest release's zip. */
 export const download = `${repo}/releases/latest/download/cl_audit.zip`;
 export const requires = "Apple silicon · macOS 13 or later";

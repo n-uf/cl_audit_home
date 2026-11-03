@@ -4,7 +4,7 @@ import Row from "../components/Row.astro";
 import AccountCard from "../components/AccountCard.astro";
 import AccIcon from "../components/AccIcon.astro";
 import { accounts } from "../data/demo";
-import { repo, site, version, released, releasedText, changelog, download, requires, checkedWith } from "../data/site";
+import { repo, site, version, released, releasedText, changelog, download, requires, checkedWith, stage } from "../data/site";
 import { cardLimitsHTML } from "../data/panelView";
 
 // title and description: what a search result shows (Google cuts titles near 60 characters, descriptions near 155)
@@ -22,6 +22,7 @@ const glance: [string, string][] = [
   ["Mac", "Apple silicon, macOS 13 or later. Claude Code signed in for each profile."],
   ["Plans", "Plans with usage limits, such as Pro, Max and Team."],
   ["Accounts", "One profile per account seat, so work and personal sit side by side."],
+  ...(stage ? [["Alpha", "Released October 2026. A Claude update can break it until cl_audit updates."] as [string, string]] : []),
   ["Independent", "Not affiliated with Anthropic."],
 ];
 
@@ -57,7 +58,7 @@ const lane = ["plenty left", "", "half used", "", "at the limit"];
 // The release display above the hero keys: three pages it steps through (a plain refresh, with page marks; a
 // click moves on). A page longer than the window scrolls to its end first. Page 3 is a note, marked amber.
 const relPages: { html: string; amber?: boolean }[] = [
-  { html: `<span>cl_audit ${version}</span> <em>·</em> <span>${releasedText()}</span> <em>·</em> <span class="sub">${requires}</span>` },
+  { html: `<span>cl_audit ${version}${stage ? ` ${stage}` : ""}</span> <em>·</em> <span>${releasedText()}</span> <em>·</em> <span class="sub">${requires}</span>` },
   { html: `<em>Checked with</em> <span>Claude Code ${checkedWith.claudeCode}</span> <em>·</em> <span>Claude app ${checkedWith.claudeApp}</span>` },
   { html: `<em class="amber">Note</em> <span class="sub">newer Claude versions may need a cl_audit update</span>`, amber: true },
 ];
@@ -66,7 +67,7 @@ const relReason = {
   other: `<em class="amber">This computer isn't a Mac</em> <em>·</em> <span>cl_audit runs on macOS 13+, Apple silicon</span>`,
   intel: `<em class="amber">This Mac has an Intel chip</em> <em>·</em> <span>cl_audit needs Apple silicon</span>`,
 };
-const relText = `cl_audit ${version} · ${releasedText()} · ${requires}. Checked with Claude Code ${checkedWith.claudeCode} and the Claude app ${checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.`;
+const relText = `cl_audit ${version}${stage ? ` (${stage})` : ""} · ${releasedText()} · ${requires}. Checked with Claude Code ${checkedWith.claudeCode} and the Claude app ${checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.`;
 const spark = [[10, 4, 6], [14, 2, 8], [6, 22, 3], [5, 24, 2], [7, 26, 4], [9, 20, 3], [3, 8, 1]];
 
 // the same node id on every n-uf site, so search engines see one maker
