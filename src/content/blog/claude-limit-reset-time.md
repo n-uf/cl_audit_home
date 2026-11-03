@@ -72,7 +72,7 @@ Everything below about how Claude behaves comes from Anthropic's help and docs p
 | Weekly limit | At a fixed time each week assigned to your account | Settings ▸ Usage, next reset time |
 | In Claude Code | At the time shown in the limit message | `/usage`, or the "resets" time in the message |
 
-If you're stopped right now, the message tells you which one it is. "You've hit your session limit" is the 5-hour limit, "You've hit your weekly limit" is the weekly one, and Claude Code's docs say both messages carry the reset time. If you'd rather be told when it's over, see [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/).
+If you're stopped right now, the message tells you which one it is. "You've hit your session limit" is the 5-hour limit, "You've hit your weekly limit" is the weekly one, and Claude Code's docs say both messages carry the reset time. If you'd rather be told when it's over, see [a notification when the limit resets](/use-cases/claude-usage-limit-alerts/).
 
 ## How the Claude 5-hour limit resets
 
@@ -102,10 +102,10 @@ In practice:
 - You can't move it. Holding off for a day, or starting early in the week, doesn't change when the weekly limit comes back.
 - Yours may not match anyone else's, because the time is assigned to your account. Anthropic's pages don't give a weekday for the Claude weekly limit reset time, so treat a "Claude resets on Monday" claim you read elsewhere as unconfirmed. Your own Usage screen is the only place that knows.
 - It resets in full: the whole weekly allowance comes back each cycle.
-- Several accounts means several weekly times, one per account. Keeping track of them is what a [Claude usage tracker](/) is for.
+- Several accounts means several weekly times, one per account. Keeping track of them is what a Claude usage tracker is for.
 - On Team plans it's per member. Anthropic's Team page says weekly limits reset at a fixed time assigned to your account, and that limits are per member: one person reaching their limit doesn't affect the others.
 
-The weekly limit is separate from the 5-hour one, and the two run at once; Claude Code's docs say usage counts against the session and weekly allowances at the same time. The [plan-by-plan limits](/blog/claude-usage-limits/) are in our other article. So when the weekly limit is the full one, the 5-hour reset doesn't help on its own: you wait for the weekly reset, or use a limit reset (below) if you have one.
+The weekly limit is separate from the 5-hour one, and the two run at once; Claude Code's docs say usage counts against the session and weekly allowances at the same time. The plan-by-plan limits are in our other article. So when the weekly limit is the full one, the 5-hour reset doesn't help on its own: you wait for the weekly reset, or use a limit reset (below) if you have one.
 
 Max and Ultra plans also have a separate weekly limit for Fable. Anthropic's plan pages don't say whether it resets at its own time, so check your Usage screen if you use that model a lot.
 
@@ -149,6 +149,6 @@ Those carry on your work. They don't reach you while you're away from the screen
 
 For that, cl_audit's background agent sends macOS notifications. In each profile's settings, under Updates and alerts, you pick a level to be notified at, and Notify when back (on by default) sends one more alert when a full limit resets, such as "Claude Work is back · The 5-hour limit reset at 15:28". If the other limit is still full, it waits for that one. You get one alert per limit and reset, and at the reset the agent reads the profile again at once, so the card and the Dock icon update straight away.
 
-Setting those up is covered in [Claude usage limit alerts](/use-cases/claude-usage-limit-alerts/). They run for every profile, which matters if you switch between a personal plan and a work seat during the day.
+Setting those up is covered on the page about [getting an alert before a limit is full](/use-cases/claude-usage-limit-alerts/). They run for every profile, which matters if you switch between a personal plan and a work seat during the day.
 
-With one Claude account, Settings ▸ Usage may be all you need (background in [the 5-hour and weekly limits explained](/blog/claude-usage-limits/)). With several, a [Claude usage tracker for Mac](/) puts every reset time in one place.
+With one Claude account, Settings ▸ Usage may be all you need (background in [the 5-hour and weekly limits explained](/blog/claude-usage-limits/)). With several, you can [track Claude usage on your Mac](/) with every reset time in one place.
