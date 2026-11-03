@@ -8,13 +8,12 @@ import { download, version, requires } from "../data/site";
 import { sections, pathOf, dateText, pageInfo, kindLabel, type Entry, type Section } from "../data/content";
 import { orgNode, webPage, article, breadcrumbs, faqPage } from "../data/schema";
 
-// image: the page's first guide image (src/data/images.ts), for the Article structured data
-interface Props { entry: Entry; section: Section; headings: { depth: number; slug: string; text: string }[]; image?: string }
-const { entry, section, headings, image } = Astro.props;
+interface Props { entry: Entry; section: Section; headings: { depth: number; slug: string; text: string }[] }
+const { entry, section, headings } = Astro.props;
 const d = entry.data;
 const sec = sections[section];
 const path = pathOf(section, entry.id);
-// the page's own share image (scripts/render-og-pages.py), 1200x630
+// the page's own share image (scripts/render-og-pages.py), 1200x630; also its Article image, so the two match
 const ogImage = `/og/${entry.id}.png`;
 
 // the table of contents lists the ## headings; with fewer than four it adds nothing
@@ -25,7 +24,7 @@ const related = await Promise.all(d.related.map(async (p) => ({ path: p, ...(awa
 const crumbs = [{ name: "Home", path: "/" }, { name: sec.label, path: sec.path }, { name: d.h1, path }];
 const jsonLd = [
   section === "blog"
-    ? article({ path, headline: d.h1, description: d.description, published: d.published, updated: d.updated, image: image ?? ogImage })
+    ? article({ path, headline: d.h1, description: d.description, published: d.published, updated: d.updated, image: ogImage })
     : webPage({ path, name: d.h1, description: d.description, published: d.published, updated: d.updated }),
   breadcrumbs(crumbs),
   faqPage(d.faq),
