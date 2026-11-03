@@ -15,14 +15,14 @@ const JITTER = 0.2;
 const HEAD = 300, TAIL = 250, MIN_GAP = 400, WINDOW = 160, MAX = 3;
 
 type Kind = "alerts" | "accounts" | "history" | "general";
-interface Action { why: [string, string]; second: [label: string, href: string] }
+interface Action { why: string[]; second: [label: string, href: string] }
 
 // two wordings per kind, used in turn, so a page with two buttons of one kind doesn't repeat itself
 const ACTIONS: Record<Kind, Action> = {
   alerts: { why: ["Get a Mac notification before a Claude limit is full, and another when it's back.", "See the countdown to your next Claude reset in the Dock, for every account."], second: ["How the alerts work", "/use-cases/claude-usage-limit-alerts/"] },
   accounts: { why: ["Give each Claude account its own window and Dock icon, side by side.", "Keep work and personal Claude accounts apart on one Mac, each with its own limits."], second: ["Multiple accounts", "/use-cases/multiple-claude-accounts/"] },
   history: { why: ["See your Claude Code usage by day, project and model.", "Every account's limits and your Claude Code history on one dashboard."], second: ["Demo dashboard", "/dashboard/"] },
-  general: { why: ["See every Claude account's 5-hour and weekly limits in your Dock.", "Track Claude usage limits for all your accounts on your Mac. It's free."], second: ["Demo dashboard", "/dashboard/"] },
+  general: { why: ["See every Claude account's 5-hour and weekly limits in your Dock.", "Track Claude usage limits for all your accounts on your Mac. It's free.", "A free Mac app for Claude usage limits: one Dock icon per account."], second: ["Demo dashboard", "/dashboard/"] },
 };
 // topic words for each kind; a paragraph that also names cl_audit is a stronger anchor
 // (words every page uses, like "profile" or "seat", are left out: they would win everywhere)
@@ -99,7 +99,7 @@ function button(kind: Kind, page: string, nth: number): string {
   // never point the second key at the page the reader is on
   const [label, href] = a.second[1] === page ? ACTIONS.history.second : a.second;
   return `<aside class="act" data-act="${kind}" aria-label="cl_audit">` +
-    `<p class="act-why">${a.why[nth % 2]}</p>` +
+    `<p class="act-why">${a.why[nth % a.why.length]}</p>` +
     `<div class="plate act-keys"><a class="pill dl" href="${download}"><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>` +
     `<a class="key" href="${href}">${label}</a></div></aside>`;
 }
@@ -116,7 +116,9 @@ export function withActions(html: string, page: string, mainKeyword: string): st
   let last = 0, target = step();
   const near = (b: Block) => Math.abs(b.cum - target);
   while (picks.length < MAX && target < total - TAIL) {
-    const ok = (b: Block) => b.cum >= HEAD && b.cum <= total - TAIL && b.cum - last >= MIN_GAP && near(b) <= WINDOW;
+    // never between a sentence and the list, table or code it introduces ("…these:" then a list)
+    const leadsIn = (b: Block) => ["ul", "ol", "table", "pre"].includes(b.nextTag) || /:\s*(<\/[^>]+>\s*)*$/.test(b.text.replace(/<\/p>\s*$/, "").trimEnd());
+    const ok = (b: Block) => b.cum >= HEAD && b.cum <= total - TAIL && b.cum - last >= MIN_GAP && near(b) <= WINDOW && !leadsIn(b);
     // the best anchor paragraph near the mark; ties go to the one closest to it
     const anchors = bs.filter((b) => ok(b) && score(b) > 0).sort((x, y) => score(y) - score(x) || near(x) - near(y));
     // no anchor: the end of a section (just before the next ## heading), else any paragraph end, closest to the mark
@@ -131,6 +133,8 @@ export function withActions(html: string, page: string, mainKeyword: string): st
   let out = html;
   // each kind has two wordings; a third button of one kind takes the general wording instead of repeating
   const seen = new Map<Kind, number>();
+  // the page's own topic gets at least one button: the first pick takes it when none has
+  if (picks.length > 0 && !picks.some((p) => p.kind === pageTopic)) picks[0].kind = pageTopic;
   for (const p of picks) if ((seen.get(p.kind) ?? 0) >= 2 && p.kind !== "general") p.kind = "general"; else seen.set(p.kind, (seen.get(p.kind) ?? 0) + 1);
   seen.clear();
   const nth = picks.map((p) => { const n = seen.get(p.kind) ?? 0; seen.set(p.kind, n + 1); return n; });
