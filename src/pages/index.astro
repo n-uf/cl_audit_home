@@ -168,7 +168,7 @@ const jsonLd = [{
     <section class="card glance" aria-labelledby="glance-title">
       <h4 id="glance-title">At a glance</h4>
       <ul>
-        {glance.map(([b, t]) => <li><b>{b}</b>{t}</li>)}
+        {glance.map(([b, t]) => <li class:list={{ stage: b === "Alpha" }}><b>{b}</b>{t}</li>)}
       </ul>
     </section>
 
