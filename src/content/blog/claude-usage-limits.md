@@ -143,7 +143,7 @@ Anthropic's Pro page says Pro gives more usage per session than Free, and that t
 
 Max is set as a multiple: five times Pro's usage every five hours and every week. It has a five-hour limit, a weekly limit across all models and a separate weekly limit for Fable.
 
-The names have changed. Anthropic's Ultra page says the Max 20x plan is now called Ultra, and existing Max 20x subscribers moved to it automatically with no price change. An older guide that talks about "Max 5x and Max 20x" means today's Max and Ultra.
+The names have changed. Anthropic's Ultra page says the Max 20x plan is now called Ultra, and existing Max 20x subscribers moved to it automatically with no price change. An older guide that talks about "Max 5x and Max 20x" means today's Max and Ultra. For prices, Fable and how to tell which plan your own usage needs, see [Claude Max vs Pro](/blog/claude-max-vs-pro/).
 
 ### Ultra and Team
 
