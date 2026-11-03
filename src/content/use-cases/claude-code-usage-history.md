@@ -122,4 +122,4 @@ The history is read on your Mac and stays there. cl_audit has no server, no anal
 
 Those files are plain text and hold whatever passed through a session, so Anthropic's docs suggest lowering `cleanupPeriodDays` if you want them kept for less time. cl_audit reads only the five fields above. It saves the resulting usage figures per profile, and **Remove profile…** deletes them with the profile.
 
-The source is open to read, and the [FAQ](/faq/) lists what cl_audit reads and sends. To see the history for your own sessions, [download cl_audit](/install/) and add a profile for each Claude Code folder you use. The [Claude usage tracker for Mac](/) page has the rest of the app.
+The source is open to read, and the [FAQ](/faq/) lists what cl_audit reads and sends. To see the history for your own sessions, [download cl_audit](/install/) and add a profile for each Claude Code folder you use. The page on [cl_audit's Dock icons](/) has the rest of the app.
