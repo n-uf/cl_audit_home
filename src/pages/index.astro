@@ -8,9 +8,10 @@ import { repo, site, version, released, releasedText, changelog, download, requi
 import { cardLimitsHTML } from "../data/panelView";
 
 // title and description: what a search result shows (Google cuts titles near 60 characters, descriptions near 155)
-const title = "cl_audit: Claude usage limits in your Mac's Dock";
+// main keyword: "Claude usage tracker" (the semantic core in /opt/projects/claude/seo maps one per page)
+const title = "Claude usage tracker for Mac: all your accounts | cl_audit";
 const description =
-  "See each Claude profile's 5-hour and weekly usage limits live in your Mac's Dock, and run several Claude setups side by side. Free and source-available.";
+  "cl_audit is a free Claude usage tracker for Mac: every account's 5-hour and weekly limits in the Dock and on one dashboard, each in its own Claude window.";
 // the fuller summary, for the structured data (not shown in search results)
 const appDescription =
   "cl_audit gives each of your Claude setups on macOS its own profile: a Claude Code folder, an optional separate Claude window and a Dock icon that shows its usage limits live. One dashboard with switches for every profile, figures read directly from Anthropic. Free and source-available.";
@@ -68,7 +69,7 @@ const jsonLd = [{
   author: { "@type": "Organization", "@id": "https://n-uf.com/#org", name: "n-uf", url: "https://n-uf.com", sameAs: ["https://github.com/n-uf"] },
 }];
 ---
-<Desktop title={title} description={description} page="overview" headline="Claude apps side by side · each one's usage in the Dock" jsonLd={jsonLd}>
+<Desktop title={title} description={description} page="overview" headline="Claude usage tracker for Mac · every account's limits in the Dock" jsonLd={jsonLd}>
   <div class="content-inner">
     <div class="hero-row">
     <div class="hero-cards" aria-label="Two demo profiles as the dashboard shows them">
