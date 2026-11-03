@@ -20,10 +20,12 @@ export const GET: APIRoute = async () => {
     "",
     "## Use cases",
     "",
+    line("/use-cases/", "All use cases", "What cl_audit is good for, one job at a time."),
     ...useCases.map((e) => line(pathOf("usecases", e.id), e.data.h1, e.data.description)),
   ];
   if (posts.length > 0) {
-    out.push("", "## Blog", "", ...posts.map((e) => line(pathOf("blog", e.id), e.data.h1, e.data.description)));
+    out.push("", "## Blog", "", line("/blog/", "All articles", "Guides on Claude's usage limits and how to track them on a Mac."),
+      ...posts.map((e) => line(pathOf("blog", e.id), e.data.h1, e.data.description)));
   }
   return new Response(out.join("\n") + "\n", { headers: { "Content-Type": "text/plain; charset=utf-8" } });
 };
