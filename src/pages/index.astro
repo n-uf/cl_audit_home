@@ -11,14 +11,14 @@ import { cardLimitsHTML } from "../data/panelView";
 // main keyword: "Claude usage tracker" (the semantic core in /opt/projects/claude/seo maps one per page)
 const title = "Claude usage tracker for Mac: all your accounts | cl_audit";
 const description =
-  "cl_audit is a free Claude usage tracker for Mac: every account's 5-hour and weekly limits in the Dock and on one dashboard, each in its own Claude window.";
+  "cl_audit is a free Claude usage tracker for Mac: each account's 5-hour and weekly limits on its own Dock icon and on one dashboard, plus usage history.";
 // the fuller summary, for the structured data (not shown in search results)
 const appDescription =
   "cl_audit is a free, source-available Claude usage tracker for Mac. It runs several Claude accounts side by side, each in its own profile: a Claude Code folder, an optional separate Claude window and a Dock icon that shows its 5-hour and weekly usage limits live. One dashboard shows every profile, with limits read from Anthropic and Claude Code usage history from local logs.";
 
 // "At a glance": short facts under the intro (the key takeaways), each a lead word and a line
 const glance: [string, string][] = [
-  ["Free", "Source-available (PolyForm Perimeter 1.0.1). No account, server or analytics."],
+  ["Free", "Source-available (PolyForm Perimeter 1.0.1). No sign-up, server or analytics."],
   ["Mac", "Apple silicon, macOS 13 or later. Claude Code signed in for each profile."],
   ["Plans", "Plans with usage limits, such as Pro, Max and Team."],
   ["Accounts", "One profile per account seat, so work and personal sit side by side."],
@@ -28,15 +28,15 @@ const glance: [string, string][] = [
 // Questions about tracking Claude usage (shown near the end, and the page's FAQPage data). Answers may hold <code>.
 const homeFaq: [string, string][] = [
   ["How do I check my Claude usage on a Mac?",
-   "Claude shows it in Settings ▸ Usage, and Claude Code shows it with <code>/usage</code>, one account at a time. cl_audit keeps every account's 5-hour and weekly limits in view: on each profile's Dock icon, in the launcher and on one dashboard, with the exact reset times."],
+   "Claude shows it in Settings ▸ Usage, and Claude Code shows it with <code>/usage</code>, one account at a time. cl_audit shows every account's 5-hour and weekly limits at once: on each profile's Dock icon, in the launcher and on one dashboard, with the exact reset times."],
   ["Can cl_audit track several Claude accounts?",
-   "Yes. Each profile is one account seat with its own Dock icon, and the dashboard shows all of them. A personal plan and a Team seat on the same email count as two seats."],
+   "Yes. Each profile is linked to one account seat and can have its own Dock icon; the dashboard shows all of them. A personal plan and a Team seat on the same email count as two seats."],
   ["Is cl_audit a menu bar app?",
-   "No. It shows usage in the Dock, with one icon per profile, so several accounts sit side by side. There's no menu bar item."],
+   "No. It shows usage in the Dock, with one icon for each profile that has Usage in the Dock on, so several accounts sit side by side. There's no menu bar item."],
   ["Which Claude plans does it work with?",
-   "Plans with usage limits, such as Pro, Max and Team, signed in to Claude Code. A profile that uses an API key is billed per token and has no limits to show."],
+   "Plans with usage limits, such as Pro, Max and Team, signed in to Claude Code. A profile that uses an API key has no limits to show."],
   ["Is cl_audit free?",
-   "Yes. It's free and source-available under PolyForm Perimeter 1.0.1, with no account, server or analytics. It isn't made by Anthropic and isn't affiliated with it."],
+   "Yes. It's free and source-available under PolyForm Perimeter 1.0.1, with no sign-up, server or analytics. It isn't made by Anthropic and isn't affiliated with it."],
 ];
 const plain = (html: string) => html.replace(/<[^>]+>/g, "");
 
@@ -134,12 +134,12 @@ const jsonLd = [{
       <div class="intro-body intro-grid">
         <h4 class="intro-label">What it does</h4>
         <p class="intro-text"><img class="intro-ico" src="/img/app-icon.png" alt="The cl_audit app icon" width="72" height="72" />
-          cl_audit is a free Claude usage tracker for Mac. It shows the 5-hour and weekly usage limits of every
-          Claude account you use, each on its own Dock icon and all together on one dashboard, and counts down to
-          the reset when a limit is full. It also runs those accounts side by side, each in its own Claude window
-          with its own Claude Code sign-in. Limits are read from Anthropic; usage history comes from Claude Code's
-          session logs on the Mac. A profile is one Claude setup: a Claude Code folder with its sign-in, a Claude
-          window and a Dock icon.
+          cl_audit is a free Claude usage tracker for Mac. It shows the 5-hour and weekly limits of every Claude
+          account you use, each on its own Dock icon and all on one dashboard, and counts down to the reset when a
+          limit is full. Profiles can also have their own Claude window, so accounts sit side by side with their own
+          Claude Code sign-in. Limits are read from Anthropic; usage history comes from Claude Code's session logs
+          on the Mac. A profile is one Claude setup: a Claude Code folder with its sign-in, a Claude window and a
+          Dock icon.
         </p>
         <!-- the release in a display window, then the actions as one key strip (sketch T4); both full width -->
         <div class="disp version-disp" id="rel" title={relText} aria-hidden="true">
