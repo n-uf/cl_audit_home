@@ -80,7 +80,7 @@ In cl_audit the unit is a profile: one Claude setup. A profile has a Claude Code
 
 - **Claude Code folder.** Claude Code keeps its settings and session history in one folder, `~/.claude` by default. Anthropic's docs say that if you set `CLAUDE_CONFIG_DIR`, Claude Code stores them in that folder instead. Each profile has its own folder and its own sign-in.
 - **Claude window.** The profile that uses `~/.claude` opens the usual Claude app. Every other profile gets its own Claude window, with its own sign-in, chats and settings. Each of those windows runs with its own `--user-data-dir`, and that's how cl_audit tells them apart.
-- **Dock icon.** A small app named "cl_audit <profile>" that shows the profile's 5-hour and weekly usage. By default a click shows the usage for 3 seconds while the profile's Claude window opens.
+- **Dock icon.** A small app named `cl_audit <profile name>` that shows the profile's 5-hour and weekly usage. By default a click shows the usage for 3 seconds while the profile's Claude window opens.
 
 A profile has two switches, **Usage in the Dock** and **Claude window**. With both off it's "usage only". Its limits still show on the [Claude usage dashboard](/dashboard/), in the launcher and in alerts, but nothing sits in the Dock and no window opens. That suits an account you only want to keep an eye on.
 
