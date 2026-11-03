@@ -13,8 +13,8 @@ import argparse, os, subprocess, tempfile
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-HEAD1, HEAD2 = "Every Claude profile,", "side by side on your Mac."
-SUB = "Usage limits in the Dock · cl-audit.n-uf.com"
+HEAD1, HEAD2 = "Claude usage tracker", "for every account on your Mac."
+SUB = "5-hour and weekly limits in the Dock · cl-audit.n-uf.com"
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--font", required=True)
