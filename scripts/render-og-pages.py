@@ -29,9 +29,13 @@ def background():
     im = np.array([29, 29, 31], float)[None, None] * (1 - a[..., None]) + np.array([217, 119, 87], float)[None, None] * a[..., None]
     return Image.fromarray(np.clip(im + 0.5, 0, 255).astype("uint8")).convert("RGBA")
 
+KEEP_TOGETHER = ["VS Code"]   # names a line break would split ("VS" / "Code")
+
 def wrap(text, f, width):
+    for name in KEEP_TOGETHER:
+        text = text.replace(name, name.replace(" ", " "))
     lines, line = [], ""
-    for word in text.split():
+    for word in text.split(" "):   # plain spaces only, so a no-break space holds
         trial = f"{line} {word}".strip()
         if f.getlength(trial) <= width or not line:
             line = trial
