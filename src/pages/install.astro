@@ -1,10 +1,10 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
-import { repo, version, releasedText, changelog, download, requires, checkedWith, driftNote } from "../data/site";
+import { repo, version, releasedText, changelog, download, requires, checkedWith, driftNote, stage } from "../data/site";
 
-const title = "Install cl_audit on your Mac, or build it from source";
+const title = "Install cl_audit, a free Claude usage app for Mac";
 const description =
-  "Download cl_audit for Apple silicon Macs (macOS 13 or later), allow it once in Privacy & Security, and add a profile per Claude setup. Needs Claude Code.";
+  "Download cl_audit for Apple silicon Macs (macOS 13 or later), allow it once, and add a profile for each Claude account. It's free and needs Claude Code.";
 ---
 <Desktop title={title} description={description} page="install" headline="Download or build from source">
   <div class="content-inner">
@@ -19,7 +19,7 @@ const description =
           <div class="key-note dl-row">
             <a class="pill dl" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
             <span class="divider" aria-hidden="true"></span>
-            <span class="note">cl_audit {version} · {releasedText()} · {requires} · <a href={changelog}>What's new</a></span>
+            <span class="note">cl_audit {version}{stage && ` ${stage}`} · {releasedText()} · {requires} · <a href={changelog}>What's new</a></span>
           </div>
           <p class="t login-note" style="margin:0 0 12px"><b>Claude login:</b> sign-in happens in Claude's own screens, so cl_audit never sees the password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>How it works</a></p>
           <div class="steps">
@@ -33,13 +33,13 @@ const description =
           </div>
         </div>
         <div class="card i-4">
-          <h4>Add a profile</h4>
+          <h4>Add a profile for each Claude account</h4>
           <div class="steps">
             <div><div><b>Open cl_audit, then Settings ▸ New profile</b><span>A page opens in the same window: the profile, its Claude Code folder, and a summary with the steps to do.</span></div></div>
             <div><div><b>Choose its Claude Code folder</b><span>A new one (<code>~/.claude-&lt;name&gt;</code>, optionally sharing instructions, agents, skills, commands or memory from another folder) or an existing one, such as <code>~/.claude</code>.</span></div></div>
             <div><div><b>Choose what it includes</b><span>Two keys: <b>Usage in the Dock</b> (a Dock icon that shows its usage) and <b>Claude window</b> (with <code>~/.claude</code>, the usual Claude app; with any other folder, its own Claude window, with its own sign-in, chats and settings). With both off the profile is usage only: its usage shows on the dashboard, in the launcher and in alerts.</span></div></div>
             <div><div><b>Quit the Claude app until the folder is set up</b><span>Only with a Claude window: while it is open the Claude app writes its own sign-in and settings. The page lists its windows and checks every 2 seconds. Claude Code in Terminal doesn't get in the way. Without a Claude window there's no such step.</span></div></div>
-            <div><div><b>Sign in, in two parts</b><span>Claude Code first (Terminal runs <code>claude auth login</code> for the folder), then, with a Claude window, that window, signed in to the same claude.ai account. “Finish now” leaves sign-in for later. One profile per account: an account another profile already has is refused.</span></div></div>
+            <div><div><b>Sign in, in two parts</b><span>Claude Code first (Terminal runs <code>claude auth login</code> for the folder), then, with a Claude window, that window, signed in to the same claude.ai account. “Finish now” leaves sign-in for later. One profile per seat: a seat another profile already has is refused. A personal plan and a Team seat on one email are two seats.</span></div></div>
             <div><div><b>Add the Dock icon, or start reading usage</b><span>With Usage in the Dock, cl_audit installs “cl_audit &lt;profile&gt;” and puts it in the Dock; Settings ▸ General ▸ Dock can keep the icons in order for you (experimental: it rewrites the Dock's pin list and restarts the Dock). Without it, <b>Start reading usage</b> installs nothing: cl_audit's background agent reads every profile. The first time, macOS says cl_audit added a background item and asks once to allow notifications for cl_audit.</span></div></div>
           </div>
         </div>

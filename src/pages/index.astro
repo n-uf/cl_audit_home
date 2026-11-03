@@ -4,16 +4,42 @@ import Row from "../components/Row.astro";
 import AccountCard from "../components/AccountCard.astro";
 import AccIcon from "../components/AccIcon.astro";
 import { accounts } from "../data/demo";
-import { repo, site, version, released, releasedText, changelog, download, requires, checkedWith } from "../data/site";
+import { repo, site, version, released, releasedText, changelog, download, requires, checkedWith, stage } from "../data/site";
 import { cardLimitsHTML } from "../data/panelView";
 
 // title and description: what a search result shows (Google cuts titles near 60 characters, descriptions near 155)
-const title = "cl_audit: Claude usage limits in your Mac's Dock";
+// main keyword: "Claude usage tracker" (the semantic core in /opt/projects/claude/seo maps one per page)
+const title = "Claude usage tracker for Mac: all your accounts | cl_audit";
 const description =
-  "See each Claude profile's 5-hour and weekly usage limits live in your Mac's Dock, and run several Claude setups side by side. Free and source-available.";
+  "cl_audit is a free Claude usage tracker for Mac: each account's 5-hour and weekly limits on its own Dock icon and on one dashboard, plus usage history.";
 // the fuller summary, for the structured data (not shown in search results)
 const appDescription =
-  "cl_audit gives each of your Claude setups on macOS its own profile: a Claude Code folder, an optional separate Claude window and a Dock icon that shows its usage limits live. One dashboard with switches for every profile, figures read directly from Anthropic. Free and source-available.";
+  "cl_audit is a free, source-available Claude usage tracker for Mac. It runs several Claude accounts side by side, each in its own profile: a Claude Code folder, an optional separate Claude window and a Dock icon that shows its 5-hour and weekly usage limits live. One dashboard shows every profile, with limits read from Anthropic and Claude Code usage history from local logs.";
+
+// "At a glance": short facts under the intro (the key takeaways), each a lead word and a line
+const glance: [string, string][] = [
+  ["Free", "Source-available (PolyForm Perimeter 1.0.1). No sign-up, server or analytics."],
+  ["Mac", "Apple silicon, macOS 13 or later. Claude Code signed in for each profile."],
+  ["Plans", "Plans with usage limits, such as Pro, Max and Team."],
+  ["Accounts", "One profile per account seat, so work and personal sit side by side."],
+  ...(stage ? [["Alpha", "First released October 2026. A Claude update can break it until cl_audit updates."] as [string, string]] : []),
+  ["Independent", "Not affiliated with Anthropic."],
+];
+
+// Questions about tracking Claude usage (shown near the end, and the page's FAQPage data). Answers may hold <code>.
+const homeFaq: [string, string][] = [
+  ["How do I check my Claude usage on a Mac?",
+   "Claude shows it in Settings ▸ Usage, and Claude Code shows it with <code>/usage</code>, one account at a time. cl_audit shows every account's 5-hour and weekly limits at once: on each profile's Dock icon, in the launcher and on one dashboard, with the exact reset times."],
+  ["Can cl_audit track several Claude accounts?",
+   "Yes. Each profile is linked to one account seat and can have its own Dock icon; the dashboard shows all of them. A personal plan and a Team seat on the same email count as two seats."],
+  ["Is cl_audit a menu bar app?",
+   "No. It shows usage in the Dock, with one icon for each profile that has Usage in the Dock on, so several accounts sit side by side. There's no menu bar item."],
+  ["Which Claude plans does it work with?",
+   "Plans with usage limits, such as Pro, Max and Team, signed in to Claude Code. A profile that uses an API key has no limits to show."],
+  ["Is cl_audit free?",
+   "Yes. It's free and source-available under PolyForm Perimeter 1.0.1, with no sign-up, server or analytics. It isn't made by Anthropic and isn't affiliated with it."],
+];
+const plain = (html: string) => html.replace(/<[^>]+>/g, "");
 
 // The login section on the Overview: tabs, each with a plain explanation (text may hold <code>).
 const trustFacts: { tab: string; title: string; text: string }[] = [
@@ -32,7 +58,7 @@ const lane = ["plenty left", "", "half used", "", "at the limit"];
 // The release display above the hero keys: three pages it steps through (a plain refresh, with page marks; a
 // click moves on). A page longer than the window scrolls to its end first. Page 3 is a note, marked amber.
 const relPages: { html: string; amber?: boolean }[] = [
-  { html: `<span>cl_audit ${version}</span> <em>·</em> <span>${releasedText()}</span> <em>·</em> <span class="sub">${requires}</span>` },
+  { html: `<span>cl_audit ${version}${stage ? ` ${stage}` : ""}</span> <em>·</em> <span>${releasedText()}</span> <em>·</em> <span class="sub">${requires}</span>` },
   { html: `<em>Checked with</em> <span>Claude Code ${checkedWith.claudeCode}</span> <em>·</em> <span>Claude app ${checkedWith.claudeApp}</span>` },
   { html: `<em class="amber">Note</em> <span class="sub">newer Claude versions may need a cl_audit update</span>`, amber: true },
 ];
@@ -41,13 +67,38 @@ const relReason = {
   other: `<em class="amber">This computer isn't a Mac</em> <em>·</em> <span>cl_audit runs on macOS 13+, Apple silicon</span>`,
   intel: `<em class="amber">This Mac has an Intel chip</em> <em>·</em> <span>cl_audit needs Apple silicon</span>`,
 };
-const relText = `cl_audit ${version} · ${releasedText()} · ${requires}. Checked with Claude Code ${checkedWith.claudeCode} and the Claude app ${checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.`;
+const relText = `cl_audit ${version}${stage ? ` (${stage})` : ""} · ${releasedText()} · ${requires}. Checked with Claude Code ${checkedWith.claudeCode} and the Claude app ${checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.`;
 const spark = [[10, 4, 6], [14, 2, 8], [6, 22, 3], [5, 24, 2], [7, 26, 4], [9, 20, 3], [3, 8, 1]];
 
+// the same node id on every n-uf site, so search engines see one maker
+const org = { "@type": "Organization", "@id": "https://n-uf.com/#org", name: "n-uf", url: "https://n-uf.com", sameAs: ["https://github.com/n-uf"] };
+// spellings people type for the name; "cl audit" alone also matches unrelated audit firms
+const alternateName = ["cl-audit", "cl audit"];
 const jsonLd = [{
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "WebSite",
+  "@id": `${site}/#website`,
   name: "cl_audit",
+  alternateName,
+  url: `${site}/`,
+  publisher: { "@id": org["@id"] },
+}, {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${site}/#webpage`,
+  name: title,
+  description,
+  url: `${site}/`,
+  isPartOf: { "@id": `${site}/#website` },
+  about: { "@id": `${site}/#app` },
+  publisher: { "@id": org["@id"] },
+}, {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  // the new use-case and blog pages point to the app by this id
+  "@id": `${site}/#app`,
+  name: "cl_audit",
+  alternateName,
   description: appDescription,
   applicationCategory: "DeveloperApplication",
   operatingSystem: "macOS 13 or later",
@@ -59,16 +110,22 @@ const jsonLd = [{
   downloadUrl: download,
   image: `${site}/img/app-icon.png`,
   featureList: [
-    "Several Claude profiles side by side: each with its own Claude Code folder and sign-in and, if you want, its own Claude window",
-    "A Dock icon per profile with its 5-hour and weekly usage limits",
-    "A dashboard with a card per profile: switches for its Claude window and Dock icon, limits read directly from Anthropic, usage history",
+    "Several Claude accounts side by side: each profile with its own Claude Code folder and sign-in and, if you want, its own Claude window",
+    "A Dock icon per profile with its 5-hour and weekly usage limits, counting down to the reset when a limit is full",
+    "Notifications at a set level, when a limit is full and when it resets",
+    "A dashboard with a card per profile: switches for its Claude window and Dock icon, limits read from Anthropic, Claude Code usage history",
   ],
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  // the same node id on every n-uf site, so search engines see one maker
-  author: { "@type": "Organization", "@id": "https://n-uf.com/#org", name: "n-uf", url: "https://n-uf.com", sameAs: ["https://github.com/n-uf"] },
+  isAccessibleForFree: true,
+  author: org,
+  publisher: { "@id": org["@id"] },
+}, {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: homeFaq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: plain(a) } })),
 }];
 ---
-<Desktop title={title} description={description} page="overview" headline="Claude apps side by side · each one's usage in the Dock" jsonLd={jsonLd}>
+<Desktop title={title} description={description} page="overview" headline="Claude usage tracker for Mac · every account's limits in the Dock" jsonLd={jsonLd}>
   <div class="content-inner">
     <div class="hero-row">
     <div class="hero-cards" aria-label="Two demo profiles as the dashboard shows them">
@@ -78,10 +135,10 @@ const jsonLd = [{
       <div class="intro-body intro-grid">
         <h4 class="intro-label">What it does</h4>
         <p class="intro-text"><img class="intro-ico" src="/img/app-icon.png" alt="The cl_audit app icon" width="72" height="72" />
-          cl_audit runs several Claude desktop apps side by side on one Mac, each with its own sign-in, and shows
-          every profile's 5-hour and weekly usage in the Dock and on a dashboard. A profile is one Claude setup: a
-          Claude Code folder with its sign-in, a Claude window and a Dock icon. Limits are read from Anthropic;
-          usage history comes from Claude Code's session logs on the Mac.
+          cl_audit is a free Claude usage tracker for Mac. It shows the 5-hour and weekly limits of every Claude
+          account you use, each on its own Dock icon and all on one dashboard, and counts down to the reset when a
+          limit is full. Each account can also have its own Claude window, side by side. Limits are read from
+          Anthropic; usage history comes from Claude Code's session logs on the Mac.
         </p>
         <!-- the release in a display window, then the actions as one key strip (sketch T4); both full width -->
         <div class="disp version-disp" id="rel" title={relText} aria-hidden="true">
@@ -100,11 +157,19 @@ const jsonLd = [{
     </div>
     </div>
 
+    <!-- the short facts a search result or an AI answer can lift as they are -->
+    <section class="card glance" aria-labelledby="glance-title">
+      <h4 id="glance-title">At a glance</h4>
+      <ul>
+        {glance.map(([b, t]) => <li><b>{b}</b>{t}</li>)}
+      </ul>
+    </section>
+
     <section class="card trust" aria-labelledby="trust-title">
       <div class="trust-head">
         <!-- a two-part display window: LOGIN dim, SECURITY lit (sketch V4) -->
         <span class="disp trust-disp" aria-hidden="true"><em>Login</em>Security</span>
-        <h2 id="trust-title" class="trust-title"><span class="sr-only">Security: </span>How cl_audit handles the Claude login</h2>
+        <h2 id="trust-title" class="trust-title">How does cl_audit handle your Claude login?</h2>
         <span class="trust-note">Source-available · runs locally · no account or server</span>
         <a class="trust-more" href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>Details ›</a>
       </div>
@@ -121,8 +186,8 @@ const jsonLd = [{
 
     <div class="cols3">
       <article class="card" id="profiles">
-        <h4>1 · Multiple Claude apps</h4>
-        <h2 class="h3">A Claude window per profile, each signed in</h2>
+        <h4>1 · Multiple Claude accounts</h4>
+        <h2 class="h3">Several Claude accounts, side by side</h2>
         <div class="mini-palette">
           {accounts.map((a, i) => <Row id={a.id} icon={a.icon} name={a.name} color={a.color} five={a.five} week={a.week} key={`⌘${i + 1}`} sel={i === 0} open={i < 2} />)}
           <div class="foot">click or ↩ Claude window · ⌘↩ Terminal</div>
@@ -130,14 +195,15 @@ const jsonLd = [{
         <p class="t">
           The Claude app signs in to one account at a time, so every profile but the one using <code>~/.claude</code>
           gets its own Claude window, with its own sign-in, chats and settings; its Claude Code folder keeps its own
-          sign-in. Several profiles can use one claude.ai account.
+          sign-in. A personal plan and a Team seat on one email are two seats, so work and personal can each have a
+          profile.
         </p>
         <a class="more" href="/install/">Add a profile ›</a>
       </article>
 
       <article class="card" id="dock">
         <h4>2 · Usage in the Dock</h4>
-        <h2 class="h3">Both limits, per profile</h2>
+        <h2 class="h3">5-hour and weekly limits in the Dock, per account</h2>
         <div class="dock-mini">
           <img src="/img/app-icon.png" alt="" width="52" height="52" /><span class="vsep"></span>
           {accounts.map((a) => <AccIcon id={a.id} src={a.icon} size={52} alt={`Dock icon of the ${a.name} profile: ${a.five}% of the 5-hour limit used`} />)}
@@ -167,7 +233,7 @@ const jsonLd = [{
         </div>
         <a class="hist-mini" href="/dashboard/">
           <span class="spark" aria-hidden="true">{spark.map(([a, b, c]) => <span><i style={`height:${a}px;background:var(--orange)`} /><i style={`height:${b}px;background:var(--teal)`} /><i style={`height:${c}px;background:var(--purple)`} /></span>)}</span>
-          <span><b>Usage history</b><br /><span class="sub">when you use Claude · tokens per day · where they go</span></span>
+          <span><b>Claude Code usage history</b><br /><span class="sub">when you use Claude · tokens per day · where they go</span></span>
         </a>
         <p class="t">
           The figures Claude shows in Settings ▸ Usage, with exact reset times, for every profile. History is read
@@ -213,11 +279,20 @@ const jsonLd = [{
         <h4>Terms</h4>
         <div class="list">
           <div><b>Profile</b><span>One Claude setup in cl_audit: a Claude Code folder with its sign-in, a Claude window and a Dock icon.</span></div>
-          <div><b>Account</b><span>Only the claude.ai account a profile is signed in to. Several profiles can use one account.</span></div>
+          <div><b>Account</b><span>Only the claude.ai account a profile is signed in to. Each profile is linked to one seat; a personal plan and a Team seat on one email are two.</span></div>
           <div><b>Claude window · Dock icon</b><span>The profile's running Claude app, and its own small app that shows its usage.</span></div>
         </div>
       </div>
     </div>
+
+    <section class="card home-faq" aria-labelledby="hfaq-title">
+      <h4>Questions</h4>
+      <h2 id="hfaq-title" class="h3">Questions about tracking Claude usage</h2>
+      <div class="list">
+        {homeFaq.map(([q, a]) => <div><h3 class="q">{q}</h3><span set:html={a} /></div>)}
+      </div>
+      <a class="more" href="/faq/">All questions ›</a>
+    </section>
 
     <div class="start-row">
       <!-- two mirrored columns: label, a key with what it needs, then a box with the steps or the commands -->
