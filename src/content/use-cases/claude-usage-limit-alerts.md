@@ -5,7 +5,7 @@ h1: "Claude usage limit notifications"
 mainKeyword: "claude usage limit notification"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-03
 author: n-uf
 order: 2
 takeaways:
@@ -33,6 +33,9 @@ sources:
   - title: "Claude Code docs: Manage costs effectively"
     url: "https://code.claude.com/docs/en/costs"
     checked: 2026-11-02
+  - title: "Claude Code docs: Commands (/usage)"
+    url: "https://code.claude.com/docs/en/commands"
+    checked: 2026-11-03
 related:
   - /
   - /use-cases/multiple-claude-accounts/
@@ -112,7 +115,7 @@ Since every notification comes from cl_audit and not from a separate app per pro
 
 ## Does Claude warn you before the limit?
 
-It does, in the place you're working. Anthropic's help page for Claude Code on Pro, Max and Ultra plans says you'll see warning messages as you approach a limit, and that `/status` shows your remaining allocation. If you hit the limit mid-response, Claude Code may finish the response in progress and show "Usage limit reached · wrapping up"; that usage counts toward your weekly limit. From version 2.1.234, Claude Code can also wait for the reset and carry on with the interrupted task by itself, according to Anthropic's cost-management page.
+It does, in the place you're working. Anthropic's help page for Claude Code on Pro, Max and Ultra plans says you'll see warning messages as you approach a limit, and Claude Code's command reference says `/usage` shows your plan usage limits. If you hit the session limit mid-response, Claude Code may keep working briefly to finish the step in progress and show "Usage limit reached · wrapping up"; that usage counts toward your weekly limit. From version 2.1.234, Claude Code can also wait for the reset and carry on with the interrupted task by itself, according to Anthropic's cost-management page.
 
 Those messages appear in Claude Code. A cl_audit notification reaches you in whatever app you're in, and it covers the accounts you aren't using at that moment.
 
