@@ -101,7 +101,7 @@ Everything below about Claude comes from Anthropic's own help and docs pages, re
 
 ## Which limit did you hit?
 
-The message tells you: when Claude Code says you've hit your limit, it names which one. Claude and Claude Code word it differently, and a Claude Code usage limit reached message also comes in a few more forms. These are the wordings on Anthropic's pages.
+The message tells you which limit you hit. Claude and Claude Code word it differently, and Claude Code's "Usage limit reached" message comes in a few more forms. These are the wordings on Anthropic's pages.
 
 | Where | What it says | Which limit |
 |---|---|---|
@@ -115,15 +115,15 @@ The message tells you: when Claude Code says you've hit your limit, it names whi
 
 That last one isn't a stop yet. Claude Code may keep working briefly to finish the step it's on. Anthropic calls this a wrap-up allowance: small, capped, counted toward your weekly limit, once per weekly period on Pro and each time you reach the session limit on Max. It's rolling out gradually, so your account may not have it.
 
-"Session limit", "5-hour limit" and "Current session" all mean the same limit, if you were wondering what a Claude session limit means. The period starts with your first message, and the limit comes back in full five hours later. Settings ▸ Usage shows how much of it you've used under Current session, with the time left.
+"Session limit", "5-hour limit" and "Current session" all mean the same limit. The period starts with your first message, and the limit comes back in full five hours later. Settings ▸ Usage shows how much of it you've used under Current session, with the time left.
 
 The weekly limit is the slower one. It resets at a fixed time assigned to your account, and your usage counts against both limits at once. So when the weekly limit is reached, the 5-hour reset doesn't get you back in. For the exact times, see [when Claude limits reset](/blog/claude-limit-reset-time/).
 
 ![Dashboard card with a full 5-hour Claude limit](/img/guides/card-limit-full.webp "In cl_audit, a full 5-hour limit shows how long until it's back, and at what time. Sample data.")
 
-Which limits you have depends on the plan. Pro has the 5-hour limit and a weekly limit across all models, so a limit reached on Pro is one of those two. Max adds a separate weekly limit for Fable, so a Claude Max usage limit reached message can be about Fable alone. Anthropic says Max and Ultra can spend up to 50% of their weekly limits on Fable models at no extra cost; after that you either keep going on usage credits or switch models. On Pro, Fable runs on usage credits from the start. Verified Ultra accounts have no 5-hour limit. On Team, limits are per member, so when one person runs out, nobody else is affected. The per-plan details are in [Claude usage limits explained](/blog/claude-usage-limits/).
+Which limits you have depends on the plan. Pro has the 5-hour limit and a weekly limit across all models, so a limit reached on Pro is one of those two. Max adds a separate weekly limit for Fable, so on Max a limit message can be about Fable alone. Anthropic says Max and Ultra can spend up to 50% of their weekly limits on Fable models at no extra cost; after that you either keep going on usage credits or switch models. On Pro, Fable runs on usage credits from the start. Verified Ultra accounts have no 5-hour limit. On Team, limits are per member, so when one person runs out, nobody else is affected. The per-plan details are in [Claude usage limits explained](/blog/claude-usage-limits/).
 
-Two other messages look similar but aren't about your plan's allowance. "You've hit your monthly spend limit" means the usage credits that would have paid for the request reached their cap; if a plan window also ran out, the message says when it resets. And "Context limit reached · /compact or /clear to continue" in Claude Code, or "Your message will exceed the length limit for this chat" in Claude, means one conversation got too big. Anthropic says a very large first message can trigger it.
+Two other messages look similar but aren't about your plan's allowance. "You've hit your monthly spend limit" means the usage credits that would have paid for the request reached their cap; if a plan window also ran out, the message says when it resets. And "Context limit reached · /compact or /clear to continue" in Claude Code, or "Your message will exceed the length limit for this chat" in Claude, means one conversation got too big. Anthropic says a very large first message can trigger the one in Claude.
 
 ## What to do when the Claude usage limit is reached
 
