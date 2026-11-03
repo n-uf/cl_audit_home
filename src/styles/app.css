@@ -463,7 +463,7 @@ body { overflow: hidden; }
 .brand span { margin-top: 4px; font: 600 8.5px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.42); white-space: nowrap; }
 .fascia .page-disp { grid-area: disp; margin: -4px 0; min-width: 0; height: auto; align-self: stretch; min-height: 32px; padding: 0 16px; gap: 12px; border-radius: 6px;   /* fills the row and 4 px of the strip's padding above and below: taller, without making the strip taller */
   font-size: 12px; font-weight: 600; letter-spacing: .1em; }
-.page-disp .pd-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.page-disp .pd-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; font: inherit; letter-spacing: inherit; }   /* the h1: the display's own type, not a heading's */
 /* the Overview's live little Dock (see dockLamps.ts): pairs of a Claude tile and its usage, in the Dock's proportions
    (icons 10 px apart at 56 px, shelf radius 22 px, icon radius 13 px), scaled from --s */
 .lslot { --s: 18px; display: inline-flex; justify-content: center; flex: none; vertical-align: middle;
