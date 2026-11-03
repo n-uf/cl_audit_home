@@ -154,4 +154,4 @@ These are all community or third-party tools; none is made by Anthropic. claude-
 
 ## Next
 
-With two accounts running, you'll probably want to know when one of them is close to a limit. [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) covers the alerts, including Notify when back. [Claude Code usage history](/use-cases/claude-code-usage-history/) shows where the tokens go, by project, model and surface. The [Claude usage tracker for Mac](/) page has the overall picture, or you can [download cl_audit](/install/) and add your first profile.
+With two accounts running, you'll probably want to know when one of them is close to a limit. The page on [how cl_audit's alerts work](/use-cases/claude-usage-limit-alerts/) covers the alerts, including Notify when back. [Claude Code usage history](/use-cases/claude-code-usage-history/) shows where the tokens go, by project, model and surface. The page on [every account's limits in the Dock](/) has the overall picture, or you can [download cl_audit](/install/) and add your first profile.
