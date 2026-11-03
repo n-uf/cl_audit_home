@@ -129,7 +129,10 @@ import { accounts, chats } from "../data/demo";
     }
     const w = t.closest<HTMLElement>(".deskwin");
     if (w && t.closest("[data-close]")) { w.hidden = true; return; }
-    if (w) front(w);
+    if (w) { front(w); return; }
+    // A click anywhere outside the open Claude window or Terminal closes it (not a Terminal opener, which opens one;
+    // not a click whose target was just removed, such as a menu item that replaced itself)
+    if (t.isConnected && !t.closest("[data-open-terminal]")) w_.clCloseWins();
   });
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
