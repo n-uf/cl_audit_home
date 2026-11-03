@@ -1,0 +1,48 @@
+---
+// /blog/ (the index) and /blog/<slug>/ (an article) in one route, so that neither exists while the blog is empty.
+import { render } from "astro:content";
+import Desktop from "../../layouts/Desktop.astro";
+import Reader from "../../layouts/Reader.astro";
+import "../../styles/reader.css";
+import { getPosts, pathOf, dateText, kindLabel } from "../../data/content";
+import { orgNode, webPage, breadcrumbs } from "../../data/schema";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  if (posts.length === 0) return [];
+  return [
+    { params: { slug: undefined }, props: { posts } },
+    ...posts.map((entry) => ({ params: { slug: entry.id }, props: { posts, entry } })),
+  ];
+}
+const { posts, entry } = Astro.props;
+const rendered = entry ? await render(entry) : undefined;
+
+const title = "Claude usage blog: limits, resets, tracking";
+const description = "Guides on Claude's usage limits and how to track them on a Mac: when limits reset, how to check usage, and how to use several accounts.";
+const jsonLd = [
+  webPage({ path: "/blog/", name: title, description, type: "CollectionPage" }),
+  breadcrumbs([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog/" }]),
+  orgNode,
+];
+---
+{entry && rendered ? (
+  <Reader entry={entry} section="blog" headings={rendered.headings}><rendered.Content /></Reader>
+) : (
+  <Desktop title={title} description={description} page="blog" headline="Guides for Claude usage" jsonLd={jsonLd}>
+    <div class="content-inner reader">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Blog</li></ol></nav>
+      <p class="ix-lede">Short guides on Claude's usage limits and on tracking them. Newest first, each with the date it was last updated.</p>
+      <div class="ix-list">
+        {posts.map((e) => (
+          <div class="card">
+            <h4>{kindLabel[e.data.kind]}</h4>
+            <h2><a href={pathOf("blog", e.id)}>{e.data.h1}</a></h2>
+            <p>{e.data.description}</p>
+            <span class="when">Updated {dateText(e.data.updated)}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </Desktop>
+)}
