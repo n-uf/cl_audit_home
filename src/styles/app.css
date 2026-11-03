@@ -594,6 +594,9 @@ body { overflow: hidden; }
   .glance li:first-child { padding-top: 0; border-top: 0; box-shadow: none; }
   .glance li b { display: inline; margin: 0 6px 0 0; }
 }
+/* Overview questions: a list module; each question a small heading, its answer under it */
+.home-faq .list h3.q { font-size: 14.5px; margin: 0; }
+.home-faq .list span { max-width: 100ch; }
 .legal { color: var(--faint); font-size: 12px; text-align: center; padding: 4px 0 2px; }
 .legal a { color: inherit; }
 /* numbered steps: each number in a small display window */

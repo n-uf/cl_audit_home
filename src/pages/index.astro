@@ -25,6 +25,21 @@ const glance: [string, string][] = [
   ["Independent", "Not affiliated with Anthropic."],
 ];
 
+// Questions about tracking Claude usage (shown near the end, and the page's FAQPage data). Answers may hold <code>.
+const homeFaq: [string, string][] = [
+  ["How do I check my Claude usage on a Mac?",
+   "Claude shows it in Settings ▸ Usage, and Claude Code shows it with <code>/usage</code>, one account at a time. cl_audit keeps every account's 5-hour and weekly limits in view: on each profile's Dock icon, in the launcher and on one dashboard, with the exact reset times."],
+  ["Can cl_audit track several Claude accounts?",
+   "Yes. Each profile is one account seat with its own Dock icon, and the dashboard shows all of them. A personal plan and a Team seat on the same email count as two seats."],
+  ["Is cl_audit a menu bar app?",
+   "No. It shows usage in the Dock, with one icon per profile, so several accounts sit side by side. There's no menu bar item."],
+  ["Which Claude plans does it work with?",
+   "Plans with usage limits, such as Pro, Max and Team, signed in to Claude Code. A profile that uses an API key is billed per token and has no limits to show."],
+  ["Is cl_audit free?",
+   "Yes. It's free and source-available under PolyForm Perimeter 1.0.1, with no account, server or analytics. It isn't made by Anthropic and isn't affiliated with it."],
+];
+const plain = (html: string) => html.replace(/<[^>]+>/g, "");
+
 // The login section on the Overview: tabs, each with a plain explanation (text may hold <code>).
 const trustFacts: { tab: string; title: string; text: string }[] = [
   { tab: "Password never seen", title: "The password is never seen",
@@ -76,6 +91,10 @@ const jsonLd = [{
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   // the same node id on every n-uf site, so search engines see one maker
   author: { "@type": "Organization", "@id": "https://n-uf.com/#org", name: "n-uf", url: "https://n-uf.com", sameAs: ["https://github.com/n-uf"] },
+}, {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: homeFaq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: plain(a) } })),
 }];
 ---
 <Desktop title={title} description={description} page="overview" headline="Claude usage tracker for Mac · every account's limits in the Dock" jsonLd={jsonLd}>
@@ -239,6 +258,15 @@ const jsonLd = [{
         </div>
       </div>
     </div>
+
+    <section class="card home-faq" aria-labelledby="hfaq-title">
+      <h4>Questions</h4>
+      <h2 id="hfaq-title" class="h3">Questions about tracking Claude usage</h2>
+      <div class="list">
+        {homeFaq.map(([q, a]) => <div><h3 class="q">{q}</h3><span set:html={a} /></div>)}
+      </div>
+      <a class="more" href="/faq/">All questions ›</a>
+    </section>
 
     <div class="start-row">
       <!-- two mirrored columns: label, a key with what it needs, then a box with the steps or the commands -->
