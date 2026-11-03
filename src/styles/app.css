@@ -583,7 +583,7 @@ body { overflow: hidden; }
 .hist-mini .spark { height: 34px; }
 .hist-mini .spark span { width: 7px; }
 .srow .v { color: var(--muted); text-align: right; }
-/* At a glance (Overview): five short facts side by side, split by engraved lines; a list on narrower windows */
+/* At a glance (Overview): the short facts side by side, split by engraved lines; a list on narrower windows */
 .glance ul { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
 .glance li { padding: 0 14px; color: var(--muted); font-size: 13.5px; border-left: 1px solid rgba(0,0,0,.45); box-shadow: inset 1px 0 0 rgba(255,255,255,.035); }
 .glance li:first-child { padding-left: 0; border-left: 0; box-shadow: none; }
