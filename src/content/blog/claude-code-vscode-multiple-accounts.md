@@ -1,7 +1,7 @@
 ---
 title: "Claude Code VSCode multiple accounts: one profile each"
-description: "Claude Code VSCode multiple accounts: give each Claude account its own VS Code profile and CLAUDE_CONFIG_DIR folder. Steps, a terminal option, a known bug."
-h1: "Claude Code VSCode multiple accounts: one VS Code profile per account"
+description: "Use multiple Claude accounts with Claude Code in VSCode: one VS Code profile per account, each with its own CLAUDE_CONFIG_DIR. Steps and a known bug."
+h1: "Claude Code in VS Code with multiple accounts"
 mainKeyword: "claude code vscode multiple accounts"
 kind: how-to
 published: 2026-11-02
@@ -178,7 +178,7 @@ A cl_audit profile is a Claude Code folder with its own sign-in: a `CLAUDE_CONFI
 
 cl_audit doesn't change VS Code settings and has no VS Code button. You paste the folder path into the VS Code profile's settings yourself, as in the steps above.
 
-What it adds to a Claude Code VSCode multiple accounts setup is the view across accounts. Each profile's 5-hour and weekly limits show on its Dock icon and on the [Claude usage dashboard](/dashboard/), read from Anthropic with that profile's Claude Code sign-in, so you see every account's limits without running `/usage` in each window. It can also notify you when a profile nears a limit, and again when it's back; [the alerts page](/use-cases/claude-usage-limit-alerts/) shows how.
+What it adds is the view across accounts. Each profile's 5-hour and weekly limits show on its Dock icon and on the [Claude usage dashboard](/dashboard/), read from Anthropic with that profile's Claude Code sign-in, so you see every account's limits without running `/usage` in each window. It can also notify you when a profile nears a limit, and again when it's back; [the alerts page](/use-cases/claude-usage-limit-alerts/) shows how.
 
 [Claude Code usage history](/use-cases/claude-code-usage-history/) reads each profile's folder separately and counts VS Code as a surface next to Terminal. A VS Code session counts for the profile whose folder it was written to, so if the bug above sends files to `~/.claude`, they count for the profile that uses `~/.claude`.
 
