@@ -37,7 +37,13 @@ def wrap(text, f, width):
             line = trial
         else:
             lines.append(line); line = word
-    return lines + [line]
+    lines.append(line)
+    # no single word alone on the last line ("Mac"): take the word before it along, if that still fits
+    if len(lines) > 1 and " " not in lines[-1] and " " in lines[-2]:
+        head, moved = lines[-2].rsplit(" ", 1)
+        if f.getlength(f"{moved} {lines[-1]}") <= width:
+            lines[-2:] = [head, f"{moved} {lines[-1]}"]
+    return lines
 
 def picture(path, box_w, box_h):
     im = Image.open(path).convert("RGBA")
@@ -50,7 +56,10 @@ def picture(path, box_w, box_h):
 
 for md in sorted(glob.glob(os.path.join(ROOT, "src/content/use-cases/*.md")) + glob.glob(os.path.join(ROOT, "src/content/blog/*.md"))):
     src = open(md, encoding="utf-8").read()
-    h1 = re.search(r'^h1:\s*"?(.*?)"?\s*$', src, re.M).group(1)
+    m = re.search(r'^h1:\s*"?(.*?)"?\s*$', src, re.M)
+    if not m:
+        print("skipped (no h1):", md); continue
+    h1 = m.group(1).replace('\\"', '"')
     shot = re.search(r"\]\(/img/guides/([^ )]+)", src)
     section = os.path.basename(os.path.dirname(md))
     slug = os.path.splitext(os.path.basename(md))[0]
@@ -62,7 +71,8 @@ for md in sorted(glob.glob(os.path.join(ROOT, "src/content/use-cases/*.md")) + g
     while True:
         f = font(size, 700)
         lines = wrap(h1, f, 520)
-        if len(lines) <= 4 or size <= 40:
+        # at most 4 lines, and no line wider than the column (a long word such as CLAUDE_CONFIG_DIR)
+        if (len(lines) <= 4 and max(f.getlength(l) for l in lines) <= 520) or size <= 40:
             break
         size -= 2
     y = 200

@@ -20,13 +20,3 @@ export function withImages(html: string): string {
     return `<figure class="shot">${img}${caption ? `<figcaption>${caption}</figcaption>` : ""}</figure>`;
   });
 }
-
-/** The page's first guide image no wider than 2:1, for its structured data (Google wants article images close to
- *  16:9, 4:3 or 1:1, so a banner such as the Dock strip is skipped; with none, the caller uses the share image). */
-export function firstImage(html: string): string | undefined {
-  for (const [, name] of html.matchAll(/src="\/img\/guides\/([^"]+)"/g)) {
-    const size = (sizes as Record<string, { width: number; height: number }>)[name];
-    if (size && size.width / size.height <= 2) return `/img/guides/${name}`;
-  }
-  return undefined;
-}
