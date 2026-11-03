@@ -14,7 +14,7 @@ const description =
   "cl_audit is a free Claude usage tracker for Mac: every account's 5-hour and weekly limits in the Dock and on one dashboard, each in its own Claude window.";
 // the fuller summary, for the structured data (not shown in search results)
 const appDescription =
-  "cl_audit gives each of your Claude setups on macOS its own profile: a Claude Code folder, an optional separate Claude window and a Dock icon that shows its usage limits live. One dashboard with switches for every profile, figures read directly from Anthropic. Free and source-available.";
+  "cl_audit is a free, source-available Claude usage tracker for Mac. It runs several Claude accounts side by side, each in its own profile: a Claude Code folder, an optional separate Claude window and a Dock icon that shows its 5-hour and weekly usage limits live. One dashboard shows every profile, with limits read from Anthropic and Claude Code usage history from local logs.";
 
 // "At a glance": short facts under the intro (the key takeaways), each a lead word and a line
 const glance: [string, string][] = [
@@ -69,10 +69,35 @@ const relReason = {
 const relText = `cl_audit ${version} · ${releasedText()} · ${requires}. Checked with Claude Code ${checkedWith.claudeCode} and the Claude app ${checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.`;
 const spark = [[10, 4, 6], [14, 2, 8], [6, 22, 3], [5, 24, 2], [7, 26, 4], [9, 20, 3], [3, 8, 1]];
 
+// the same node id on every n-uf site, so search engines see one maker
+const org = { "@type": "Organization", "@id": "https://n-uf.com/#org", name: "n-uf", url: "https://n-uf.com", sameAs: ["https://github.com/n-uf"] };
+// spellings people type for the name; "cl audit" alone also matches unrelated audit firms
+const alternateName = ["cl-audit", "cl audit"];
 const jsonLd = [{
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "WebSite",
+  "@id": `${site}/#website`,
   name: "cl_audit",
+  alternateName,
+  url: `${site}/`,
+  publisher: { "@id": org["@id"] },
+}, {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${site}/#webpage`,
+  name: title,
+  description,
+  url: `${site}/`,
+  isPartOf: { "@id": `${site}/#website` },
+  about: { "@id": `${site}/#app` },
+  publisher: { "@id": org["@id"] },
+}, {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  // the new use-case and blog pages point to the app by this id
+  "@id": `${site}/#app`,
+  name: "cl_audit",
+  alternateName,
   description: appDescription,
   applicationCategory: "DeveloperApplication",
   operatingSystem: "macOS 13 or later",
@@ -84,13 +109,15 @@ const jsonLd = [{
   downloadUrl: download,
   image: `${site}/img/app-icon.png`,
   featureList: [
-    "Several Claude profiles side by side: each with its own Claude Code folder and sign-in and, if you want, its own Claude window",
-    "A Dock icon per profile with its 5-hour and weekly usage limits",
-    "A dashboard with a card per profile: switches for its Claude window and Dock icon, limits read directly from Anthropic, usage history",
+    "Several Claude accounts side by side: each profile with its own Claude Code folder and sign-in and, if you want, its own Claude window",
+    "A Dock icon per profile with its 5-hour and weekly usage limits, counting down to the reset when a limit is full",
+    "Notifications at a set level, when a limit is full and when it resets",
+    "A dashboard with a card per profile: switches for its Claude window and Dock icon, limits read from Anthropic, Claude Code usage history",
   ],
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  // the same node id on every n-uf site, so search engines see one maker
-  author: { "@type": "Organization", "@id": "https://n-uf.com/#org", name: "n-uf", url: "https://n-uf.com", sameAs: ["https://github.com/n-uf"] },
+  isAccessibleForFree: true,
+  author: org,
+  publisher: { "@id": org["@id"] },
 }, {
   "@context": "https://schema.org",
   "@type": "FAQPage",
