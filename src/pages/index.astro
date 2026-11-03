@@ -16,6 +16,15 @@ const description =
 const appDescription =
   "cl_audit gives each of your Claude setups on macOS its own profile: a Claude Code folder, an optional separate Claude window and a Dock icon that shows its usage limits live. One dashboard with switches for every profile, figures read directly from Anthropic. Free and source-available.";
 
+// "At a glance": short facts under the intro (the key takeaways), each a lead word and a line
+const glance: [string, string][] = [
+  ["Free", "Source-available (PolyForm Perimeter 1.0.1). No account, server or analytics."],
+  ["Mac", "Apple silicon, macOS 13 or later. Claude Code signed in for each profile."],
+  ["Plans", "Plans with usage limits, such as Pro, Max and Team."],
+  ["Accounts", "One profile per account seat, so work and personal sit side by side."],
+  ["Independent", "Not affiliated with Anthropic."],
+];
+
 // The login section on the Overview: tabs, each with a plain explanation (text may hold <code>).
 const trustFacts: { tab: string; title: string; text: string }[] = [
   { tab: "Password never seen", title: "The password is never seen",
@@ -79,10 +88,12 @@ const jsonLd = [{
       <div class="intro-body intro-grid">
         <h4 class="intro-label">What it does</h4>
         <p class="intro-text"><img class="intro-ico" src="/img/app-icon.png" alt="The cl_audit app icon" width="72" height="72" />
-          cl_audit runs several Claude desktop apps side by side on one Mac, each with its own sign-in, and shows
-          every profile's 5-hour and weekly usage in the Dock and on a dashboard. A profile is one Claude setup: a
-          Claude Code folder with its sign-in, a Claude window and a Dock icon. Limits are read from Anthropic;
-          usage history comes from Claude Code's session logs on the Mac.
+          cl_audit is a free Claude usage tracker for Mac. It shows the 5-hour and weekly usage limits of every
+          Claude account you use, each on its own Dock icon and all together on one dashboard, and counts down to
+          the reset when a limit is full. It also runs those accounts side by side, each in its own Claude window
+          with its own Claude Code sign-in. Limits are read from Anthropic; usage history comes from Claude Code's
+          session logs on the Mac. A profile is one Claude setup: a Claude Code folder with its sign-in, a Claude
+          window and a Dock icon.
         </p>
         <!-- the release in a display window, then the actions as one key strip (sketch T4); both full width -->
         <div class="disp version-disp" id="rel" title={relText} aria-hidden="true">
@@ -100,6 +111,14 @@ const jsonLd = [{
       </div>
     </div>
     </div>
+
+    <!-- the short facts a search result or an AI answer can lift as they are -->
+    <section class="card glance" aria-labelledby="glance-title">
+      <h4 id="glance-title">At a glance</h4>
+      <ul>
+        {glance.map(([b, t]) => <li><b>{b}</b>{t}</li>)}
+      </ul>
+    </section>
 
     <section class="card trust" aria-labelledby="trust-title">
       <div class="trust-head">
