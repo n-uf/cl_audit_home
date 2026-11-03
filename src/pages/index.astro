@@ -188,7 +188,7 @@ const jsonLd = [{
     <div class="cols3">
       <article class="card" id="profiles">
         <h4>1 · Multiple Claude accounts</h4>
-        <h2 class="h3">Run multiple Claude accounts side by side</h2>
+        <h2 class="h3">Several Claude accounts, side by side</h2>
         <div class="mini-palette">
           {accounts.map((a, i) => <Row id={a.id} icon={a.icon} name={a.name} color={a.color} five={a.five} week={a.week} key={`⌘${i + 1}`} sel={i === 0} open={i < 2} />)}
           <div class="foot">click or ↩ Claude window · ⌘↩ Terminal</div>
@@ -223,7 +223,7 @@ const jsonLd = [{
 
       <article class="card" id="dashboard">
         <h4>3 · Usage dashboard</h4>
-        <h2 class="h3">One Claude usage dashboard: limits and Claude Code history</h2>
+        <h2 class="h3">Limits from Anthropic, history from local logs</h2>
         <div class="mcards">
           {accounts.map((a) => (
             <div class="mcard">
