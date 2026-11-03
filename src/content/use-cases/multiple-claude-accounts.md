@@ -28,13 +28,13 @@ sources:
     url: "https://github.com/anthropics/claude-code/issues/18435"
     checked: 2026-11-02
   - title: "Anthropic Help Center: Move your personal Claude account to a Team or Enterprise organization"
-    url: "https://support.claude.com/en/articles/9267400-can-individuals-with-pro-or-max-plan-accounts-migrate-them-to-team-or-enterprise-plan-organizations"
+    url: "https://support.claude.com/en/articles/9267400-move-your-personal-claude-account-to-a-team-or-enterprise-organization"
     checked: 2026-11-02
   - title: "Anthropic Help Center: Use Claude Code with your Pro, Max, or Ultra plan"
-    url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan"
+    url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
     checked: 2026-11-02
   - title: "Anthropic Help Center: How do usage and length limits work?"
-    url: "https://support.claude.com/en/articles/11647753-understanding-usage-and-length-limits"
+    url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
     checked: 2026-11-02
   - title: "Claude Code docs: Settings (CLAUDE_CONFIG_DIR)"
     url: "https://code.claude.com/docs/en/settings"
