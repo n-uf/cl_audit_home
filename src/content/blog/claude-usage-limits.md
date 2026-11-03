@@ -163,7 +163,7 @@ On Team plans, limits are per member, not shared by the team. One person reachin
 
 ## What happens when you hit the limit
 
-Anthropic's help page gives two choices: wait for the reset, or upgrade. If you upgrade, the new plan's limits apply right away.
+Anthropic's help page gives two choices: wait for the reset, or upgrade. If you upgrade, the new plan's limits apply right away. If you're stuck at the limit right now, [Claude usage limit reached](/blog/claude-usage-limit-reached/) goes through what each message means and what you can do until the reset.
 
 ![Dashboard card with a full 5-hour Claude limit](/img/guides/card-limit-full.webp "In cl_audit, a full 5-hour limit shows how long until it's back, and at what time. Sample data.")
 
