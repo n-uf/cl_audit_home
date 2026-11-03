@@ -12,7 +12,7 @@ takeaways:
   - "Anthropic's VS Code page documents CLAUDE_CONFIG_DIR in the extension's environmentVariables setting, but only as an absolute path: the extension doesn't expand ~."
   - "That setting has the machine scope, so VS Code reads it from user settings only: the account follows the VS Code profile, not the project's .vscode folder."
   - "VS Code remembers which profile a folder uses, so after the first time you just open the project."
-  - "An open bug report says the extension may still read ~/.claude for its session list and settings, so check where your folder gets its files."
+  - "An open bug report says the extension may still read ~/.claude for its session list and settings, and one commenter says the setting doesn't always reach Claude, so check your setup once."
 faq:
   - q: "Can I use two Claude accounts in VS Code at the same time?"
     a: "Going by the docs, yes: one VS Code window per profile, each profile with its own CLAUDE_CONFIG_DIR folder in the extension's setting. That combines Anthropic's documented setting with VS Code profiles; we haven't tested it end to end, and an open bug report says some extension data may still go to ~/.claude."
@@ -21,7 +21,7 @@ faq:
   - q: "Can I set CLAUDE_CONFIG_DIR in a project's .vscode/settings.json?"
     a: "Not for the chat panel. The extension's manifest gives claudeCode.environmentVariables the machine scope, and VS Code doesn't read machine-scoped settings from workspace settings. For the integrated terminal you can use terminal.integrated.env.osx in the project's settings instead."
   - q: "Why does the extension ignore my CLAUDE_CONFIG_DIR?"
-    a: "First check that the value is an absolute path: Anthropic's page says the extension ignores a relative value and doesn't expand ~. If the panel still lists sessions from ~/.claude, you may have hit the open bug report anthropics/claude-code#30538."
+    a: "First check that the value is an absolute path: Anthropic's page says the extension ignores a relative value and doesn't expand ~. If /status shows the wrong account, or the panel still lists sessions from ~/.claude, you may have hit the open bug report anthropics/claude-code#30538. A commenter there sets the variable in a wrapper script instead, which the extension's claudeProcessWrapper setting can launch."
   - q: "Do VS Code and Terminal share the same usage limits?"
     a: "Yes, for the same account. Anthropic's help page says IDE usage counts toward the same usage limits shared across Claude and Claude Code. Two accounts have two sets of limits."
 sources:
@@ -77,7 +77,7 @@ related:
   - /install/
 ---
 
-The usual setup for Claude Code VSCode multiple accounts is one VS Code profile per Claude account. In each profile's user settings you point the extension's `claudeCode.environmentVariables` setting at that account's `CLAUDE_CONFIG_DIR` folder, written as an absolute path such as `/Users/you/.claude-work`, and you open each project in its profile. Without it, changing account in the Claude Code panel means signing out and signing in again.
+The setup this guide walks through for Claude Code VSCode multiple accounts is one VS Code profile per Claude account. In each profile's user settings you point the extension's `claudeCode.environmentVariables` setting at that account's `CLAUDE_CONFIG_DIR` folder, written as an absolute path such as `/Users/you/.claude-work`, and you open each project in its profile. Without it, changing account in the Claude Code panel means signing out and signing in again.
 
 Everything below about the extension and VS Code comes from Anthropic's VS Code page, the extension's manifest, and VS Code's own docs and source, read on 2 November 2026. We haven't run the whole setup end to end: it's those documented pieces put together. One open bug report, covered below, says the extension may still read `~/.claude` for some things. cl_audit, our free Mac app, is an independent tool, not affiliated with Anthropic.
 
@@ -155,7 +155,7 @@ One more thing about this file. The Workspace Trust page points out that `.vscod
 
 In March 2026 a bug report, [anthropics/claude-code#30538](https://github.com/anthropics/claude-code/issues/30538), said the extension ignored `CLAUDE_CONFIG_DIR`, even when it was set through `claudeCode.environmentVariables`. The CLI honoured it, the reporter wrote, while the extension kept reading and writing `~/.claude`. The issue was still open on 2 November 2026.
 
-Anthropic's VS Code page now documents the setting, with the absolute-path rule. The thread isn't settled, though. In June 2026 a commenter on extension 2.1.181 (Windows) corrected an earlier "it works": the setting reached the Claude process the extension starts, so that session ran on the right account, but the extension's own session list, `settings.json` and `.claude.json` still came from `~/.claude`. Older sessions opened empty, another commenter added. No comment says how version 2.1.317, the current one on Open VSX, behaves.
+Anthropic's VS Code page now documents the setting, with the absolute-path rule. The thread isn't settled, though. In June 2026 a commenter on extension 2.1.181 (Windows) corrected an earlier "it works": the setting reached the Claude process the extension starts, so that session ran on the right account, but the extension's own session list, `settings.json` and `.claude.json` still came from `~/.claude`. Older sessions opened empty, another commenter added. In August 2026 another commenter went further: the setting doesn't consistently reach the process the extension starts, so they set the variable in a wrapper script instead. The extension has a setting for that, `claudeCode.claudeProcessWrapper`, which Anthropic's page describes as the "Executable used to launch the Claude process. The bundled binary path is passed as an argument when present." (The comment names `claudeCode.executablePath`, which isn't in version 2.1.317.) No comment says how 2.1.317, the current version on Open VSX, behaves.
 
 So check your own setup once:
 
@@ -164,7 +164,7 @@ So check your own setup once:
 - Open the list of past conversations. If it shows your `~/.claude` sessions, or older ones open empty, you've hit the part of the bug that's still reported.
 - Make sure the path is absolute and spelled exactly as the folder is on disk.
 
-The thread also mentions wrapper scripts, direnv, and starting VS Code from Terminal with the variable set. We haven't tried them.
+If the checks fail, the thread's other routes are that wrapper script, direnv, and starting VS Code from Terminal with the variable set. We haven't tried them.
 
 ## An API key can override the folder
 
