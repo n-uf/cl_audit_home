@@ -14,6 +14,8 @@ const { entry, section, headings, image } = Astro.props;
 const d = entry.data;
 const sec = sections[section];
 const path = pathOf(section, entry.id);
+// the page's own share image (scripts/render-og-pages.py), 1200x630
+const ogImage = `/og/${entry.id}.png`;
 
 // the table of contents lists the ## headings; with fewer than four it adds nothing
 const toc = headings.filter((h) => h.depth === 2);
@@ -23,14 +25,14 @@ const related = await Promise.all(d.related.map(async (p) => ({ path: p, ...(awa
 const crumbs = [{ name: "Home", path: "/" }, { name: sec.label, path: sec.path }, { name: d.h1, path }];
 const jsonLd = [
   section === "blog"
-    ? article({ path, headline: d.h1, description: d.description, published: d.published, updated: d.updated, image })
+    ? article({ path, headline: d.h1, description: d.description, published: d.published, updated: d.updated, image: image ?? ogImage })
     : webPage({ path, name: d.h1, description: d.description, published: d.published, updated: d.updated }),
   breadcrumbs(crumbs),
   faqPage(d.faq),
   orgNode,
 ];
 ---
-<Desktop title={d.title} description={d.description} page={section} headline={d.h1} jsonLd={jsonLd}>
+<Desktop title={d.title} description={d.description} page={section} headline={d.h1} jsonLd={jsonLd} ogImage={ogImage}>
   <div class="content-inner reader">
     <nav class="crumbs" aria-label="Breadcrumb">
       <ol>

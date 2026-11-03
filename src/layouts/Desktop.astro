@@ -11,8 +11,8 @@ import { hasBlog } from "../data/content";
 
 export type Page = "overview" | "dashboard" | "settings" | "install" | "faq" | "usecases" | "blog" | "none";
 // headline: the page title, shown lit in the top display window (it is the page's h1)
-interface Props { title: string; description: string; page: Page; headline?: string; jsonLd?: object[] }
-const { title, description, page, headline, jsonLd } = Astro.props;
+interface Props { title: string; description: string; page: Page; headline?: string; jsonLd?: object[]; ogImage?: string }
+const { title, description, page, headline, jsonLd, ogImage } = Astro.props;
 
 // The Blog key (and /blog/) exist only once the blog has a first article.
 const nav: [Page, string, string][] = [
@@ -24,7 +24,7 @@ const current = nav.find(([id]) => id === page)?.[1];
 // the title's part after " · " is secondary: shown in a quieter style in the display
 const [headMain, ...headRest] = (headline ?? "").split(" · ");
 ---
-<Base title={title} description={description} jsonLd={jsonLd}>
+<Base title={title} description={description} jsonLd={jsonLd} ogImage={ogImage}>
   <div class="desk" data-page={page}>
     <header class="menubar" transition:persist="menubar">
       <a class="mb-brand" href="/"><img src="/favicon.png" alt="" width="16" height="16" />cl_audit</a>
