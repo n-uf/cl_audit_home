@@ -118,4 +118,4 @@ The limits themselves are shared. Anthropic's page says Claude and Claude Code c
 
 ## Next steps
 
-The [Claude Code usage history](/use-cases/claude-code-usage-history/) page covers the other half: when you use Claude and where the tokens go, by project and model. To see a profile card at 100%, open the [demo dashboard](/dashboard/). For the whole app, see [cl_audit, a free Mac app for Claude limits](/). When you're ready, [download cl_audit](/install/), add a profile for each account and set a level.
+The [Claude Code usage history](/use-cases/claude-code-usage-history/) page covers the other half: when you use Claude and where the tokens go, by project and model. To see a profile card at 100%, open the [demo dashboard](/dashboard/). For the whole app, see [cl_audit, a Mac app for Claude usage limits](/). When you're ready, [download cl_audit](/install/), add a profile for each account and set a level.
