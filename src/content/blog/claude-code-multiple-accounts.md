@@ -67,7 +67,7 @@ related:
 
 Claude Code multiple accounts come down to one folder per account. Give each account its own configuration folder and tell Claude Code which one to use with the `CLAUDE_CONFIG_DIR` environment variable. Anthropic's authentication docs describe this setup: each directory has its own settings, session history and claude.ai login or API key. Put one `CLAUDE_CONFIG_DIR=...` in front of `claude`, or wrap it in a shell alias, and a work account and a personal account stay signed in side by side.
 
-Below are the steps, where macOS keeps each login, and the traps. At the end is cl_audit, our free Mac app, which builds the same folders as profiles and works as a [Claude usage tracker](/) for each one. cl_audit is an independent tool, not affiliated with Anthropic. Everything about Claude Code here comes from Anthropic's docs, read on 2 November 2026, or from the GitHub issues named in the text.
+Below are the steps, where macOS keeps each login, and the traps. At the end is [cl_audit](/), our free Mac app, which builds the same folders as profiles and works as a Claude usage tracker for each one. cl_audit is an independent tool, not affiliated with Anthropic. Everything about Claude Code here comes from Anthropic's docs, read on 2 November 2026, or from the GitHub issues named in the text.
 
 ## Why Claude Code keeps one login
 
@@ -155,13 +155,13 @@ A profile in cl_audit is one Claude setup: a Claude Code folder with its sign-in
 
 An account another profile already has is refused: each profile is linked to one seat (account plus organisation), and no two profiles share one. A personal plan and a Team seat on one email are two seats, so they're two profiles. A profile only shows the limits its own seat already has.
 
-After setup, the pieces you'd otherwise script yourself are in the app (see [Claude Code usage history](/use-cases/claude-code-usage-history/) for the numbers):
+After setup, the pieces you'd otherwise script yourself are in the app (see [your Claude Code history by day](/use-cases/claude-code-usage-history/) for the numbers):
 
 - Press ⌘↩ in cl_audit's launcher to open Terminal for the profile you've highlighted, with its Claude Code folder, so you don't have to remember which alias goes with which account.
 - Each profile's Dock icon shows its 5-hour and weekly limits, which cl_audit's background agent reads from Anthropic with that profile's Claude Code sign-in. The agent also sends the alerts. The [demo dashboard](/dashboard/) shows what the cards and Dock icons look like, and the [FAQ](/faq/) covers what the agent reads and where it sends it.
 - Usage history comes from the session files Claude Code writes in each folder: tokens per day, and where they go by project, model and surface. Nothing leaves your Mac.
 
-The page on [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/) covers the Claude app side, where each extra account gets its own Claude window. cl_audit is free and source-available; if you want to try it you can [download cl_audit](/install/). It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile.
+The page on multiple Claude accounts on one Mac covers the Claude app side, where each extra account gets its own Claude window. cl_audit is free and source-available; if you want to try it you can [download cl_audit](/install/). It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile.
 
 cl_audit doesn't pool limits or move work between accounts. It shows what each seat has used. Whether someone may use more than one Claude account is set by Anthropic's terms, so read them before you set up a second account.
 
