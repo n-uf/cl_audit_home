@@ -94,10 +94,22 @@ function score(b: Block): number {
   return (MENTIONS.test(plain) ? 2 : 0) + (TOPICS.some(([, re]) => re.test(plain)) ? 1 : 0);
 }
 
-function button(kind: Kind, page: string, nth: number): string {
+// second keys a button can fall back to, in this order (the demo dashboard last)
+const SECONDS: [string, string][] = [
+  ["Multiple accounts", "/use-cases/multiple-claude-accounts/"],
+  ["How the alerts work", "/use-cases/claude-usage-limit-alerts/"],
+  ["Claude Code history", "/use-cases/claude-code-usage-history/"],
+  ["Demo dashboard", "/dashboard/"],
+];
+/** The second key: the kind's own target, else the next one that is neither the page the reader is on nor a key an
+ *  earlier button on this page already used (so two buttons don't both say "Demo dashboard"). */
+function secondKey(kind: Kind, page: string, used: Set<string>): [string, string] {
+  const options = [ACTIONS[kind].second, ...SECONDS];
+  return options.find(([, h]) => h !== page && !used.has(h)) ?? options.find(([, h]) => h !== page)!;
+}
+
+function button(kind: Kind, nth: number, [label, href]: [string, string]): string {
   const a = ACTIONS[kind];
-  // never point the second key at the page the reader is on
-  const [label, href] = a.second[1] === page ? ACTIONS.history.second : a.second;
   return `<aside class="act" data-act="${kind}" aria-label="cl_audit">` +
     `<p class="act-why">${a.why[nth % a.why.length]}</p>` +
     `<div class="plate act-keys"><a class="pill dl" href="${download}"><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>` +
@@ -138,7 +150,10 @@ export function withActions(html: string, page: string, mainKeyword: string): st
   for (const p of picks) if ((seen.get(p.kind) ?? 0) >= 2 && p.kind !== "general") p.kind = "general"; else seen.set(p.kind, (seen.get(p.kind) ?? 0) + 1);
   seen.clear();
   const nth = picks.map((p) => { const n = seen.get(p.kind) ?? 0; seen.set(p.kind, n + 1); return n; });
-  picks.map((p, i) => ({ ...p, n: nth[i] })).sort((x, y) => y.at - x.at)
-    .forEach((p) => { out = out.slice(0, p.at) + button(p.kind, page, p.n) + out.slice(p.at); });
+  // second keys in reading order, each different from the ones before it on the page
+  const used = new Set<string>();
+  const seconds = picks.map((p) => { const s = secondKey(p.kind, page, used); used.add(s[1]); return s; });
+  picks.map((p, i) => ({ ...p, n: nth[i], second: seconds[i] })).sort((x, y) => y.at - x.at)
+    .forEach((p) => { out = out.slice(0, p.at) + button(p.kind, p.n, p.second) + out.slice(p.at); });
   return out;
 }
