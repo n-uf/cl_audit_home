@@ -86,7 +86,7 @@ cl_audit's background agent reads each profile's 5-hour limit and weekly limit f
 
 - Dock icons: a profile with **Usage in the Dock** on gets its own icon with both limits. When a limit is full, the icon counts down to when the profile is back.
 - Alerts: a notification when a limit reaches a level you set, and another when it resets (Notify when back).
-- History: tokens per day, and where they go by project, model and surface, over 24 h, 7 d and 30 d. It's read from Claude Code's session files on your Mac, and the dashboard demo names the Terminal, the desktop Code tab, VS Code and SDK apps as surfaces. You can see it in the [Claude usage dashboard demo](/dashboard/), or read more about [Claude Code usage history](/use-cases/claude-code-usage-history/).
+- History: tokens per day, and where they go by project, model and surface, over 24 h, 7 d and 30 d. It's read from Claude Code's session files on your Mac, and the dashboard demo names the Terminal, the desktop Code tab, VS Code and SDK apps as surfaces. You can see it in the [Claude usage dashboard demo](/dashboard/), or read more about how to [see where your Claude Code tokens go](/use-cases/claude-code-usage-history/).
 
 Its README says there's no cl_audit server, no analytics and nothing to sign up for. It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. A profile that uses an API key is billed per token and has no limits to show.
 
@@ -125,8 +125,8 @@ We'd pick ccusage over cl_audit for any of these, and for some there's no cl_aud
 ## When is cl_audit the better ccusage alternative?
 
 - **You care about the limit, not the token count.** The 5-hour and weekly limits are what stop your work. Anthropic's help page (read on 2 November 2026) says usage across claude.ai, Claude Code and Claude Desktop counts towards the same limit. A report built from Claude Code's local logs leaves out claude.ai chats and other devices, and Claude Code's docs say the same of their own local figures. cl_audit's history has that boundary too (its README says usage from claude.ai chats, other computers and cloud sessions isn't there), but its limit bars come from Anthropic.
-- **You have more than one Claude account.** Each profile gets its own Claude Code folder, its own sign-in and, if you want them, its own Dock icon and Claude window. The page on [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/) shows how that works. cl_audit doesn't pool limits or move work between accounts, and whether you may use more than one account is set by Anthropic's terms.
-- **You want it in view all day.** cl_audit is a [Claude usage tracker](/) that lives in the Dock. Each Dock icon shows both limits without a terminal open, and a full limit turns into a countdown.
+- **You have more than one Claude account.** Each profile gets its own Claude Code folder, its own sign-in and, if you want them, its own Dock icon and Claude window. The page on [using several Claude accounts on a Mac](/use-cases/multiple-claude-accounts/) shows how that works. cl_audit doesn't pool limits or move work between accounts, and whether you may use more than one account is set by Anthropic's terms.
+- **You want it in view all day.** cl_audit is [a usage tracker that lives in the Dock](/). Each Dock icon shows both limits without a terminal open, and a full limit turns into a countdown.
 - **You want to know when you're back.** With Notify when back on (the default), cl_audit sends one notification when a full limit resets.
 
 ## Is there a ccusage Mac app?
@@ -156,4 +156,4 @@ That's the daily report, the 5-hour blocks report and a JSON export for October.
 
 Expect the token totals to differ. The cl_audit dashboard counts input plus cache writes plus output and leaves out cache reads, while ccusage's README says it tracks cache creation and cache read tokens separately. Compare the two on trends, not on the last digit.
 
-For the history side, the [Claude Code usage history](/use-cases/claude-code-usage-history/) page shows what cl_audit keeps and where it comes from. If you want to try cl_audit, you can [install it](/install/).
+For the history side, the page on [tokens by project and model](/use-cases/claude-code-usage-history/) shows what cl_audit keeps and where it comes from. If you want to try cl_audit, you can [install it](/install/).
