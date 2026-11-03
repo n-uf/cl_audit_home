@@ -3,13 +3,19 @@ import Desktop from "../layouts/Desktop.astro";
 import AccountCard from "../components/AccountCard.astro";
 import History from "../components/History.astro";
 import { accounts } from "../data/demo";
+import { orgNode, webPage, breadcrumbs } from "../data/schema";
 
 // main keyword: "Claude usage dashboard"
 const title = "Claude usage dashboard: limits and Claude Code history";
 const description =
   "A demo of cl_audit's Claude usage dashboard: each profile's 5-hour and weekly limits, plus Claude Code usage history by day, project and model.";
+const jsonLd = [
+  webPage({ path: "/dashboard/", name: title, description }),
+  breadcrumbs([{ name: "Home", path: "/" }, { name: "Demo dashboard", path: "/dashboard/" }]),
+  orgNode,
+];
 ---
-<Desktop title={title} description={description} page="dashboard" headline="Claude usage dashboard · sample data, 3 profiles">
+<Desktop title={title} description={description} page="dashboard" headline="Claude usage dashboard · sample data, 3 profiles" jsonLd={jsonLd}>
   <div class="content-inner dash" id="dash" data-range="7d">
     <!-- the app's own header row, as in cl_audit: which profiles are shown, and when it last updated -->
     <!-- as the app's top strip: a key per profile (latched while shown, its strip in the profile's colour), then

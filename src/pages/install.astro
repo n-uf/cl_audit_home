@@ -1,12 +1,18 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
 import { repo, version, releasedText, changelog, download, requires, checkedWith, driftNote, stage } from "../data/site";
+import { orgNode, webPage, breadcrumbs } from "../data/schema";
 
 const title = "Install cl_audit, a free Claude usage app for Mac";
 const description =
   "Download cl_audit for Apple silicon Macs (macOS 13 or later), allow it once, and add a profile for each Claude account. It's free and needs Claude Code.";
+const jsonLd = [
+  webPage({ path: "/install/", name: title, description }),
+  breadcrumbs([{ name: "Home", path: "/" }, { name: "Install", path: "/install/" }]),
+  orgNode,
+];
 ---
-<Desktop title={title} description={description} page="install" headline="Download or build from source">
+<Desktop title={title} description={description} page="install" headline="Download or build from source" jsonLd={jsonLd}>
   <div class="content-inner">
     <!-- two columns that each flow on their own (no rows, so a short card leaves no gap): installing it and
          adding a profile on the left; building it yourself, what it needs and keeping it up to date on the right.

@@ -1,15 +1,17 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
 import { faq } from "../data/faq";
+import { orgNode, webPage, breadcrumbs, faqPage } from "../data/schema";
 
 const title = "cl_audit FAQ: Claude accounts, usage limits, privacy";
 const description =
   "Can you use two Claude accounts on one Mac? When is a full limit back? Answers on cl_audit's profiles, usage figures, alerts, privacy and plans.";
-const jsonLd = [{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
-}];
+const jsonLd = [
+  webPage({ path: "/faq/", name: title, description }),
+  breadcrumbs([{ name: "Home", path: "/" }, { name: "FAQ", path: "/faq/" }]),
+  faqPage(faq.map(([q, a]) => ({ q, a }))),
+  orgNode,
+];
 ---
 <Desktop title={title} description={description} page="faq" headline="Common questions" jsonLd={jsonLd}>
   <div class="content-inner">
