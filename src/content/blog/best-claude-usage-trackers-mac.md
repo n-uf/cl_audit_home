@@ -102,7 +102,7 @@ You may not need a tracker at all. Anthropic's help page says Settings ▸ Usage
 
 cl_audit is a free, source-available Mac app. Each profile is one Claude setup: a Claude Code folder with its sign-in, and optionally a Claude window and a Dock icon. Turn on **Usage in the Dock** and the profile gets its own small Dock icon showing its 5-hour limit and weekly limit. When a limit is full, the icon counts down to when the profile is back ("back at 15:28"), and with **Notify when back** on, cl_audit sends an alert at the reset. The dashboard shows every profile in one window.
 
-![Dock icons showing three Claude profiles' usage limits](/img/guides/dock-profiles.webp "cl_audit's Dock icons: home at 34%, work full and counting down, side at 12%. Sample data.")
+![Dock icons showing three Claude profiles' usage limits](/img/guides/dock-profiles.webp "cl_audit's Dock icons: home at 34% of its 5-hour limit, work full and counting down, side at 12%. Sample data.")
 
 The limits are read from Anthropic for each profile, with that profile's Claude Code sign-in. Usage history comes from Claude Code's session files on your Mac, so it covers the Terminal, the desktop Code tab, VS Code and SDK apps: tokens per day, by project, model and surface. The README says there is no cl_audit server and nothing else goes over the network. You can [try the dashboard demo](/dashboard/) without installing.
 
