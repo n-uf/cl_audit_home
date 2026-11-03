@@ -49,8 +49,22 @@
 .prose h2::after { content: ""; flex: 1 0 24px; height: 1px; background: rgba(0,0,0,.5); box-shadow: 0 1px 0 rgba(255,255,255,.05); }
 .prose h3 { margin: 24px 0 8px; font-size: 16.5px; line-height: 1.35; color: var(--text); }
 .prose p { margin: 0 0 14px; }
-.prose a { color: var(--link); text-underline-offset: 2px; }
-.prose a:hover { text-decoration-thickness: 2px; }
+.prose a:not(.key):not(.pill) { color: var(--link); text-underline-offset: 2px; }
+.prose a:not(.key):not(.pill):hover { text-decoration-thickness: 2px; }
+/* in-text action buttons (src/data/actions.ts): a reason, then the Download key and one more on a key plate */
+.prose .act { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 18px; margin: 22px 0; padding: 12px 14px 12px 16px; border-radius: 8px; background: rgba(0,0,0,.22); box-shadow: var(--well); }
+.prose .act .act-why { flex: 1 1 260px; margin: 0; color: var(--text); font-size: 15px; line-height: 1.45; }
+.prose .act .act-keys { flex: none; }
+/* narrow: the plate takes the whole width and its two keys share it, so neither is cut off */
+@media (max-width: 600px) {
+  .prose .act .act-keys { flex: 1 1 100%; display: flex; }
+  .prose .act .act-keys > a { flex: 1 1 0; min-width: 0; padding: 0 8px; }
+}
+/* a small phone: one key per row */
+@media (max-width: 480px) {
+  .prose .act .act-keys { flex-direction: column; align-items: stretch; }
+  .prose .act .act-keys > a { flex: none; }
+}
 .prose strong { color: var(--text); font-weight: 650; }
 .prose ul, .prose ol { margin: 0 0 14px; padding-left: 22px; }
 .prose li { margin: 0 0 6px; padding-left: 2px; }
@@ -115,7 +129,7 @@
 .face-silver .appwin :is(.prose h2::after, .prose hr) { background: rgba(0,0,0,.28); box-shadow: 0 1px 0 rgba(255,255,255,.55); }
 .face-silver .appwin .prose :is(th, td) { border-top-color: rgba(0,0,0,.16); box-shadow: none; }
 .face-silver .appwin :is(.faq-card h4, .takeaways h4, .toc h4) { color: rgba(30,32,34,.7); }
-.face-silver .appwin .prose a, .face-silver .appwin .byline a, .face-silver .appwin .related a, .face-silver .appwin .sources a { color: var(--link); }
+.face-silver .appwin .prose a:not(.key):not(.pill), .face-silver .appwin .byline a, .face-silver .appwin .related a, .face-silver .appwin .sources a { color: var(--link); }
 .face-silver .appwin :is(.prose table, .byline .kind) { --text: #1c1c1e; --soft: #2e3033; --muted: #55585c; --faint: #6c6f73; color: var(--text); text-shadow: none; }
 .face-silver .appwin .card.toc li a:not(.key):not(.pill):not(.tile) { color: var(--soft); }
 .face-black .prose :is(th, td) { border-top-color: rgba(0,0,0,.55); }
