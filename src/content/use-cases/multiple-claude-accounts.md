@@ -98,6 +98,16 @@ It's one profile per seat. If you add a profile for a seat another profile alrea
 
 cl_audit shows limits for plans that have them: Pro, Max and Team. A profile that signs in with an API key is billed per token and has no usage limits to show.
 
+## Accounts for clients
+
+If you freelance or work for an agency, a client may add you to their Team organisation. That's another seat, even on the email you already use, so it gets its own profile, say "client-acme".
+
+With Claude window on, the client's chats stay in its own Claude window, away from your work and home ones. Claude Code for that client runs from its own folder, `~/.claude-client-acme`, with its own sign-in. The seat's 5-hour and weekly limits are the client's, and they sit on a card next to your other profiles, so you can check them without opening the client's window.
+
+How a Team seat differs from a personal plan is covered in [Claude Team and personal accounts](/blog/claude-team-and-personal-account/).
+
+When the work ends, use **Remove profile…**. It keeps the profile's Claude Code folder unless you also choose **Delete its folders too**.
+
 ## Set it up in four steps
 
 You need a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. The Claude app is only needed for Claude windows.
