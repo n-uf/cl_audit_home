@@ -5,7 +5,7 @@ h1: "Claude Code multiple accounts with CLAUDE_CONFIG_DIR"
 mainKeyword: "claude code multiple accounts"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-03
 author: n-uf
 takeaways:
   - "Anthropic's docs give one way to stay signed in to several Claude Code accounts: a separate configuration directory per account, chosen with CLAUDE_CONFIG_DIR."
