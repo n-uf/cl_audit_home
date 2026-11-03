@@ -16,7 +16,7 @@ takeaways:
   - "Usage from claude.ai chats, other computers and cloud sessions isn't in it, because those don't write session files on this Mac."
 faq:
   - q: "Where does Claude Code store its usage history?"
-    a: "In plain-text session files on your Mac, one per session, under a projects folder in Claude Code's folder (~/.claude by default, or your CLAUDE_CONFIG_DIR folder). Anthropic's docs say Claude Code deletes them after 30 days by default. cl_audit reads these files to draw the history."
+    a: "In plain-text session files on your Mac, one per session, under a projects folder in Claude Code's folder (~/.claude by default, or your CLAUDE_CONFIG_DIR folder). Anthropic's docs say Claude Code deletes most of them after 30 days by default. cl_audit reads these files to draw the history."
   - q: "Can I see usage by project?"
     a: "Yes. The \"Where it goes\" chart splits the share of tokens in the period by project, by model and by surface, so you can see which project or which model used most. The profile chips next to the period keys filter it to one account or more."
   - q: "Does it count cache reads?"
@@ -34,7 +34,7 @@ sources:
     url: "https://code.claude.com/docs/en/settings"
     checked: 2026-11-02
   - title: "ccusage README (ryoppippi/ccusage)"
-    url: "https://github.com/ryoppippi/ccusage"
+    url: "https://github.com/ccusage/ccusage"
     checked: 2026-11-02
 related:
   - /
@@ -43,83 +43,83 @@ related:
   - /use-cases/claude-usage-limit-alerts/
 ---
 
-cl_audit reads the session files Claude Code already writes on your Mac and shows your Claude Code usage history: when you use Claude, tokens per day, and where they go by project, model and surface (Terminal, the desktop Code tab, VS Code, SDK apps). Nothing is uploaded. cl_audit is an independent tool, not affiliated with Anthropic.
+cl_audit shows your Claude Code usage history from the session files Claude Code already writes on your Mac: when you use Claude, tokens per day, and where they go by project, model and surface (Terminal, the desktop Code tab, VS Code, SDK apps). Nothing is uploaded. cl_audit is an independent tool, not affiliated with Anthropic.
 
-You pick a period, 24 hours, 7 days or 30 days, and the charts redraw. It is free, and it runs on Macs with Apple silicon and macOS 13 or later.
+Pick 24 h, 7 d or 30 d and the charts redraw. It's free, and it runs on a Mac with Apple silicon and macOS 13 or later.
 
 ## What the history shows
 
-The history sits below the profile cards on the dashboard, under the heading **Usage history**. It has three charts, and you can show or hide each one.
+**Usage history** sits below the profile cards on the dashboard. It has three charts, and a key for each turns it on or off.
 
-- **When you use Claude.** A heatmap of days against hours, so you can see which hours of the day you actually work with Claude, and which days you don't. It is the quickest way to notice that most of your usage is late in the evening, or that a weekend run used more than you expected.
-- **Tokens per day.** A bar for each day, or each hour in the 24-hour view, stacked by profile. The note on the chart says what is counted: input, cache writes and output. Cache reads are not counted.
-- **Where it goes.** The share of tokens in the period, split by project, by model and by surface. The project is the folder you worked in. The surface is where Claude Code ran: Terminal, the desktop Code tab, VS Code or an SDK app.
+- **When you use Claude.** A heatmap of replies per hour, days against hours. Evening-heavy weeks and quiet weekends stand out at once.
+- **Tokens per day.** A bar for each day, per profile; in the 24 h view it becomes tokens per hour. The note on the chart says what's counted: input + cache writes + output. Cache reads are not counted.
+- **Where it goes.** The share of tokens in the period by project, by model and by surface. The project is the folder you worked in. The surface is where Claude Code ran.
 
-A display above the charts gives the totals for the period, in replies and tokens. The period keys and the **Show** chips next to them filter the charts, and your choice is kept between launches.
+Above the charts, a small display gives the period's totals in replies and tokens (in the demo's 7 d view, "1,307 replies · 36.1M tokens"). The period you pick and the **Show** chips are kept between launches.
 
-You can try all of it on the [demo dashboard](/dashboard/), which uses sample data for three made-up profiles. The Claude usage dashboard there works like the real one, so you can switch periods and chips without installing anything.
+You can click through all of it on the [demo dashboard](/dashboard/), which runs on sample data for three made-up profiles: home, work and side.
 
-## Questions the charts answer
+## How do you check Claude usage history by project or model?
 
-A few things are quicker to see than to work out:
+Open the dashboard, pick a period and read the chart. Some questions this answers quickly:
 
 - **Which project used most of my tokens this week?** Pick 7 d and read the project split in "Where it goes".
-- **Did switching models change my usage?** Compare the model split in the 7 d and 30 d views.
-- **When did that long run happen?** In the 24 h view the tokens chart switches to tokens per hour, so a long run shows up as one tall bar, and the heatmap shows the same hours across the days before it.
-- **Is this a one-off or my usual week?** The 30 d view puts a heavy day next to the ordinary ones.
+- **Did switching models change my usage?** Compare the model split in the 7 d and 30 d views. That's your Claude token usage by model, as a share of the period.
+- **When did that long run happen?** In 24 h the tokens chart goes per hour, so a long run is one tall bar, and the heatmap shows the hours it covered.
+- **Is this a one-off or an ordinary week?** The 30 d view puts a heavy day next to the ordinary ones.
 
-None of these needs a spreadsheet or a script: you open the dashboard and look.
+## Where the history comes from
 
-## Where the data comes from
+Claude Code writes a transcript of each session as a plain-text file on your Mac. Anthropic's docs give the path: `projects/<project>/<session>.jsonl`, one file per session, inside Claude Code's folder. That folder is `~/.claude`, unless you set `CLAUDE_CONFIG_DIR`; then Claude Code keeps its settings, session history and plugins there instead.
 
-Claude Code writes a transcript of each session as a plain-text file on your Mac. Anthropic's docs list the path: under the projects folder in Claude Code's folder, one file per session, such as `projects/<project>/<session>.jsonl`. That folder is `~/.claude` unless you set `CLAUDE_CONFIG_DIR`, in which case Claude Code stores its settings, session history and plugins there instead.
+cl_audit reads those session logs. From each reply it takes the time, the model, the token counts, the project folder and the surface. Nothing else from the file goes into the history.
 
-cl_audit reads those files. From each reply it takes only five things: the time, the model, the token counts, the project folder and the surface. It does not read your prompts or Claude's answers for the history.
+That source sets two limits.
 
-Two limits follow from where the data comes from.
+It's the history of this Mac only. claude.ai chats, other computers and cloud sessions don't write session files here, so their usage isn't in it.
 
-First, it is the history of this Mac. Usage from claude.ai chats, from other computers and from cloud sessions isn't there, because those don't write session files here. Second, Claude Code doesn't keep the files forever: Anthropic's docs say it deletes them once they're older than `cleanupPeriodDays`, which is 30 days by default. cl_audit's longest view is 30 days.
+And Claude Code doesn't keep the files forever. Anthropic's docs say it deletes most of them once they're older than `cleanupPeriodDays`, 30 days by default. cl_audit's longest view is 30 days.
 
-The history is a record of tokens. It doesn't tell you how close a limit is: for that, cl_audit reads each profile's 5-hour and weekly limits from Anthropic, and shows them on the cards and in the Dock. See [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) for how those become alerts.
+The history counts tokens. It doesn't say how close you are to a limit: for that, cl_audit reads each profile's 5-hour and weekly limits from Anthropic and shows them on the cards and in the Dock. [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) covers how those turn into alerts.
 
-## History for each account
+## Claude Code usage history for each account
 
-The history is kept for each profile, the same way the limits are. If you use [multiple Claude accounts](/use-cases/multiple-claude-accounts/), each profile has its own Claude Code folder, and so its own session files. cl_audit reads each folder separately and colours the bars by profile.
+The history is kept per profile, like the limits. If you use [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/), each profile has its own Claude Code folder, such as `~/.claude-work`, and so its own session files. cl_audit reads each folder separately and colours the charts by profile.
 
-That lets you answer questions that one account's `/usage` screen can't:
+So you can ask things about your accounts together:
 
 - Which account do I use for which projects?
-- Is my work seat getting the long agent runs, or is my personal plan?
+- Is the work seat getting the long agent runs, or the personal plan?
 - Did the weekend usage come from the account I thought it did?
 
-The **Show** chips pick which profiles are in the charts: one, two or all. A profile that is "usage only", with both its Dock icon and Claude window off, is read too, so it appears in the history as well.
+The **Show** chips choose which profiles are in the charts. A "usage only" profile, with Usage in the Dock and Claude window both off, is still read, so it's in the history too.
 
 ## How it compares with /usage and ccusage
 
-Claude Code has a built-in `/usage` command, and there is a well-known open-source command-line tool called ccusage. All three read local data, but they answer different questions. This table is based on Anthropic's cost-management page and the ccusage README, both checked on 2 November 2026.
+Claude Code has a built-in `/usage` command, and ccusage is a well-known open-source command-line tool. All three read local data, but they answer different questions. The table is based on Anthropic's cost-management page and the ccusage README, both checked on 2 November 2026.
 
 | | cl_audit | `/usage` in Claude Code | ccusage |
 |---|---|---|---|
 | What it is | A Mac app with a dashboard, Dock icons and alerts | A command inside Claude Code | A command-line tool, run with `npx ccusage@latest` |
-| Where you see it | The dashboard in the cl_audit window | The terminal, in Claude Code | The terminal |
+| Where you see it | The dashboard in the cl_audit window | Claude Code, in the terminal | The terminal |
 | Time range | 24 h, 7 d, 30 d | Last 24 hours or last 7 days for the plan breakdown | Daily, weekly, monthly and per-session reports, plus 5-hour blocks |
-| Split by | Project, model and surface | Skills, subagents, plugins and MCP servers (plan breakdown) | Options include a project filter and a breakdown |
+| Split by | Project, model and surface | Skills, subagents, plugins and MCP servers (plan breakdown) | Project (`--instances`, `--project`) and model (`--breakdown`) |
 | Several accounts | One history per profile, shown together or one at a time | The account Claude Code is signed in to | Not covered on the README page |
-| Plan limits | 5-hour and weekly limits in the Dock and on the cards | Plan usage bars for the account you're signed in to | Shows 5-hour billing windows and dollar costs; the README doesn't describe plan-limit percentages |
+| Plan limits | 5-hour and weekly limits in the Dock and on the cards | Plan usage bars for the account you're signed in to | 5-hour billing windows and dollar costs; the README doesn't describe plan-limit percentages |
 | Cost | Free, source-available (PolyForm Perimeter 1.0.1) | Part of Claude Code | Free, MIT licence |
 
 Where each makes more sense:
 
-- **`/usage`** is already there. If you just want to know where your plan usage went in the last day or week, and you are in the terminal anyway, it needs nothing installed. Anthropic's page says its breakdown is approximate and counts only this machine's sessions.
-- **ccusage** suits people who want reports in the terminal or as JSON, want dollar figures from token prices, or use other coding agents as well; its README lists many besides Claude Code.
-- **cl_audit** is for people who want a picture rather than a report, across several Claude profiles, with the limits showing in the Dock and alerts when they near. It is a Mac app and needs Apple silicon.
+- **`/usage`** is already there. If you're in the terminal and want to know where your plan usage went in the last day or week, it needs nothing installed. Anthropic's page says its breakdown is approximate and counts only this machine's sessions.
+- **ccusage** suits you if you want reports in the terminal or as JSON, dollar figures from token prices, or one report across other coding agents too; its README lists many besides Claude Code.
+- **cl_audit** fits if you'd rather see a chart than read a report, use several Claude profiles, and want the limits in the Dock with alerts as they near. It's a Mac app and needs Apple silicon.
 
-You don't have to choose. Each one answers a different question.
+Nothing stops you using two of them, or all three.
 
 ## What stays on your Mac
 
-The history is read on your Mac and stays there. cl_audit has no server, no analytics and no sign-up. Its only network requests go to Anthropic's own server, to read each profile's usage limits and which account a profile is signed in to. The session files are not sent anywhere.
+The history is read on your Mac and stays there. cl_audit has no server, no analytics and no sign-up. It makes two kinds of request, both to Anthropic's own server: each profile's usage limits, and which account the profile is signed in to. Session files aren't sent anywhere.
 
-Because those files are plain text and can contain whatever passed through a session, Anthropic's docs suggest you shorten `cleanupPeriodDays` if you want them kept for less time. cl_audit only reads the five fields above, and saves the resulting usage figures for each profile, which are removed when you remove the profile.
+Those files are plain text and hold whatever passed through a session, so Anthropic's docs suggest lowering `cleanupPeriodDays` if you want them kept for less time. cl_audit reads only the five fields above. It saves the resulting usage figures per profile, and **Remove profile…** deletes them with the profile.
 
-If you want to check this for yourself, cl_audit's source is open to read, and the [FAQ](/faq/) explains what it reads and sends. To try the history on your own sessions, [download cl_audit](/install/) and add a profile for each Claude Code folder you use. The overall picture is on the [Claude usage tracker](/) page.
+The source is open to read, and the [FAQ](/faq/) lists what cl_audit reads and sends. To see the history for your own sessions, [download cl_audit](/install/) and add a profile for each Claude Code folder you use. The [Claude usage tracker for Mac](/) page has the rest of the app.
