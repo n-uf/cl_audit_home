@@ -71,7 +71,7 @@ related:
   - /blog/ccusage-alternative/
 ---
 
-The best Claude usage tracker for you depends on where you want to see your usage. For one account and a percentage in the menu bar, there are five menu bar apps to pick from. For reports in the terminal, there's ccusage. For [several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/), Claude Usage Tracker shows them in the menu bar, and cl_audit gives each one its own Dock icon. cl_audit is our tool, so read this list with that in mind. It is an independent tool, not affiliated with Anthropic.
+The best Claude usage tracker for you depends on where you want to see your usage. For one account and a percentage in the menu bar, there are five menu bar apps to pick from. For reports in the terminal, there's ccusage. For several Claude accounts on one Mac, Claude Usage Tracker shows them in the menu bar, and cl_audit gives each one its own Dock icon. cl_audit is our tool, so read this list with that in mind. It is an independent tool, not affiliated with Anthropic.
 
 ## How we compared
 
@@ -111,7 +111,7 @@ Where it isn't the pick:
 - An API-key profile has no limits to show.
 - It isn't signed with an Apple Developer ID yet, so the first time, macOS makes you click Open Anyway.
 
-More: [Claude usage tracker for Mac](/), [several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/).
+More: [track Claude usage on your Mac](/), [several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/).
 
 ### ClaudeUsageBar
 
@@ -161,7 +161,7 @@ How we'd choose, including when it isn't cl_audit:
 - **Usage in the browser, no app:** Claude Monitor.
 - **Claude and other AI coding tools in one place:** CodexBar or ClaudeBar.
 - **Several accounts in the menu bar:** Claude Usage Tracker. Its README also lists usage charts, a `claude-<profile>` command for each profile and automatic profile switching.
-- **Several accounts, each in its own Dock icon:** cl_audit, a [Claude usage tracker](/) built around profiles, with alerts per profile and [Claude Code usage history](/use-cases/claude-code-usage-history/) by project, model and surface. If that's what you want, [download cl_audit](/install/).
+- **Several accounts, each in its own Dock icon:** cl_audit, a [Claude usage tracker](/) built around profiles, with alerts per profile and [your Claude Code history by day](/use-cases/claude-code-usage-history/), split by project, model and surface. If that's what you want, [download cl_audit](/install/).
 - **An occasional look:** Settings ▸ Usage or `/usage`, and skip the install.
 
 ## Is there a Claude usage widget for Mac?
