@@ -26,13 +26,13 @@ faq:
     a: "You can wait for the limit to reset, upgrade your plan, or turn on usage credits to keep working at pay-as-you-go rates. Claude and Claude Code both show when the limit resets."
 sources:
   - title: "How do usage and length limits work? (Claude Help Center)"
-    url: "https://support.claude.com/en/articles/11647753-understanding-usage-and-length-limits"
+    url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
     checked: 2026-11-02
   - title: "Usage limit best practices (Claude Help Center)"
     url: "https://support.claude.com/en/articles/9797557-usage-limit-best-practices"
     checked: 2026-11-02
-  - title: "Getting started with Claude, Free plan limits (Claude Help Center)"
-    url: "https://support.claude.com/en/articles/8114491-getting-started-with-claude"
+  - title: "Get started with Claude, Free plan limits (Claude Help Center)"
+    url: "https://support.claude.com/en/articles/8114491-get-started-with-claude"
     checked: 2026-11-02
   - title: "What is the Pro plan? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/8325606-what-is-the-pro-plan"
@@ -53,7 +53,7 @@ sources:
     url: "https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans"
     checked: 2026-11-02
   - title: "What is a limit reset? (Claude Help Center)"
-    url: "https://support.claude.com/en/articles/17007452"
+    url: "https://support.claude.com/en/articles/17007452-what-is-a-limit-reset"
     checked: 2026-11-02
   - title: "Commands (Claude Code Docs)"
     url: "https://code.claude.com/docs/en/commands"

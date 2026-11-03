@@ -28,7 +28,7 @@ sources:
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
     checked: 2026-11-02
   - title: "Anthropic Help Center: Use Claude Code with your Pro, Max, or Ultra plan"
-    url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan"
+    url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
     checked: 2026-11-02
   - title: "Claude Code docs: Manage costs effectively"
     url: "https://code.claude.com/docs/en/costs"

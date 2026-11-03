@@ -34,8 +34,8 @@ sources:
   - title: "Anthropic Help Center: Usage limit best practices"
     url: "https://support.claude.com/en/articles/9797557-usage-limit-best-practices"
     checked: 2026-11-02
-  - title: "Anthropic Help Center: Using Claude Code with your Pro or Max plan"
-    url: "https://support.claude.com/en/articles/11145838-using-claude-code-with-your-pro-or-max-plan"
+  - title: "Anthropic Help Center: Use Claude Code with your Pro, Max, or Ultra plan"
+    url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
     checked: 2026-11-02
   - title: "Claude Code docs: Commands"
     url: "https://code.claude.com/docs/en/commands"
