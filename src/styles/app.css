@@ -567,6 +567,7 @@ body { overflow: hidden; }
 .card .t { color: var(--muted); font-size: 14px; margin-top: 12px; }
 .more { display: inline-block; margin-top: 10px; color: #e8a07f; font-size: 13.5px; font-weight: 600; text-decoration: none; }
 .more:hover { color: #f3b597; }
+.more + .more { margin-left: 16px; }
 /* small pictures of the app sit in a recess of the module */
 .mini-palette { padding: 6px; border-radius: 8px; background: rgba(0,0,0,.26); box-shadow: var(--well); }
 .mini-palette .row { margin-top: 0; }
@@ -597,6 +598,10 @@ body { overflow: hidden; }
 /* Overview questions: a list module; each question a small heading, its answer under it */
 .home-faq .list h3.q { font-size: 14.5px; margin: 0; }
 .home-faq .list span { max-width: 100ch; }
+/* Overview guides: three articles, each title a link */
+.guides .list a { color: var(--text); text-decoration: none; }
+.guides .list a:hover b { text-decoration: underline; text-underline-offset: 2px; }
+.guides .list span { max-width: 100ch; }
 .legal { color: var(--faint); font-size: 12px; text-align: center; padding: 4px 0 2px; }
 .legal a { color: inherit; }
 /* numbered steps: each number in a small display window */
