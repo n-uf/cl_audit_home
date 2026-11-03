@@ -5,7 +5,7 @@ h1: "Claude limit reset time for the 5-hour and weekly limits"
 mainKeyword: "claude limit reset time"
 kind: what-is
 published: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-03
 author: n-uf
 takeaways:
   - "The 5-hour limit resets in full five hours after you send the first message of its period."
@@ -72,7 +72,7 @@ Everything below about how Claude behaves comes from Anthropic's help and docs p
 | Weekly limit | At a fixed time each week assigned to your account | Settings ▸ Usage, next reset time |
 | In Claude Code | At the time shown in the limit message | `/usage`, or the "resets" time in the message |
 
-If you're stopped right now, the message tells you which one it is. "You've hit your session limit" is the 5-hour limit, "You've hit your weekly limit" is the weekly one, and Claude Code's docs say both messages carry the reset time. If you'd rather be told when it's over, see [a notification when the limit resets](/use-cases/claude-usage-limit-alerts/).
+If you're stopped right now, the message tells you which one it is. "You've hit your session limit" is the 5-hour limit, "You've hit your weekly limit" is the weekly one, and Claude Code's docs say both messages carry the reset time. [What to do when your Claude usage limit is reached](/blog/claude-usage-limit-reached/) covers the options until then. If you'd rather be told when it's over, see [a notification when the limit resets](/use-cases/claude-usage-limit-alerts/).
 
 ## How the Claude 5-hour limit resets
 
