@@ -1,12 +1,18 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
 import SettingsPage from "../components/SettingsPage.astro";
+import { orgNode, webPage, breadcrumbs } from "../data/schema";
 
 const title = "cl_audit settings: Claude usage alerts and Dock icons";
 const description =
   "Set each Claude profile's usage alerts, refresh interval, Claude Code folder, Claude window and Dock icon, with 13 icon styles and 5 panel designs.";
+const jsonLd = [
+  webPage({ path: "/settings/", name: title, description }),
+  breadcrumbs([{ name: "Home", path: "/" }, { name: "Settings", path: "/settings/" }]),
+  orgNode,
+];
 ---
-<Desktop title={title} description={description} page="settings" headline="Profile and general settings">
+<Desktop title={title} description={description} page="settings" headline="Profile and general settings" jsonLd={jsonLd}>
   <div class="content-inner">
     <SettingsPage />
   </div>
