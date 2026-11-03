@@ -649,6 +649,13 @@ body { overflow: hidden; }
   .plate.pages { gap: 4px; padding: 0; }
   .plate.pages .key { padding: 0 4px; font-size: 9px; letter-spacing: .04em; }
 }
+@media (max-width: 480px) {
+  /* six or seven keys don't fit one row on a phone: two rows of four cells. "Demo dashboard" takes two cells, and so does
+     "Use cases" while it is the last key (no Blog key yet), so the grid is always full */
+  .plate.pages { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .plate.pages .key { flex: none; justify-content: center; padding: 0 2px; }
+  .plate.pages .key[data-k="dashboard"], .plate.pages .key[data-k="usecases"]:last-child { grid-column: span 2; }
+}
 
 /* phones, upright or on their side: the window's head lies over the content (.desk.ovl, set by Desktop.astro once it
    has measured the head: --head-h), so the content scrolls under it. Scrolling down slides the menu bar, title bar

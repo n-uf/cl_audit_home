@@ -7,15 +7,18 @@ import Dock from "../components/Dock.astro";
 import DesktopApps from "../components/DesktopApps.astro";
 import TerminalApps from "../components/TerminalApps.astro";
 import { repo, download, version } from "../data/site";
+import { hasBlog } from "../data/content";
 
-export type Page = "overview" | "dashboard" | "settings" | "install" | "faq" | "none";
+export type Page = "overview" | "dashboard" | "settings" | "install" | "faq" | "usecases" | "blog" | "none";
 // headline: the page title, shown lit in the top display window (it is the page's h1)
 interface Props { title: string; description: string; page: Page; headline?: string; jsonLd?: object[] }
 const { title, description, page, headline, jsonLd } = Astro.props;
 
+// The Blog key (and /blog/) exist only once the blog has a first article.
 const nav: [Page, string, string][] = [
   ["overview", "Overview", "/"], ["dashboard", "Demo dashboard", "/dashboard/"], ["settings", "Settings", "/settings/"],
-  ["install", "Install", "/install/"], ["faq", "FAQ", "/faq/"],
+  ["install", "Install", "/install/"], ["faq", "FAQ", "/faq/"], ["usecases", "Use cases", "/use-cases/"],
+  ...((await hasBlog()) ? [["blog", "Blog", "/blog/"] as [Page, string, string]] : []),
 ];
 const current = nav.find(([id]) => id === page)?.[1];
 // the title's part after " · " is secondary: shown in a quieter style in the display
@@ -54,7 +57,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
         <div class="fascia-slot"><slot name="top" /></div>
         <nav class="plate pages" aria-label="Pages">
           <span class="lbl" aria-hidden="true">Page</span><span class="divider" aria-hidden="true"></span>
-          {nav.map(([id, label, href]) => <a href={href} class:list={["key", "sm", { on: id === page }]} aria-current={id === page ? "page" : undefined}><span class="led" aria-hidden="true"></span>{label}</a>)}
+          {nav.map(([id, label, href]) => <a href={href} data-k={id} class:list={["key", "sm", { on: id === page }]} aria-current={id === page ? "page" : undefined}><span class="led" aria-hidden="true"></span>{label}</a>)}
         </nav>
       </div>
       </div>
