@@ -82,6 +82,8 @@ It's MIT licensed. Three things its README doesn't cover: which operating system
 
 cl_audit is a free, source-available Mac app built around profiles. A profile is one Claude setup: a Claude Code folder with its sign-in and, optionally, a Claude window and a Dock icon. Each profile is linked to one seat, an account plus an organisation, so a personal plan and a Team seat on the same email are two seats.
 
+![Claude Code usage history by hour, day and project](/img/guides/usage-history.webp "cl_audit's Claude Code usage history: when, tokens per day, and where they go by project, model and surface. Sample data.")
+
 cl_audit's background agent reads each profile's 5-hour limit and weekly limit from Anthropic, using that profile's Claude Code sign-in. The cl_audit FAQ says these are the same figures Claude shows in Settings ▸ Usage, with their reset times.
 
 - Dock icons: a profile with **Usage in the Dock** on gets its own icon with both limits. When a limit is full, the icon counts down to when the profile is back.

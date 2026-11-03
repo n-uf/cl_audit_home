@@ -139,6 +139,8 @@ cl_audit shows this in the Dock, not the menu bar, and it needs Claude Code sign
 
 ## Getting a notification at the reset
 
+![cl_audit alert settings: Notify at and Notify when back](/img/guides/alert-settings.webp "cl_audit's Updates and alerts: Notify at a level, and Notify when back for the reset. Sample data.")
+
 Most of waiting for a reset is remembering to come back. The pages we checked describe three things on Anthropic's side, and none of them tells you a limit is back:
 
 - In an interactive Claude Code session signed in with a claude.ai subscription, Claude Code can wait in the open session and continue the interrupted task shortly after the reset.

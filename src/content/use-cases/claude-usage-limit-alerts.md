@@ -58,6 +58,8 @@ Each alert fires once per limit and reset. A limit sitting at 92% won't ping you
 
 A full limit also shows up outside Notification Center. On the [Claude usage dashboard](/dashboard/), the profile's card gets one box beside the limits, for the full limit that holds the profile back (the one that resets last). It reads "5-hour full", then how long until it's back in large type ("in 1h 42m"), and the time under that ("back at 15:28").
 
+![Dashboard card with a full 5-hour Claude limit](/img/guides/card-limit-full.webp "A dashboard card with a full 5-hour limit: how long until it's back, and at what time. Sample data.")
+
 The wording depends on how far off the reset is. The countdown reads "in 2d 19h", "in 1h 42m" or "in 19m". The time reads "back at 15:28" for today, "back Thu 09:00" within the week and "back 11 Nov" after that.
 
 You'll see the same countdown in a few more places:
@@ -80,6 +82,8 @@ For your own times, look at Settings ▸ Usage in Claude, or at the profile's ca
 If Anthropic doesn't say when a limit resets, the card says "full · reset time unknown". cl_audit won't guess a time.
 
 ## Setting the level and how often cl_audit reads
+
+![cl_audit alert settings: Notify at and Notify when back](/img/guides/alert-settings.webp "Updates and alerts in a profile's settings: how often to read, Notify at a level, and Notify when back. Sample data.")
 
 In cl_audit, open Settings, pick a profile and find **Updates and alerts**. Three settings there matter for alerts:
 

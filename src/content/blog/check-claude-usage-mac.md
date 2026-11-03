@@ -149,6 +149,8 @@ Team and Enterprise owners have a second view. The Claude Code docs describe a s
 
 ## With a usage tracker in the Dock or the menu bar
 
+![Dock icons showing three Claude profiles' usage limits](/img/guides/dock-profiles.webp "cl_audit in the Dock: each profile's icon shows its 5-hour and weekly limits; the work profile is full and counts down. Sample data.")
+
 Settings > Usage is a page, `/usage` is a command, and a status line only lives in Claude Code. Each one means opening something. A tracker app keeps the number on screen and can tell you when a limit is nearly full. The kinds:
 
 | Kind | Where you see usage | What it reads | Good for |
