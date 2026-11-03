@@ -4,8 +4,8 @@ description: "Use multiple Claude accounts with Claude Code in VSCode: one VS Co
 h1: "Claude Code in VS Code with multiple accounts"
 mainKeyword: "claude code vscode multiple accounts"
 kind: how-to
-published: 2026-11-02
-updated: 2026-11-02
+published: 2026-11-03
+updated: 2026-11-03
 author: n-uf
 takeaways:
   - "Out of the box, changing account in the Claude Code panel means signing out (Sign out, or /logout) and signing in again."

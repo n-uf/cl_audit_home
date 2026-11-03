@@ -4,8 +4,8 @@ description: "Claude Max vs Pro, from Anthropic's own pages: price, 5-hour and w
 h1: "Claude Max vs Pro: price, usage limits and how to choose"
 mainKeyword: "claude max vs pro"
 kind: comparison
-published: 2026-11-02
-updated: 2026-11-02
+published: 2026-11-03
+updated: 2026-11-03
 author: n-uf
 takeaways:
   - "Anthropic's Max page says Max gives five times the Pro plan's usage every five hours and every week, at $100 a month on the web."
