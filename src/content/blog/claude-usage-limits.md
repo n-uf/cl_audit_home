@@ -165,6 +165,8 @@ On Team plans, limits are per member, not shared by the team. One person reachin
 
 Anthropic's help page gives two choices: wait for the reset, or upgrade. If you upgrade, the new plan's limits apply right away.
 
+![Dashboard card with a full 5-hour Claude limit](/img/guides/card-limit-full.webp "In cl_audit, a full 5-hour limit shows how long until it's back, and at what time. Sample data.")
+
 Paid plans have a third. With usage credits enabled, your requests switch to pay-as-you-go pricing when you use up a limit, and your work continues. Anthropic says that usage is billed at standard API pricing rates, separately from your subscription, until you reach your monthly spend limit or your balance runs out. Session limits still reset every five hours and weekly limits once a week. You turn credits on in Settings ▸ Usage.
 
 In Claude Code, the message says when to come back: "You've hit your session limit · resets 3:45pm", for example. The error reference says Claude Code blocks further requests until then. A few more details from Anthropic's pages:

@@ -51,6 +51,8 @@ Pick 24 h, 7 d or 30 d and the charts redraw. It's free, and it runs on a Mac wi
 
 **Usage history** sits below the profile cards on the dashboard. It has three charts, and a key for each turns it on or off.
 
+![Claude Code usage history by hour, day and project](/img/guides/usage-history.webp "Claude Code usage history, read from session files on the Mac: when, tokens per day, and where they go. Sample data.")
+
 - **When you use Claude.** A heatmap of replies per hour, days against hours. Evening-heavy weeks and quiet weekends stand out at once.
 - **Tokens per day.** A bar for each day, per profile; in the 24 h view it becomes tokens per hour. The note on the chart says what's counted: input + cache writes + output. Cache reads are not counted.
 - **Where it goes.** The share of tokens in the period by project, by model and by surface. The project is the folder you worked in. The surface is where Claude Code ran.

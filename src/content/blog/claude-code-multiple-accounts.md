@@ -147,6 +147,8 @@ cl_audit handles this when it creates a profile. In **Settings ▸ New profile**
 
 A profile in cl_audit is one Claude setup: a Claude Code folder with its sign-in, and optionally a Claude window and a Dock icon. Each profile points at one Claude Code folder, so the folders you made above can become profiles.
 
+![cl_audit launcher with three Claude profiles and limits](/img/guides/launcher-profiles.webp "The launcher: ⌘↩ opens Terminal with Claude Code set to that profile's folder. Sample data.")
+
 **New profile** takes you through the setup on one page:
 
 1. Where it lives: a new folder, or an existing one, including `~/.claude`, the `~/.claude-work` you made by hand, or one you pick in Finder. cl_audit compares folders after resolving `~`, links and letter case, so the same folder can't be added twice.

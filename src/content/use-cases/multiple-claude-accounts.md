@@ -76,6 +76,8 @@ The issue and its comments list what people do instead: claude.ai in a browser f
 
 In cl_audit the unit is a profile: one Claude setup. A profile has a Claude Code folder with its own sign-in, and, if you want them, a Claude window and a Dock icon.
 
+![cl_audit launcher with three Claude profiles and limits](/img/guides/launcher-profiles.webp "The launcher: every profile with both limits. ⌘1–9 opens its Claude window, ⌘↩ its Terminal. Sample data.")
+
 - **Claude Code folder.** Claude Code keeps its settings and session history in one folder, `~/.claude` by default. Anthropic's docs say that if you set `CLAUDE_CONFIG_DIR`, Claude Code stores them in that folder instead. Each profile has its own folder and its own sign-in.
 - **Claude window.** The profile that uses `~/.claude` opens the usual Claude app. Every other profile gets its own Claude window, with its own sign-in, chats and settings. Each of those windows runs with its own `--user-data-dir`, and that's how cl_audit tells them apart.
 - **Dock icon.** A small app named "cl_audit <profile>" that shows the profile's 5-hour and weekly usage. By default a click shows the usage for 3 seconds while the profile's Claude window opens.

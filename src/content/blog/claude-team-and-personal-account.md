@@ -114,6 +114,8 @@ In cl_audit, a **profile** is one Claude setup: a Claude Code folder with its si
 
 Anthropic's account menu switches: one account is active and the other waits. So the menu alone won't let you run a Claude Team and personal account at the same time. That's what [anthropics/claude-code#18435](https://github.com/anthropics/claude-code/issues/18435) is about. It asks for multiple accounts in the Claude app, and several commenters want both open at once, not only switchable.
 
+![cl_audit launcher with three Claude profiles and limits](/img/guides/launcher-profiles.webp "A work and a personal profile side by side in cl_audit's launcher, each with its own limits. Sample data.")
+
 Claude Code adds a second layer. Anthropic's page on Claude Code with a Team plan says the Claude app's built-in Claude Code uses the account you signed in with, and that in Terminal you run `/login` to pick a different login method. By default Claude Code keeps its settings, session history and plugins under `~/.claude`; Anthropic's documentation says the `CLAUDE_CONFIG_DIR` variable moves them somewhere else. One folder per account is how you keep two Claude Code sign-ins apart. The article on [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) does it by hand.
 
 If you only need the second account in a browser, a second browser profile with claude.ai costs nothing and is the lightest option. The [comparison of Claude desktop profile switchers](/blog/claude-profile-switchers-mac/) lists other ways, including paid ones.
