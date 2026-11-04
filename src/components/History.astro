@@ -17,12 +17,14 @@ const kinds: Range[] = ["24h", "7d", "30d"];
       <button type="button" class="key k lt" data-chart-key="shares" aria-pressed="true" aria-label="Where it goes"><span class="kfull">Where it goes</span><span class="kshort" aria-hidden="true">Where</span></button>
     </span>
     <span class="grow"></span>
-    {kinds.map((k) => <span class="hist-total disp h26" data-range={k} set:html={totalsHTML(k)} />)}
+    {kinds.map((k) => <span class="hist-total disp h26" data-range={k} set:html={totalsHTML(k)} title="≈ cost: what the same tokens would cost on Anthropic's API, at list prices. Not your bill: plan use is paid by the plan." />)}
     <span class="strip26" role="tablist" aria-label="Period">
       <button type="button" class="key k" data-pick="24h">24 h</button>
       <button type="button" class="key k lt" data-pick="7d">7 d</button>
       <button type="button" class="key k" data-pick="30d">30 d</button>
     </span>
+    <!-- 26.11.0: saves the period as CSV, one row per day, profile and model (the demo's made-up rows) -->
+    <button type="button" class="key k csv-key" data-csv title="Save this period as CSV: one row per day, profile and model, with replies, each kind of token and the cost estimate">CSV</button>
   </div>
   <p class="no-charts sub" hidden>All charts are hidden; pick one above.</p>
 
