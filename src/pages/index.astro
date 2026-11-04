@@ -40,7 +40,7 @@ const homeFaq: [string, string][] = [
   ["Can cl_audit track several Claude accounts?",
    "Yes. Each profile is linked to one account seat and can have its own Dock icon; the dashboard shows all of them. A personal plan and a Team seat on the same email count as two seats."],
   ["Is cl_audit a menu bar app?",
-   "No. It shows usage in the Dock, with one icon for each profile that has Usage in the Dock on, so several accounts sit side by side. There's no menu bar item."],
+   "Mostly a Dock app: each profile that has Usage in the Dock on gets its own Dock icon, so several accounts sit side by side. Each profile can also have its own menu bar icon (off by default), and the Claude usage widget shows every profile on the desktop or in Notification Center (macOS 14 or later)."],
   ["Which Claude plans does it work with?",
    "Plans with usage limits, such as Pro, Max and Team, signed in to Claude Code. A profile that uses an API key has no limits to show."],
   ["Is cl_audit free?",
@@ -269,7 +269,7 @@ const jsonLd = [{
           <div><b>Dock icon</b><span>Starts or quits the profile's Dock icon. The Dock is not restarted. Usage and alerts carry on: cl_audit's background agent reads every profile.</span></div>
           <div><b>Usage only</b><span>A profile with no Dock icon and no Claude window: one display instead of the switches. Its usage still shows on the dashboard, in the launcher and in alerts.</span></div>
           <div><b>Limit full</b><span>The card says when the profile is back (in 1h 42m, back at 15:28), the Dock icon counts down, and an alert comes when it's back.</span></div>
-          <div><b>Opening and closing</b><span>A profile setting. Dock icon runs At login, With its window or When started; the Claude window can also open and quit with it.</span></div>
+          <div><b>Dock icon and Claude window</b><span>Profile settings. The Dock icon runs At login, With its window or When started, and the Claude window can open and quit with it.</span></div>
         </div>
         <a class="more" href="/dashboard/">Switches in the demo ›</a>
       </div>
@@ -277,18 +277,39 @@ const jsonLd = [{
 
     <div class="cols2">
       <div class="card">
+        <h4>Menu bar and widget</h4>
+        <div class="list">
+          <div><b>Menu bar icon</b><span>Per profile, off by default: its limits as two bars, a ring or numbers, with the countdown while a limit is full. A click opens that profile's menu.</span></div>
+          <div><b>Widget</b><span>“Claude usage” for the desktop or Notification Center, in three sizes, with every profile's limits (macOS 14 or later).</span></div>
+          <div><b>After a Claude update</b><span>Claude's quiet updates close every Claude window. cl_audit reopens the profile windows the update closed, in the background.</span></div>
+        </div>
+        <a class="more" href="/settings/">Menu bar and widget in Settings ›</a>
+      </div>
+      <div class="card">
+        <h4>Limits and cost</h4>
+        <div class="list">
+          <div><b>Fable's limit</b><span>Fable's own weekly limit, on Max and Ultra plans and premium Team and Enterprise seats: a third row, with its own alerts.</span></div>
+          <div><b>Usage credits</b><span>While a profile spends them: “Using usage credits · $4.20 spent”, with an alert when it starts and when they run out.</span></div>
+          <div><b>CSV and cost</b><span>The usage history saves as CSV, and its totals add what the same tokens would cost at API list prices. Not your bill.</span></div>
+        </div>
+        <a class="more" href="/dashboard/">The demo dashboard ›</a>
+      </div>
+    </div>
+
+    <div class="cols2">
+      <div class="card">
         <h4>Add a profile</h4>
         <div class="list">
-          <div><b>Settings ▸ New profile</b><span>Pick a new or existing Claude Code folder and the Claude window: standard, separate or none.</span></div>
-          <div><b>Quit the Claude app first</b><span>Until the folder exists. While open, the app writes its own sign-in and settings.</span></div>
-          <div><b>Sign in, two steps</b><span>Claude Code first, then the separate window, both to the same claude.ai account.</span></div>
-          <div><b>Dock icon</b><span>Installed and started by cl_audit. Drag it into the Dock, or let General settings ▸ Dock pin it (experimental).</span></div>
+          <div><b>Settings ▸ New profile</b><span>Pick a new or existing Claude Code folder, and whether the profile has a Dock icon and a Claude window.</span></div>
+          <div><b>Quit the Claude app first</b><span>Only with a Claude window, until the folder exists. While open, the app writes its own sign-in and settings.</span></div>
+          <div><b>Sign in</b><span>Claude Code first, then the profile's Claude window, both to the same claude.ai account. One profile per account.</span></div>
+          <div><b>Dock icon</b><span>Installed and put in the Dock by cl_audit. Without one, cl_audit still reads the profile's usage.</span></div>
         </div>
       </div>
       <div class="card">
         <h4>Terms</h4>
         <div class="list">
-          <div><b>Profile</b><span>One Claude setup in cl_audit: a Claude Code folder with its sign-in, a Claude window and a Dock icon.</span></div>
+          <div><b>Profile</b><span>One Claude setup in cl_audit: a Claude Code folder with its sign-in and, if you want them, a Claude window, a Dock icon and a menu bar icon.</span></div>
           <div><b>Account</b><span>Only the claude.ai account a profile is signed in to. Each profile is linked to one seat; a personal plan and a Team seat on one email are two.</span></div>
           <div><b>Claude window · Dock icon</b><span>The profile's running Claude app, and its own small app that shows its usage.</span></div>
         </div>
