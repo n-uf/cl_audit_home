@@ -1,15 +1,18 @@
 ---
 // The Settings page of the app window, working: pick a profile in the strip and change its settings, or
 // General. Choices are remembered in this browser and show up across the site (icon style in the Dock,
-// cards and launcher; profile colour; the Claude open dot; how long a Dock click shows the usage).
+// cards and launcher; profile colour; the Claude open dot; how long a Dock click shows the usage; the menu bar icons).
 // The server renders the "home" profile; src/pages/settings.astro fills the controls in.
-// Cards in reading order: the profile and what it includes (Profile with its two keys · Claude Code · Updates and
-// alerts), what the Dock icon does (Opening and closing · Dock icon clicks), then Icon. What the profile is doing
-// now shows in the strip's display. Three columns of about
-// equal height from 1180 px; two (Icon under the second) from 800; one below.
+// As the app (26.11.0), cards are grouped by subject, each column with its subject printed at the top:
+//   a profile: Who it is (Profile, Claude Code, Alerts) · Its Dock icon (Dock icon, Claude window, Icon) ·
+//              Its menu bar icon (Menu bar);
+//   General:   cl_audit (Usage in the background, Privacy, About) · How usage looks (Face, Dashboard cards, Widget) ·
+//              The Dock (App icon, Dock).
+// Three columns from 1180 px; two from 800 (the third column goes under the first; settings.astro moves it); one below.
 import { accounts } from "../data/demo";
-import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices, dockRunsChoices, appIconStyles, appIconSrc, appIconDefault } from "../data/prefs";
+import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices, dockRunsChoices, menuBarFamilies, appIconStyles, appIconSrc, appIconDefault } from "../data/prefs";
 import { panelHTML, limitsHTML, designs } from "../data/panelView";
+import { lane as mbLane } from "../data/menubar";
 import { version, build, changelog } from "../data/site";
 import AccIcon from "./AccIcon.astro";
 
@@ -26,10 +29,12 @@ const menus = {
 };
 const panels = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["segments", "Segments"], ["pace", "Pace"]];
 const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 33%, #f59e0b 0 66%, #ef4444 0)" : hex);
+const mbColours = [["levels", "Levels"], ["system", "System"], ["accent", "Accent"], ["profile", "Profile colour"]];
+const widgetPlates = [["system", "System"], ["std", "Std"], ["black", "Black"], ["silver", "Silver"]];
 ---
 <div class="settings" id="settings" data-acc={a.id}>
   <div class="strip">
-    <button type="button" class="tile tile-plain" data-select-acc="general"><span class="tile-text"><b>General</b><span class="sub">reading · about · emails · face · Dock</span></span></button>
+    <button type="button" class="tile tile-plain" data-select-acc="general"><span class="tile-text"><b>General</b><span class="sub">cl_audit · looks · widget · Dock</span></span></button>
     {accounts.map((x, i) => (
       <button type="button" class:list={["tile", { sel: i === 0 }]} data-select-acc={x.id}>
         <AccIcon id={x.id} src={x.icon} size={34} />
@@ -43,110 +48,148 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
   </div>
 
   <!-- A profile's settings -->
-  <div class="s-grid" data-profile-view>
-    <div class="card c-p"><h4>Profile</h4>
-      <label class="srow erow"><span>Name <i class="idot" title="What cl_audit calls this profile; its Dock icon app is “cl_audit <name>”. Saved when you press Return or click elsewhere (Esc puts it back); saving restarts that Dock icon.">i</i></span><span class="fcol"><input class="field" data-field="name" value={a.name} maxlength="20" /><span class="fmsg" data-msg="name" aria-live="polite"></span></span></label>
-      <label class="srow erow"><span>Icon label <i class="idot" title="Up to 6 letters printed on this profile's Dock icon, like MAIN or WORK, so you can tell the icons apart. Saved when you press Return or click elsewhere (Esc puts it back).">i</i></span><span class="fcol"><input class="field" data-field="label" value="HOME" maxlength="6" /><span class="fmsg" data-msg="label" aria-live="polite"></span></span></label>
-      <div class="srow"><span>Colour <i class="idot" title="This profile's colour inside cl_audit: the dot by its name on the dashboard and in the launcher, its Show key, its share of the history charts and the dot on its usage panel. The Dock icon's own colour is under Icon.">i</i></span><span class="swatches" data-swatches="color">{Object.entries(colors).map(([k, hex]) => <button type="button" data-color={k} class:list={{ on: k === "orange" }} style={`background:${hex}`} aria-label={k} title={k} />)}</span></div>
-      <!-- what the profile includes: two keys, each with a line saying what the current choice does (both off = usage only) -->
-      <div class="srow incl"><div class="tg2">
-        <div class="tgc"><button type="button" class="key k tk" data-incl="dock" aria-pressed="true">Usage in the Dock</button><small class="ksub" data-incl-line="dock"></small></div>
-        <div class="tgc"><button type="button" class="key k tk" data-incl="win" aria-pressed="true">Claude window</button><small class="ksub" data-incl-line="win"></small></div>
-      </div></div>
-      <div class="srow end"><button type="button" class="danger linkish" data-remove>Remove profile…</button></div>
+  <div class="s-cols" data-profile-view>
+    <div class="s-col" data-pcol="1">
+      <div class="colhead">Who it is</div>
+      <div class="card c-p"><h4>Profile</h4>
+        <label class="srow erow"><span>Name <i class="idot" title="What cl_audit calls this profile; its Dock icon app is “cl_audit <name>”. Saved when you press Return or click elsewhere (Esc puts it back); saving restarts that Dock icon.">i</i></span><span class="fcol"><input class="field" data-field="name" value={a.name} maxlength="20" /><span class="fmsg" data-msg="name" aria-live="polite"></span></span></label>
+        <label class="srow erow"><span>Icon label <i class="idot" title="Up to 6 letters printed on this profile's Dock icon and menu bar icon, like MAIN or WORK, so you can tell the icons apart. Saved when you press Return or click elsewhere (Esc puts it back).">i</i></span><span class="fcol"><input class="field" data-field="label" value="HOME" maxlength="6" /><span class="fmsg" data-msg="label" aria-live="polite"></span></span></label>
+        <div class="srow"><span>Colour <i class="idot" title="This profile's colour inside cl_audit: the dot by its name on the dashboard and in the launcher, its Show key, its share of the history charts and the dot on its usage panel. The Dock icon's own colour is under Icon.">i</i></span><span class="swatches" data-swatches="color">{Object.entries(colors).map(([k, hex]) => <button type="button" data-color={k} class:list={{ on: k === "orange" }} style={`background:${hex}`} aria-label={k} title={k} />)}</span></div>
+        <div class="srow" data-fable-row><span>Fable's limit <i class="idot" title="Fable's own weekly limit (Max and Ultra plans, premium Team and Enterprise seats): shown on this profile's dashboard card, usage panels, Dock and menu bar menus and the widget, with its alerts. Off: left out everywhere; it still counts in Anthropic's limits.">i</i></span><span class="ctl-pair"><span class="sub nb">shown and alerted</span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="showFable" aria-label="Fable's limit"></button></span></div>
+        <!-- what the profile includes: two keys, each with a line saying what the current choice does (both off = usage only) -->
+        <div class="srow incl"><div class="tg2">
+          <div class="tgc"><button type="button" class="key k tk" data-incl="dock" aria-pressed="true">Usage in the Dock</button><small class="ksub" data-incl-line="dock"></small></div>
+          <div class="tgc"><button type="button" class="key k tk" data-incl="win" aria-pressed="true">Claude window</button><small class="ksub" data-incl-line="win"></small></div>
+        </div></div>
+        <div class="srow end"><button type="button" class="danger linkish" data-remove>Remove profile…</button></div>
+      </div>
+
+      <div class="card c-c"><h4>Claude Code <i class="idot" title="The Claude Code folder this profile uses and its sign-in. Its Claude window comes with it: the usual Claude app for the profile using ~/.claude, its own Claude window (own sign-in, chats and settings) for any other.">i</i></h4>
+        <div class="srow"><span>Folder <i class="idot" title="The Claude Code folder for this profile, like ~/.claude: its sign-in, settings and history live there. One profile per folder.">i</i></span><span class="folder-ctl"><span class="menu menu-static" data-text="dir">{a.dir}</span><span class="folder-btn" aria-hidden="true"><svg width="15" height="12" viewBox="0 0 15 12"><path d="M1 2.2C1 1.5 1.5 1 2.2 1h3.3l1.4 1.5h5.9c.7 0 1.2.5 1.2 1.2v6.1c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></span></div>
+        <div class="srow"><span>Login <i class="idot" title="The claude.ai account this folder is signed in to. cl_audit's background agent reads the sign-in from the Keychain, read-only, the same way Claude Code does; no new Keychain permission.">i</i></span><span class="ok">✓ <span class="email" data-text="email">{a.email}</span></span></div>
+        <div class="srow"><span>Renew sign-in <i class="idot" title="Claude Code's sign-in uses a short-lived access key, which Claude Code swaps for a fresh one whenever it runs. cl_audit only reads that key, so after a while without Claude Code it runs out and the usage stops updating. On: cl_audit then runs Claude Code once in the background (a one-line prompt, “Reply with OK.”, on Haiku, nothing saved) so it swaps the key; at most every 30 min, using a sliver of this profile's usage. Off: the usage waits until you next use Claude Code.">i</i></span><button type="button" class="mswitch" role="switch" aria-checked="false" data-switch="renew" aria-label="Renew sign-in"></button></div>
+      </div>
+
+      <div class="card c-u"><h4>Alerts</h4>
+        <div class="srow"><span>Refresh every <i class="idot" title="How often cl_audit asks Anthropic for this profile's usage, with or without its Dock icon. Shorter is fresher; each check is one small request.">i</i></span><select class="menu" data-field="refresh" aria-label="Refresh every">{refreshChoices.map((o) => <option>{o}</option>)}</select></div>
+        <div class="srow"><span>Notify at <i class="idot" title="A Mac notification when this profile's 5-hour, weekly or Fable limit reaches this level. Off: no notifications.">i</i></span><span class="ctl-pair"><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="notify" aria-label="Notify at"></button><span class="stepper" data-notify-step><button type="button" data-step="notifyAt" data-dir="-1" aria-label="Lower">−</button><span data-value="notifyAt">90%</span><button type="button" data-step="notifyAt" data-dir="1" aria-label="Higher">＋</button></span></span></div>
+        <div class="srow"><span>Notify when back <i class="idot" title="One Mac notification when this profile's full 5-hour, weekly or Fable limit resets, so you know it works again (“Claude home is back”). Only for a limit that was full; while the other limit is still full, it waits for that one.">i</i></span><span class="ctl-pair"><span class="sub nb">when a full limit resets</span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="notifyBack" aria-label="Notify when back"></button></span></div>
+        <p class="g-note sub">For the 5-hour, weekly and Fable limits, and usage credits when they start and run out.</p>
+      </div>
     </div>
 
-    <div class="card c-c"><h4>Claude Code <i class="idot" title="The Claude Code folder this profile uses and its sign-in. Its Claude window comes with it: the usual Claude app for the profile using ~/.claude, its own Claude window (own sign-in, chats and settings) for any other.">i</i></h4>
-      <div class="srow"><span>Folder <i class="idot" title="The Claude Code folder for this profile, like ~/.claude: its sign-in, settings and history live there. One profile per folder.">i</i></span><span class="folder-ctl"><span class="menu menu-static" data-text="dir">{a.dir}</span><span class="folder-btn" aria-hidden="true"><svg width="15" height="12" viewBox="0 0 15 12"><path d="M1 2.2C1 1.5 1.5 1 2.2 1h3.3l1.4 1.5h5.9c.7 0 1.2.5 1.2 1.2v6.1c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></span></div>
-      <div class="srow"><span>Login <i class="idot" title="The claude.ai account this folder is signed in to. cl_audit's background agent reads the sign-in from the Keychain, read-only, the same way Claude Code does; no new Keychain permission.">i</i></span><span class="ok">✓ <span class="email" data-text="email">{a.email}</span></span></div>
-      <div class="srow"><span>Renew sign-in <i class="idot" title="Claude Code's sign-in uses a short-lived access key, which Claude Code swaps for a fresh one whenever it runs. cl_audit only reads that key, so after a while without Claude Code it runs out and the usage stops updating. On: cl_audit then runs Claude Code once in the background (a one-line prompt, “Reply with OK.”, on Haiku, nothing saved) so it swaps the key; at most every 30 min, using a sliver of this profile's usage. Off: the usage waits until you next use Claude Code.">i</i></span><button type="button" class="mswitch" role="switch" aria-checked="false" data-switch="renew" aria-label="Renew sign-in"></button></div>
-    </div>
-
-    <div class="card c-u"><h4>Updates and alerts</h4>
-      <div class="srow"><span>Refresh every <i class="idot" title="How often cl_audit asks Anthropic for this profile's usage, with or without its Dock icon. Shorter is fresher; each check is one small request.">i</i></span><select class="menu" data-field="refresh" aria-label="Refresh every">{refreshChoices.map((o) => <option>{o}</option>)}</select></div>
-      <div class="srow"><span>Notify at <i class="idot" title="A Mac notification when this profile's 5-hour or weekly usage reaches this level. Off: no notifications.">i</i></span><span class="ctl-pair"><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="notify" aria-label="Notify at"></button><span class="stepper" data-notify-step><button type="button" data-step="notifyAt" data-dir="-1" aria-label="Lower">−</button><span data-value="notifyAt">90%</span><button type="button" data-step="notifyAt" data-dir="1" aria-label="Higher">＋</button></span></span></div>
-      <div class="srow"><span>Notify when back <i class="idot" title="One Mac notification when this profile's full 5-hour or weekly limit resets, so you know it works again (“Claude home is back”). Only for a limit that was full; while the other limit is still full, it waits for that one.">i</i></span><span class="ctl-pair"><span class="sub nb">when a full limit resets</span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="notifyBack" aria-label="Notify when back"></button></span></div>
-    </div>
-
-    <!-- Opening and closing (26.10.11): when the Dock icon runs, and whether the Claude window opens and quits with it.
-         Without a Dock icon the whole card fades and the usage row says it's read anyway; a Dock icon without a window
-         fades the window row. -->
-    <div class="card c-o" data-openclose><h4>Opening and closing <i class="idot" title="When this profile's Dock icon runs, and whether its Claude window opens and quits with it. The cl_audit agent does this, whether or not cl_audit is open. Starting or quitting a Dock icon never stops the usage: cl_audit reads it for every profile, always.">i</i></h4>
-      <div class="notinuse" data-oc-strip="all" hidden><span class="lbl">Not in use · no Dock icon to open or close</span><button type="button" class="key k" data-show-dock>Show in the Dock</button></div>
-      <div class="oc-body" data-oc-body>
-        <div class="srow stacked"><span>Dock icon runs <i class="idot" title="At login: always there, from when you log in to the Mac. With its window: starts when the profile's Claude window opens and quits 10 s after it quits (a Claude update restarts the window). When started: only when you start it (a click on its Dock tile, or its switch on the dashboard).">i</i></span>
-          <div class="runs">
-            <span class="switch small-switch" role="group" aria-label="Dock icon runs">{dockRunsChoices.map(([k, t]) => <button type="button" data-runs={k}>{t}</button>)}</span>
-            <small class="ksub" data-runs-line></small>
+    <div class="s-col" data-pcol="2">
+      <div class="colhead">Its Dock icon</div>
+      <!-- Dock icon: when it runs and what a click does. Without a Dock icon the card fades under its strip and the usage
+           row says it's read anyway. -->
+      <div class="card c-d"><h4>Dock icon <i class="idot" title="When this profile's Dock icon runs and what a click on it does. The cl_audit agent starts and quits it, whether or not cl_audit is open. Starting or quitting a Dock icon never stops the usage: cl_audit reads it for every profile, always.">i</i></h4>
+        <div class="notinuse" data-dk-strip hidden><span class="lbl">Not in use · no Dock icon</span><button type="button" class="key k" data-show-dock>Show in the Dock</button></div>
+        <div class="dk-body" data-dk-body>
+          <div class="srow stacked"><span>Runs <i class="idot" title="At login: always there, from when you log in to the Mac. With its window: starts when the profile's Claude window opens and quits 10 s after it quits (a Claude update restarts the window). When started: only when you start it (a click on its Dock tile, or its switch on the dashboard).">i</i></span>
+            <div class="runs">
+              <span class="switch small-switch" role="group" aria-label="Runs">{dockRunsChoices.map(([k, t]) => <button type="button" data-runs={k}>{t}</button>)}</span>
+              <small class="ksub" data-runs-line></small>
+            </div>
+          </div>
+          <div class="srow"><span>Click <i class="idot" title="Usage, then Claude: the usage panel for a moment, then the Claude window. Open Claude: the Claude window straight away. Details panel: the large usage panel, and Claude only when you ask.">i</i></span><select class="menu" data-field="click" aria-label="Click">{menus.click.map(([v, t]) => <option value={v}>{t}</option>)}</select></div>
+          <div class="srow" data-peekrow><span>Usage shows for <i class="idot" title="How long the usage panel stays up after a click before the Claude window opens.">i</i></span><span class="stepper"><button type="button" data-step="peek" data-dir="-1" aria-label="Shorter">−</button><span data-value="peek">3 s</span><button type="button" data-step="peek" data-dir="1" aria-label="Longer">＋</button></span></div>
+          <div class="srow"><span>Press and hold <i class="idot" title="Press and hold the icon for its details panel and a short menu. Double-click or ⌥-click also opens the panel; right-click shows the full menu.">i</i></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="hold" aria-label="Press and hold"></button></div>
+          <div class="srow stacked"><span>Usage panel <i class="idot" title="How the usage panel looks when you click or press and hold this Dock icon. The dashboard's cards have one style for all profiles, in General.">i</i></span>
+            <div class="design-pane">
+              <span class="switch small-switch" role="group" aria-label="Usage panel">{panels.map(([k, n]) => <button type="button" data-panel={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
+              <div class="panel-stage"><div data-panel-prev set:html={panelHTML("home", "segments", { large: false })} /></div>
+            </div>
           </div>
         </div>
-        <div class="notinuse" data-oc-strip="win" hidden><span class="lbl">Not in use · no Claude window to open with it</span><button type="button" class="key k" data-add-win>Add Claude window</button></div>
-        <div class="srow oc-win" data-oc-links><span>Claude window <i class="idot" title="On: starting this profile's Dock icon (a click on its Dock tile, or its switch on the dashboard) opens its Claude window, and quitting it quits the window too; Claude can ask about unsent work first. Not at login. The Dock icon's menu then has “Quit and keep Claude window”.">i</i></span>
+        <div class="srow" data-dk-usage hidden><span>Usage <i class="idot" title="The cl_audit agent reads every profile's usage on its own schedule, with or without a Dock icon or a Claude window, and sends the alerts.">i</i></span><span class="v-soft">read by cl_audit for every profile, always</span></div>
+      </div>
+
+      <!-- Claude window: whether it opens and quits with the Dock icon -->
+      <div class="card c-w"><h4>Claude window <i class="idot" title="This profile's own Claude window (or the usual Claude app for ~/.claude) and whether it opens and quits with the Dock icon. The cl_audit agent does this, whether or not cl_audit is open.">i</i></h4>
+        <div class="notinuse" data-cw-strip hidden><span class="lbl" data-cw-why>Not in use · no Claude window</span><button type="button" class="key k" data-cw-key>Add Claude window</button></div>
+        <div class="srow oc-win" data-cw-body><span>With Dock icon <i class="idot" title="On: starting this profile's Dock icon (a click on its Dock tile, or its switch on the dashboard) opens its Claude window, and quitting it quits the window too; Claude can ask about unsent work first. Not at login. The Dock icon's menu then has “Quit and keep Claude window”.">i</i></span>
           <span class="oc-wf"><button type="button" class="mswitch" role="switch" aria-checked="false" data-switch="windowFollows" aria-label="Claude window opens and quits with the Dock icon"></button><span class="wf-t"><span>opens and quits with the Dock icon</span><small>not at login; Claude asks about unsent work</small></span></span></div>
       </div>
-      <div class="srow" data-oc-usage hidden><span>Usage <i class="idot" title="The cl_audit agent reads every profile's usage on its own schedule, with or without a Dock icon or a Claude window, and sends the alerts.">i</i></span><span class="v-soft">read by cl_audit for every profile, always</span></div>
-    </div>
 
-    <div class="card c-k" data-dock-only><h4>Dock icon clicks <i class="idot" title="What a click on this profile's Dock icon does, and how the usage panel it opens looks. Double-click or ⌥-click always opens the large panel.">i</i></h4>
-      <div class="notinuse" hidden><span class="lbl">Not in use · show in the Dock to click it</span><button type="button" class="key k" data-show-dock>Show in the Dock</button></div>
-      <div class="srow"><span>Click <i class="idot" title="Usage, then Claude: the usage panel for a moment, then the Claude window. Open Claude: the Claude window straight away. Details panel: the large usage panel, and Claude only when you ask.">i</i></span><select class="menu" data-field="click" aria-label="Click">{menus.click.map(([v, t]) => <option value={v}>{t}</option>)}</select></div>
-      <div class="srow" data-peekrow><span>Usage shows for <i class="idot" title="How long the usage panel stays up after a click before the Claude window opens.">i</i></span><span class="stepper"><button type="button" data-step="peek" data-dir="-1" aria-label="Shorter">−</button><span data-value="peek">3 s</span><button type="button" data-step="peek" data-dir="1" aria-label="Longer">＋</button></span></div>
-      <div class="srow"><span>Press and hold <i class="idot" title="Press and hold the icon for its details panel and a short menu. Double-click or ⌥-click also opens the panel; right-click shows the full menu.">i</i></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-switch="hold" aria-label="Press and hold"></button></div>
-      <div class="srow stacked"><span>Usage panel <i class="idot" title="How the usage panel looks when you click or press and hold this Dock icon. The dashboard's cards have one style for all profiles, in General.">i</i></span>
-        <div class="design-pane">
-          <span class="switch small-switch" role="group" aria-label="Usage panel">{panels.map(([k, n]) => <button type="button" data-panel={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
-          <div class="panel-stage"><div data-panel-prev set:html={panelHTML("home", "segments", { large: false })} /></div>
+      <div class="card c-i"><h4>Icon</h4>
+        {families.map(([fam, list]) => (
+          <div class="fam-block">
+            <div class="fam">{fam}</div>
+            <div class="gallery">
+              {list.map((k) => (
+                <button type="button" class:list={["g-tile", { on: k === "bars" }]} data-style={k}>
+                  <AccIcon id="home" src={iconSrc("home", k as any)} size={44} loading="lazy" gallery={k} /><span>{nameOf[k]}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+        <div class="lane-mini" data-lane>
+          <div class="lane-head"><b>Preview</b> <span class="sub">not running, then as the limit fills up</span></div>
+          <div class="lane-grid">
+            <div class="lane-nr"><span class="lane-cap">not running</span><AccIcon id="home" src={laneSrc("home", "bars", "x")} size={40} lane="x" nodot /></div>
+            <i class="lane-div" aria-hidden="true"></i>
+            <div class="lane-live">
+              <div class="lane-bar"><i style="background:var(--green)"></i><i style="background:var(--green)"></i><i style="background:var(--amber)"></i><i style="background:var(--red)"></i><i style="background:var(--red)"></i></div>
+              <div class="lane-caps"><span>plenty left</span><span>half used</span><span>at limit</span></div>
+              <div class="lane-row">{lane.map((_, i) => <AccIcon id="home" src={laneSrc("home", "bars", i)} size={40} lane={i} />)}</div>
+            </div>
+          </div>
         </div>
+        <div class="srow stacked"><span>Colour <i class="idot" title="The colour of this profile's Dock icon: its label and tiles. By usage (the last swatch): it follows the 5-hour level, green to red. The profile's colour inside cl_audit is under Profile.">i</i></span>
+          <span class="swatches" data-swatches="iconColor">{Object.entries(tileColors).map(([k, hex]) => <button type="button" data-icon-color={k} style={`background:${swatchBg(hex)}`} aria-label={k === "usage" ? "By usage" : k} title={k === "usage" ? "By usage" : k} />)}</span></div>
+        <div class="srow stacked"><span>Frame <i class="idot" title="A thin ring in this colour round the Dock icon, to spot it quickly among the others. The crossed circle: no ring.">i</i></span>
+          <span class="swatches" data-swatches="frame"><button type="button" data-frame="" class="none-sw" aria-label="No frame" title="No frame"></button>{Object.entries(tileColors).map(([k, hex]) => <button type="button" data-frame={k} style={`background:${swatchBg(hex)}`} aria-label={k === "usage" ? "By usage" : k} title={k === "usage" ? "By usage" : k} />)}</span></div>
+        <div class="srow stacked"><span>Claude open dot <i class="idot" title="An orange dot at the Dock icon's top-left corner while this profile's Claude window is open. While you pick it here, the icons above show it too.">i</i></span>
+          <span class="dot-choice" role="group" aria-label="Claude open dot">
+            <button type="button" data-dot="0"><span class="ico" data-ico={a.id} data-nodot><img src={iconSrc("home", "bars")} data-dot-img alt="" width="30" height="30" /></span><span>none</span></button>
+            <button type="button" data-dot="1"><span class="ico ico-dot" data-ico={a.id}><img src={iconSrc("home", "bars")} data-dot-img alt="" width="30" height="30" /></span><span>while open</span></button>
+          </span></div>
       </div>
     </div>
 
-    <div class="card c-i"><h4>Icon</h4>
-      {families.map(([fam, list]) => (
-        <div class="fam-block">
-          <div class="fam">{fam}</div>
-          <div class="gallery">
-            {list.map((k) => (
-              <button type="button" class:list={["g-tile", { on: k === "bars" }]} data-style={k}>
-                <AccIcon id="home" src={iconSrc("home", k as any)} size={44} loading="lazy" gallery={k} /><span>{nameOf[k]}</span>
-              </button>
-            ))}
-          </div>
+    <div class="s-col" data-pcol="3">
+      <div class="colhead">Its menu bar icon</div>
+      <!-- Menu bar (26.11.0): the profile's own icon in the menu bar, built like the Icon card. The site's own menu bar
+           shows it (layouts/Desktop.astro), with the profile's menu. -->
+      <div class="card c-m"><h4>Menu bar <i class="idot" title="An icon for this profile in the menu bar, like its Dock icon: drawn by the cl_audit agent, so it works with or without the Dock icon. Its menu has the limits, Open Claude window, Refresh now, Dashboard, Profile settings… and Hide from the menu bar. ⌘-drag it to move it. (A demo: it shows in this site's menu bar.)">i</i></h4>
+        <div class="srow"><span>In the menu bar <i class="idot" title="Off: no icon in the menu bar for this profile. The usage is read either way.">i</i></span><button type="button" class="mswitch" role="switch" aria-checked="false" data-switch="mbOn" aria-label="In the menu bar"></button></div>
+        <div class="mb-fams">
+          {menuBarFamilies.map(([fam, list]) => (
+            <div class="mb-fam"><div class="fam">{fam}</div>
+              <div class="mb-styles">{list.map(([k, t]) => <button type="button" class="mb-st" data-mb-style={k} title={t}><span class="mb-chip dark" data-mb-glyph={k}></span><span>{t}</span></button>)}</div>
+            </div>
+          ))}
         </div>
-      ))}
-      <div class="lane-mini" data-lane>
-        <div class="lane-head"><b>Preview</b> <span class="sub">not running, then as the limit fills up</span></div>
-        <div class="lane-grid">
-          <div class="lane-nr"><span class="lane-cap">not running</span><AccIcon id="home" src={laneSrc("home", "bars", "x")} size={40} lane="x" nodot /></div>
-          <i class="lane-div" aria-hidden="true"></i>
-          <div class="lane-live">
-            <div class="lane-bar"><i style="background:var(--green)"></i><i style="background:var(--green)"></i><i style="background:var(--amber)"></i><i style="background:var(--red)"></i><i style="background:var(--red)"></i></div>
-            <div class="lane-caps"><span>plenty left</span><span>half used</span><span>at limit</span></div>
-            <div class="lane-row">{lane.map((_, i) => <AccIcon id="home" src={laneSrc("home", "bars", i)} size={40} lane={i} />)}</div>
-          </div>
+        <div class="mb-preview">
+          <div class="lane-head"><b>Preview</b> <span class="sub">your menu bar (dark), then light</span></div>
+          <div class="mb-lane dark" data-mb-lane="dark">{mbLane.map(() => <span class="mb-chip" />)}</div>
+          <div class="mb-lane light" data-mb-lane="light">{mbLane.map(() => <span class="mb-chip" />)}</div>
+          <div class="mb-caps">{mbLane.map(([t]) => <span>{t}</span>)}</div>
+        </div>
+        <div class="mb-rows">
+          <div class="mb-row"><span class="fam">Colours</span><span class="mb-opts">{mbColours.map(([k, t]) => <button type="button" class="mb-opt" data-mb-colours={k}><span class="mb-chip dark" data-mb-cglyph={k}></span><span>{t}</span></button>)}</span></div>
+          <div class="mb-row"><span class="fam">Label</span><span class="mb-opts"><button type="button" class="mb-opt" data-mb-label="0"><span class="mb-chip dark" data-mb-lglyph="0"></span><span>None</span></button><button type="button" class="mb-opt" data-mb-label="1"><span class="mb-chip dark" data-mb-lglyph="1"></span><span>Profile label</span></button></span></div>
+          <div class="mb-row"><span class="fam">When full</span><span class="mb-opts"><button type="button" class="mb-opt" data-mb-full="countdown"><span class="mb-chip dark" data-mb-fglyph="countdown"></span><span>Countdown</span></button><button type="button" class="mb-opt" data-mb-full="red"><span class="mb-chip dark" data-mb-fglyph="red"></span><span>Red only</span></button></span></div>
         </div>
       </div>
-      <div class="srow stacked"><span>Colour <i class="idot" title="The colour of this profile's Dock icon: its label and tiles. By usage (the last swatch): it follows the 5-hour level, green to red. The profile's colour inside cl_audit is under Profile.">i</i></span>
-        <span class="swatches" data-swatches="iconColor">{Object.entries(tileColors).map(([k, hex]) => <button type="button" data-icon-color={k} style={`background:${swatchBg(hex)}`} aria-label={k === "usage" ? "By usage" : k} title={k === "usage" ? "By usage" : k} />)}</span></div>
-      <div class="srow stacked"><span>Frame <i class="idot" title="A thin ring in this colour round the Dock icon, to spot it quickly among the others. The crossed circle: no ring.">i</i></span>
-        <span class="swatches" data-swatches="frame"><button type="button" data-frame="" class="none-sw" aria-label="No frame" title="No frame"></button>{Object.entries(tileColors).map(([k, hex]) => <button type="button" data-frame={k} style={`background:${swatchBg(hex)}`} aria-label={k === "usage" ? "By usage" : k} title={k === "usage" ? "By usage" : k} />)}</span></div>
-      <div class="srow stacked"><span>Claude open dot <i class="idot" title="An orange dot at the Dock icon's top-left corner while this profile's Claude window is open. While you pick it here, the icons above show it too.">i</i></span>
-        <span class="dot-choice" role="group" aria-label="Claude open dot">
-          <button type="button" data-dot="0"><span class="ico" data-ico={a.id} data-nodot><img src={iconSrc("home", "bars")} data-dot-img alt="" width="30" height="30" /></span><span>none</span></button>
-          <button type="button" data-dot="1"><span class="ico ico-dot" data-ico={a.id}><img src={iconSrc("home", "bars")} data-dot-img alt="" width="30" height="30" /></span><span>while open</span></button>
-        </span></div>
     </div>
   </div>
 
-  <!-- General settings (26.10.11): column 1 is the app (Usage in the background, About), column 2 what you see (Emails,
-       Face, Dashboard cards), column 3 the Dock (App icon, Dock). In two columns App icon goes under column 1 and Dock
-       under column 2 (settings.astro moves them); one column keeps the three-column order. Every row is one line. -->
+  <!-- General settings (26.11.0): cl_audit (Usage in the background, Privacy, About) · How usage looks (Face, Dashboard
+       cards, Widget) · The Dock (App icon, Dock). In two columns The Dock goes under cl_audit (settings.astro moves it);
+       one column keeps the three-column order. Every row is one line. -->
   <div class="g-grid" data-general-view hidden>
     <div class="g-col" data-gcol="1">
-      <div class="card"><h4>Usage in the background <i class="idot" title="cl_audit's background agent reads every profile's usage on each profile's own schedule, renews sign-ins, sends the alerts and runs Opening and closing. macOS starts it when you log in and again after a crash; cl_audit starts it too when this window opens and whenever it has been silent for 90 s.">i</i></h4>
+      <div class="colhead">cl_audit</div>
+      <div class="card"><h4>Usage in the background <i class="idot" title="cl_audit's background agent reads every profile's usage on each profile's own schedule, renews sign-ins, sends the alerts and runs the Dock icon and Claude window settings. macOS starts it when you log in and again after a crash; cl_audit starts it too when this window opens and whenever it has been silent for 90 s.">i</i></h4>
         <span class="disp fill ub-disp" data-usage-disp><span class="g">Reading usage</span> <em>· 3 profiles · every 5–10 min</em></span>
         <p class="g-note">cl_audit reads every profile's usage and sends the alerts on its own, even with this window and the Dock icons closed. It starts when you log in.</p>
         <div class="srow"><span>Alerts <i class="idot" title="Alerts come from cl_audit when a limit reaches the level set for each profile. macOS asks once; you can change it in System Settings ▸ Notifications ▸ cl_audit.">i</i></span><span class="disp"><span class="g">Allowed</span></span></div>
         <div class="srow"><span>Last read</span><span class="v-soft">1 min ago</span></div>
+      </div>
+      <div class="card"><h4>Privacy</h4>
+        <div class="srow"><span>Show emails <i class="idot" title="Off: email addresses are left out of the dashboard, the launcher, the usage panels and the Dock icon menus, and blurred in Settings (hover one to see it). For screen sharing and screenshots.">i</i></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-toggle-emails aria-label="Show emails"></button></div>
       </div>
       <div class="card" data-gcard="about"><h4>About</h4>
         <div class="srow"><span>Version <i class="idot" title="Calendar version: the year and month of the release, then a counter within that month (26.10.1 = the second release in October 2026). The build counts every change.">i</i></span><span class="disp">{version} <em>· build {build}</em></span></div>
@@ -156,9 +199,7 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
       </div>
     </div>
     <div class="g-col" data-gcol="2">
-      <div class="card"><h4>Emails</h4>
-        <div class="srow"><span>Show emails <i class="idot" title="Off: email addresses are left out of the dashboard, the launcher, the usage panels and the Dock icon menus, and blurred in Settings (hover one to see it). For screen sharing and screenshots.">i</i></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-toggle-emails aria-label="Show emails"></button></div>
-      </div>
+      <div class="colhead">How usage looks</div>
       <!-- the same face as the title bar's keys (Desktop.astro handles every .fk) -->
       <div class="card"><h4>Face</h4>
         <div class="facecards">
@@ -176,8 +217,20 @@ const swatchBg = (hex: string) => (hex === "usage" ? "conic-gradient(#22c55e 0 3
           </div>
         </div>
       </div>
+      <!-- Widget (26.11.0): how the "Claude usage" widget draws the limits, with the medium widget as the preview, then its look -->
+      <div class="card"><h4>Widget <i class="idot" title="The “Claude usage” widget for the desktop or Notification Center (macOS 14 or later): click the date in the menu bar, then Edit Widgets. It comes in three sizes and fits itself to them: one or two profiles get large limits with their reset times; up to four a block each in the large size; more a row each. It only reads what cl_audit saves: no Keychain, no network.">i</i></h4>
+        <div class="srow stacked"><span>Limits as</span>
+          <div class="design-pane">
+            <span class="switch small-switch" role="group" aria-label="Limits as">{designs.map(([k, n]) => <button type="button" data-widget-design={k}>{n}</button>)}</span>
+            <div class="wg-stage" data-widget-prev></div>
+          </div>
+        </div>
+        <div class="srow stacked"><span>Look <i class="idot" title="System: the Mac's own widget background, light or dark, tinted like the other widgets. Std, Black and Silver: cl_audit's faces, as in this window.">i</i></span>
+          <span class="switch small-switch" role="group" aria-label="Look">{widgetPlates.map(([k, n]) => <button type="button" data-widget-plate={k}>{n}</button>)}</span></div>
+      </div>
     </div>
     <div class="g-col" data-gcol="3">
+      <div class="colhead">The Dock</div>
       <!-- cl_audit's own icon: six designs in one sunken row, then one pane with Front panel's choices or Dock sizes -->
       <div class="card" data-appicon data-gcard="appicon"><h4>App icon</h4>
         <div class="ai-row6">

@@ -3,7 +3,7 @@
 // Claude open dot, how long a Dock click shows the usage before opening Claude, and what a profile includes
 // (Usage in the Dock, Claude window).
 import { accounts, type AccountId } from "./demo";
-import { limitsHTML, backWords, type Design } from "./panelView";
+import { limitsHTML, backWords, creditsHTML, type Design } from "./panelView";
 import manifest from "./icon-manifest.json";   // written by scripts/render-icons.sh
 
 export const styles = [
@@ -33,19 +33,39 @@ export type Prefs = {
   dot: boolean;            // Claude open dot: an orange dot on the icon while the profile's Claude window is open
   showInDock: boolean;     // Profile ▸ Usage in the Dock: a Dock icon shows the usage (off: read in the background)
   win: boolean;            // Profile ▸ Claude window: the profile has one (off: none; both off = usage only)
-  dockRuns: DockRuns;      // Opening and closing ▸ Dock icon runs: At login, With its window, When started (26.10.11)
-  windowFollows: boolean;  // Opening and closing ▸ Claude window: opens and quits with the Dock icon
-  notifyBack: boolean;     // Updates and alerts ▸ Notify when back: one alert when a full limit resets
+  dockRuns: DockRuns;      // Dock icon ▸ Runs: At login, With its window, When started (26.10.11)
+  windowFollows: boolean;  // Claude window ▸ With Dock icon: opens and quits with the Dock icon
+  notifyBack: boolean;     // Alerts ▸ Notify when back: one alert when a full limit resets
   iconFollows?: boolean;   // before 26.10.11 (read once to carry it over into dockRuns)
+  showFable: boolean;      // Profile ▸ Fable's limit: shown and alerted (only where the plan has one; 26.11.0)
+  mb: MenuBarLook;         // Its menu bar icon ▸ Menu bar (26.11.0)
 };
 export type DockRuns = "login" | "window" | "started";
+/** A profile's menu bar icon, as the app's MenuBar card: on or off, a style, colours, label and what a full limit shows. */
+export type MenuBarStyle = "bars" | "barsNumber" | "ring" | "ringNumber" | "number" | "twoNumbers";
+export type MenuBarLook = { on: boolean; style: MenuBarStyle; colours: "levels" | "system" | "accent" | "profile"; label: boolean; whenFull: "countdown" | "red" };
+export const menuBarFamilies: [string, [MenuBarStyle, string][]][] = [
+  ["Bars", [["bars", "Two bars"], ["barsNumber", "Bars + number"]]],
+  ["Rings", [["ring", "Ring"], ["ringNumber", "Ring + number"]]],
+  ["Numbers", [["number", "Number"], ["twoNumbers", "Two numbers"]]],
+];
+const mbOn = (on: boolean): MenuBarLook => ({ on, style: "bars", colours: "levels", label: true, whenFull: "countdown" });
 export const dockRunsChoices: [DockRuns, string][] = [["login", "At login"], ["window", "With its window"], ["started", "When started"]];
 
 const defaults: Record<AccountId, Prefs> = {
-  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 3, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments", dataDir: "Claude", iconColor: "orange", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, notifyBack: true },
-  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, notifyBack: true },
-  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, win: true, dockRuns: "started", windowFollows: false, notifyBack: true },
+  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 3, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments", dataDir: "Claude", iconColor: "orange", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, notifyBack: true, showFable: true, mb: mbOn(true) },
+  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, notifyBack: true, showFable: true, mb: mbOn(true) },
+  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, win: true, dockRuns: "started", windowFollows: false, notifyBack: true, showFable: true, mb: mbOn(false) },
 };
+
+/** General ▸ How usage looks ▸ Widget: how the "Claude usage" widget draws the limits, and its look (26.11.0). */
+export type WidgetLook = { design: Design; plate: "system" | "std" | "black" | "silver" };
+const WIDGET_KEY = "cl_audit.widget";
+export function loadWidget(): WidgetLook {
+  try { const v = JSON.parse(localStorage.getItem(WIDGET_KEY) || "null"); if (v && typeof v === "object") return { design: "segments", plate: "std", ...v }; } catch {}
+  return { design: "segments", plate: "std" };
+}
+export function saveWidget(w: WidgetLook) { try { localStorage.setItem(WIDGET_KEY, JSON.stringify(w)); } catch {} }
 
 /** General settings ▸ Dashboard cards: one card style for every profile card (dashboard and Overview). */
 const CARD_KEY = "cl_audit.cardStyle";
@@ -89,6 +109,7 @@ export function loadPrefs(): Record<AccountId, Prefs> {
   for (const a of accounts) {
     const sv = saved[a.id] ?? {};
     out[a.id] = { ...defaults[a.id], ...sv };   // fields added later get their defaults
+    out[a.id].mb = { ...defaults[a.id].mb, ...(sv.mb ?? {}) };
     // carried over as the app does (26.10.11): Open at login on → At login; "start or quit the Dock icon too" → With
     // its window; both off → When started ("open or quit the Claude window too" stays the window switch)
     if (sv.dockRuns === undefined && (sv.login !== undefined || sv.iconFollows !== undefined))
@@ -143,12 +164,17 @@ export function applyPrefs(p = loadPrefs()) {
     });
   }
   // the card style: every profile card draws its two limits in it
+  // Profile ▸ Fable's limit: published for panelView (which draws the Fable row) before anything is redrawn
+  (window as any).clShowFable = Object.fromEntries(accounts.map((a) => [a.id, p[a.id].showFable]));
   const design = loadCardStyle();
   document.querySelectorAll<HTMLElement>("[data-card-limits]").forEach((el) => {
-    if (el.dataset.design === design) return;
-    el.dataset.design = design;
-    el.innerHTML = limitsHTML(el.dataset.cardLimits as AccountId, design, false);
+    const id = el.dataset.cardLimits as AccountId, key = `${design}:${p[id].showFable ? 1 : 0}`;
+    if (el.dataset.design === key) return;
+    el.dataset.design = key;
+    el.innerHTML = limitsHTML(id, design, false) + creditsHTML(id);
   });
+  // the profiles' menu bar icons in the site's menu bar (26.11.0)
+  (window as any).clMenuBar?.(p);
   // "back at 15:28": counted from the visitor's clock (the demo's full limit resets this many minutes from now)
   document.querySelectorAll<HTMLElement>("[data-back-min]").forEach((el) => (el.textContent = backWords(+el.dataset.backMin!)));
   (window as any).clPeekMs = (id: AccountId) => Math.round((p[id]?.peek ?? 0.75) * 1000) + 400;
