@@ -20,7 +20,9 @@ const jsonLd = [
 
 <script>
   import { accounts, type AccountId } from "../data/demo";
-  import { applyPrefs, loadPrefs, savePrefs, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, type AppIcon, type Prefs, type Style } from "../data/prefs";
+  import { applyPrefs, loadPrefs, savePrefs, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
+  import { glyphHTML, lane as mbLane } from "../data/menubar";
+  import { widgetHTML } from "../data/widgetView";
   import { panelHTML, limitsHTML, whenWords, type Design } from "../data/panelView";
   import { showWhatNow } from "../data/whatNow";
 
@@ -174,6 +176,37 @@ const jsonLd = [
       setTimeout(() => { show(); status(`<span class="g">Saved</span> <em>· ${f === "name" ? "Dock icon renamed" : "icon label changed"}</em>`, 4000); }, 700);
     };
 
+    // Its menu bar icon ▸ Menu bar: every style, colour, label and full choice drawn as it would look (the gallery and
+    // the choices with 55 % / 77 %, as the app's card), and the preview lane in a dark and a light menu bar
+    const showMenuBar = (pr: Prefs) => {
+      const lab = pr.label, hex = colors[pr.color] ?? "#0a84ff";
+      const g = (look: MenuBarLook, five: number | null, week: number | null, dark = true, countdown?: string) => glyphHTML(look, five, week, { label: lab, hex, dark, countdown });
+      $$<HTMLElement>("[data-mb-glyph]").forEach((el) => (el.innerHTML = g({ ...pr.mb, style: el.dataset.mbGlyph as MenuBarStyle }, 55, 77)));
+      $$<HTMLElement>("[data-mb-style]").forEach((b) => b.classList.toggle("on", b.dataset.mbStyle === pr.mb.style));
+      for (const dark of [true, false]) {
+        const chips = $$<HTMLElement>(`[data-mb-lane="${dark ? "dark" : "light"}"] .mb-chip`);
+        mbLane.forEach(([, five, week, cd], i) => { if (chips[i]) chips[i].innerHTML = g(pr.mb, five, week, dark, cd); });
+      }
+      $$<HTMLElement>("[data-mb-cglyph]").forEach((el) => (el.innerHTML = g({ ...pr.mb, colours: el.dataset.mbCglyph as MenuBarLook["colours"] }, 55, 77)));
+      $$<HTMLElement>("[data-mb-colours]").forEach((b) => b.classList.toggle("on", b.dataset.mbColours === pr.mb.colours));
+      $$<HTMLElement>("[data-mb-lglyph]").forEach((el) => (el.innerHTML = g({ ...pr.mb, label: el.dataset.mbLglyph === "1" }, 55, 77)));
+      $$<HTMLElement>("[data-mb-label]").forEach((b) => b.classList.toggle("on", (b.dataset.mbLabel === "1") === pr.mb.label));
+      const sys = pr.mb.colours === "system";
+      $$<HTMLElement>("[data-mb-fglyph]").forEach((el) => (el.innerHTML = g({ ...pr.mb, whenFull: el.dataset.mbFglyph as MenuBarLook["whenFull"] }, 100, 64, true, "1h 42m")));
+      // with System colours a full limit is never red, so "Red only" is greyed out and the countdown shows it
+      $$<HTMLElement>("[data-mb-full]").forEach((b) => {
+        b.classList.toggle("on", (sys ? "countdown" : pr.mb.whenFull) === b.dataset.mbFull);
+        b.classList.toggle("dis", sys && b.dataset.mbFull === "red");
+      });
+    };
+    // General ▸ Widget: the chosen design and look, with the medium widget as the preview
+    const showWidget = () => {
+      const w = loadWidget();
+      $$<HTMLElement>("[data-widget-design]").forEach((b) => b.classList.toggle("on", b.dataset.widgetDesign === w.design));
+      $$<HTMLElement>("[data-widget-plate]").forEach((b) => b.classList.toggle("on", b.dataset.widgetPlate === w.plate));
+      $("[data-widget-prev]")!.innerHTML = widgetHTML(w.design, w.plate);
+    };
+
     // General ▸ App icon: six designs in one sunken row (the chosen one raised), then one pane with Front panel's four
     // choices as label rows (each a small icon with that one choice changed), or the chosen design at Dock sizes
     const showAppIcon = () => {
@@ -192,14 +225,20 @@ const jsonLd = [
       }
     };
 
-    // General: in two columns App icon goes under column 1 and Dock under column 2; otherwise both in column 3
+    // In two columns the third column (its subject printed at the top) goes under the first, as in the app: on a
+    // profile's page Its menu bar icon under Who it is, in General The Dock under cl_audit. Three or one: in place.
     const twoCols = window.matchMedia("(min-width: 800px) and (max-width: 1179px)");
-    const placeGeneral = () => {
-      const col = (n: number) => $(`[data-gcol="${n}"]`)!;
-      const icon = $('[data-gcard="appicon"]')!, dock = $('[data-gcard="dock"]')!;
-      if (twoCols.matches) { col(1).append(icon); col(2).append(dock); } else col(3).append(icon, dock);
+    const thirds: [string, string, string][] = [["[data-pcol]", "pcol", "[data-profile-view]"], ["[data-gcol]", "gcol", "[data-general-view]"]];
+    const placeColumns = () => {
+      for (const [, key, view] of thirds) {
+        const first = $(`[data-${key}="1"]`)!, third = $(`[data-${key}="3"]`)!, grid = $(view)!;
+        if (twoCols.matches) { if (third.parentElement !== first) first.append(third); }
+        else if (third.parentElement !== grid) grid.append(third);
+        third.classList.toggle("nested", twoCols.matches);
+      }
     };
-    twoCols.addEventListener("change", placeGeneral);
+    const placeGeneral = placeColumns;
+    twoCols.addEventListener("change", placeColumns);
     // Usage in the background: how many profiles the agent reads and how often; About ▸ Clean-up: its last run
     const showGeneralState = () => {
       const mins = accounts.map((x) => parseInt(prefs[x.id].refresh)), lo = Math.min(...mins), hi = Math.max(...mins);
@@ -229,7 +268,7 @@ const jsonLd = [
         const cs = loadCardStyle();
         $$<HTMLElement>("[data-card-style]").forEach((b) => b.classList.toggle("on", b.dataset.cardStyle === cs));
         $("[data-card-prev]")!.innerHTML = limitsHTML("sample", cs, false);
-        showAppIcon(); placeGeneral(); showGeneralState();
+        showAppIcon(); placeGeneral(); showGeneralState(); showWidget();
         return;
       }
       const a = accounts.find((x) => x.id === acc)!;
@@ -246,7 +285,9 @@ const jsonLd = [
       $$<HTMLElement>('[data-text="email"]').forEach((e) => (e.textContent = a.email));
       $$<HTMLElement>('[data-text="name"]').forEach((e) => (e.textContent = who()));
       for (const f of ["click", "refresh"] as const) $<HTMLSelectElement>(`[data-field="${f}"]`)!.value = pr[f];
-      for (const f of ["renew", "hold", "notify", "notifyBack", "windowFollows"] as const) setSwitch($(`[data-switch="${f}"]`), pr[f]);
+      for (const f of ["renew", "hold", "notify", "notifyBack", "windowFollows", "showFable"] as const) setSwitch($(`[data-switch="${f}"]`), pr[f]);
+      setSwitch($('[data-switch="mbOn"]'), pr.mb.on);
+      placeColumns();
       $('[data-value="peek"]')!.textContent = secs(pr.peek);
       $('[data-value="notifyAt"]')!.textContent = `${pr.notifyAt}%`;
       $("[data-notify-step]")!.hidden = !pr.notify;
@@ -259,20 +300,23 @@ const jsonLd = [
         (key as HTMLButtonElement).disabled = changing;
         $(`[data-incl-line="${k}"]`)!.textContent = inclLine[k](on);
       }
-      // cards that don't apply fade, with a strip saying why and a key: without a Dock icon, Opening and closing and
-      // Dock icon clicks; a Dock icon without a Claude window, only the two questions linking them
-      const ocAll = !pr.showInDock, ocLinks = pr.showInDock && !pr.win;
-      $('[data-oc-strip="all"]')!.hidden = !ocAll;
-      $('[data-oc-strip="win"]')!.hidden = !ocLinks;
-      $("[data-oc-body]")!.classList.toggle("dim", ocAll);
-      $("[data-oc-links]")!.classList.toggle("dim", ocLinks);
-      $$<HTMLElement>("[data-dock-only]").forEach((c) => {
-        c.classList.toggle("faded", !pr.showInDock);
-        c.querySelector<HTMLElement>(".notinuse")!.hidden = pr.showInDock;
-      });
+      // cards that don't apply fade under a strip saying why, with a key, as the app (26.11.0): without a Dock icon the
+      // Dock icon card ("no Dock icon", plus the usage row) and the Claude window card ("no Dock icon to open it with");
+      // without a Claude window, the Claude window card ("no Claude window", Add Claude window). The Menu bar card works
+      // either way.
+      $("[data-dk-strip]")!.hidden = pr.showInDock;
+      $("[data-dk-body]")!.classList.toggle("dim", !pr.showInDock);
+      $("[data-dk-usage]")!.hidden = pr.showInDock;
+      const cwWhy = !pr.win ? "no Claude window" : !pr.showInDock ? "no Dock icon to open it with" : "";
+      $("[data-cw-strip]")!.hidden = !cwWhy;
+      $("[data-cw-why]")!.textContent = `Not in use · ${cwWhy}`;
+      const cwKey = $<HTMLElement>("[data-cw-key]")!;
+      cwKey.textContent = !pr.win ? "Add Claude window" : "Show in the Dock";
+      cwKey.dataset.cwAct = !pr.win ? "win" : "dock";
+      $("[data-cw-body]")!.classList.toggle("dim", !!cwWhy);
       $$<HTMLElement>("[data-runs]").forEach((b) => b.classList.toggle("on", b.dataset.runs === pr.dockRuns));
       $("[data-runs-line]")!.textContent = runsLine(pr);
-      $("[data-oc-usage]")!.hidden = pr.showInDock;
+      showMenuBar(pr);
       // icon gallery: this profile's icons, the chosen style, and the preview lane under its row
       $$<HTMLElement>(".c-i .ico").forEach((e) => (e.dataset.ico = acc));
       $$<HTMLImageElement>("[data-gallery]").forEach((img) => (img.src = iconSrc(acc, img.dataset.gallery as Style, pr.iconColor)));
@@ -311,10 +355,21 @@ const jsonLd = [
       if (pick("[data-frame]")) { p().frame = pick("[data-frame]")!.dataset.frame!; commit(); show(); return; }
       if ((b = pick("[data-dot]"))) { p().dot = b.dataset.dot === "1"; commit(); show(); return; }
       if ((b = pick("[data-switch]"))) {
-        const k = b.dataset.switch as "renew" | "hold" | "notify" | "notifyBack" | "windowFollows";
-        p()[k] = !p()[k]; commit(); show(); if (k !== "windowFollows") say(k); return;
+        if (b.dataset.switch === "mbOn") { p().mb.on = !p().mb.on; commit(); show(); return; }
+        const k = b.dataset.switch as "renew" | "hold" | "notify" | "notifyBack" | "windowFollows" | "showFable";
+        p()[k] = !p()[k]; commit(); show(); if (k !== "windowFollows" && k !== "showFable") say(k); return;
       }
       if ((b = pick("[data-runs]"))) { p().dockRuns = b.dataset.runs as Prefs["dockRuns"]; commit(); show(); return; }
+      // the Claude window card's strip key: Add Claude window, or Show in the Dock
+      if ((b = pick("[data-cw-key]"))) { toggleIncl(b.dataset.cwAct === "win" ? "win" : "dock"); return; }
+      // Menu bar: style, colours, label, what a full limit shows
+      if ((b = pick("[data-mb-style]"))) { p().mb.style = b.dataset.mbStyle as MenuBarStyle; commit(); show(); return; }
+      if ((b = pick("[data-mb-colours]"))) { p().mb.colours = b.dataset.mbColours as MenuBarLook["colours"]; commit(); show(); return; }
+      if ((b = pick("[data-mb-label]"))) { p().mb.label = b.dataset.mbLabel === "1"; commit(); show(); return; }
+      if ((b = pick("[data-mb-full]"))) { if (p().mb.colours !== "system") { p().mb.whenFull = b.dataset.mbFull as MenuBarLook["whenFull"]; commit(); show(); } return; }
+      // General ▸ Widget
+      if ((b = pick("[data-widget-design]"))) { saveWidget({ ...loadWidget(), design: b.dataset.widgetDesign as Design }); show(); return; }
+      if ((b = pick("[data-widget-plate]"))) { saveWidget({ ...loadWidget(), plate: b.dataset.widgetPlate as WidgetLook["plate"] }); show(); return; }
       if ((b = pick("[data-incl]"))) { toggleIncl(b.dataset.incl as "dock" | "win"); return; }
       if (pick("[data-show-dock]")) { if (!p().showInDock) toggleIncl("dock"); return; }
       if (pick("[data-add-win]")) { if (!p().win) toggleIncl("win"); return; }
