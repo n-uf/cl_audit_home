@@ -1548,4 +1548,4 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 
 /* the usage history's CSV key and the cost in its totals */
 .csv-key { margin-left: 2px; }
-@media (max-width: 600px) { .mb-icons { display: none; } }
+@media (max-width: 600px) { .mb-icons { display: none; } .mb-lane .mbg { zoom: .58; } }
