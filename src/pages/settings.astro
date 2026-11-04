@@ -55,7 +55,7 @@ const jsonLd = [
       const on = (v: boolean) => (v ? "on" : "off");
       switch (k) {
         case "renew":
-          return showWhatNow("Renew sign-in", on(pr.renew), pr.renew
+          return showWhatNow("Renew sign-in by itself", on(pr.renew), pr.renew
             ? `When ${n}'s access key runs out, the Dock icon runs Claude Code once with a tiny prompt so it fetches a fresh one (a sliver of usage).`
             : `When ${n}'s access key runs out, the usage waits until you next use Claude Code.`);
         case "refresh":
@@ -176,6 +176,15 @@ const jsonLd = [
       setTimeout(() => { show(); status(`<span class="g">Saved</span> <em>· ${f === "name" ? "Dock icon renamed" : "icon label changed"}</em>`, 4000); }, 700);
     };
 
+    // Claude Code ▸ Login back to showing the account: menu closed, no address field, no grey line
+    const loginReset = () => {
+      $("[data-login-menu]")!.hidden = true; $("[data-login-btn]")!.setAttribute("aria-expanded", "false");
+      $("[data-login-btn]")!.hidden = false;
+      $("[data-login-edit]")!.hidden = true; $("[data-login-line]")!.hidden = true;
+      const mail = $<HTMLInputElement>("[data-login-mail]")!; mail.hidden = false; mail.value = "";
+      $("[data-login-keys]")!.innerHTML = `<button type="button" class="key k lt" style="--lamp:rgb(74,222,128)" data-login-go>Sign in</button><button type="button" class="key k" data-login-cancel>Cancel</button>`;
+    };
+
     // Its menu bar icon ▸ Menu bar: every style, colour, label and full choice drawn as it would look (the gallery and
     // the choices with 55 % / 77 %, as the app's card), and the preview lane in a dark and a light menu bar
     const showMenuBar = (pr: Prefs) => {
@@ -288,9 +297,8 @@ const jsonLd = [
       for (const f of ["renew", "hold", "notify", "notifyBack", "windowFollows", "showFable"] as const) setSwitch($(`[data-switch="${f}"]`), pr[f]);
       setSwitch($('[data-switch="mbOn"]'), pr.mb.on);
       placeColumns();
-      // the Login pop-up and its New account row start closed on every profile
-      $("[data-login-menu]")!.hidden = true;
-      $("[data-newacct]")!.hidden = true; $("[data-newacct-note]")!.hidden = true;
+      // the Login pop-up starts closed, showing the account, on every profile
+      loginReset();
       $('[data-value="peek"]')!.textContent = secs(pr.peek);
       $('[data-value="notifyAt"]')!.textContent = `${pr.notifyAt}%`;
       $("[data-notify-step]")!.hidden = !pr.notify;
@@ -395,32 +403,42 @@ const jsonLd = [
       if (pick("[data-demo-switch]")) { const s = pick("[data-demo-switch]")!; setSwitch(s, !s.classList.contains("on")); return; }
       if (pick("[data-remove]")) { $("[data-dialog]")!.hidden = false; return; }
       if (pick("[data-uninstall]")) { $("[data-udialog]")!.hidden = false; return; }
-      // Claude Code ▸ Login (26.11.0): a pop-up like Folder. ✓ this profile's account, the other profiles' accounts
-      // dimmed (one profile per account), then Sign in to another account…, which adds the New account row
+      // Claude Code ▸ Login (26.11.0, final shape): a pop-up in line with Folder. Its menu: ✓ the account Claude Code is
+      // signed in to, the other profiles' accounts dimmed (one profile per account), Sign in to another account…, and
+      // Renew sign-in by itself (✓ when on; it used to be its own row)
       if (pick("[data-login-btn]")) {
         const m = $("[data-login-menu]")!, open = m.hidden;
         if (open) {
           const own = accounts.find((x) => x.id === acc)!;
           m.innerHTML = `<span class="lm-row on"><span class="ok">✓</span> ${own.email}<em>${own.plan} · this profile</em></span>` +
             accounts.filter((x) => x.id !== acc).map((x) => `<span class="lm-row dim">${x.email}<em>${x.plan} · ${prefs[x.id].name}'s</em></span>`).join("") +
-            `<hr><button type="button" class="lm-row act" data-login-other>Sign in to another account…</button>`;
+            `<hr><button type="button" class="lm-row act" data-login-other>Sign in to another account…</button>` +
+            `<hr><button type="button" class="lm-row act" data-login-renew>${p().renew ? '<span class="ok">✓</span> ' : ""}Renew sign-in by itself</button>`;
         }
         m.hidden = !open; $("[data-login-btn]")!.setAttribute("aria-expanded", String(open));
         return;
       }
+      if (pick("[data-login-renew]")) { p().renew = !p().renew; commit(); loginReset(); say("renew"); return; }
       if (pick("[data-login-other]")) {
-        $("[data-login-menu]")!.hidden = true; $("[data-login-btn]")!.setAttribute("aria-expanded", "false");
-        $("[data-newacct]")!.hidden = false;
-        const note = $("[data-newacct-note]")!;
-        note.hidden = false;
-        note.textContent = `Opens Claude Code's own sign-in in Terminal with this address filled in. ${who()} stays on ${accounts.find((x) => x.id === acc)!.email} until it's done. Esc cancels.`;
-        $<HTMLInputElement>("[data-newacct-mail]")!.focus();
+        // the value becomes the address field, with Sign in and Cancel under it, and one grey line under the row
+        loginReset();
+        $("[data-login-btn]")!.hidden = true;
+        $("[data-login-edit]")!.hidden = false;
+        const line = $("[data-login-line]")!;
+        line.hidden = false;
+        line.textContent = `Opens Claude Code's own sign-in in Terminal with this address filled in. ${who()} stays on ${accounts.find((x) => x.id === acc)!.email} until it's done. Esc cancels.`;
+        $<HTMLInputElement>("[data-login-mail]")!.focus();
         return;
       }
-      if (pick("[data-newacct-go]")) {
-        $("[data-newacct-note]")!.textContent = "This is a demo. In the app, Terminal would open Claude Code's sign-in now, and the profile would link itself to the new account when you finish.";
+      if (pick("[data-login-go]")) {
+        // waiting for the browser: "● signing in…" with Cancel (in the demo, nothing signs in)
+        const mail = $<HTMLInputElement>("[data-login-mail]")!.value.trim() || "the new address";
+        $("[data-login-mail]")!.hidden = true;
+        $("[data-login-keys]")!.innerHTML = `<span class="signing"><i></i>signing in…</span><button type="button" class="key k" data-login-cancel>Cancel</button>`;
+        $("[data-login-line]")!.textContent = `Finish signing in as ${mail} in the browser. If it shows another claude.ai account, switch it there first. (This is a demo, so nothing signs in.)`;
         return;
       }
+      if (pick("[data-login-cancel]")) { loginReset(); return; }
       if (!pick("[data-login-menu]") && $("[data-login-menu]") && !$("[data-login-menu]")!.hidden) { $("[data-login-menu]")!.hidden = true; $("[data-login-btn]")!.setAttribute("aria-expanded", "false"); }
       if (pick("[data-udialog-close]") || t.matches("[data-udialog]")) { $("[data-udialog]")!.hidden = true; return; }
       if (pick("[data-dialog-close]") || t.matches("[data-dialog]")) { $("[data-dialog]")!.hidden = true; return; }
@@ -444,10 +462,9 @@ const jsonLd = [
     });
     root.addEventListener("keydown", (e) => {
       // Esc closes the Login pop-up, or cancels Sign in to another account
-      if (e.key === "Escape" && (!$("[data-login-menu]")!.hidden || !$("[data-newacct]")!.hidden)) {
-        $("[data-login-menu]")!.hidden = true; $("[data-newacct]")!.hidden = true; $("[data-newacct-note]")!.hidden = true;
-        return;
-      }
+      if (e.key === "Escape" && (!$("[data-login-menu]")!.hidden || !$("[data-login-edit]")!.hidden)) { loginReset(); return; }
+      // Return in the address field presses Sign in
+      if (e.key === "Enter" && (e.target as HTMLElement).matches?.("[data-login-mail]")) { e.preventDefault(); $<HTMLButtonElement>("[data-login-go]")?.click(); return; }
       const t = e.target; if (!isEF(t)) return;
       if (e.key === "Enter") { e.preventDefault(); saveEdit(t.dataset.field as EF); }
       if (e.key === "Escape") { e.preventDefault(); revertEdit(t.dataset.field as EF); }
