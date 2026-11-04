@@ -72,6 +72,18 @@ const jsonLd = [
     if (none) none.hidden = off.length < 3;
     const t = dash.querySelector<HTMLElement>("[data-tokens-title]");
     if (t) t.textContent = dash.dataset.range === "24h" ? "Tokens per hour" : "Tokens per day";
+    fitTotals(dash);
+  }
+  /** The totals display on one line: the first wording that fits (with the cost at list prices, the cost alone, none). */
+  function fitTotals(dash: HTMLElement) {
+    const ids = allIds.filter((id) => !load().includes(id)) as AccountId[];
+    dash.querySelectorAll<HTMLElement>(".hist-total").forEach((el) => {
+      if (!el.offsetParent) return;
+      for (const level of [0, 1, 2]) {
+        el.innerHTML = totalsHTML(el.dataset.range as Range, ids, level);
+        if (el.scrollWidth <= el.clientWidth + 1) break;
+      }
+    });
   }
   const load = (): string[] => { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch { return []; } };
   const save = (v: string[]) => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} };
@@ -87,6 +99,7 @@ const jsonLd = [
     dash.querySelectorAll<HTMLElement>(".range-block").forEach((el) => (el.innerHTML = rangeHTML(el.dataset.range as Range, ids)));
     dash.querySelectorAll<HTMLElement>(".range-shares").forEach((el) => (el.innerHTML = sharesHTML(el.dataset.range as Range, ids)));
     dash.querySelectorAll<HTMLElement>(".hist-total").forEach((el) => (el.innerHTML = totalsHTML(el.dataset.range as Range, ids)));
+    fitTotals(dash);
     applyCharts(dash);
   }
 

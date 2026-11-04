@@ -73,10 +73,13 @@ export function rangeHTML(kind: Range, ids: AccountId[] = allIds): string {
 }
 
 /** The totals as the app's display shows them: the replies lit, the tokens dim. */
-export function totalsHTML(kind: Range, ids: AccountId[] = allIds): string {
+export function totalsHTML(kind: Range, ids: AccountId[] = allIds, level = 0): string {
   const [replies, tokens] = totalsText(kind, ids).split(" · ");
-  // 26.11.0: the estimate at API list prices after the tokens (the display's title says it's not your bill)
-  return `${replies} <em>· ${tokens} · ${costText(kind, ids)} at list prices</em>`;
+  // 26.11.0: the estimate at API list prices after the tokens (the display's title says it's not your bill); where
+  // the display is too narrow (phones) the dashboard asks for a shorter wording: level 1 drops "at list prices",
+  // level 2 the cost
+  const cost = level === 0 ? ` · ${costText(kind, ids)} at list prices` : level === 1 ? ` · ${costText(kind, ids)}` : "";
+  return `${replies} <em>· ${tokens}${cost}</em>`;
 }
 
 /** "1,202 replies · 33.1M tokens" for one period. */
