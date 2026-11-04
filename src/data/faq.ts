@@ -39,7 +39,7 @@ export const faq: [string, string][] = [
   ["Does cl_audit make my login safer?",
    "No, and it doesn't make it more exposed either. Any app running under your macOS user can read Claude Code's saved login the same way; that is how Claude Code stores it. So install only software you trust. cl_audit's code is open to check (Login.read in Sources/Model.swift)."],
   ["Which plans does it support?",
-   "Claude plans with usage limits, such as Pro, Max and Team, signed in to Claude Code. A profile that uses an API key is billed per token instead and has no usage limits to show."],
+   "Claude plans with usage limits, such as Pro, Max, Ultra and Team, signed in to Claude Code. A profile that uses an API key is billed per token instead and has no usage limits to show."],
   ["What does it need?",
    "A Mac with Apple silicon and macOS 13 or later, the Xcode Command Line Tools to build it, and Claude Code signed in for each profile. The Claude app is needed only for Claude windows."],
   ["How are versions numbered?",

@@ -27,7 +27,7 @@ const appDescription =
 const glance: [string, string][] = [
   ["Free", "Source-available (PolyForm Perimeter 1.0.1). No sign-up, server or analytics."],
   ["Mac", "Apple silicon, macOS 13 or later. Claude Code signed in for each profile."],
-  ["Plans", "Plans with usage limits, such as Pro, Max and Team."],
+  ["Plans", "Plans with usage limits, such as Pro, Max, Ultra and Team."],
   ["Accounts", "One profile per account seat, so work and personal sit side by side."],
   ...(stage ? [["Alpha", "First released October 2026. A Claude update can break it until cl_audit updates."] as [string, string]] : []),
   ["Independent", "Not affiliated with Anthropic."],
@@ -42,7 +42,7 @@ const homeFaq: [string, string][] = [
   ["Is cl_audit a menu bar app?",
    "Mostly a Dock app: every profile with Usage in the Dock on gets its own Dock icon, so several accounts sit side by side. A profile can also have a menu bar icon of its own (off by default). The “Claude usage” widget shows every profile on the desktop or in Notification Center (macOS 14 or later)."],
   ["Which Claude plans does it work with?",
-   "Plans with usage limits, such as Pro, Max and Team, signed in to Claude Code. A profile that uses an API key has no limits to show."],
+   "Plans with usage limits, such as Pro, Max, Ultra and Team, signed in to Claude Code. A profile that uses an API key has no limits to show."],
   ["Is cl_audit free?",
    "Yes. It's free and source-available under PolyForm Perimeter 1.0.1, with no sign-up, server or analytics. It isn't made by Anthropic and isn't affiliated with it."],
 ];
