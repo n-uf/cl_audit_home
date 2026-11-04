@@ -9,12 +9,28 @@ const level = (p: number) => (p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c5
 const short = (min: number) => (min >= 1440 ? `${Math.round(min / 1440)} days` : min >= 60 ? `${Math.floor(min / 60)} h ${min % 60} min` : `${min} min`);
 
 type L = { name: string; title: string; p: number; left: number; elapsed: number };
+/** Whether a profile's Fable row shows: its plan has Fable's own weekly limit and Profile ▸ Fable's limit is on (the
+ *  switch is in this browser's prefs; prefs.ts publishes it on window, as panelView can't import prefs). */
+export function fableShown(id: AccountId) {
+  const a = accounts.find((x) => x.id === id)!;
+  if (a.fable == null) return false;
+  const shown = typeof window !== "undefined" ? (window as any).clShowFable?.[id] : undefined;
+  return shown !== false;
+}
 function limits(id: AccountId): L[] {
   const a = accounts.find((x) => x.id === id)!;
-  return [
+  const ls: L[] = [
     { name: "5-hour", title: "5-hour session", p: a.five, left: a.fiveLeftMin, elapsed: Math.round((1 - a.fiveLeftMin / 300) * 100) },
     { name: "Week", title: "Week", p: a.week, left: a.weekLeftMin, elapsed: Math.round((1 - a.weekLeftMin / 10080) * 100) },
   ];
+  // 26.11.0: Fable's own weekly limit, a third row ("Fable · week" in the large panel); it never takes the full box
+  if (fableShown(id)) ls.push({ name: "Fable", title: "Fable · week", p: a.fable!, left: a.fableLeftMin, elapsed: Math.round((1 - a.fableLeftMin / 10080) * 100) });
+  return ls;
+}
+/** While a profile spends usage credits: one line under its limits (card, panels, menus). */
+export function creditsHTML(id: AccountId) {
+  const a = accounts.find((x) => x.id === id)!;
+  return a.credits == null ? "" : `<div class="credits-line"><span class="disp"><span class="a">Using usage credits</span> <em>· $${a.credits.toFixed(2)} spent</em></span></div>`;
 }
 
 const pct = (l: L, size: number) => `<b class="pn-pct" style="color:${level(l.p)};font-size:${size}px">${l.p}%</b>`;
@@ -68,7 +84,8 @@ export function limitsHTML(id: AccountId | "sample", design: Design, large: bool
   const ls = id === "sample" ? sample : limits(id);
   const draw = { glow, rings: ring, numbers: number, segments, pace }[design];
   const cls = design === "rings" ? "pn-limits rings" : design === "numbers" ? "pn-limits numbers" : "pn-limits";
-  return `<div class="${cls}${large ? " large" : ""}">${ls.map((l) => draw(l, large)).join("")}</div>`;
+  // three limits side by side (Fable's) are drawn a size smaller in Rings and Numbers, as in the app
+  return `<div class="${cls}${large ? " large" : ""}${ls.length > 2 ? " three" : ""}">${ls.map((l) => draw(l, large)).join("")}</div>`;
 }
 
 export const designs: [Design, string][] = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["segments", "Segments"], ["pace", "Pace"]];
@@ -92,7 +109,8 @@ const day0 = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).g
 export const countdownWords = (m: number) => (m < 60 ? `${m}m` : m < 1440 ? `${Math.floor(m / 60)}h ${m % 60}m` : m < 8 * 1440 ? `${Math.floor(m / 1440)}d ${Math.floor((m % 1440) / 60)}h` : `${Math.floor(m / 1440)} days`);
 /** The full limit that holds a profile back (of the full ones, the one that resets last), or none. */
 export function fullLimit(id: AccountId) {
-  const ls = limits(id).filter((l) => l.p >= 100).sort((a, b) => b.left - a.left);
+  // Fable's limit never holds a profile back (the other models still work), so only the 5-hour and weekly limits count
+  const ls = limits(id).filter((l) => l.p >= 100 && l.name !== "Fable").sort((a, b) => b.left - a.left);
   if (!ls.length) return null;
   return { name: ls[0].name, other: ls[1]?.name, left: ls[0].left };
 }
@@ -114,7 +132,7 @@ function fullHTML(id: AccountId, design: Design) {
  *  limit is full, the limits on the left and the box saying when it's back on the right. */
 export function cardLimitsHTML(id: AccountId, design: Design) {
   const a = accounts.find((x) => x.id === id)!;
-  return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="img" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}</div>`;
+  return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="img" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}${creditsHTML(id)}</div>`;
 }
 
 /** A whole panel: header (icon, name, email, plan), the limits in the chosen design, and the footer. */
@@ -127,5 +145,5 @@ export function panelHTML(id: AccountId, design: Design, opts: { large: boolean;
   const foot = opts.large
     ? `<div class="pn-foot"><span class="pill small tint ${a.tint}">Claude</span><span class="pill small">Dashboard</span><span class="spacer"></span><span class="pn-sub">Updated just now</span><span class="pn-gear" aria-hidden="true">⚙︎</span></div>`
     : `<div class="pn-sub pn-note">${opts.note ?? ""}</div>`;
-  return `<div class="pn${opts.large ? " large" : ""}">${head}${limitsHTML(id, design, opts.large)}${foot}</div>`;
+  return `<div class="pn${opts.large ? " large" : ""}">${head}${limitsHTML(id, design, opts.large)}${creditsHTML(id)}${foot}</div>`;
 }
