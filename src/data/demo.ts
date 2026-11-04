@@ -3,16 +3,21 @@
 // that count back from the build day like the real app.
 // "work" has its 5-hour limit full (26.10.11): its card shows when it's back, and its Dock icon is the countdown
 // (public/img/acc/work-full.png, drawn by the app's Painter).
+// 26.11.0: "home" (Max) has Fable's own weekly limit (a third row; Max, Ultra and premium Team/Enterprise seats have
+// it, so the Team and Pro profiles don't); "work" is spending usage credits while its 5-hour limit is full.
 
 export type AccountId = "home" | "work" | "side";
 
 export const accounts = [
   { id: "home" as AccountId, name: "home", label: "HOME", email: "you@example.com", plan: "Max", hex: "#d97757", color: "var(--acc-home)", tint: "t-orange",
-    icon: "/img/acc/home-bars-orange.png", dir: "~/.claude", data: "~/Library/Application Support/Claude", five: 34, fiveWhen: "in 3 h 12 min", week: 12, weekWhen: "in 6 days", fiveLeftMin: 192, weekLeftMin: 6 * 1440 + 200, updated: "just now", winOpen: true },
+    icon: "/img/acc/home-bars-orange.png", dir: "~/.claude", data: "~/Library/Application Support/Claude", five: 34, fiveWhen: "in 3 h 12 min", week: 12, weekWhen: "in 6 days", fiveLeftMin: 192, weekLeftMin: 6 * 1440 + 200, updated: "just now", winOpen: true,
+    fable: 41 as number | null, fableLeftMin: 2 * 1440 + 620, credits: null as number | null },
   { id: "work" as AccountId, name: "work", label: "WORK", email: "you@work.example", plan: "Team", hex: "#14b8a6", color: "var(--acc-work)", tint: "t-teal",
-    icon: "/img/acc/work-full.png", dir: "~/.claude-work", data: "~/Library/Application Support/Claude-work", five: 100, fiveWhen: "in 1h 42m", week: 61, weekWhen: "in 3 days", fiveLeftMin: 102, weekLeftMin: 3 * 1440 + 300, updated: "1 min ago", winOpen: true },
+    icon: "/img/acc/work-full.png", dir: "~/.claude-work", data: "~/Library/Application Support/Claude-work", five: 100, fiveWhen: "in 1h 42m", week: 61, weekWhen: "in 3 days", fiveLeftMin: 102, weekLeftMin: 3 * 1440 + 300, updated: "1 min ago", winOpen: true,
+    fable: null as number | null, fableLeftMin: 0, credits: 4.2 as number | null },
   { id: "side" as AccountId, name: "side", label: "SIDE", email: "side@example.com", plan: "Pro", hex: "#8b5cf6", color: "var(--acc-side)", tint: "t-purple",
-    icon: "/img/acc/side-statusBar.png", dir: "~/.claude-side", data: "~/Library/Application Support/Claude-side", five: 12, fiveWhen: "in 4 h 40 min", week: 40, weekWhen: "in 5 days", fiveLeftMin: 280, weekLeftMin: 5 * 1440 + 90, updated: "2 min ago", winOpen: false },
+    icon: "/img/acc/side-statusBar.png", dir: "~/.claude-side", data: "~/Library/Application Support/Claude-side", five: 12, fiveWhen: "in 4 h 40 min", week: 40, weekWhen: "in 5 days", fiveLeftMin: 280, weekLeftMin: 5 * 1440 + 90, updated: "2 min ago", winOpen: false,
+    fable: null as number | null, fableLeftMin: 0, credits: null as number | null },
 ];
 
 // ── a small seeded random generator (mulberry32) ──────────────────────
@@ -133,6 +138,8 @@ function niceMax(v: number) {
 
 /** "Where it goes" per demo profile; the dashboard combines the selected ones by their tokens. */
 type Share = [string, number, string];
+/** A demo profile's share of tokens per model (for the CSV and the cost estimate). */
+export const modelShares = (id: AccountId): [string, number][] => perAccount[id].models.map(([m, s]) => [m, s]);
 const perAccount: Record<AccountId, { projects: Share[]; models: Share[]; surfaces: Share[] }> = {
   home: {
     projects: [["recipe-site", 0.6, "#d97757"], ["notes", 0.25, "#d97757"], ["other", 0.15, "#8e8e93"]],
