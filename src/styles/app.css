@@ -1566,10 +1566,25 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
    it, in the same row; one grey line under the row */
 .login-mail { color: rgb(var(--led-on)); }
 .face-silver .login-mail { color: #11743a; }
-.login-edit { display: grid; justify-items: end; gap: 6px; padding: 4px 0; }
-.login-edit .field { width: 190px; }
-.login-keys { display: inline-flex; align-items: center; gap: 6px; }
-.signing { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: #f59e0b; }
+/* one line, like Folder: the address in a boxed well filling the column, Sign in and Cancel at the row's end */
+.login-edit { display: flex; align-items: center; gap: 6px; flex: 1 1 auto; min-width: 0; }
+.login-edit .field { flex: 1 1 auto; min-width: 0; width: auto !important; padding: 3px 8px; border-radius: 4px; text-align: left; background: var(--win-bg); box-shadow: var(--win-shadow); }
+.login-keys { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.login-edit .field[hidden] + .login-keys { flex: 1 1 auto; }
+.signing { display: inline-flex; align-items: center; gap: 6px; flex: 1 1 auto; font-size: 12.5px; color: #f59e0b; }
+.login-x .lx-x { display: none; }
+@media (max-width: 480px) { .login-x { width: 26px; padding: 0; } .login-x .lx-t { display: none; } .login-x .lx-x { display: inline; font-size: 14px; } }
+
+/* 26.11.0: pop-ups and text fields fill the value column, so their right edges line up (Name, Icon label, Folder,
+   Login, Refresh every, Click); steppers, switches and keys keep their size */
+.settings .srow.vcol > span:first-child { flex: 0 0 132px; }
+.settings .srow.vcol > :last-child { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 6px; }
+.settings .srow.vcol select.menu, .settings .srow.vcol .menu-static, .settings .srow.vcol .login-btn { flex: 1 1 auto; min-width: 0; width: 100%; text-align: left; }
+.settings .srow.vcol .login-ctl { flex: 1 1 auto; }
+.settings .srow.vcol .fcol { align-items: stretch; }
+.settings .srow.vcol input.field[data-field] { width: 100%; text-align: left; }
+.settings .srow.vcol .fmsg { text-align: left; }
+.settings .srow.vcol .folder-ctl { display: flex; gap: 6px; }
 .signing i { width: 7px; height: 7px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,.8); animation: rlit 1.1s ease-in-out infinite; }
 .face-silver .signing { color: #8a4f00; }
 .login-line { margin: 0 0 8px; }
