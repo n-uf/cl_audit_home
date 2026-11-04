@@ -33,7 +33,11 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       <a class:list={["mb-dl", { dim: page === "overview" || page === "install" }]} href={download} title={`cl_audit ${version} for Mac`}><span aria-hidden="true">↓ </span>Download for Mac</a>
       <span class="mb-na">Mac only</span>
       <a class="mb-gh" href={repo}>GitHub</a>
+      <!-- the profiles' menu bar icons (cl_audit 26.11.0): one for each profile with "In the menu bar" on, each with its
+           own menu; drawn by data/menubar.ts from the demo's numbers and the profile's Menu bar settings -->
+      <span class="mb-icons" data-mb-icons></span>
       <span class="mb-clock" aria-hidden="true"></span>
+      <div class="mb-menu" data-mb-menu role="menu" hidden></div>
       <!-- phones: the faceplate keys live here, at the right end of the menu bar (the title bar's are hidden there) -->
       <span class="face-pick mb-face" role="group" aria-label="Faceplate">
         <button type="button" class="fk" data-face="std" aria-pressed="true">Std</button><button type="button" class="fk" data-face="black" aria-pressed="false">Black</button><button type="button" class="fk" data-face="silver" aria-pressed="false">Silver</button>
@@ -93,7 +97,51 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
 </Base>
 
 <script>
-  import { applyPrefs } from "../data/prefs";
+  import { applyPrefs, loadPrefs, savePrefs, type Prefs } from "../data/prefs";
+  import { profileGlyph, menuHTML } from "../data/menubar";
+  import { accounts, type AccountId } from "../data/demo";
+  // The profiles' menu bar icons: drawn for the menu bar's look (dark, or light on the Silver face); a click opens that
+  // profile's own menu. applyPrefs calls this whenever the settings change.
+  const w_ = window as any;
+  let openId: string | null = null;
+  w_.clMenuBar = (p: Record<AccountId, Prefs> = loadPrefs()) => {
+    const box = document.querySelector<HTMLElement>("[data-mb-icons]");
+    if (!box) return;
+    const dark = !document.documentElement.classList.contains("face-silver");
+    box.innerHTML = accounts.filter((a) => p[a.id].mb.on).map((a) =>
+      `<button type="button" class="mb-icon${openId === a.id ? " open" : ""}" data-mb-id="${a.id}" aria-haspopup="menu" aria-label="cl_audit ${p[a.id].name} in the menu bar">${profileGlyph(a.id, p[a.id].mb, p[a.id].label, a.hex, dark)}</button>`).join("");
+    if (openId && !p[openId as AccountId].mb.on) closeMenu();
+  };
+  const closeMenu = () => { openId = null; const m = document.querySelector<HTMLElement>("[data-mb-menu]"); if (m) m.hidden = true; document.querySelectorAll(".mb-icon.open").forEach((x) => x.classList.remove("open")); };
+  document.addEventListener("click", (e) => {
+    const t = e.target as HTMLElement;
+    const icon = t.closest<HTMLElement>("[data-mb-id]");
+    const menu = document.querySelector<HTMLElement>("[data-mb-menu]");
+    if (icon && menu) {
+      const id = icon.dataset.mbId as AccountId;
+      if (openId === id) { closeMenu(); return; }
+      openId = id;
+      menu.innerHTML = menuHTML(id, loadPrefs()[id].name);
+      menu.hidden = false;
+      const r = icon.getBoundingClientRect();
+      menu.style.left = `${Math.max(8, Math.min(window.innerWidth - menu.offsetWidth - 8, r.left))}px`;
+      document.querySelectorAll(".mb-icon").forEach((x) => x.classList.toggle("open", x === icon));
+      return;
+    }
+    const item = t.closest<HTMLElement>("[data-mbm]");
+    if (item && openId) {
+      const id = openId as AccountId, what = item.dataset.mbm;
+      closeMenu();
+      if (what === "Open Claude window") w_.clOpenDesktop?.(id);
+      else if (what === "Dashboard") location.href = "/dashboard/";
+      else if (what === "Profile settings…") { try { sessionStorage.setItem("cl_audit.settingsProfile", id); } catch {} location.href = "/settings/"; }
+      else if (what === "hide") { const p = loadPrefs(); p[id].mb.on = false; savePrefs(p); applyPrefs(p); }
+      return;
+    }
+    if (openId && !t.closest("[data-mb-menu]")) closeMenu();
+  });
+  // the Silver face has a light menu bar: redraw the icons for it
+  new MutationObserver(() => w_.clMenuBar()).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
   import { initCards } from "../data/cardState";
   import { initWhatNow } from "../data/whatNow";
   import { initDownloadFocus } from "../data/downloadFocus";
