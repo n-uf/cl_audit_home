@@ -176,13 +176,15 @@ const jsonLd = [
       setTimeout(() => { show(); status(`<span class="g">Saved</span> <em>· ${f === "name" ? "Dock icon renamed" : "icon label changed"}</em>`, 4000); }, 700);
     };
 
+    // Cancel at the row's end; a small × in a narrow window (CSS picks the label)
+    const cancelKey = `<button type="button" class="key k login-x" data-login-cancel aria-label="Cancel"><span class="lx-t">Cancel</span><span class="lx-x" aria-hidden="true">×</span></button>`;
     // Claude Code ▸ Login back to showing the account: menu closed, no address field, no grey line
     const loginReset = () => {
       $("[data-login-menu]")!.hidden = true; $("[data-login-btn]")!.setAttribute("aria-expanded", "false");
       $("[data-login-btn]")!.hidden = false;
       $("[data-login-edit]")!.hidden = true; $("[data-login-line]")!.hidden = true;
       const mail = $<HTMLInputElement>("[data-login-mail]")!; mail.hidden = false; mail.value = "";
-      $("[data-login-keys]")!.innerHTML = `<button type="button" class="key k lt" style="--lamp:rgb(74,222,128)" data-login-go>Sign in</button><button type="button" class="key k" data-login-cancel>Cancel</button>`;
+      $("[data-login-keys]")!.innerHTML = `<button type="button" class="key k lt" style="--lamp:rgb(74,222,128)" data-login-go>Sign in</button>${cancelKey}`;
     };
 
     // Its menu bar icon ▸ Menu bar: every style, colour, label and full choice drawn as it would look (the gallery and
@@ -426,7 +428,7 @@ const jsonLd = [
         $("[data-login-edit]")!.hidden = false;
         const line = $("[data-login-line]")!;
         line.hidden = false;
-        line.textContent = `Opens Claude Code's own sign-in in Terminal with this address filled in. ${who()} stays on ${accounts.find((x) => x.id === acc)!.email} until it's done. Esc cancels.`;
+        line.textContent = `Signs in through Claude Code in Terminal; ${who()} stays on ${accounts.find((x) => x.id === acc)!.email} until then.`;
         $<HTMLInputElement>("[data-login-mail]")!.focus();
         return;
       }
@@ -434,7 +436,7 @@ const jsonLd = [
         // waiting for the browser: "● signing in…" with Cancel (in the demo, nothing signs in)
         const mail = $<HTMLInputElement>("[data-login-mail]")!.value.trim() || "the new address";
         $("[data-login-mail]")!.hidden = true;
-        $("[data-login-keys]")!.innerHTML = `<span class="signing"><i></i>signing in…</span><button type="button" class="key k" data-login-cancel>Cancel</button>`;
+        $("[data-login-keys]")!.innerHTML = `<span class="signing"><i></i>signing in…</span>${cancelKey}`;
         $("[data-login-line]")!.textContent = `Finish signing in as ${mail} in the browser. If it shows another claude.ai account, switch it there first. (This is a demo, so nothing signs in.)`;
         return;
       }
