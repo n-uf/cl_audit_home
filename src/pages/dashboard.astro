@@ -52,7 +52,7 @@ const jsonLd = [
 </style>
 
 <script>
-  import { rangeHTML, sharesHTML, totalsHTML } from "../data/historyView";
+  import { rangeHTML, sharesHTML, totalsHTML, csvFor } from "../data/historyView";
   import { loadPrefs } from "../data/prefs";
   import { allIds, type AccountId, type Range } from "../data/demo";
 
@@ -130,6 +130,15 @@ const jsonLd = [
       d.innerHTML = "Updating…";
       k.classList.add("busy"); k.innerHTML = '<span class="rlit" aria-hidden="true">↻</span>';
       setTimeout(() => { d.innerHTML = "Updated <em>· just now</em>"; k.classList.remove("busy"); k.textContent = "↻"; }, 1400);
+    });
+    // CSV (26.11.0): saves the period and the shown profiles as CSV, as the app's key does; the rows are the demo's
+    dash.querySelector<HTMLButtonElement>("[data-csv]")?.addEventListener("click", () => {
+      const ids = allIds.filter((id) => !load().includes(id)) as AccountId[];
+      const blob = new Blob([csvFor((dash.dataset.range || "7d") as Range, ids)], { type: "text/csv" });
+      const url = URL.createObjectURL(blob), a = document.createElement("a");
+      a.href = url; a.download = `cl_audit-usage-${dash.dataset.range || "7d"}-sample.csv`;
+      document.body.append(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     });
     dash.querySelectorAll<HTMLButtonElement>("[data-pick]").forEach((b) =>
       b.addEventListener("click", () => {

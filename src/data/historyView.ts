@@ -1,6 +1,39 @@
 // The dashboard's usage history as HTML, drawn the way the app draws it. Used by the server for the first
 // render (so the page has full HTML) and by the browser whenever the Show chips change the profiles.
-import { allIds, breakdown, formatTokens, range, type AccountId, type Range } from "./demo";
+import { accounts, allIds, breakdown, formatTokens, modelShares, range, type AccountId, type Range } from "./demo";
+
+// ── The cost estimate and the CSV (cl_audit 26.11.0) ──────────────────────────────────────────────────────────────
+// What the same tokens would cost on Anthropic's API at list prices, per model, with cache writes and reads priced
+// apart: "at API list prices, not your bill" (plan use is paid by the plan). The demo splits each profile's tokens
+// into kinds and models with fixed shares; the app reads them from the session files.
+const PRICE: Record<string, [number, number, number, number, number]> = {   // $ per million: input, output, cache write 5 min, 1 h, cache read
+  Opus: [15, 75, 18.75, 30, 1.5], Sonnet: [3, 15, 3.75, 6, 0.3], Haiku: [1, 5, 1.25, 2, 0.1],
+};
+const SPLIT = { input: 0.04, output: 0.1, cw5: 0.62, cw1h: 0.24, readPerToken: 9 };   // shares of the counted tokens; cache reads as a multiple
+type Row = { date: string; profile: string; model: string; replies: number; input: number; output: number; cw5: number; cw1h: number; read: number; total: number; cost: number };
+function rowsFor(kind: Range, ids: AccountId[]): Row[] {
+  const r = range(kind, ids);
+  const allTokens = r.bars.reduce((s, b) => s + b.parts.reduce((t, p) => t + p.tokens, 0), 0) || 1;
+  const out: Row[] = [];
+  for (const b of r.bars) for (const p of b.parts) for (const [model, share] of modelShares(p.id as AccountId)) {
+    const total = Math.round(p.tokens * share);
+    if (!total) continue;
+    const [pi, po, pw5, pw1, pr] = PRICE[model] ?? PRICE.Sonnet;
+    const input = Math.round(total * SPLIT.input), output = Math.round(total * SPLIT.output), cw5 = Math.round(total * SPLIT.cw5), cw1h = total - input - output - cw5;
+    const read = Math.round(total * SPLIT.readPerToken);
+    const cost = (input * pi + output * po + cw5 * pw5 + cw1h * pw1 + read * pr) / 1e6;
+    const name = accounts.find((a) => a.id === p.id)?.name ?? p.id;
+    out.push({ date: b.label, profile: name, model, replies: Math.max(1, Math.round((r.replies * p.tokens * share) / allTokens)), input, output, cw5, cw1h, read, total, cost });
+  }
+  return out;
+}
+/** "≈ $129.23": the period's estimate at API list prices. */
+export const costText = (kind: Range, ids: AccountId[] = allIds) => `≈ $${rowsFor(kind, ids).reduce((s, x) => s + x.cost, 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+/** The CSV the app's CSV key saves: one row per day, profile and model (made-up demo rows here). */
+export function csvFor(kind: Range, ids: AccountId[] = allIds) {
+  const head = "date,profile,model,replies,input,output,cache_write_5m,cache_write_1h,cache_read,total,cost_usd_list";
+  return [head, ...rowsFor(kind, ids).map((x) => [x.date, x.profile, x.model, x.replies, x.input, x.output, x.cw5, x.cw1h, x.read, x.total, x.cost.toFixed(2)].join(","))].join("\n") + "\n";
+}
 
 const hourTicks = [0, 3, 6, 9, 12, 15, 18, 21];
 
@@ -42,7 +75,8 @@ export function rangeHTML(kind: Range, ids: AccountId[] = allIds): string {
 /** The totals as the app's display shows them: the replies lit, the tokens dim. */
 export function totalsHTML(kind: Range, ids: AccountId[] = allIds): string {
   const [replies, tokens] = totalsText(kind, ids).split(" · ");
-  return `${replies} <em>· ${tokens}</em>`;
+  // 26.11.0: the estimate at API list prices after the tokens (the display's title says it's not your bill)
+  return `${replies} <em>· ${tokens} · ${costText(kind, ids)} at list prices</em>`;
 }
 
 /** "1,202 replies · 33.1M tokens" for one period. */
