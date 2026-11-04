@@ -288,6 +288,9 @@ const jsonLd = [
       for (const f of ["renew", "hold", "notify", "notifyBack", "windowFollows", "showFable"] as const) setSwitch($(`[data-switch="${f}"]`), pr[f]);
       setSwitch($('[data-switch="mbOn"]'), pr.mb.on);
       placeColumns();
+      // the Login pop-up and its New account row start closed on every profile
+      $("[data-login-menu]")!.hidden = true;
+      $("[data-newacct]")!.hidden = true; $("[data-newacct-note]")!.hidden = true;
       $('[data-value="peek"]')!.textContent = secs(pr.peek);
       $('[data-value="notifyAt"]')!.textContent = `${pr.notifyAt}%`;
       $("[data-notify-step]")!.hidden = !pr.notify;
@@ -392,6 +395,33 @@ const jsonLd = [
       if (pick("[data-demo-switch]")) { const s = pick("[data-demo-switch]")!; setSwitch(s, !s.classList.contains("on")); return; }
       if (pick("[data-remove]")) { $("[data-dialog]")!.hidden = false; return; }
       if (pick("[data-uninstall]")) { $("[data-udialog]")!.hidden = false; return; }
+      // Claude Code ▸ Login (26.11.0): a pop-up like Folder. ✓ this profile's account, the other profiles' accounts
+      // dimmed (one profile per account), then Sign in to another account…, which adds the New account row
+      if (pick("[data-login-btn]")) {
+        const m = $("[data-login-menu]")!, open = m.hidden;
+        if (open) {
+          const own = accounts.find((x) => x.id === acc)!;
+          m.innerHTML = `<span class="lm-row on"><span class="ok">✓</span> ${own.email}<em>${own.plan} · this profile</em></span>` +
+            accounts.filter((x) => x.id !== acc).map((x) => `<span class="lm-row dim">${x.email}<em>${x.plan} · ${prefs[x.id].name}'s</em></span>`).join("") +
+            `<hr><button type="button" class="lm-row act" data-login-other>Sign in to another account…</button>`;
+        }
+        m.hidden = !open; $("[data-login-btn]")!.setAttribute("aria-expanded", String(open));
+        return;
+      }
+      if (pick("[data-login-other]")) {
+        $("[data-login-menu]")!.hidden = true; $("[data-login-btn]")!.setAttribute("aria-expanded", "false");
+        $("[data-newacct]")!.hidden = false;
+        const note = $("[data-newacct-note]")!;
+        note.hidden = false;
+        note.textContent = `Opens Claude Code's own sign-in in Terminal with this address filled in. ${who()} stays on ${accounts.find((x) => x.id === acc)!.email} until it's done. Esc cancels.`;
+        $<HTMLInputElement>("[data-newacct-mail]")!.focus();
+        return;
+      }
+      if (pick("[data-newacct-go]")) {
+        $("[data-newacct-note]")!.textContent = "This is a demo. In the app, Terminal would open Claude Code's sign-in now, and the profile would link itself to the new account when you finish.";
+        return;
+      }
+      if (!pick("[data-login-menu]") && $("[data-login-menu]") && !$("[data-login-menu]")!.hidden) { $("[data-login-menu]")!.hidden = true; $("[data-login-btn]")!.setAttribute("aria-expanded", "false"); }
       if (pick("[data-udialog-close]") || t.matches("[data-udialog]")) { $("[data-udialog]")!.hidden = true; return; }
       if (pick("[data-dialog-close]") || t.matches("[data-dialog]")) { $("[data-dialog]")!.hidden = true; return; }
     });
@@ -413,6 +443,11 @@ const jsonLd = [
       paintField(f); statusIdle();
     });
     root.addEventListener("keydown", (e) => {
+      // Esc closes the Login pop-up, or cancels Sign in to another account
+      if (e.key === "Escape" && (!$("[data-login-menu]")!.hidden || !$("[data-newacct]")!.hidden)) {
+        $("[data-login-menu]")!.hidden = true; $("[data-newacct]")!.hidden = true; $("[data-newacct-note]")!.hidden = true;
+        return;
+      }
       const t = e.target; if (!isEF(t)) return;
       if (e.key === "Enter") { e.preventDefault(); saveEdit(t.dataset.field as EF); }
       if (e.key === "Escape") { e.preventDefault(); revertEdit(t.dataset.field as EF); }
