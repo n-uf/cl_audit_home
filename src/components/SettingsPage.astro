@@ -182,7 +182,7 @@ const widgetPlates = [["system", "System"], ["std", "Std"], ["black", "Black"], 
   <div class="g-grid" data-general-view hidden>
     <div class="g-col" data-gcol="1">
       <div class="colhead">cl_audit</div>
-      <div class="card"><h4>Usage in the background <i class="idot" title="cl_audit's background agent reads every profile's usage on each profile's own schedule, renews sign-ins, sends the alerts and runs the Dock icon and Claude window settings. macOS starts it when you log in and again after a crash; cl_audit starts it too when this window opens and whenever it has been silent for 90 s.">i</i></h4>
+      <div class="card"><h4>Usage in the background <i class="idot" title="cl_audit's background agent reads every profile's usage on each profile's own schedule, renews sign-ins, sends the alerts, and starts and quits Dock icons and Claude windows as each profile says. macOS starts it when you log in and again after a crash; cl_audit starts it too when this window opens and whenever it has been silent for 90 s.">i</i></h4>
         <span class="disp fill ub-disp" data-usage-disp><span class="g">Reading usage</span> <em>· 3 profiles · every 5–10 min</em></span>
         <p class="g-note">cl_audit reads every profile's usage and sends the alerts on its own, even with this window and the Dock icons closed. It starts when you log in.</p>
         <div class="srow"><span>Alerts <i class="idot" title="Alerts come from cl_audit when a limit reaches the level set for each profile. macOS asks once; you can change it in System Settings ▸ Notifications ▸ cl_audit.">i</i></span><span class="disp"><span class="g">Allowed</span></span></div>
@@ -218,7 +218,7 @@ const widgetPlates = [["system", "System"], ["std", "Std"], ["black", "Black"], 
         </div>
       </div>
       <!-- Widget (26.11.0): how the "Claude usage" widget draws the limits, with the medium widget as the preview, then its look -->
-      <div class="card"><h4>Widget <i class="idot" title="The “Claude usage” widget for the desktop or Notification Center (macOS 14 or later): click the date in the menu bar, then Edit Widgets. It comes in three sizes and fits itself to them: one or two profiles get large limits with their reset times; up to four a block each in the large size; more a row each. It only reads what cl_audit saves: no Keychain, no network.">i</i></h4>
+      <div class="card"><h4>Widget <i class="idot" title="The “Claude usage” widget for the desktop or Notification Center (macOS 14 or later): click the date in the menu bar, then Edit Widgets. It comes in three sizes and fits itself to them: one or two profiles get large limits with their reset times, up to four get a block each in the large size, and more get a row each. It only reads what cl_audit saves: no Keychain, no network.">i</i></h4>
         <div class="srow stacked"><span>Limits as</span>
           <div class="design-pane">
             <span class="switch small-switch" role="group" aria-label="Limits as">{designs.map(([k, n]) => <button type="button" data-widget-design={k}>{n}</button>)}</span>
