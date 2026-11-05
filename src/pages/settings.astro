@@ -114,6 +114,7 @@ const jsonLd = [
         case "win": return pr.win ? (accounts.find((x) => x.id === acc)!.dir === "~/.claude" ? ["the usual Claude app", "the usual app"] : ["its own window"]) : ["none"];
         case "windowFollows": return pr.windowFollows ? (pr.opensFromDock ? ["opens and quits with it", "follows it"] : ["quits with it"]) : ["on its own"];
         case "notifyBack": return [pr.notifyBack ? "when a limit resets" : "off"];
+        case "notify": return [pr.notify ? "" : "off"];   // on: the level stepper instead of words
         case "dock": return [pr.showInDock ? "shows the usage" : "no Dock icon"];
         case "hold": return [pr.hold ? "details and menu" : "off"];
         case "dot": return pr.dot ? ["while its window is open", "window open"] : ["none"];
@@ -122,12 +123,20 @@ const jsonLd = [
       return [""];
     };
     const swOn = (k: string, pr: Prefs) => k === "dock" ? pr.showInDock : k === "mbOn" ? pr.mb.on : !!(pr as any)[k];
+    // A change under way (app build 211): the LED pulses green turning on, red turning off, the words say "turning on…"
+    // or "turning off…", and a second click is ignored; then the change is made. Instant settings pulse once (~0.6 s).
+    const pulse = (sw: Element, words: Element | null, toOn: boolean, ms: number, done: () => void) => {
+      sw.classList.add(toOn ? "pulse-on" : "pulse-off"); sw.setAttribute("aria-busy", "true");
+      if (words) words.textContent = toOn ? "turning on…" : "turning off…";
+      setTimeout(() => { sw.classList.remove("pulse-on", "pulse-off"); sw.removeAttribute("aria-busy"); done(); }, ms);
+    };
 
     // Usage in the Dock and Claude window, the first switch of their cards. A change goes through the strip's
     // display: Saving…, then Restarting the Dock… (Usage in the Dock only; the switches wait), then Saved and what changed.
-    let changing = false;
+    let changing = false, changingKey = "";
     const toggleIncl = (k: "dock" | "win") => {
       if (changing) return;
+      changingKey = k;
       const pr = p();
       if (k === "dock") pr.showInDock = !pr.showInDock; else pr.win = !pr.win;
       commit();
@@ -330,7 +339,13 @@ const jsonLd = [
         setSwitch($(`[data-switch="${k}"]`), swOn(k, pr));
         el.innerHTML = short ? `<span class="sw-long">${long}</span><span class="sw-short">${short}</span>` : long;
       });
-      for (const k of ["dock", "win"]) ($<HTMLButtonElement>(`[data-switch="${k}"]`)!).disabled = changing;
+      // Usage in the Dock pulses until the Dock has restarted, Claude window until it's saved; the other waits
+      for (const k of ["dock", "win"]) {
+        const sw = $<HTMLButtonElement>(`[data-switch="${k}"]`)!, busy = changing && changingKey === k;
+        sw.classList.remove("pulse-on", "pulse-off");
+        sw.disabled = changing && !busy;
+        if (busy) { sw.classList.add(swOn(k, pr) ? "pulse-on" : "pulse-off"); $(`[data-sw-t="${k}"]`)!.textContent = swOn(k, pr) ? "turning on…" : "turning off…"; }
+      }
       placeColumns();
       // the Login pop-up starts closed, showing the account, on every profile
       loginReset();
@@ -388,12 +403,17 @@ const jsonLd = [
       if ((b = pick("[data-icon-color]"))) { p().iconColor = b.dataset.iconColor!; commit(); show(); return; }
       if (pick("[data-frame]")) { p().frame = pick("[data-frame]")!.dataset.frame!; commit(); show(); return; }
       if ((b = pick("[data-switch]"))) {
-        if ((b as HTMLButtonElement).disabled) return;
+        if ((b as HTMLButtonElement).disabled || b.matches(".pulse-on, .pulse-off")) return;
         const k = b.dataset.switch!;
-        if (k === "mbOn") { p().mb.on = !p().mb.on; commit(); show(); return; }
-        if (k === "dock" || k === "win") { toggleIncl(k); return; }
-        const f = k as "hold" | "notify" | "notifyBack" | "windowFollows" | "showFable" | "dot";
-        p()[f] = !p()[f]; commit(); show(); if (f !== "showFable" && f !== "dot") say(f); return;
+        if (k === "dock" || k === "win") { toggleIncl(k); return; }   // pulses until its steps are done (show)
+        const pr = p(), toOn = !swOn(k, pr);
+        // the menu bar icon is slow (it pulses until the icon is up or gone); the others are instant (one pulse)
+        pulse(b, $(`[data-sw-t="${k}"]`), toOn, k === "mbOn" ? 1400 : 600, () => {
+          if (k === "mbOn") { pr.mb.on = toOn; commit(); show(); return; }
+          const f = k as "hold" | "notify" | "notifyBack" | "windowFollows" | "showFable" | "dot";
+          pr[f] = toOn; commit(); show(); if (f !== "showFable" && f !== "dot") say(f);
+        });
+        return;
       }
       // Menu bar: style, colours, label, what a full limit shows
       if ((b = pick("[data-mb-style]"))) { p().mb.style = b.dataset.mbStyle as MenuBarStyle; commit(); show(); return; }
@@ -419,7 +439,13 @@ const jsonLd = [
       if ((b = pick("[data-ai-opt]"))) { saveAppIcon({ ...loadAppIcon(), [b.dataset.aiOpt!]: b.dataset.aiVal! } as AppIcon); applyPrefs(prefs); showAppIcon(); return; }
       if ((b = pick("[data-card-style]"))) { saveCardStyle(b.dataset.cardStyle as Design); applyPrefs(prefs); show(); return; }
       if ((b = pick("[data-panel]"))) { p().panel = b.dataset.panel!; commit(); show(); return; }
-      if (pick("[data-demo-switch]")) { const s = pick("[data-demo-switch]")!; setSwitch(s, !s.classList.contains("on")); return; }
+      if ((b = pick("[data-demo-switch]"))) {
+        // Keep in order is slow: it pulses until the Dock matches (a demo: about 2 s, nothing in your Dock changes)
+        const s = b, toOn = !s.classList.contains("on");
+        if (s.matches(".pulse-on, .pulse-off")) return;
+        pulse(s, $("[data-demo-t]"), toOn, 2000, () => { setSwitch(s, toOn); $("[data-demo-t]")!.textContent = toOn ? "on" : "off"; });
+        return;
+      }
       if (pick("[data-remove]")) { $("[data-dialog]")!.hidden = false; return; }
       if (pick("[data-uninstall]")) { $("[data-udialog]")!.hidden = false; return; }
       // Claude Code ▸ Login (26.11.0, final shape): a pop-up in line with Folder. Its menu: ✓ the account Claude Code is
@@ -537,31 +563,40 @@ const jsonLd = [
 
     // Show emails (General), shared with the rest of the site
     const sws = $$("[data-toggle-emails]");
-    const syncEmails = () => sws.forEach((s) => setSwitch(s, !document.documentElement.classList.contains("hide-emails")));
+    const syncEmails = () => {
+      const on = !document.documentElement.classList.contains("hide-emails");
+      sws.forEach((s) => setSwitch(s, on)); $("[data-emails-t]")!.textContent = on ? "shown" : "hidden";
+    };
     syncEmails();
     sws.forEach((sw) => sw.addEventListener("click", () => {
+      if (sw.matches(".pulse-on, .pulse-off")) return;
       const on = document.documentElement.classList.contains("hide-emails");   // it was off, so it turns on
-      document.documentElement.classList.toggle("hide-emails", !on);
-      try { localStorage.setItem("cl_audit.showEmails", on ? "1" : "0"); } catch {}
-      syncEmails();
-      showWhatNow("Show emails", on ? "on" : "off", on
-        ? "Email addresses show everywhere in cl_audit."
-        : "Email addresses are left out of the launcher, dashboard, panels and Dock menus, and blurred in Settings — for screen sharing.");
+      pulse(sw, $("[data-emails-t]"), on, 600, () => {
+        document.documentElement.classList.toggle("hide-emails", !on);
+        try { localStorage.setItem("cl_audit.showEmails", on ? "1" : "0"); } catch {}
+        syncEmails();
+        showWhatNow("Show emails", on ? "on" : "off", on
+          ? "Email addresses show everywhere in cl_audit."
+          : "Email addresses are left out of the launcher, dashboard, panels and Dock menus, and blurred in Settings — for screen sharing.");
+      });
     }));
     // Privacy ▸ Usage history (26.11.0), shared with the dashboard: off, its history (charts, totals, CSV) is hidden
     const hsw = $("[data-toggle-history]")!;
     const syncHistory = () => {
       const on = !document.documentElement.classList.contains("no-history");
-      setSwitch(hsw, on); $("[data-history-t]")!.textContent = on ? "from this Mac's session files" : "off";
+      setSwitch(hsw, on); $("[data-history-t]")!.textContent = on ? "tokens, cost, CSV" : "limits only";
     };
     syncHistory();
     hsw.addEventListener("click", () => {
+      if (hsw.matches(".pulse-on, .pulse-off")) return;
       const on = document.documentElement.classList.contains("no-history");   // it was off, so it turns on
+      pulse(hsw, $("[data-history-t]"), on, 600, () => {
       try { localStorage.setItem("cl_audit.usageHistory", on ? "1" : "0"); } catch {}
       applyPrefs(prefs); syncHistory();
       showWhatNow("Usage history", on ? "on" : "off", on
         ? "The dashboard's history, cost estimate and CSV are read from Claude Code's session files on this Mac again."
         : "cl_audit reads none of Claude Code's session files, so the dashboard's history, cost estimate and CSV are hidden. The limits still come from Anthropic.");
+      });
     });
     show();
   }
