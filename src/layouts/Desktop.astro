@@ -134,6 +134,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       closeMenu();
       if (what === "Open Claude window") w_.clOpenDesktop?.(id);
       else if (what === "Dashboard") location.href = "/dashboard/";
+      else if (what === "switch") { if (location.pathname.startsWith("/dashboard") && w_.clOpenSwitch) w_.clOpenSwitch(); else location.href = `/dashboard/?switch=${id}`; }
       else if (what === "Profile settings…") { try { sessionStorage.setItem("cl_audit.settingsProfile", id); } catch {} location.href = "/settings/"; }
       else if (what === "hide") { const p = loadPrefs(); p[id].mb.on = false; savePrefs(p); applyPrefs(p); }
       return;

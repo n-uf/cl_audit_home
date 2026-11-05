@@ -3,7 +3,7 @@
 // 5-hour inside), Ring + number, Number (the fuller limit), Two numbers. Colours: the level colours, System (the menu
 // bar's own colour), Accent (the Mac's accent colour) or the profile's colour. A full limit shows the countdown beside
 // the icon ("1h 42m"), or only turns red; in System it's never red (the countdown shows it).
-import { accounts, type AccountId } from "./demo";
+import { accounts, standby, shortName, type AccountId } from "./demo";
 import { countdownWords, fableShown } from "./panelView";
 import type { MenuBarLook } from "./prefs";
 
@@ -70,5 +70,7 @@ export function menuHTML(id: AccountId, name: string) {
     (a.credits != null ? `<div class="mbm-sub credit">Using usage credits · $${a.credits.toFixed(2)} spent</div>` : "") +
     `<div class="mbm-sub">Read ${a.updated}</div><hr>` +
     ["Open Claude window", "Refresh now", "Dashboard", "Profile settings…"].map((t) => `<button type="button" class="mbm-it" data-mbm="${t}">${t}</button>`).join("") +
+    // the profile's other accounts: "Switch to team-2…" each, opening the Switch page (app build 252)
+    (standby[id].length ? "<hr>" + standby[id].map((s) => `<button type="button" class="mbm-it" data-mbm="switch">Switch to ${shortName(s.email)}…</button>`).join("") : "") +
     `<hr><button type="button" class="mbm-it" data-mbm="hide">Hide from the menu bar</button>`;
 }
