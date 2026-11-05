@@ -136,7 +136,7 @@ Usage credits let you keep working without changing plan. Anthropic's help page 
 
 To turn them on, open Settings ▸ Usage, find the Usage credits section and click **Enable**. You add a payment method, can set a monthly spend limit, and prepay with **Add funds**. Anthropic says usage credits apply to Claude conversations and to Claude Code terminal usage.
 
-What you'd spend on credits depends on how far past the limits you go. Anthropic gives no figure to set against the $80 gap, so that number also has to come from your own usage.
+What you'd spend on credits depends on how far past the limits you go. Anthropic gives no figure to set against the $80 gap, so that number also has to come from your own usage. {{live:/blog/claude-usage-credits/}}The API rates, the spend limit and where to see this month's spend are in [our usage credits article](/blog/claude-usage-credits/).{{/live}}
 
 ## Watching either plan
 
