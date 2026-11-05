@@ -74,7 +74,8 @@ only `draft`, so a draft dated ahead needs the same future date in both). `.gith
 and a plain build on every pull request, so a live page linking to a draft fails there, not after the merge.
 To link to a page that is still a draft, wrap the sentence in the markdown body as `{{live:/blog/some-page/}}See
 [some page](/blog/some-page/).{{/live}}`: it shows once that page is built (live, or a draft in dev and previews) and
-production removes it until the flip day (`src/data/live.ts`). The build fails on a target that is no page, a nested or
+production removes it until the flip day (`src/data/live.ts`). Wrap whole sentences or list items, in the body only
+(not in headings or front matter, which fail the build), so nothing is left dangling when a block is removed. The build fails on a target that is no page, a nested or
 stray marker, or a block that spans paragraphs; a bare link to a draft fails `scripts/check-links.mjs`.
 
 ---

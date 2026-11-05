@@ -87,5 +87,19 @@ test("a block that spans paragraphs fails", () => {
 
 test("a block that contains a list or a heading fails", () => {
   fails("<p>{{live:/faq/}}x<ul><li>y</li></ul>{{/live}}</p>", /spans more than one paragraph/);
-  fails("<h2>{{live:/faq/}}x</h2><p>y{{/live}}</p>", /spans more than one paragraph/);
+  fails("<h2>{{live:/faq/}}x</h2><p>y{{/live}}</p>", /inside a heading|spans more than one paragraph/);
+});
+
+test("a block inside a heading fails, built or not (an empty heading, raw markers in the table of contents)", () => {
+  fails('<h2 id="a">{{live:/faq/}}Read the FAQ{{/live}}</h2>', /inside a heading/);
+  fails("<h3>Next {{live:/blog/draft-page/}}step{{/live}}</h3>", /inside a heading/);
+  // after a closed heading, a block in the next paragraph is fine
+  assert.equal(run("<h2>Title</h2>\n<p>{{live:/faq/}}Read the FAQ.{{/live}}</p>"), "<h2>Title</h2>\n<p>Read the FAQ.</p>");
+});
+
+test("a loose list item (<li><p>…</p></li>) that was only a removed block goes, and so does a list left empty", () => {
+  assert.equal(run(`<ul>\n<li>\n<p>Keep.</p>\n</li>\n<li>\n<p>{{live:/blog/draft-page/}}See ${link}.{{/live}}</p>\n</li>\n</ul>`),
+    "<ul>\n<li>\n<p>Keep.</p>\n</li>\n</ul>");
+  assert.equal(run(`<p>Before.</p>\n<ul>\n<li>{{live:/blog/draft-page/}}See ${link}.{{/live}}</li>\n</ul>\n<p>After.</p>`),
+    "<p>Before.</p>\n<p>After.</p>");
 });
