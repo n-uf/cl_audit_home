@@ -1,0 +1,39 @@
+diff --git a/src/content/blog/alpha.md b/src/content/blog/alpha.md
+index 64dcc87..3f9f4b2 100644
+--- a/src/content/blog/alpha.md
++++ b/src/content/blog/alpha.md
+@@ -2,7 +2,7 @@
+ title: "Fixture alpha"
+ published: 2026-11-01
+ updated: 2026-11-01
+-draft: true
++draft: false
+ author: n-uf
+ tags:
+   - one
+diff --git a/src/content/blog/beta.md b/src/content/blog/beta.md
+index 869bec1..18df7ea 100644
+--- a/src/content/blog/beta.md
++++ b/src/content/blog/beta.md
+@@ -2,7 +2,7 @@
+ title: "Fixture beta"
+ published: 2026-11-02
+ updated: 2026-11-02
+-draft: True   # scheduled by hand
++draft: false   # scheduled by hand
+ author: n-uf
+ tags:
+   - one
+diff --git a/src/content/use-cases/gamma.md b/src/content/use-cases/gamma.md
+index a7059f9..4ae5226 100644
+--- a/src/content/use-cases/gamma.md
++++ b/src/content/use-cases/gamma.md
+@@ -2,7 +2,7 @@
+ title: "Fixture gamma"
+ published: 2026-11-03
+ updated: 2026-11-03
+-draft: true
++draft: false
+ author: n-uf
+ tags:
+   - one
