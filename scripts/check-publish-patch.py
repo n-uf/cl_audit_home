@@ -9,28 +9,40 @@ publish-due.mjs writes, a `draft: true` -> `draft: false` change on pages that a
 
 Python 3 standard library only (no repo-installed tooling runs in the job that has the key).
 
-    python3 -I scripts/check-publish-patch.py [--root <repo>] <patch-file> <pages-file>
+    python3 -I scripts/check-publish-patch.py [--root <repo>] [--today YYYY-MM-DD] <patch-file> <pages-file>
 
   patch-file  `git diff --no-color` output of the flip
   pages-file  one `<section>/<slug>` per line (what publish-due.mjs prints), e.g. `blog/claude-usage-credits`
-  --root      the checkout the patch will be applied to (default: the current directory)
+  --root      the checkout the patch will be applied to, a clean checkout of the commit the patch was made on
+              (default: the current directory). If it is a git work tree the files are read from its HEAD, else
+              from the files themselves (for tests).
+  --today     the day to compare `published` with (default: today, UTC); for tests only, the workflow never sets it
 
-Exit 0: the patch is acceptable (one line per page on stdout). Exit 1: refused, with the reason on stderr
-(`check-publish-patch: refused: ...`). Exit 2: wrong usage or an unreadable input file.
+Exit 0: the patch is acceptable; the commit message is the only line on stdout, `publish: blog/a, use-cases/b`
+(the pages in the patch's order). Exit 1: refused, with the reason on stderr (`check-publish-patch: refused: ...`).
+Exit 2: wrong usage or an unreadable input file.
 
 The rules, all of which must hold:
+  0. The patch is smaller than 64 KB (65536 bytes).
   1. Every file in the patch is a plain modification (no new, deleted, renamed or copied file, no mode change, no
      binary patch) of an existing regular file src/content/blog/<slug>.md or src/content/use-cases/<slug>.md.
      Anything the parser does not know is refused.
   2. Each file has exactly one hunk, and the hunk removes exactly one line, a top-level `draft:` line whose value
      is true (true, True or TRUE, optional trailing comment), and adds exactly one line directly after it: the same
-     line with the value written as `false`. Context lines (changed nothing) are fine. The hunk must match the existing
-     file exactly once, with the removed line inside its front matter (not in the body).
-  3. The page list matches the files in the patch exactly, each page once.
+     line with the value written as `false`. Context lines (changed nothing) are fine. The hunk must sit where its
+     header says, in the HEAD version of the file, with the removed line inside the front matter (after its opening
+     `---` and before its closing `---`), so a `draft: true` in the body, a code sample say, can't be flipped.
+  3. The file's `published` day (a date, or a timestamp read as its UTC day, as publish-due.mjs reads it) is today
+     (UTC) or earlier: nothing goes out early.
+  4. The page list matches the files in the patch exactly, each page once.
 """
+import datetime
 import os
 import re
+import subprocess
 import sys
+
+MAX_PATCH_BYTES = 65536
 
 SECTIONS = ("blog", "use-cases")
 SLUG = r"[A-Za-z0-9][A-Za-z0-9_-]*"
@@ -89,34 +101,88 @@ def parse_pages(data):
     return pages
 
 
-def load_page(root, rel):
-    """(lines, close): the existing file's lines (byte for byte) and the index of the `---` that closes its front matter."""
+def read_page(root, rel):
+    """The bytes of an existing page: its HEAD version if root is a git work tree, else the file itself (tests)."""
+    if os.path.exists(os.path.join(root, ".git")):
+        def git(*args):
+            try:
+                return subprocess.run(["git", "-c", "core.hooksPath=/dev/null", "-C", root] + list(args), capture_output=True)
+            except OSError as e:
+                refuse("cannot run git to read HEAD:%s (%s)" % (rel, e.strerror))
+        entry = git("ls-tree", "HEAD", "--", rel)
+        if entry.returncode != 0 or not entry.stdout.startswith(b"100644 blob "):
+            refuse("%s is not an existing regular file in HEAD of the checkout" % rel)
+        shown = git("show", "HEAD:" + rel)
+        if shown.returncode != 0:
+            refuse("cannot read HEAD:%s" % rel)
+        return shown.stdout
     path = os.path.join(root, rel)
     if os.path.islink(path) or not os.path.isfile(path):
         refuse("%s is not an existing regular file in the checkout" % rel)
     real_root = os.path.realpath(root)
     if os.path.commonpath([real_root, os.path.realpath(path)]) != real_root:
         refuse("%s resolves outside the checkout" % rel)
-    lines = split_lines(read_bytes(path))
+    return read_bytes(path)
+
+
+def utc_day(raw):
+    """The UTC day (YYYY-MM-DD) of a YAML date or timestamp value, as publish-due.mjs reads it; None if it is neither."""
+    m = re.match(r"""^(["']?)(\d{4})-(\d{2})-(\d{2})(?:(?:[Tt]|[ \t]+)(\d{1,2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?[ \t]*(Z|z|[+-]\d{1,2}(?::?\d{2})?)?)?\1$""", raw)
+    if not m:
+        return None
+    _, y, mo, d, hh, mi, ss, zone = m.groups()
+    try:
+        if hh is None:
+            return datetime.date(int(y), int(mo), int(d)).isoformat()
+        offset = datetime.timedelta(0)  # a timestamp with no zone is UTC in YAML
+        if zone and zone not in ("Z", "z"):
+            z = re.match(r"^([+-])(\d{1,2}):?(\d{2})?$", zone)
+            offset = datetime.timedelta(hours=int(z.group(2)), minutes=int(z.group(3) or 0))
+            if z.group(1) == "-":
+                offset = -offset
+        local = datetime.datetime(int(y), int(mo), int(d), int(hh), int(mi), int(ss or 0))
+        return (local - offset).date().isoformat()
+    except ValueError:
+        return None
+
+
+def page_info(root, rel):
+    """(lines, close, published): the page's lines (byte for byte), the index of the `---` that closes its front
+    matter, and its `published` day (UTC)."""
+    lines = split_lines(read_page(root, rel))
     first = lines[0][3:] if lines and lines[0].startswith("\u00ef\u00bb\u00bf") else (lines[0] if lines else "")  # a UTF-8 BOM, read as latin1
     if not re.match(r"^---[ \t]*\r?$", first):
         refuse("%s has no front matter" % rel)
-    for i in range(1, len(lines)):
-        if re.match(r"^---[ \t]*\r?$", lines[i]):
-            return lines, i
-    refuse("%s has no closing --- of its front matter" % rel)
+    close = next((i for i in range(1, len(lines)) if re.match(r"^---[ \t]*\r?$", lines[i])), None)
+    if close is None:
+        refuse("%s has no closing --- of its front matter" % rel)
+    values = []
+    for text in lines[1:close]:  # top-level keys only: an indented line belongs to another key's block
+        m = re.match(r"""^(["']?)published\1[ \t]*:(?=[ \t]|$)(.*?)\r?$""", text)
+        if m:
+            values.append(re.match(r"^[ \t]*(.*?)(?:[ \t]+#.*)?[ \t]*$", m.group(2)).group(1))
+    if len(values) != 1:
+        refuse("%s has no published day" % rel if not values else "%s has more than one `published:` line" % rel)
+    day = utc_day(values[0])
+    if day is None:
+        refuse("%s: can't read its published day %r" % (rel, values[0][:40]))
+    return lines, close, day
 
 
-def in_front_matter(root, rel, old_side, at):
-    """True if the hunk's old side (context and removed lines) is found exactly once in the existing file, and its
-    line number `at` (an index into old_side) falls inside the front matter. Tolerates main having moved a few lines."""
-    lines, close = load_page(root, rel)
-    size = len(old_side)
-    found = [p for p in range(len(lines) - size + 1) if lines[p:p + size] == old_side]
-    return len(found) == 1 and 0 < found[0] + at < close
+def check_page(root, rel, old_side, at, old_start, today):
+    """The hunk (old side = context and removed lines, the removed one at index `at`, starting at line `old_start`)
+    must be exactly where it says in the page, with the removed line inside the front matter, and the page must be due."""
+    lines, close, published = page_info(root, rel)
+    start = old_start - 1
+    if lines[start:start + len(old_side)] != old_side:
+        refuse("%s: the hunk does not match the file in the checkout at line %d" % (rel, old_start))
+    if not 0 < start + at < close:
+        refuse("%s: the changed line (%d) is outside the front matter (lines 2-%d)" % (rel, start + at + 1, close))
+    if published > today:
+        refuse("%s isn't due: published %s is after today, %s (UTC)" % (rel, published, today))
 
 
-def parse_patch(data, root):
+def parse_patch(data, root, today):
     if b"\0" in data:
         refuse("the patch contains a NUL byte (binary content)")
     lines = split_lines(data)
@@ -206,33 +272,44 @@ def parse_patch(data, root):
         expected = d.group("key") + "false" + d.group("rest")
         if added[0] != expected:
             refuse("%s: the added line must be %r, got %r" % (a, expected[:80], added[0][:80]))
-        if not in_front_matter(root, a, old_side, removed_at):
-            refuse("%s: the hunk does not match the front matter of the file in the checkout (once, with the removed line before its closing ---)" % a)
+        check_page(root, a, old_side, removed_at, int(h.group(1)), today)
         files.append((a, removed[0]))
     return [f[0] for f in files]
 
 
+USAGE = "usage: check-publish-patch.py [--root <repo>] [--today YYYY-MM-DD] <patch-file> <pages-file>"
+
+
 def main(argv):
     root = os.getcwd()
+    today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
     args = argv[1:]
-    if len(args) >= 2 and args[0] == "--root":
-        root, args = args[1], args[2:]
-    if len(args) != 2 or any(a.startswith("--") for a in args):
-        print("usage: check-publish-patch.py [--root <repo>] <patch-file> <pages-file>", file=sys.stderr)
+    while args and args[0] in ("--root", "--today"):
+        if len(args) < 2:
+            print(USAGE, file=sys.stderr)
+            return 2
+        if args[0] == "--root":
+            root = args[1]
+        else:
+            today = args[1]
+        args = args[2:]
+    if len(args) != 2 or any(a.startswith("--") for a in args) or not re.match(r"^\d{4}-\d{2}-\d{2}$", today):
+        print(USAGE, file=sys.stderr)
         return 2
     patch_path, pages_path = args
     patch, pages_raw = read_bytes(patch_path), read_bytes(pages_path)
     try:
+        if len(patch) >= MAX_PATCH_BYTES:
+            refuse("the patch is %d bytes, too large to be a flip (the limit is %d)" % (len(patch), MAX_PATCH_BYTES - 1))
         pages = parse_pages(pages_raw)
-        files = parse_patch(patch, root)
-        from_patch = sorted(re.sub(r"^src/content/", "", p)[:-3] for p in files)
-        if from_patch != sorted(pages):
-            refuse("the page list (%s) does not match the files in the patch (%s)" % (", ".join(sorted(pages)), ", ".join(from_patch)))
+        files = parse_patch(patch, root, today)
+        from_patch = [re.sub(r"^src/content/", "", p)[:-3] for p in files]  # the patch's order
+        if sorted(from_patch) != sorted(pages):
+            refuse("the page list (%s) does not match the files in the patch (%s)" % (", ".join(sorted(pages)), ", ".join(sorted(from_patch))))
     except Refused as e:
         print("check-publish-patch: refused: %s" % e, file=sys.stderr)
         return 1
-    for p in pages:
-        print(p)
+    print("publish: " + ", ".join(from_patch))
     return 0
 
 

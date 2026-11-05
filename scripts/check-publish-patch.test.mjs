@@ -17,12 +17,13 @@ const checker = join(here, "check-publish-patch.py");
 const publishDue = join(here, "publish-due.mjs");
 const fx = join(here, "fixtures", "publish-patch");
 const root = join(fx, "root");
+const TODAY = "2026-11-10"; // the day the checker compares `published` with; the workflow never passes --today
 const GIT_DIFF = ["diff", "--no-color", "--no-ext-diff", "--no-renames", "--src-prefix=a/", "--dst-prefix=b/"];
 
 const tmp = (prefix) => mkdtempSync(join(tmpdir(), prefix));
 /** Runs the checker; returns { status, stdout, stderr }. */
-function check(patchPath, pagesPath, checkout = root) {
-  const r = spawnSync("python3", ["-I", checker, "--root", checkout, patchPath, pagesPath], { encoding: "utf8" });
+function check(patchPath, pagesPath, checkout = root, today = TODAY) {
+  const r = spawnSync("python3", ["-I", checker, "--root", checkout, "--today", today, patchPath, pagesPath], { encoding: "utf8" });
   assert.equal(r.error, undefined, "python3 must be available");
   return r;
 }
@@ -39,16 +40,16 @@ const refused = (r, re) => { assert.equal(r.status, 1, `expected a refusal, got 
 const single = () => readFileSync(join(fx, "single.patch"), "latin1");
 
 // ---- accepted
-test("a valid single-file flip is accepted, and its page is printed", () => {
+test("a valid single-file flip is accepted, and the commit message is the one line printed", () => {
   const r = fixture("single");
   accepted(r);
-  assert.equal(r.stdout, "blog/alpha\n");
+  assert.equal(r.stdout, "publish: blog/alpha\n");
 });
 
 test("a valid two-file flip is accepted", () => {
   const r = fixture("two");
   accepted(r);
-  assert.equal(r.stdout, "blog/alpha\nblog/beta\n");
+  assert.equal(r.stdout, "publish: blog/alpha, blog/beta\n");
 });
 
 test("a flip across both sections is accepted", () => {
@@ -126,17 +127,28 @@ test("a removed line that is not in the checkout's front matter, or a file the c
   const indented = single().replace("-draft: true", "- draft: true").replace("+draft: false", "+ draft: false");
   refused(checkText(indented, "blog/alpha\n"), /not a `draft: true` line/);
   const absent = single().replace("-draft: true", "-draft: true # other").replace("+draft: false", "+draft: false # other");
-  refused(checkText(absent, "blog/alpha\n"), /does not match the front matter of the file in the checkout/);
+  refused(checkText(absent, "blog/alpha\n"), /the hunk does not match the file in the checkout at line 2/);
 });
 
 test("a flip of the `draft: true` line in the body, not the front matter, is refused", () => {
   const body = ["diff --git a/src/content/blog/alpha.md b/src/content/blog/alpha.md", "index 64dcc87..3f9f4b2 100644", "--- a/src/content/blog/alpha.md", "+++ b/src/content/blog/alpha.md",
-    "@@ -11,5 +11,5 @@", " ", " Body of alpha. A line that says draft: true in the body must stay.", " ", "-draft: true", "+draft: false", " ", " More text.", ""].join("\n");
-  refused(checkText(body.replace("@@ -11,5 +11,5 @@", "@@ -11,6 +11,6 @@"), "blog/alpha\n"), /does not match the front matter/);
+    "@@ -11,5 +11,5 @@", " Body of alpha. A line that says draft: true in the body must stay.", " ", "-draft: true", "+draft: false", " ", " More text.", ""].join("\n");
+  refused(checkText(body.replace("@@ -11,5 +11,5 @@", "@@ -11,5 +11,5 @@"), "blog/alpha\n"), /the changed line \(13\) is outside the front matter \(lines 2-8\)/);
 });
 
-test("a hunk with an offset (main moved a few lines since the build) is accepted", () => {
-  accepted(checkText(single().replace("@@ -2,7 +2,7 @@", "@@ -9,7 +9,7 @@"), "blog/alpha\n"));
+test("a hunk that is not where its header says (main moved, or a forged header) is refused", () => {
+  refused(checkText(single().replace("@@ -2,7 +2,7 @@", "@@ -9,7 +9,7 @@"), "blog/alpha\n"), /the hunk does not match the file in the checkout at line 9/);
+});
+
+test("a patch of 64 KB or more is refused, one just under it is read", () => {
+  refused(checkText(single() + " ".repeat(65536), "blog/alpha\n"), /too large to be a flip/);
+  refused(checkText(single() + "\n".repeat(60000), "blog/alpha\n"), /more than one hunk, or text after the hunk|not a hunk line/); // under the cap: refused by the grammar instead
+});
+
+test("a page that is not due yet is refused, one due today is accepted", () => {
+  // alpha is published 2026-11-01
+  refused(check(join(fx, "single.patch"), join(fx, "single.pages"), root, "2026-10-31"), /src\/content\/blog\/alpha\.md isn't due: published 2026-11-01 is after today, 2026-10-31 \(UTC\)/);
+  accepted(check(join(fx, "single.patch"), join(fx, "single.pages"), root, "2026-11-01"));
 });
 
 test("a file that is a symlink in the checkout is refused", () => {
@@ -186,9 +198,11 @@ test("round trip: what publish-due writes and git diff shows is accepted (all th
   cpSync(root, before, { recursive: true });
   const r = check(patchPath, pagesPath, before);
   accepted(r);
-  assert.equal(r.stdout, pages);
+  assert.equal(r.stdout, "publish: " + pages.trim().split("\n").join(", ") + "\n");
   // and git itself agrees the patch applies to the untouched checkout
   execFileSync("git", ["apply", "--check", patchPath], { cwd: before });
+  // a git work tree is read at HEAD, not as it is on disk: `dir` is flipped on disk, its HEAD is not
+  accepted(check(patchPath, pagesPath, dir));
 });
 
 test("round trip: a CRLF page and a page with a byte-order mark are accepted", () => {
@@ -209,4 +223,149 @@ test("round trip: a CRLF page and a page with a byte-order mark are accepted", (
   writeFileSync(join(out, "p.patch"), git(...GIT_DIFF), "latin1");
   writeFileSync(join(out, "p.pages"), pages);
   accepted(check(join(out, "p.patch"), join(out, "p.pages"), before));
+});
+
+// ---- the same cases as debugsy's guard tests (n-uf/debugsy, apps/web/scripts/check-flip-patch.test.mjs), on a git
+// repo made per test: the pages are read at its HEAD, the patch is `git diff` of the edit, and `today` is passed in
+const page = (draft, extra = "", body = "") =>
+  `---\ntitle: "A page"\npublished: 2026-11-09\nupdated: 2026-11-09\ndraft: ${draft}\nauthor: n-uf\n---\n\nBody text.${extra}\n${body}`;
+const SAMPLE = "\n```yaml\ndraft: true\n```\n";
+const DUE_DAY = "2026-11-09";
+const A = "src/content/blog/a-post.md", B = "src/content/use-cases/b-case.md", LIVE = "src/content/blog/live-post.md";
+
+/** A git repo with a due blog draft, a due use-case draft, a live page with a `draft: true` code sample, and a non-content file. */
+function scratch() {
+  const dir = tmp("check-patch-git-");
+  const git = (...a) => execFileSync("git", ["-c", "core.hooksPath=/dev/null", "-c", "user.name=t", "-c", "user.email=t@t", ...a], { cwd: dir, encoding: "utf8" });
+  const write = (rel, text) => { mkdirSync(dirname(join(dir, rel)), { recursive: true }); writeFileSync(join(dir, rel), text); };
+  git("init", "-q", "-b", "main");
+  write(A, page("true"));
+  write(B, page("true"));
+  write(LIVE, page("false", "", SAMPLE));
+  write("src/pages/index.astro", "---\n---\n<h1>x</h1>\n");
+  git("add", ".");
+  git("commit", "-qm", "fixture");
+  return { dir, git, write };
+}
+/** Makes the edits, saves them as the build job does (git diff), restores the tree, and returns the patch path. */
+function makePatch({ dir, git }, edit) {
+  edit();
+  const patch = join(tmp("check-patch-p-"), "flip.patch");
+  git("add", "-N", ".");
+  writeFileSync(patch, git(...GIT_DIFF));
+  git("reset", "-q", "--hard");
+  git("clean", "-q", "-fd");
+  return patch;
+}
+const pagesFile = (text) => { const f = join(tmp("check-patch-pg-"), "pages.txt"); writeFileSync(f, text); return f; };
+const flip = (edit, pages, today = DUE_DAY) => { const s = scratch(); return check(makePatch(s, () => edit(s.write)), pagesFile(pages), s.dir, today); };
+
+test("[debugsy] accepts a draft flip and prints the commit message", () => {
+  const r = flip((w) => w(A, page("false")), "blog/a-post\n");
+  accepted(r);
+  assert.equal(r.stdout, "publish: blog/a-post\n");
+});
+
+test("[debugsy] accepts flips in two sections, in path order", () => {
+  const r = flip((w) => { w(A, page("false")); w(B, page("false")); }, "use-cases/b-case\nblog/a-post\n");
+  accepted(r);
+  assert.equal(r.stdout, "publish: blog/a-post, use-cases/b-case\n");
+});
+
+test("[debugsy] refuses a flip that also changes the body (a non-draft hunk)", () => {
+  refused(flip((w) => w(A, page("false", " Injected.")), "blog/a-post\n"), /remove exactly one line and add exactly one/);
+});
+
+test("[debugsy] refuses a change to a line that isn't the draft line", () => {
+  refused(flip((w) => w(A, page("true").replace("author: n-uf", "author: evil")), "blog/a-post\n"), /not a `draft: true` line/);
+});
+
+test("[debugsy] refuses turning a live page back into a draft", () => {
+  refused(flip((w) => w(LIVE, page("true", "", SAMPLE)), "blog/live-post\n"), /not a `draft: true` line/);
+});
+
+test("[debugsy] refuses a page that isn't due yet", () => {
+  refused(flip((w) => w(A, page("false")), "blog/a-post\n", "2026-11-08"), /isn't due: published 2026-11-09 is after today, 2026-11-08/);
+});
+
+test("[debugsy] refuses flipping a `draft: true` line in the body (a code sample), not the front matter", () => {
+  refused(flip((w) => w(LIVE, page("false", "", SAMPLE.replace("draft: true", "draft: false"))), "blog/live-post\n"), /outside the front matter/);
+});
+
+test("[debugsy] refuses a change outside the content pages", () => {
+  refused(flip((w) => { w(A, page("false")); w("src/pages/index.astro", "---\n---\n<h1>y</h1>\n"); }, "blog/a-post\n"), /src\/pages\/index\.astro is not src\/content\/blog/);
+});
+
+test("[debugsy] refuses a new file, even one that looks like a flip", () => {
+  refused(flip((w) => w("src/content/blog/new-post.md", page("false")), "blog/new-post\n"), /expected an `index <hash>\.\.<hash> 100644` line/);
+});
+
+test("[debugsy] refuses pages other than the ones the build reported", () => {
+  refused(flip((w) => w(A, page("false")), "use-cases/b-case\n"), /does not match the files in the patch/);
+});
+
+test("[debugsy] accepts a flip on a page larger than 100 KB (the patch is only the hunk)", () => {
+  const s = scratch();
+  const long = `\n${"A long paragraph of text that makes the page big. ".repeat(3000)}\n`;
+  s.write(A, page("true", "", long));
+  s.git("commit", "-qam", "long page");
+  const r = check(makePatch(s, () => s.write(A, page("false", "", long))), pagesFile("blog/a-post\n"), s.dir, DUE_DAY);
+  assert.ok(readFileSync(join(s.dir, A)).length > 100_000);
+  accepted(r);
+  assert.equal(r.stdout, "publish: blog/a-post\n");
+});
+
+test("[debugsy] accepts a quoted published day and refuses a flip with no published day", () => {
+  const s = scratch();
+  s.write(A, page("true").replace("published: 2026-11-09", 'published: "2026-11-09"'));
+  s.write(B, page("true").replace("published: 2026-11-09\n", ""));
+  s.git("commit", "-qam", "quoted and missing dates");
+  const ok = check(makePatch(s, () => s.write(A, page("false").replace("published: 2026-11-09", 'published: "2026-11-09"'))), pagesFile("blog/a-post\n"), s.dir, DUE_DAY);
+  accepted(ok);
+  const bad = check(makePatch(s, () => s.write(B, page("false").replace("published: 2026-11-09\n", ""))), pagesFile("use-cases/b-case\n"), s.dir, DUE_DAY);
+  refused(bad, /has no published day/);
+});
+
+test("[debugsy] refuses an empty patch", () => {
+  const s = scratch();
+  refused(check(makePatch(s, () => {}), pagesFile("blog/a-post\n"), s.dir, DUE_DAY), /patch is empty/);
+});
+
+// ---- more guard cases of the same kind
+test("a published timestamp counts by its UTC day", () => {
+  const s = scratch();
+  const stamped = (draft) => page(draft).replace("published: 2026-11-09", "published: 2026-11-09T23:30:00-05:00"); // = 2026-11-10 04:30 UTC
+  s.write(A, stamped("true"));
+  s.git("commit", "-qam", "timestamp");
+  const patch = makePatch(s, () => s.write(A, stamped("false")));
+  refused(check(patch, pagesFile("blog/a-post\n"), s.dir, "2026-11-09"), /isn't due: published 2026-11-10 is after today, 2026-11-09/);
+  accepted(check(patch, pagesFile("blog/a-post\n"), s.dir, "2026-11-10"));
+});
+
+test("an unreadable published day is refused", () => {
+  const s = scratch();
+  s.write(A, page("true").replace("published: 2026-11-09", "published: soon"));
+  s.git("commit", "-qam", "bad date");
+  refused(check(makePatch(s, () => s.write(A, page("false").replace("published: 2026-11-09", "published: soon"))), pagesFile("blog/a-post\n"), s.dir, DUE_DAY), /can't read its published day/);
+});
+
+test("the page is judged at HEAD, not by what is on disk", () => {
+  const s = scratch();
+  const future = (draft) => page(draft).replace("published: 2026-11-09", "published: 2026-12-01");
+  s.write(A, future("true"));
+  s.git("commit", "-qam", "future page");
+  const patch = makePatch(s, () => s.write(A, future("false")));
+  s.write(A, page("true")); // a due date on disk, not committed
+  refused(check(patch, pagesFile("blog/a-post\n"), s.dir, DUE_DAY), /isn't due: published 2026-12-01/);
+});
+
+test("a flip of a file that is not a regular file at HEAD (a symlink) is refused", () => {
+  const s = scratch();
+  rmSync(join(s.dir, A));
+  symlinkSync(join(s.dir, B), join(s.dir, A));
+  s.git("add", "-A");
+  s.git("commit", "-qm", "a symlink");
+  const patch = join(tmp("check-patch-p-"), "flip.patch");
+  writeFileSync(patch, readFileSync(join(fx, "single.patch"), "latin1").replaceAll("alpha", "a-post"), "latin1");
+  refused(check(patch, pagesFile("blog/a-post\n"), s.dir, DUE_DAY), /not an existing regular file in HEAD/);
 });
