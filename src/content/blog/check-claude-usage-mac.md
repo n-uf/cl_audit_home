@@ -185,7 +185,7 @@ Anthropic's views show the account you're signed in to. With a personal plan and
 
 A tracker that reads each account separately shows them together. In cl_audit each Claude setup is a profile: one Claude Code folder with its sign-in, and optionally a Claude window and a Dock icon. A profile works on one account at a time, and no two profiles share an account (checked by account and organisation ids). A personal plan and a Team seat on the same email are two accounts, so they can be two profiles. Both limits for every profile show on the dashboard and on each Dock icon, and an alert names the profile that's full and says when it's back.
 
-cl_audit doesn't pool limits or move work between accounts. It shows what each seat has used. Whether someone may use more than one Claude account is set by Anthropic's terms. The page on [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/) explains the setup.
+cl_audit doesn't pool limits: each account's limits are its own, and it shows what each seat has used. When you ask, it can switch a profile to another of your own accounts and take its Code sessions along. Whether someone may use more than one Claude account is set by Anthropic's terms. The page on [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/) explains the setup.
 
 ## Which one to use
 

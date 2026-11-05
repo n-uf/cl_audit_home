@@ -5,7 +5,7 @@ h1: "Claude Code in VS Code with multiple accounts"
 mainKeyword: "claude code vscode multiple accounts"
 kind: how-to
 published: 2026-11-03
-updated: 2026-11-03
+updated: 2026-11-05
 author: n-uf
 takeaways:
   - "Out of the box, changing account in the Claude Code panel means signing out (Sign out, or /logout) and signing in again."
@@ -184,4 +184,4 @@ What it adds is the view across accounts. Each profile's 5-hour and weekly limit
 
 ![cl_audit usage history by project, model and surface](/img/guides/usage-history.webp "Usage history: tokens per day, and where they go by project, model and surface. Sample data.")
 
-For the Claude app side, see [running several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit doesn't pool limits or move work between accounts; whether you may use more than one Claude account is set by Anthropic's terms. It's a free [Claude usage tracker](/) for Macs with Apple silicon and macOS 13 or later, and needs Claude Code signed in for each profile. To try it, [install cl_audit](/install/).
+For the Claude app side, see [running several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit doesn't pool limits. Switching a profile to another of your accounts is something you start yourself, and it takes the profile's Code sessions with it. Whether you may use more than one Claude account is set by Anthropic's terms. It's a free [Claude usage tracker](/) for Macs with Apple silicon and macOS 13 or later, and needs Claude Code signed in for each profile. To try it, [install cl_audit](/install/).

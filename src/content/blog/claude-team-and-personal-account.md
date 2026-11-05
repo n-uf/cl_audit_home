@@ -12,7 +12,7 @@ takeaways:
   - "Team usage limits are per member. They can't be shared or transferred, and each seat is for one named individual."
   - "A personal plan and a Team seat on the same email are two seats. cl_audit counts them as two accounts, and an account belongs to one profile, so each can get its own."
   - "The Claude app shows one account at a time. With cl_audit, each profile has its own Claude window and its own Claude Code folder, side by side."
-  - "cl_audit is free and independent, not affiliated with Anthropic. It doesn't pool limits or move work between accounts."
+  - "cl_audit is free and independent, not affiliated with Anthropic. It doesn't pool limits; a profile can switch to another of your own accounts and takes its Code sessions along."
 faq:
   - q: "Can I have a work and personal Claude account?"
     a: "Yes. Anthropic's help pages say you can hold a personal account and a Team or Enterprise account on the same email address and switch between them from the account menu. Whether you may use a personal plan for work, or the other way round, is up to your employer's rules and Anthropic's terms."
@@ -131,7 +131,7 @@ If you only need the second account in a browser, a second browser profile with 
 
 A common layout: the personal profile on `~/.claude` with the usual Claude app, the work profile on `~/.claude-work` with its own Claude window, both open at once. The other way round works too. Give `~/.claude` to whichever you open most.
 
-Each profile can have its own Dock icon showing that seat's 5-hour and weekly limits, which cl_audit's background agent reads from Anthropic with the profile's Claude Code sign-in. You see both seats' limits without switching accounts. The [demo dashboard](/dashboard/) shows three sample profiles. Limits stay separate: cl_audit doesn't pool them or move work from one account to the other, and whether someone may use more than one Claude account is set by Anthropic's terms.
+Each profile can have its own Dock icon showing that seat's 5-hour and weekly limits, which cl_audit's background agent reads from Anthropic with the profile's Claude Code sign-in. You see both seats' limits without switching accounts. The [demo dashboard](/dashboard/) shows three sample profiles. Limits stay separate: cl_audit doesn't pool them. If a profile has both accounts, you can switch it from one to the other, and its Code sessions move too. Whether someone may use more than one Claude account is set by Anthropic's terms.
 
 You need a Mac with Apple silicon and macOS 13 or later, and Claude Code signed in for each profile. The Claude app is only needed for Claude windows. cl_audit works with plans that have usage limits (Pro, Max, Ultra, Team). It isn't signed with an Apple Developer ID yet, so macOS asks you to approve it once; the [install page](/install/) has the steps.
 
