@@ -201,6 +201,16 @@ jobs:
           fi
           git apply --check "$RUNNER_TEMP/handoff/publish.patch" >&2
           git apply --index "$RUNNER_TEMP/handoff/publish.patch" >&2
+          # The checker already makes the patch's files equal the page list, but it is not git: check what git
+          # actually staged, so a patch that git reads differently from the checker commits nothing.
+          staged=$(git diff --cached --name-only | LC_ALL=C sort)
+          expected=$(sed -E 's#^([a-z-]+)/(.+)$#src/content/\1/\2.md#' "$RUNNER_TEMP/handoff/pages.txt" | LC_ALL=C sort)
+          if [ -z "$staged" ] || [ "$staged" != "$expected" ]; then
+            echo "::error::the files git staged are not the files of the page list; nothing is committed"
+            echo "staged:" >&2; printf '%s\n' "$staged" >&2
+            echo "page list:" >&2; printf '%s\n' "$expected" >&2
+            exit 1
+          fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git -c core.hooksPath=/dev/null commit -q -m "$message"
