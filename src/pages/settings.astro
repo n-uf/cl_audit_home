@@ -29,6 +29,12 @@ const jsonLd = [
   const PEEK = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
   const clickTitle: Record<string, string> = { "Usage, then Claude": "Usage, then Claude", Claude: "Open Claude", "Details panel": "Details panel" };
   const secs = (v: number) => `${v} s`;
+  // Claude Code ▸ Share from / Shared, per demo profile (home uses ~/.claude, the source, so it has neither row)
+  const SHARE: Record<string, { from: string; items: string } | null> = {
+    home: null,
+    work: { from: "~/.claude", items: "instructions, agents, skills, commands" },
+    side: { from: "", items: "" },
+  };
 
   function setup() {
     const root = document.getElementById("settings");
@@ -347,8 +353,22 @@ const jsonLd = [
         if (busy) { sw.classList.add(swOn(k, pr) ? "pulse-on" : "pulse-off"); $(`[data-sw-t="${k}"]`)!.textContent = swOn(k, pr) ? "turning on…" : "turning off…"; }
       }
       placeColumns();
-      // the Login pop-up starts closed, showing the account, on every profile
+      // the Account pop-up starts closed, showing the account, on every profile
       loginReset();
+      // Folder: this profile's folder, the other profiles' dimmed with who is signed in there
+      $<HTMLSelectElement>("[data-folder]")!.innerHTML = `<option selected>${a.dir}</option>` +
+        accounts.filter((x) => x.id !== acc).map((x) => `<option disabled>${x.dir} ${x.email} · ${prefs[x.id].name}'s</option>`).join("");
+      // Share from / Shared: read-only on an existing profile; ~/.claude is the source, so it has neither row
+      const sh = SHARE[acc];
+      $("[data-share]")!.hidden = !sh;
+      if (sh) {
+        $("[data-share-from]")!.textContent = sh.from || "nothing: every item is its own";
+        $("[data-share-from]")!.classList.toggle("mono", !!sh.from);
+        $("[data-shared-row]")!.hidden = !sh.items;
+        $("[data-shared]")!.textContent = sh.items;
+        $("[data-share-line]")!.hidden = !sh.from;
+        $("[data-share-line]")!.textContent = `To change them, add or remove the links in ${a.dir} in Finder.`;
+      }
       $('[data-value="peek"]')!.textContent = secs(pr.peek);
       $('[data-value="notifyAt"]')!.textContent = `${pr.notifyAt}%`;
       $("[data-notify-step]")!.hidden = !pr.notify;
@@ -475,7 +495,7 @@ const jsonLd = [
         $("[data-login-edit]")!.hidden = false;
         const line = $("[data-login-line]")!;
         line.hidden = false;
-        line.textContent = `Signs in through Claude Code in Terminal; ${who()} stays on ${accounts.find((x) => x.id === acc)!.email} until then.`;
+        line.textContent = `Claude Code signs in through Terminal; ${who()} stays on ${accounts.find((x) => x.id === acc)!.email} until then.`;
         if (spare) $<HTMLInputElement>("[data-login-mail]")!.value = "spare@example.com";
         $<HTMLInputElement>("[data-login-mail]")!.focus();
         return;
