@@ -1,8 +1,13 @@
 # Scheduled publishing: every day at 00:10 UTC, pages merged as `draft: true` whose `published` date has come
-# are flipped to `draft: false` (scripts/publish-due.mjs), committed as `publish: <slug>[, <slug>]` and pushed to main.
+# are flipped to `draft: false` (scripts/publish-due.mjs). If anything changed, the site is built first (npm ci,
+# npm run build: a red build pushes nothing and fails the run), then the change is committed as
+# `publish: <section>/<slug>[, <section>/<slug>]` (e.g. `publish: blog/claude-usage-credits`) and pushed to main. A
+# rejected push (main moved during the build) runs `git pull --rebase` and tries again, 3 pushes at most; a rebase
+# conflict is aborted and fails the run.
 # Vercel builds that push through its Git connection like any other. Nothing due: no commit, no deploy.
-# A crash of the script, or changed files with no slug listed, fail the run (nothing is committed). A page whose front
-# matter the script can't read is named in the log and makes the run red, after the other due pages were published.
+# A crash of the script (any exit code but 0 and 3), or changed files with no page listed, fail the run (nothing is
+# committed). Exit 3 means some page's front matter can't be read: it is named in the log, the other due pages are
+# still built, published and pushed, and the run then goes red.
 # Undo: revert the publish commit, or set `draft: true` again. No secrets and no deploy hooks are used.
 # GitHub can run a schedule up to about an hour late, and switches schedules off in a repo with no activity for
 # 60 days: re-enable it from the Actions tab if that happens.
@@ -22,8 +27,9 @@ concurrency:
 
 jobs:
   publish:
+    if: github.repository == 'n-uf/cl_audit_home'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -34,8 +40,8 @@ jobs:
           node-version: 22
 
       # shell: bash makes GitHub run the script with -eo pipefail, so a failing command fails the step.
-      # Exit 1 from the script means some page's front matter can't be read: the readable due pages were still flipped,
-      # so they are committed and pushed below, and the job is failed at the end to make the run red.
+      # publish-due.mjs exits 0 (done), 3 (some page's front matter can't be read; the readable due pages were still
+      # flipped) or something else, which is a crash: Node's own 1 when the script fails to load, 2 for a caught error.
       - name: Flip due drafts
         id: flip
         shell: bash
@@ -44,33 +50,54 @@ jobs:
           node scripts/publish-due.mjs > "$RUNNER_TEMP/due.txt" || code=$?
           cat "$RUNNER_TEMP/due.txt"
           echo "code=${code}" >> "$GITHUB_OUTPUT"
-          if [ "$code" -gt 1 ]; then
+          if [ "$code" -ne 0 ] && [ "$code" -ne 3 ]; then
             echo "::error::publish-due.mjs crashed (exit ${code})"
             exit "$code"
           fi
-
-      - name: Commit and push
-        shell: bash
-        run: |
           if [ -z "$(git status --porcelain)" ]; then
             echo "Nothing due."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           if [ ! -s "$RUNNER_TEMP/due.txt" ]; then
-            echo "::error::files changed but publish-due.mjs listed no slug; not committing"
+            echo "::error::files changed but publish-due.mjs listed no page; not committing"
             git status --porcelain
             exit 1
           fi
-          slugs=$(paste -sd, "$RUNNER_TEMP/due.txt" | sed 's/,/, /g')
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # a red build stops here: nothing is committed or pushed
+      - name: Build the site
+        if: steps.flip.outputs.changed == 'true'
+        shell: bash
+        run: |
+          npm ci
+          npm run build
+
+      - name: Commit and push
+        if: steps.flip.outputs.changed == 'true'
+        shell: bash
+        run: |
+          pages=$(paste -sd, "$RUNNER_TEMP/due.txt" | sed 's/,/, /g')
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add src/content
-          git commit -m "publish: ${slugs}"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          git commit -m "publish: ${pages}"
+          for attempt in 1 2 3; do
+            git push origin HEAD:main && exit 0
+            [ "$attempt" -lt 3 ] || break
+            echo "Push rejected (attempt ${attempt} of 3): main moved. Rebasing and trying again."
+            if ! git pull --rebase origin main; then
+              git rebase --abort || true
+              echo "::error::rebase onto the new main conflicted; nothing was pushed"
+              exit 1
+            fi
+          done
+          echo "::error::push to main was rejected 3 times"
+          exit 1
 
       - name: Fail on front matter that can't be read
-        if: steps.flip.outputs.code == '1'
+        if: steps.flip.outputs.code == '3'
         shell: bash
         run: |
           echo "::error::some page's front matter can't be read, so it was not published; see the Flip due drafts step"
