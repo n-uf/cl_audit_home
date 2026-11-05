@@ -11,7 +11,7 @@ order: 1
 takeaways:
   - "You can run multiple Claude accounts on one Mac at the same time: cl_audit gives each its own Claude window, Claude Code folder and Dock icon."
   - "An account belongs to one profile (checked by account and organisation), so a personal plan and a Team seat on the same email can be two profiles."
-  - "Each profile's 5-hour and weekly limits are read separately; cl_audit doesn't pool them or move work between accounts."
+  - "Each profile's 5-hour and weekly limits are read separately; cl_audit doesn't pool them. A profile can switch to another of your own accounts, and the switch moves its Code sessions there."
   - "Whether one person may hold more than one Claude account is set by Anthropic's terms, not by cl_audit."
   - "cl_audit is free, source-available and runs on Apple silicon Macs with macOS 13 or later."
 faq:
@@ -20,7 +20,7 @@ faq:
   - q: "How do I open several Claude windows on a Mac?"
     a: "Turn on the Claude window switch for each profile. The profile using ~/.claude opens the usual Claude app, and every other profile opens its own Claude window with its own sign-in, chats and settings, next to the others. You open or quit each window from its card on the dashboard, and open it from the launcher or its Dock icon."
   - q: "Do two accounts share usage limits?"
-    a: "cl_audit keeps them apart: each profile shows the limits of its own account, read from Anthropic with that profile's sign-in, and cl_audit doesn't pool them or move work between accounts. Within one plan, Anthropic's help page says Claude and Claude Code count against the same limits."
+    a: "cl_audit keeps them apart: each profile shows the limits of its own account, read from Anthropic with that profile's sign-in, and cl_audit doesn't pool them. A profile can switch to another of your own accounts, and the switch moves its Code sessions there. Within one plan, Anthropic's help page says Claude and Claude Code count against the same limits."
   - q: "Can two profiles use the same email?"
     a: "Only if they are two different accounts. A personal plan and a Team seat on the same email are two accounts, so they can be two profiles. An account belongs to one profile: one that another profile already has is refused."
 sources:
@@ -149,7 +149,7 @@ Email addresses show in the launcher and on cards. If you share your screen, tur
 
 ## Is it allowed to have multiple Claude accounts?
 
-cl_audit doesn't get around usage limits. It doesn't pool limits across accounts, and it doesn't move work from a full account to another one. Each profile shows its own accounts' limits, nothing more. The [FAQ](/faq/) covers how the usage figures are read.
+cl_audit doesn't get around usage limits. It doesn't pool limits across accounts: each account's limits are its own, and each profile shows its own accounts' limits, nothing more. A profile can switch to another of your own accounts, and the switch moves its Code sessions there; it doesn't switch on its own. The [FAQ](/faq/) covers how the usage figures are read.
 
 Whether you may hold more than one Claude account is up to Anthropic's terms. On 2 November 2026, Anthropic's Usage Policy listed, among things not to do: coordinating malicious activity across multiple accounts, creating multiple accounts to avoid detection or get around product guardrails, and using a different account to get around a ban.
 

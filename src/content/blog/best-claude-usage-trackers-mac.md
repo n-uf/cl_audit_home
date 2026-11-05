@@ -130,7 +130,7 @@ It reads your usage with your browser's session cookie: during setup you copy th
 - a Claude Code status line in the terminal, and a `claude-<profile>` command per profile;
 - automation, such as starting a new session when usage resets and switching to the next profile when a session limit is reached.
 
-cl_audit has no such automation. It doesn't start sessions or move work between accounts.
+cl_audit has no such automation. It doesn't start sessions, and it never switches on its own. A profile can switch to another of your own accounts, but only when you ask it to; the switch moves that profile's Code sessions there.
 
 Claude Usage Tracker signs in with your Claude Code credentials if you use Claude Code, through a built-in browser sign-in, or with a session key you paste. It is MIT licensed, needs macOS 14 or later, and installs with Homebrew, Nix, a zip or Xcode. The README states no price.
 
