@@ -1,7 +1,7 @@
 // The app's usage panel in its five designs (Glow bars, Twin rings, Big numbers, Segmented, Pace bars),
 // drawn from a profile's figures. "large" is the full panel (Settings preview); otherwise the compact one
 // the Dock shows on a click. Same layout rules as the app's PanelDesigns.swift.
-import { accounts, type AccountId } from "./demo";
+import { accounts, standby, shortName, type AccountId, type Standby } from "./demo";
 
 export type Design = "glow" | "rings" | "numbers" | "segments" | "pace";
 
@@ -55,8 +55,10 @@ function number(l: L, large: boolean) {
     <div class="pn-big" style="color:${level(l.p)}"><b style="font-size:${large ? 42 : 30}px">${l.p}</b><span style="font-size:${large ? 20 : 15}px">%</span></div>
     ${bar(l, 4, false)}${resets(l, large)}</div>`;
 }
+/** How many of the 12 segments light: the nearest, but anything above 0 % lights the first one (app build 238). */
+export const segLit = (p: number) => (p > 0 ? Math.max(1, Math.round((p / 100) * 12)) : 0);
 function segments(l: L, large: boolean) {
-  const lit = Math.round((l.p / 100) * 12);
+  const lit = segLit(l.p);
   const segs = Array.from({ length: 12 }, (_, i) => {
     const zone = ((i + 1) / 12) * 100, c = zone > 80 ? "#ef4444" : zone > 50 ? "#f59e0b" : "#22c55e";
     return i < lit ? `<i style="background:${c};box-shadow:0 0 5px ${c}80"></i>` : "<i></i>";
@@ -120,7 +122,7 @@ function fullHTML(id: AccountId, design: Design) {
     const hot = l.p >= 100;
     const words = hot ? (l.name === f.name ? "full" : `full · resets ${whenWords(new Date(Date.now() + l.left * 60000))}`) : `in ${short(l.left)}`;
     const meter = design === "segments"
-      ? `<div class="pn-segs fl-segs">${Array.from({ length: 12 }, (_, i) => { const z = ((i + 1) / 12) * 100, c = z > 80 ? "#ef4444" : z > 50 ? "#f59e0b" : "#22c55e"; return i < Math.round((l.p / 100) * 12) ? `<i style="background:${c};box-shadow:0 0 5px ${c}80"></i>` : "<i></i>"; }).join("")}</div>`
+      ? `<div class="pn-segs fl-segs">${Array.from({ length: 12 }, (_, i) => { const z = ((i + 1) / 12) * 100, c = z > 80 ? "#ef4444" : z > 50 ? "#f59e0b" : "#22c55e"; return i < segLit(l.p) ? `<i style="background:${c};box-shadow:0 0 5px ${c}80"></i>` : "<i></i>"; }).join("")}</div>`
       : bar(l, 6, true);
     return `<div class="fl-row"><div class="fl-name"><b>${l.name}</b><span class="${hot ? "fl-hot" : ""}">${words}</span></div>${meter}${pct(l, 12.5)}</div>`;
   }).join("");
@@ -132,7 +134,33 @@ function fullHTML(id: AccountId, design: Design) {
  *  limit is full, the limits on the left and the box saying when it's back on the right. */
 export function cardLimitsHTML(id: AccountId, design: Design) {
   const a = accounts.find((x) => x.id === id)!;
-  return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="img" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}${creditsHTML(id)}</div>`;
+  return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="img" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}${cardExtrasHTML(id, design)}</div>`;
+}
+
+// ── A profile's other accounts (app build 238) ──────────────────────────────────────────────────────────────────
+const standbyLs = (s: Standby): L[] => [
+  { name: "5-hour", title: "5-hour session", p: s.five, left: s.fiveLeftMin, elapsed: Math.round((1 - s.fiveLeftMin / 300) * 100) },
+  { name: "Week", title: "Week", p: s.week, left: s.weekLeftMin, elapsed: Math.round((1 - s.weekLeftMin / 10080) * 100) },
+];
+/** A standby account's limits in a dashboard design (Settings ▸ Claude Code ▸ Accounts, its STANDBY box). */
+export function standbyLimitsHTML(s: Standby, design: Design) {
+  const draw = { glow, rings: ring, numbers: number, segments, pace }[design];
+  const cls = design === "rings" ? "pn-limits rings" : design === "numbers" ? "pn-limits numbers" : "pn-limits";
+  return `<div class="${cls}">${standbyLs(s).map((l) => draw(l, false)).join("")}</div>`;
+}
+/** Under a card's limits: usage credits, then, while a limit is full and another account has room, "Switch to team-2…"
+ *  (the key alone; its words are its tooltip), then each standby account's limits, small. */
+export function cardExtrasHTML(id: AccountId, design: Design) {
+  const sb = standby[id];
+  const room = fullLimit(id) ? sb.find((s) => s.five < 100 && s.week < 100) : undefined;
+  const offer = room ? `<div class="sb-offer"><button type="button" class="pill small tint t-green" data-switch-offer="${id}" title="${shortName(room.email)}: week ${room.week}% used">Switch to ${shortName(room.email)}…</button></div>` : "";
+  const blocks = sb.map((s) => `<div class="sb"><div class="sb-head">Standby · <span class="email">${s.email}</span></div>${standbyLs(s).map((l) => {
+    const meter = design === "segments"
+      ? `<span class="sb-segs">${Array.from({ length: 12 }, (_, i) => i < segLit(l.p) ? `<i style="background:${level(((i + 1) / 12) * 100)}"></i>` : "<i></i>").join("")}</span>`
+      : `<span class="sb-bar"><i style="width:${l.p}%;background:${level(l.p)}"></i></span>`;
+    return `<div class="sb-row"><span class="sb-name">${l.name}</span>${meter}<b style="color:${level(l.p)}">${l.p}%</b><span class="sb-when">in ${short(l.left)}</span></div>`;
+  }).join("")}</div>`).join("");
+  return creditsHTML(id) + offer + blocks;
 }
 
 /** A whole panel: header (icon, name, email, plan), the limits in the chosen design, and the footer. */

@@ -8,6 +8,18 @@
 
 export type AccountId = "home" | "work" | "side";
 
+/** A profile's other accounts (after 26.11.0, app build 238): STANDBY, their limits read from a sign-in kept for each
+ *  in a small folder of its own. The demo's "work" has one with room, so its card offers "Switch to team-2…" while
+ *  its own 5-hour limit is full. */
+export type Standby = { email: string; plan: string; org: string; five: number; week: number; fiveLeftMin: number; weekLeftMin: number };
+export const standby: Record<AccountId, Standby[]> = {
+  home: [],
+  work: [{ email: "team-2@work.example", plan: "Team", org: "Work", five: 12, week: 30, fiveLeftMin: 210, weekLeftMin: 4 * 1440 + 100 }],
+  side: [],
+};
+/** "team-2": an account's short name, its address before the @ (AccountNames.short). */
+export const shortName = (email: string) => email.split("@")[0];
+
 export const accounts = [
   { id: "home" as AccountId, name: "home", label: "HOME", email: "you@example.com", plan: "Max", hex: "#d97757", color: "var(--acc-home)", tint: "t-orange",
     icon: "/img/acc/home-bars-orange.png", dir: "~/.claude", data: "~/Library/Application Support/Claude", five: 34, fiveWhen: "in 3 h 12 min", week: 12, weekWhen: "in 6 days", fiveLeftMin: 192, weekLeftMin: 6 * 1440 + 200, updated: "just now", winOpen: true,
