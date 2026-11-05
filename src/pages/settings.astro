@@ -235,9 +235,15 @@ const jsonLd = [
       $("[data-login-keys]")!.innerHTML = `<button type="button" class="key k lt" style="--lamp:rgb(74,222,128)" data-login-go>Sign in</button>${cancelKey}`;
     };
     // A profile's standby accounts: the demo's (removable here), then what Add account added on this page. "ok": limits
-    // read; "new": found on this Mac, no numbers yet; "waiting": signed in from the address row, not finished.
-    type Box = { email: string; state: "ok" | "new" | "waiting"; s?: Standby };
-    const SPARE = "spare@example.com";
+    // read; "nosign": found on this Mac but no sign-in kept for it; "waiting": signed in from the address row, not finished.
+    type Box = { email: string; state: "ok" | "nosign" | "waiting"; s?: Standby };
+    // What Add account finds on this Mac (as the app's renders): an account signed in in a free Claude Code folder (its
+    // limits show at once) and one this profile's Claude window has used (it needs a sign-in)
+    const FOUND: { email: string; org: string; detail: string; s?: Standby }[] = [
+      { email: "spare@example.com", org: "Personal", detail: "signed in · ~/.claude-spare",
+        s: { email: "spare@example.com", plan: "Pro", org: "Personal", five: 20, week: 45, fiveLeftMin: 150, weekLeftMin: 2 * 1440 + 300 } },
+      { email: "old@example.com", org: "Personal", detail: "needs sign-in · used in this window in October" },
+    ];
     const added: Record<AccountId, Box[]> = { home: [], work: [], side: [] };
     const removedSb = new Set<string>();
     const boxes = (): Box[] => [
@@ -248,9 +254,7 @@ const jsonLd = [
       const design = loadCardStyle();
       const body = x.state === "ok" && x.s
         ? `${standbyLimitsHTML(x.s, design)}<small class="abox-note">Its sign-in renews by itself, so its limits stay current.</small>`
-        : x.state === "new"
-          ? `<small class="abox-note">No numbers yet: the agent reads them within a few minutes.</small>`
-          : `<div class="abox-why"><span>Waiting for the sign-in: finish it in the browser, or sign in again.</span><button type="button" class="key k" data-sb-signin="${x.email}">Sign in…</button></div>`;
+        : `<div class="abox-why"><span>${x.state === "nosign" ? "Limits unknown: no sign-in kept for it." : "Waiting for the sign-in: finish it in the browser, or sign in again."}</span><button type="button" class="key k" data-sb-signin="${x.email}">Sign in…</button></div>`;
       return `<div class="abox"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
         `<button type="button" class="abox-title" data-sb-btn="${x.email}" aria-haspopup="menu" aria-expanded="false"><span class="email">${x.email}</span><span class="chev" aria-hidden="true">⌃⌄</span></button>` +
         `<span class="login-menu" data-sb-menu="${x.email}" role="menu" hidden></span>` +
@@ -520,15 +524,22 @@ const jsonLd = [
       }
       if (pick("[data-login-renew]")) { p().renew = !p().renew; commit(); loginReset(); say("renew"); return; }
       if (pick("[data-add-btn]")) {
-        const have = boxes().map((s) => s.email);
+        // as the app's menu: signed in on this Mac first, then those needing a sign-in, then other profiles' (dimmed);
+        // accounts the profile already has aren't listed
+        const have = boxes().map((s) => s.email), left = FOUND.filter((f) => !have.includes(f.email));
         menuToggle("[data-add-btn]", "[data-add-menu]", () =>
           `<span class="lm-row lm-head">Found on this Mac</span>` +
-          (have.includes(SPARE) ? `<span class="lm-row dim">Nothing else found</span>` : `<button type="button" class="lm-row act" data-add-found>${SPARE}<em>in ~/.claude-spare</em></button>`) +
-          accounts.filter((x) => x.id !== acc).map((x) => `<span class="lm-row dim">${x.email}<em>${x.plan} · ${prefs[x.id].name}'s</em></span>`).join("") +
+          (left.length ? left.map((f) => `<button type="button" class="lm-row act" data-add-found="${f.email}">${f.email} · ${f.org}<em>${f.detail}</em></button>`).join("") : `<span class="lm-row dim">Nothing else found</span>`) +
+          accounts.filter((x) => x.id !== acc).map((x) => `<span class="lm-row dim">${x.email} · ${x.id === "work" ? "Work" : "Personal"}<em>${prefs[x.id].name}'s</em></span>`).join("") +
           `<hr><button type="button" class="lm-row act" data-login-other>Sign in to another account…</button>`);
         return;
       }
-      if (pick("[data-add-found]")) { added[acc].push({ email: SPARE, state: "new" }); closeMenus(); show(); return; }
+      if ((b = pick("[data-add-found]"))) {
+        // a click adds it on standby at once: one signed in on this Mac shows its limits, one needing a sign-in says so
+        const f = FOUND.find((x) => x.email === b!.dataset.addFound)!;
+        added[acc].push(f.s ? { email: f.email, state: "ok", s: f.s } : { email: f.email, state: "nosign" });
+        closeMenus(); show(); return;
+      }
       if (pick("[data-login-other]")) {
         // the Add account row becomes the address field, with Sign in and Cancel, and one grey line under the row
         loginReset();
