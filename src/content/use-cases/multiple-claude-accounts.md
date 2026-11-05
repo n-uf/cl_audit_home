@@ -5,7 +5,7 @@ h1: "Multiple Claude accounts on one Mac"
 mainKeyword: "multiple claude accounts"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-04
+updated: 2026-11-05
 author: n-uf
 order: 1
 takeaways:
@@ -96,7 +96,7 @@ Each seat keeps its own limits. cl_audit shows them; it doesn't add them up or h
 
 It's one profile per seat. If you add a profile for a seat another profile already has, cl_audit refuses it. A personal plan and a Team seat on one email still work, because they're different seats.
 
-cl_audit shows limits for plans that have them: Pro, Max, Ultra and Team. A profile that signs in with an API key is billed per token and has no usage limits to show.
+cl_audit shows limits for plans that have them: Pro, Max, Ultra and Team. A verified Ultra account has no 5-hour limit, so its profile shows the week alone. A profile that signs in with an API key is billed per token and has no usage limits to show.
 
 ## Accounts for clients
 
@@ -140,7 +140,7 @@ Each profile keeps its own:
 
 When you create a new folder, you can copy some Claude Code setup into it from another folder you pick: instructions, agents, skills, commands or memory. That way a new profile starts with your usual `CLAUDE.md` and skills.
 
-Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in General settings, and they're left out or blurred.
+Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and they're left out or blurred.
 
 ## Is it allowed to have multiple Claude accounts?
 
