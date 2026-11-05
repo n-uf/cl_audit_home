@@ -9,8 +9,8 @@ updated: 2026-11-05
 author: n-uf
 order: 2
 takeaways:
-  - "cl_audit sends three Mac notifications for each Claude profile: a limit reaches the level you set, a limit is full and when it's back, and a full limit has reset."
-  - "The alerts cover every profile's 5-hour and weekly limits, and Fable's weekly limit where the plan has one; each fires once per limit and reset. Others tell you when usage credits start or run out."
+  - "For each limit, cl_audit sends three Mac notifications: the limit reaches the level you set, it's full and when it's back, and it has reset."
+  - "The alerts cover every profile's 5-hour and weekly limits, and Fable's weekly limit where the plan has one; each fires once per limit and reset. Two more say when usage credits start and when they run out."
   - "One background agent reads every profile's usage, so alerts arrive with the cl_audit window, the Dock icons and the Claude windows all closed."
   - "Reset times come from Anthropic's usage figures; when Anthropic doesn't give one, cl_audit says so and never makes one up."
   - "Each profile has its own level and its own refresh interval, and Notify when back is on by default."
