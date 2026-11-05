@@ -551,7 +551,7 @@ const jsonLd = [
         added[acc].push({ email: mail, state: "waiting" });
         loginReset(); show();
         line.hidden = false;
-        line.textContent = `Finish in the browser as ${mail}; switch its claude.ai account first if needed. (This is a demo, so nothing signs in.)`;
+        line.textContent = `Claude Code's own sign-in opens in Terminal for ${mail}; finish it in the browser, on that claude.ai account. (This is a demo, so nothing signs in.)`;
         return;
       }
       if (pick("[data-login-cancel]")) { loginReset(); return; }
