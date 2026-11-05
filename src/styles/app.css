@@ -992,9 +992,7 @@ select.menu option { background: #2c2c2f; color: var(--text); }
 /* on/off switches light green (the orange stays for "current" and Download) */
 .cswitch.on i, .mswitch.on::after { background: rgb(var(--led-on)); box-shadow: 0 0 6px rgba(var(--led-on), .85), 0 0 0 1px rgba(0,60,30,.3); }
 .cswitch.busy { cursor: default; }
-.cswitch.busy i { animation: led-blink .5s steps(1) infinite; background: rgb(var(--led-on)); box-shadow: 0 0 6px rgba(var(--led-on), .85); }
-@keyframes led-blink { 50% { background: #3a3532; box-shadow: inset 0 1px 1px rgba(0,0,0,.45); } }
-@media (prefers-reduced-motion: reduce) { .cswitch.busy i { animation-duration: 1.6s; } }
+/* busy: the LED pulses green or red until the change is done (rules with the settings switches' pulse) */
 
 .more-wrap { position: relative; display: inline-block; }
 .more-btn { padding: 0 9px; letter-spacing: .08em; }
@@ -1251,8 +1249,15 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
 /* LED switch in transition: locked, pulsing, not faded */
 @keyframes pg { 0%, 100% { background: rgba(var(--led-on), .25); box-shadow: none; } 50% { background: rgb(var(--led-on)); box-shadow: 0 0 6px rgba(var(--led-on), .85); } }
 @keyframes pa { 0%, 100% { background: rgba(255,178,74,.25); box-shadow: none; } 50% { background: #ffb24a; box-shadow: 0 0 6px rgba(255,178,74,.85); } }
-.mswitch.pulse-on::after { animation: pg 1.1s ease-in-out infinite; }
-.mswitch.pulse-off::after { animation: pa 1.1s ease-in-out infinite; }
+/* a change under way (26.11.0, app build 211): the LED pulses green turning on, red turning off; Reduce motion: a
+   steady lamp in that colour */
+@keyframes pr { 0%, 100% { background: rgba(239,68,68,.25); box-shadow: none; } 50% { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,.85); } }
+.mswitch.pulse-on::after, .cswitch.busy.on i { animation: pg .6s ease-in-out infinite; }
+.mswitch.pulse-off::after, .cswitch.busy:not(.on) i { animation: pr .6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .mswitch.pulse-on::after, .cswitch.busy.on i { animation: none; background: rgb(var(--led-on)); box-shadow: 0 0 6px rgba(var(--led-on), .85); }
+  .mswitch.pulse-off::after, .cswitch.busy:not(.on) i { animation: none; background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,.85); }
+}
 .mswitch.pulse-on, .mswitch.pulse-off { pointer-events: none; }
 .states { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
 .state-cap { font-size: 11.5px; color: var(--muted); margin: 6px 2px 0; }
@@ -1632,6 +1637,9 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* the card's Open window key: its LED is there but dark while the window is closed (lit = running, 26.11.0) */
 .pill.tint.unlit::before { background: #3a3532; box-shadow: inset 0 1px 1px rgba(0,0,0,.55); }
 .face-silver .pill.tint.unlit::before { background: #9a9a96; box-shadow: inset 0 1px 1px rgba(0,0,0,.35); }
+/* General ▸ Dock: the EXPERIMENTAL display under Keep in order, before the description */
+.exp-disp { display: inline-flex; margin: 2px 0 6px; }
+.g-note.caution { display: block; max-width: none; }   /* the warning runs the card's width, as the app's */
 /* General ▸ Privacy ▸ Usage history off: the dashboard shows the limits only */
 .no-history #history { display: none; }
 /* a profile tile being dragged along the strip */
