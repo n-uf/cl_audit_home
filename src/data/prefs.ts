@@ -28,17 +28,18 @@ export type Prefs = {
   click: string; peek: number; hold: boolean; window: string;
   refresh: string; notify: boolean; notifyAt: number; login: boolean; renew: boolean; panel: string;
   dataDir: string;         // the separate Claude window's data folder (a name under ~/Library/Application Support)
-  iconColor: string;       // the icon's colour (Settings ▸ Icon): picks the rendered picture (see iconSrc)
+  iconColor: string;       // the icon's colour (Settings ▸ Dock icon ▸ Colour): picks the rendered picture (see iconSrc)
   frame: string;           // "" = no frame, else a tile colour; drawn as a ring over the icons in CSS
   dot: boolean;            // Claude open dot: an orange dot on the icon while the profile's Claude window is open
-  showInDock: boolean;     // Profile ▸ Usage in the Dock: a Dock icon shows the usage (off: read in the background)
-  win: boolean;            // Profile ▸ Claude window: the profile has one (off: none; both off = usage only)
+  showInDock: boolean;     // Dock icon ▸ Usage in the Dock: a Dock icon shows the usage (off: read in the background)
+  win: boolean;            // Claude window ▸ Claude window: the profile has one (off: none; both off = usage only)
   dockRuns: DockRuns;      // Dock icon ▸ Runs: At login, With its window, When started (26.10.11)
   windowFollows: boolean;  // Claude window ▸ With Dock icon: opens and quits with the Dock icon
+  opensFromDock: boolean;  // Claude window ▸ Opens from: Dock click too (true) or Only when asked (26.11.0)
   notifyBack: boolean;     // Alerts ▸ Notify when back: one alert when a full limit resets
   iconFollows?: boolean;   // before 26.10.11 (read once to carry it over into dockRuns)
   showFable: boolean;      // Profile ▸ Fable's limit: shown and alerted (only where the plan has one; 26.11.0)
-  mb: MenuBarLook;         // Its menu bar icon ▸ Menu bar (26.11.0)
+  mb: MenuBarLook;         // Menu bar (26.11.0)
 };
 export type DockRuns = "login" | "window" | "started";
 /** A profile's menu bar icon, as the app's MenuBar card: on or off, a style, colours, label and what a full limit shows. */
@@ -53,10 +54,40 @@ const mbOn = (on: boolean): MenuBarLook => ({ on, style: "bars", colours: "level
 export const dockRunsChoices: [DockRuns, string][] = [["login", "At login"], ["window", "With its window"], ["started", "When started"]];
 
 const defaults: Record<AccountId, Prefs> = {
-  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 3, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments", dataDir: "Claude", iconColor: "orange", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, notifyBack: true, showFable: true, mb: mbOn(true) },
-  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, notifyBack: true, showFable: true, mb: mbOn(true) },
-  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, win: true, dockRuns: "started", windowFollows: false, notifyBack: true, showFable: true, mb: mbOn(false) },
+  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 3, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments", dataDir: "Claude", iconColor: "orange", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, opensFromDock: true, notifyBack: true, showFable: true, mb: mbOn(true) },
+  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, opensFromDock: true, notifyBack: true, showFable: true, mb: mbOn(true) },
+  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, win: true, dockRuns: "started", windowFollows: false, opensFromDock: true, notifyBack: true, showFable: true, mb: mbOn(false) },
 };
+
+/** The profiles' order (26.11.0): set by dragging a profile's tile along the Settings strip. The dashboard, the
+ *  launcher, the menu bar icons, the widget and the history follow it; the Dock icons stay where they are. */
+const ORDER_KEY = "cl_audit.order";
+export function loadOrder(): AccountId[] {
+  const ids = accounts.map((a) => a.id);
+  try {
+    const v = JSON.parse(localStorage.getItem(ORDER_KEY) || "null");
+    if (Array.isArray(v)) return [...v.filter((x) => ids.includes(x)), ...ids.filter((x) => !v.includes(x))] as AccountId[];
+  } catch {}
+  return ids;
+}
+export function saveOrder(o: AccountId[]) { try { localStorage.setItem(ORDER_KEY, JSON.stringify(o)); } catch {} }
+/** A list of profiles (anything with an id) in the chosen order. */
+export function ordered<T extends { id: string }>(list: T[]): T[] {
+  const o = loadOrder();
+  return [...list].sort((a, b) => o.indexOf(a.id as AccountId) - o.indexOf(b.id as AccountId));
+}
+/** Puts the elements matching sel (siblings in a row, each with its profile id in attr) in the chosen order. */
+function reorder(sel: string, attr: string, after?: (el: HTMLElement, i: number) => void) {
+  const o = loadOrder(), groups = new Map<Element, HTMLElement[]>();
+  document.querySelectorAll<HTMLElement>(sel).forEach((el) => {
+    const g = groups.get(el.parentElement!) ?? []; g.push(el); groups.set(el.parentElement!, g);
+  });
+  for (const els of groups.values()) {
+    const anchor = els[els.length - 1].nextSibling, parent = els[0].parentElement!;
+    const rank = (el: HTMLElement) => o.indexOf(el.getAttribute(attr) as AccountId);
+    [...els].sort((a, b) => rank(a) - rank(b)).forEach((el, i) => { parent.insertBefore(el, anchor); after?.(el, i); });
+  }
+}
 
 /** General ▸ How usage looks ▸ Widget: how the "Claude usage" widget draws the limits, and its look (26.11.0). */
 export type WidgetLook = { design: Design; plate: "system" | "std" | "black" | "silver" };
@@ -173,6 +204,13 @@ export function applyPrefs(p = loadPrefs()) {
     el.dataset.design = key;
     el.innerHTML = limitsHTML(id, design, false) + creditsHTML(id);
   });
+  // the profiles' order (26.11.0): dashboard keys and cards, the history's legend, the launcher (its ⌘1, ⌘2… follow)
+  // and the Settings strip; never the Dock
+  reorder(".dash-bar [data-chip]", "data-chip");
+  reorder(".dash-cards > [data-account]", "data-account");
+  reorder(".legend-item[data-account]", "data-account");
+  reorder(".mini-palette > .row[data-open-desktop]", "data-open-desktop", (el, i) => { const k = el.querySelector(".kbd"); if (k) k.textContent = `⌘${i + 1}`; el.classList.toggle("sel", i === 0); });
+  reorder(".settings .strip [data-select-acc]:not([data-select-acc='general'])", "data-select-acc");
   // the profiles' menu bar icons in the site's menu bar (26.11.0)
   (window as any).clMenuBar?.(p);
   // "back at 15:28": counted from the visitor's clock (the demo's full limit resets this many minutes from now)
