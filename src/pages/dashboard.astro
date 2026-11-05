@@ -53,7 +53,7 @@ const jsonLd = [
 
 <script>
   import { rangeHTML, sharesHTML, totalsHTML, csvFor } from "../data/historyView";
-  import { loadPrefs } from "../data/prefs";
+  import { loadPrefs, loadOrder, saveOrder, applyPrefs } from "../data/prefs";
   import { allIds, type AccountId, type Range } from "../data/demo";
 
   const KEY = "cl_audit.dashboardHidden";
@@ -168,6 +168,37 @@ const jsonLd = [
         render(dash, hidden);
       }),
     );
+    // Drag a card to change the profiles' order (26.11.0), the same order and save as Settings' tile bar. A card is
+    // picked up by its body or header: its keys and switches keep their clicks, a drag never starts from one.
+    const grid = dash.querySelector<HTMLElement>(".dash-cards")!;
+    let fromKey = false, dragged: HTMLElement | null = null;
+    grid.querySelectorAll<HTMLElement>(":scope > [data-account]").forEach((c) => (c.draggable = true));
+    grid.addEventListener("pointerdown", (e) => { fromKey = !!(e.target as HTMLElement).closest("button, a, input, select, [role=switch]"); });
+    grid.addEventListener("dragstart", (e) => {
+      const card = (e.target as HTMLElement).closest<HTMLElement>(".dash-cards > [data-account]");
+      if (!card || fromKey) { e.preventDefault(); return; }
+      dragged = card; card.classList.add("dragging");
+      e.dataTransfer?.setData("text/plain", card.dataset.account!);
+      if (e.dataTransfer) e.dataTransfer.effectAllowed = "move";
+    });
+    grid.addEventListener("dragover", (e) => {
+      const over = (e.target as HTMLElement).closest<HTMLElement>(".dash-cards > [data-account]");
+      if (!dragged || !over) return;
+      e.preventDefault();
+      if (over === dragged) return;
+      const r = over.getBoundingClientRect();
+      grid.insertBefore(dragged, e.clientX < r.left + r.width / 2 ? over : over.nextSibling);
+    });
+    grid.addEventListener("drop", (e) => { if (dragged) e.preventDefault(); });
+    grid.addEventListener("dragend", () => {
+      if (!dragged) return;
+      dragged.classList.remove("dragging"); dragged = null;
+      const order = [...grid.querySelectorAll<HTMLElement>(":scope > [data-account]")].map((c) => c.dataset.account!) as AccountId[];
+      if (order.join() === loadOrder().join()) return;
+      saveOrder(order); applyPrefs(loadPrefs()); render(dash, hidden);
+      const d = dash.querySelector<HTMLElement>("[data-updated]");
+      if (d) { d.innerHTML = '<span class="g">Saved</span> <em>· order</em>'; setTimeout(() => (d.innerHTML = "Updated <em>· just now</em>"), 2500); }
+    });
   }
   document.addEventListener("astro:page-load", setup);
 </script>
