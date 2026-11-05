@@ -369,3 +369,50 @@ test("a flip of a file that is not a regular file at HEAD (a symlink) is refused
   writeFileSync(patch, readFileSync(join(fx, "single.patch"), "latin1").replaceAll("alpha", "a-post"), "latin1");
   refused(check(patch, pagesFile("blog/a-post\n"), s.dir, DUE_DAY), /not an existing regular file in HEAD/);
 });
+
+// ---- the deep review's hardenings: no-newline marker, context line, one `draft:` line
+test("`\\ No newline at end of file` is accepted only as the last line of the hunk, after a context line", () => {
+  const bare = (draft) => `---\npublished: 2026-11-09\ndraft: ${draft}\n---`; // no final newline: the closing --- is the last line
+  const s = scratch();
+  s.write(A, bare("true"));
+  s.git("commit", "-qam", "no final newline");
+  const patch = readFileSync(makePatch(s, () => s.write(A, bare("false"))), "latin1");
+  assert.match(patch, /\n ---\n\\ No newline at end of file\n$/); // git ends the hunk with the marker
+  const run = (text) => { const f = join(tmp("check-patch-p-"), "flip.patch"); writeFileSync(f, text, "latin1"); return check(f, pagesFile("blog/a-post\n"), s.dir, DUE_DAY); };
+  accepted(run(patch));
+  // in the middle of the hunk, after a context line
+  refused(run(patch.replace(" published: 2026-11-09\n", " published: 2026-11-09\n\\ No newline at end of file\n")), /only accepted as the last line of the hunk/);
+  // after the added line, or with text after it, or twice
+  refused(run(patch.replace("+draft: false\n", "+draft: false\n\\ No newline at end of file\n")), /only accepted as the last line of the hunk/);
+  refused(run(patch.replace("\\ No newline at end of file", "\\ No newline at end of file, evil")), /only accepted as the last line of the hunk/);
+  refused(run(patch + "\\ No newline at end of file\n"), /more than one hunk, or text after the hunk|only accepted/);
+});
+
+test("a hunk with no context line is refused", () => {
+  const s = scratch();
+  s.write(A, page("false"));
+  s.git("add", "-N", ".");
+  const f = join(tmp("check-patch-p-"), "flip.patch");
+  writeFileSync(f, s.git(...GIT_DIFF, "-U0"));
+  s.git("reset", "-q", "--hard");
+  assert.match(readFileSync(f, "utf8"), /^@@ -5 \+5 @@/m); // a real -U0 patch, one changed line, no context
+  refused(check(f, pagesFile("blog/a-post\n"), s.dir, DUE_DAY), /the hunk has no context line/);
+});
+
+test("a front matter with two top-level `draft:` lines is refused, an indented `draft:` of another key is not counted", () => {
+  const two = (first, second) => `---\ntitle: "A page"\ndraft: ${first}\npublished: 2026-11-09\ndraft: ${second}\n---\n\nBody.\n`;
+  const s = scratch();
+  s.write(A, two("false", "true"));
+  s.git("commit", "-qam", "two draft lines");
+  refused(check(makePatch(s, () => s.write(A, two("false", "false"))), pagesFile("blog/a-post\n"), s.dir, DUE_DAY), /has 2 top-level `draft:` lines/);
+  // a flip of the first of two `draft: true` lines, too
+  s.write(A, two("true", "true"));
+  s.git("commit", "-qam", "two draft: true lines");
+  refused(check(makePatch(s, () => s.write(A, two("false", "true"))), pagesFile("blog/a-post\n"), s.dir, DUE_DAY), /has 2 top-level `draft:` lines/);
+  const nested = (draft) => `---\ntitle: "A page"\nmeta:\n  draft: true\npublished: 2026-11-09\ndraft: ${draft}\n---\n\nBody.\n`;
+  s.write(B, nested("true"));
+  s.git("commit", "-qam", "an indented draft");
+  accepted(check(makePatch(s, () => s.write(B, nested("false"))), pagesFile("use-cases/b-case\n"), s.dir, DUE_DAY));
+  // flipping the indented one is not the front matter's draft line
+  refused(check(makePatch(s, () => s.write(B, nested("true").replace("  draft: true", "  draft: false"))), pagesFile("use-cases/b-case\n"), s.dir, DUE_DAY), /not a `draft: true` line|not the front matter's `draft:` line/);
+});
