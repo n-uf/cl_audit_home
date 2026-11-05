@@ -11,7 +11,10 @@ const lastmod = new Map();
 for (const [dir, section] of [["src/content/use-cases", "use-cases"], ["src/content/blog", "blog"]]) {
   if (!existsSync(dir)) continue;
   for (const file of readdirSync(dir).filter((f) => f.endsWith(".md"))) {
-    const m = readFileSync(`${dir}/${file}`, "utf8").match(/^updated:\s*["']?(\d{4}-\d{2}-\d{2})/m);
+    const text = readFileSync(`${dir}/${file}`, "utf8");
+    const front = text.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? "";
+    if (/^draft:\s*true\s*$/m.test(front)) continue; // a draft isn't built in production, so it has no sitemap entry
+    const m = front.match(/^updated:\s*["']?(\d{4}-\d{2}-\d{2})/m);
     if (m) lastmod.set(`${site}/${section}/${file.slice(0, -3)}/`, new Date(`${m[1]}T00:00:00Z`));
   }
 }
