@@ -6,7 +6,9 @@
 # Two jobs, so third-party code never shares a job with the write key:
 #   build  has no environment and no secret (permissions: contents: read, checkout without credentials). It flips the
 #          due drafts, saves the flip as a patch and uploads it with the page list as one artifact (both before any
-#          third-party code runs, so nothing later in the job can rewrite them), then runs `npm ci` and
+#          third-party code runs, so later code can't rewrite them by editing files; a compromised build could still
+#          swap the artifact through the runner's own token, which is why the push job's checks are what make a
+#          changed artifact harmless), then runs `npm ci` and
 #          `npm run build` (no npm cache is used). Only a green build sets `ready`, and the push job starts only when
 #          it is set: a red build pushes nothing. Dependencies' install and build scripts run here, and can reach
 #          nothing but a read-only token.
@@ -121,9 +123,10 @@ jobs:
           cp "$RUNNER_TEMP/due.txt" "$RUNNER_TEMP/handoff/pages.txt"
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
-      # Uploaded right after the flip, before `npm ci`: nothing third-party has run yet, so nothing that runs later
-      # in this job can rewrite what the push job receives. The push job still starts only when `ready` is set
-      # below, after a green build.
+      # Uploaded right after the flip, before `npm ci`: nothing third-party has run yet, so later code can't change
+      # what the push job receives by editing files. (It could still re-upload the artifact with the runner's token;
+      # the push job's checker, its re-check and the staged-files check are what make that harmless.) The push job
+      # still starts only when `ready` is set below, after a green build.
       - name: Hand over the flip (patch and page list)
         if: steps.flip.outputs.changed == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
