@@ -5,7 +5,7 @@ h1: "Claude Code usage history on your Mac"
 mainKeyword: "claude code usage history"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-04
 author: n-uf
 order: 3
 takeaways:
@@ -20,7 +20,7 @@ faq:
   - q: "Can I see usage by project?"
     a: "Yes. The \"Where it goes\" chart splits the share of tokens in the period by project, by model and by surface, so you can see which project or which model used most. The profile chips next to the period keys filter it to one account or more."
   - q: "Does it count cache reads?"
-    a: "No. The tokens chart counts input, cache writes and output, and says on the chart that cache reads are not counted. The totals are tokens and replies, not dollars."
+    a: "Not in the tokens chart: it counts input, cache writes and output, and says on the chart that cache reads are not counted. The cost estimate in the totals does include them, priced apart at the API's cache-read rate."
   - q: "Is anything uploaded?"
     a: "No. The history is read from files on your Mac. cl_audit has no server and no analytics, and its only network requests go to Anthropic, to read each profile's limits and which account it is signed in to."
 sources:
@@ -57,7 +57,7 @@ Pick 24 h, 7 d or 30 d and the charts redraw. It's free, and it runs on a Mac wi
 - **Tokens per day.** A bar for each day, per profile; in the 24 h view it becomes tokens per hour. The note on the chart says what's counted: input + cache writes + output. Cache reads are not counted.
 - **Where it goes.** The share of tokens in the period by project, by model and by surface. The project is the folder you worked in. The surface is where Claude Code ran.
 
-Above the charts, a small display gives the period's totals in replies and tokens (in the demo's 7 d view, "1,307 replies · 36.1M tokens"). The period you pick and the **Show** chips are kept between launches.
+Above the charts, a small display gives the period's totals: replies, tokens and a cost estimate, such as "1,242 replies · 34.2M tokens · ≈ $982.12 at list prices". The estimate is what the same tokens would cost on Anthropic's API at list prices, per model. It isn't your bill, and models without a published price are left out. The **CSV** key next to the period saves the history as a file, one row per day, profile and model. The period you pick and the **Show** chips are kept between launches.
 
 You can click through all of it on the [demo dashboard](/dashboard/), which runs on sample data for three made-up profiles: home, work and side.
 
@@ -123,5 +123,7 @@ Nothing stops you using two of them, or all three.
 The history is read on your Mac and stays there. cl_audit has no server, no analytics and no sign-up. It makes two kinds of request, both to Anthropic's own server: each profile's usage limits, and which account the profile is signed in to. Session files aren't sent anywhere.
 
 Those files are plain text and hold whatever passed through a session, so Anthropic's docs suggest lowering `cleanupPeriodDays` if you want them kept for less time. cl_audit reads only the five fields above. It saves the resulting usage figures per profile, and **Remove profile…** deletes them with the profile.
+
+If you'd rather it didn't read the session files at all, turn off Settings ▸ General ▸ Privacy ▸ **Usage history**. cl_audit then opens none of them, and the dashboard shows the limits only. The limits come from Anthropic either way.
 
 The source is open to read, and the [FAQ](/faq/) lists what cl_audit reads and sends. To see the history for your own sessions, [download cl_audit](/install/) and add a profile for each Claude Code folder you use. The page on [cl_audit's Dock icons](/) has the rest of the app.

@@ -1,11 +1,11 @@
 {
   "alert-settings.webp": {
     "width": 459,
-    "height": 154
+    "height": 156
   },
   "card-limit-full.webp": {
     "width": 460,
-    "height": 284
+    "height": 318
   },
   "dock-profiles.webp": {
     "width": 488,
@@ -16,7 +16,7 @@
     "height": 260
   },
   "usage-history.webp": {
-    "width": 700,
-    "height": 597
+    "width": 964,
+    "height": 907
   }
 }
