@@ -29,9 +29,11 @@ The rules, all of which must hold:
      Anything the parser does not know is refused.
   2. Each file has exactly one hunk, and the hunk removes exactly one line, a top-level `draft:` line whose value
      is true (true, True or TRUE, optional trailing comment), and adds exactly one line directly after it: the same
-     line with the value written as `false`. Context lines (changed nothing) are fine. The hunk must sit where its
-     header says, in the HEAD version of the file, with the removed line inside the front matter (after its opening
-     `---` and before its closing `---`), so a `draft: true` in the body, a code sample say, can't be flipped.
+     line with the value written as `false`. The hunk has at least one context line (changed nothing), and may end
+     with `\\ No newline at end of file` after a context line, nowhere else. The hunk must sit where its header says,
+     in the HEAD version of the file, with the removed line inside the front matter (after its opening `---` and
+     before its closing `---`), so a `draft: true` in the body, a code sample say, can't be flipped. That front
+     matter has exactly one top-level `draft:` line (an indented one is another key's), and it is the changed one.
   3. The file's `published` day (a date, or a timestamp read as its UTC day, as publish-due.mjs reads it) is today
      (UTC) or earlier: nothing goes out early.
   4. The page list matches the files in the patch exactly, each page once.
@@ -178,6 +180,13 @@ def check_page(root, rel, old_side, at, old_start, today):
         refuse("%s: the hunk does not match the file in the checkout at line %d" % (rel, old_start))
     if not 0 < start + at < close:
         refuse("%s: the changed line (%d) is outside the front matter (lines 2-%d)" % (rel, start + at + 1, close))
+    # exactly one top-level `draft:` line in the front matter (as publish-due reads it: an indented one belongs to
+    # another key's block), and it is the changed one
+    drafts = [k for k in range(1, close) if re.match(r"""^(["']?)draft\1[ \t]*:(?=[ \t]|$)""", lines[k])]
+    if len(drafts) != 1:
+        refuse("%s: the front matter has %d top-level `draft:` lines, a flip needs exactly one" % (rel, len(drafts)))
+    if drafts[0] != start + at:
+        refuse("%s: the changed line (%d) is not the front matter's `draft:` line (%d)" % (rel, start + at + 1, drafts[0] + 1))
     if published > today:
         refuse("%s isn't due: published %s is after today, %s (UTC)" % (rel, published, today))
 
@@ -229,11 +238,8 @@ def parse_patch(data, root, today):
         prev = ""
         while (seen_old < old_count or seen_new < new_count) and i < n:
             line = lines[i]
-            if line.startswith("\\ "):  # `\ No newline at end of file`: only after a context line
-                if prev != " " or not line.startswith("\\ No newline at end of file"):
-                    refuse("%s: line %d: a no-newline marker is only accepted after a context line" % (a, i + 1))
-                i += 1
-                continue
+            if line.startswith("\\ "):  # `\ No newline at end of file` in the middle of the hunk: never
+                refuse("%s: line %d: a no-newline marker is only accepted as the last line of the hunk, after a context line" % (a, i + 1))
             tag, body = line[:1], line[1:]
             if tag == " ":
                 seen_old += 1
@@ -254,10 +260,12 @@ def parse_patch(data, root, today):
             i += 1
         if seen_old != old_count or seen_new != new_count:
             refuse("%s: the hunk is shorter than its header says" % a)
-        if i < n and lines[i].startswith("\\ "):  # a marker after the last hunk line
-            if prev != " " or not lines[i].startswith("\\ No newline at end of file"):
-                refuse("%s: line %d: a no-newline marker is only accepted after a context line" % (a, i + 1))
+        if i < n and lines[i].startswith("\\ "):  # a marker after the last hunk line: the only place it may be
+            if prev != " " or lines[i] != "\\ No newline at end of file":
+                refuse("%s: line %d: a no-newline marker is only accepted as the last line of the hunk, after a context line" % (a, i + 1))
             i += 1
+        if " " not in tags:
+            refuse("%s: the hunk has no context line (a flip always has the front matter's lines around it)" % a)
         if i < n and not lines[i].startswith("diff --git "):
             refuse("%s: more than one hunk, or text after the hunk (line %d: %r); a page has one `draft:` line" % (a, i + 1, lines[i][:80]))
 
