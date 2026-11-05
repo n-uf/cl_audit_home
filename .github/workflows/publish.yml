@@ -18,7 +18,9 @@
 #          before today, UTC), and the page list equals the files in the patch. The commit message is the checker's
 #          one `publish: ...` line. Then it pushes. A rejected push (main moved during the build) runs
 #          `git pull --rebase` (no rebuild) and tries again, 3 pushes at most; a refusal for any other reason, or a
-#          rebase conflict (aborted), fails the run.
+#          rebase conflict (aborted), fails the run. After each rebase the flip is checked again, by a copy of the
+#          checker saved at github.sha, against the new main (a page whose `published` moved into the future
+#          meanwhile is no longer due): not accepted, nothing is pushed. A cancelled run does not push.
 #   report decides the colour of the run: red when build or push failed, or when build's publish-due exited 3.
 # Both jobs check out ${{ github.sha }}, the commit the run started on. Only the page list and the patch cross from
 # build to push: no commit id does, so a compromised build can't make the key push a commit (a fork's head, an orphan)
@@ -131,7 +133,8 @@ jobs:
 
   push:
     needs: build
-    if: always() && needs.build.outputs.ready == 'true'
+    # no `always()`: the implicit success() keeps a cancelled run from pushing
+    if: needs.build.outputs.ready == 'true'
     # the deploy key is an environment secret; the `publish` environment deploys from main only
     environment: publish
     runs-on: ubuntu-latest
@@ -183,6 +186,9 @@ jobs:
       # output goes to stderr and never into the message.
       - name: Check, apply and commit the patch
         run: |
+          # a copy of the checker as it is at github.sha: the push step re-checks the flip with it after a rebase,
+          # when the working tree holds a newer main (and so possibly a newer, or edited, checker)
+          cp scripts/check-publish-patch.py "$RUNNER_TEMP/check-publish-patch.py"
           git switch -q -c publish-flip
           message=$(python3 -I scripts/check-publish-patch.py --root "$GITHUB_WORKSPACE" "$RUNNER_TEMP/handoff/publish.patch" "$RUNNER_TEMP/handoff/pages.txt")
           if [[ "$message" != "publish: "* || "$message" == *$'\n'* ]]; then
@@ -196,8 +202,20 @@ jobs:
           git -c core.hooksPath=/dev/null commit -q -m "$message"
           git -c core.hooksPath=/dev/null log --stat -1
 
+      # After a rebase the flip sits on a newer main than the one that was checked (a PR may have moved a page's
+      # `published` into the future meanwhile, and the rebase would still be clean). So after every successful rebase
+      # the flip commit is checked again: its diff against its new parent, by the saved copy of the checker, against a
+      # temporary worktree at that parent, with the same page list. Not accepted: nothing is pushed.
       - name: Push to main
         run: |
+          recheck() {
+            local wt="$RUNNER_TEMP/recheck-worktree" rc=0
+            git -c core.hooksPath=/dev/null diff --no-color --no-ext-diff --no-renames --src-prefix=a/ --dst-prefix=b/ HEAD~1 HEAD > "$RUNNER_TEMP/recheck.patch" || return 1
+            git -c core.hooksPath=/dev/null worktree add -q --detach "$wt" HEAD~1 || return 1
+            python3 -I "$RUNNER_TEMP/check-publish-patch.py" --root "$wt" "$RUNNER_TEMP/recheck.patch" "$RUNNER_TEMP/handoff/pages.txt" > /dev/null || rc=$?
+            git -c core.hooksPath=/dev/null worktree remove --force "$wt" || true
+            return "$rc"
+          }
           for attempt in 1 2 3; do
             if git -c core.hooksPath=/dev/null push origin HEAD:main 2> "$RUNNER_TEMP/push.err"; then cat "$RUNNER_TEMP/push.err"; exit 0; fi
             cat "$RUNNER_TEMP/push.err" >&2
@@ -213,6 +231,10 @@ jobs:
               echo "::error::rebase onto the new main conflicted; nothing was pushed"
               exit 1
             fi
+            if ! recheck; then
+              echo "::error::the flip no longer passes the patch check on the new main (see above); nothing was pushed"
+              exit 1
+            fi
           done
           echo "::error::push to main was rejected 3 times"
           exit 1
@@ -221,7 +243,7 @@ jobs:
   # though the readable pages were published; otherwise green
   report:
     needs: [build, push]
-    if: always() && needs.build.result != 'skipped'
+    if: ${{ !cancelled() && needs.build.result != 'skipped' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions: {}
