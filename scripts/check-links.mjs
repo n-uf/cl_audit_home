@@ -5,11 +5,25 @@
 //
 //   node scripts/check-links.mjs [dist-dir]     (default: dist)
 //
-// Walks every .html file in the folder, collects every internal href (starting with "/", not "//"; "#..." and
-// external links are ignored; ?query and #hash are cut off) and checks that a file exists for it:
+// Walks every .html file in the folder, collects every internal href (starting with "/", not "//", or an absolute link
+// to this site's own host, https://cl-audit.n-uf.com/..., which counts as the same path; "#..." and links to other
+// hosts are ignored; ?query and #hash are cut off) and checks that a file exists for it:
 // /x/ -> /x/index.html, /x -> /x.html or /x/index.html, /file.ext -> that file.
 import { readdirSync, readFileSync, existsSync, statSync } from "node:fs";
 import { join, resolve, relative, extname } from "node:path";
+
+const SITE_HOST = "cl-audit.n-uf.com"; // keep equal to `site` in astro.config.mjs
+const ownHost = new RegExp(`^(?:https?:)?//${SITE_HOST.replace(/\./g, "\\.")}(?=[/?#]|$)`, "i");
+
+/** The site path of an internal href ("/x/", "/x?a#b"), or null if the href is an external link or not a path. */
+function internalPath(href) {
+  const own = href.match(ownHost);
+  if (own) {
+    const rest = href.slice(own[0].length);
+    return rest.startsWith("/") ? rest : `/${rest}`; // "https://host" and "https://host?x" are the home page
+  }
+  return href.startsWith("/") && !href.startsWith("//") ? href : null;
+}
 
 const dist = resolve(process.argv[2] ?? "dist");
 if (!existsSync(dist)) {
@@ -41,8 +55,8 @@ for (const file of htmlFiles(dist)) {
   const page = "/" + relative(dist, file).replace(/index\.html$/, "").replace(/\\/g, "/");
   const seen = new Set();
   for (const m of readFileSync(file, "utf8").matchAll(/<a\b[^>]*?\shref\s*=\s*(?:"([^"]*)"|'([^']*)')/gi)) {
-    const href = (m[1] ?? m[2]).replace(/&amp;/g, "&").trim();
-    if (!href.startsWith("/") || href.startsWith("//") || seen.has(href)) continue;
+    const href = internalPath((m[1] ?? m[2]).replace(/&amp;/g, "&").trim());
+    if (href === null || seen.has(href)) continue;
     seen.add(href);
     checked++;
     if (!exists(href)) missing.push(`${page} -> ${href}`);
