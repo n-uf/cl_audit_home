@@ -79,7 +79,9 @@ only the patch and the page list cross between them, never a commit id. Before a
 `src/content/blog/<slug>.md` or `src/content/use-cases/<slug>.md` with exactly one change, a `draft: true` line inside
 the front matter written back as `draft: false`, the page's `published` day is today (UTC) or earlier, and the page
 list equals the files in the patch. Then it commits (one line, `publish: ...`) and pushes with git hooks off, ssh
-reading no config, agent or proxy, and GitHub's SSH host key pinned. A third job, `report`, turns the run red when
+reading no config, agent or proxy, and GitHub's SSH host key pinned. If main moved and `push` has to rebase, it
+checks the flip again on the new main (with a copy of the checker saved before the rebase) and pushes nothing unless
+that passes. A third job, `report`, turns the run red when
 either job failed or some page's front matter couldn't be read (the readable pages are published all the same).
 A draft's `updated` must equal its `published` (the schema requires `updated >= published`, and the flip changes
 only `draft`, so a draft dated ahead needs the same future date in both). `.github/workflows/ci.yml` runs the tests
