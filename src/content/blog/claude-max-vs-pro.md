@@ -39,7 +39,7 @@ sources:
     checked: 2026-11-02
   - title: "Claude Fable models on your plan (Claude Help Center)"
     url: "https://support.claude.com/en/articles/15424964-claude-fable-models-on-your-plan"
-    checked: 2026-11-02
+    checked: 2026-11-05
   - title: "Claude pricing (claude.com)"
     url: "https://claude.com/pricing"
     checked: 2026-11-02
@@ -116,7 +116,7 @@ Anthropic's pages don't tell you which plan you need. They can't, since the answ
 
 If the 5-hour limit fills often and the weekly limit stays far from full, the five-hour window is what stops you. If the weekly limit runs out first, that's the cap to compare. Max multiplies both. The monthly gap is $80 ($100 for Max against $20 for Pro billed monthly). What a full limit costs you in waiting is the other side, and only you know that number.
 
-cl_audit can do the watching. It reads the same 5-hour and weekly figures from Anthropic for each profile, using that profile's Claude Code sign-in, and shows them in the Dock. On Max, Fable's weekly limit gets a third row of its own, unless you turn it off for the profile (Profile ▸ Fable's limit). It can notify you at a level you choose and again when a profile is back (Notify when back); [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) shows how. Its history panel adds tokens per day, split by project, model and surface, and [how the usage history works](/use-cases/claude-code-usage-history/) goes through it.
+cl_audit can do the watching. It reads the same 5-hour and weekly figures from Anthropic for each profile, using that profile's Claude Code sign-in, and shows them in the Dock. On Max, Fable's weekly limit gets a third row on the card, unless you turn it off for the profile (Profile ▸ Fable's limit). It can notify you at a level you choose and again when a profile is back (Notify when back); [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) shows how. Its history panel adds tokens per day, split by project, model and surface, and [how the usage history works](/use-cases/claude-code-usage-history/) goes through it.
 
 ![cl_audit usage history: tokens per day by project](/img/guides/usage-history.webp "The history panel: tokens per day, and where they go by project, model and surface. Sample data.")
 
