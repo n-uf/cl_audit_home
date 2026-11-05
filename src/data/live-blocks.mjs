@@ -7,7 +7,8 @@
 // adds the real "is this path built" lookup and is what the pages call.
 //
 // Build errors (each names `where`, the file, and the reason): a target that is no page at all; a nested block;
-// a stray {{live: or {{/live}}; a block that spans paragraphs (or any other block element).
+// a stray {{live: or {{/live}}; a block that spans paragraphs (or any other block element); a block in a heading
+// (it would leave an empty heading, and the table of contents would show its raw markers).
 
 const MARK = /\{\{live:([^{}]*)\}\}|\{\{\/live\}\}/g;
 const BLOCK_TAG = /<\/?(?:p|ul|ol|li|h[1-6]|blockquote|pre|table|figure|div|hr)\b/i;
@@ -31,6 +32,10 @@ export function applyLiveBlocks(html, status, where) {
       let path = m[1].trim();
       if (path !== "" && !path.endsWith("/")) path += "/";
       if (!SITE_PATH.test(path)) fail(`{{live:${m[1]}}} is not a site path like /blog/some-page/`);
+      const before = html.slice(0, m.index);
+      const lastOpenH = Math.max(...[...before.matchAll(/<h[1-6]\b/gi)].map((x) => x.index), -1);
+      const lastCloseH = Math.max(...[...before.matchAll(/<\/h[1-6]>/gi)].map((x) => x.index), -1);
+      if (lastOpenH > lastCloseH) fail(`the live block for ${path} is inside a heading: put it in a paragraph or list item`);
       open = { path, start: m.index, end: m.index + m[0].length };
       continue;
     }
@@ -55,6 +60,12 @@ export function applyLiveBlocks(html, status, where) {
   if (open) fail(`{{live:${open.path}}} is never closed with {{/live}}`);
   out += html.slice(pos);
   if (/\{\{\s*\/?\s*live/i.test(out)) fail("stray {{live: or {{/live}} (not a complete {{live:/path/}}…{{/live}} pair)");
-  // a paragraph or list item that was only the block is left empty: drop it
-  return removed ? out.replace(/<(p|li)(?:\s[^>]*)?>\s*<\/\1>\n?/g, "") : out;
+  // a paragraph or list item that was only the block is left empty: drop it, and then a list item (a loose list wraps
+  // items in <p>) or a whole list that this leaves empty, until nothing more changes
+  if (!removed) return out;
+  for (let prev = ""; prev !== out; ) {
+    prev = out;
+    out = out.replace(/<(p|li|ul|ol)(?:\s[^>]*)?>\s*<\/\1>\n?/g, "");
+  }
+  return out;
 }

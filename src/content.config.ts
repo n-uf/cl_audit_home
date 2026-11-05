@@ -25,7 +25,11 @@ const article = z.object({
   // updated >= published, and scripts/publish-due.mjs changes only the `draft` line when the day comes.
   // a live page can't be dated in the future (UTC days); only a draft may wait for its date
   .refine((d) => d.draft || d.published.toISOString().slice(0, 10) <= new Date().toISOString().slice(0, 10),
-    { message: "published is a future date but the page is not a draft: set draft: true (it goes live on that date)", path: ["published"] });
+    { message: "published is a future date but the page is not a draft: set draft: true (it goes live on that date)", path: ["published"] })
+  // {{live:/path/}}…{{/live}} works only in the markdown body (src/data/live.ts): in front matter it would show as is
+  // in titles, meta tags, FAQ and JSON-LD
+  .refine((d) => !/\{\{\s*\/?\s*live/i.test(JSON.stringify(d)),
+    { message: "{{live:…}} blocks work only in the markdown body, not in front matter (title, description, takeaways, FAQ, related)" });
 
 export const collections = {
   useCases: defineCollection({ loader: glob({ pattern: "*.md", base: "./src/content/use-cases" }), schema: article }),

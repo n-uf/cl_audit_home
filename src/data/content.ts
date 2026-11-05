@@ -45,6 +45,9 @@ export const dateText = (d: Date) => releasedText(d.toISOString().slice(0, 10));
  *  shown); "unbuilt": an entry whose draft is hidden in this build; "none": no page at all. For {{live:}} blocks (live.ts). */
 export async function pageStatus(path: string): Promise<"built" | "unbuilt" | "none"> {
   if (pages.some((p) => p.path === path)) return "built";
+  // the section indexes: /use-cases/ always; /blog/ once it has an article in this build (a draft-only blog isn't built yet)
+  if (path === sections.usecases.path) return "built";
+  if (path === sections.blog.path) return (await getPosts()).length > 0 ? "built" : blogFiles.length > 0 ? "unbuilt" : "none";
   for (const section of ["usecases", "blog"] as const) {
     if (!path.startsWith(sections[section].path)) continue;
     const all: Entry[] = section === "usecases" ? await getCollection("useCases") : blogFiles.length === 0 ? [] : await getCollection("blog");
