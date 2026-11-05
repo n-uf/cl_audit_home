@@ -55,6 +55,7 @@ const jsonLd = [
   import { rangeHTML, sharesHTML, totalsHTML, csvFor } from "../data/historyView";
   import { loadPrefs, loadOrder, saveOrder, applyPrefs } from "../data/prefs";
   import { allIds, type AccountId, type Range } from "../data/demo";
+  import { showWhatNow } from "../data/whatNow";
 
   const KEY = "cl_audit.dashboardHidden";
   const CHARTS = "cl_audit.dashboardCharts";   // charts switched off with their keys
@@ -145,6 +146,13 @@ const jsonLd = [
       setTimeout(() => { d.innerHTML = "Updated <em>· just now</em>"; k.classList.remove("busy"); k.textContent = "↻"; }, 1400);
     });
     // CSV (26.11.0): saves the period and the shown profiles as CSV, as the app's key does; the rows are the demo's
+    // "Switch to team-2…" under a full limit's box: in the app it opens the Switch page (a demo: it says so)
+    dash.addEventListener("click", (e) => {
+      const k = (e.target as HTMLElement).closest<HTMLElement>("[data-switch-offer]");
+      if (!k) return;
+      const to = k.textContent!.replace(/^Switch to |…$/g, "");
+      showWhatNow(`Switch to ${to}`, "", `In cl_audit this opens the Switch page: both accounts' limits, what stays and what follows to ${to}. This is a demo, so nothing switches.`);
+    });
     dash.querySelector<HTMLButtonElement>("[data-csv]")?.addEventListener("click", () => {
       const ids = allIds.filter((id) => !load().includes(id)) as AccountId[];
       const blob = new Blob([csvFor((dash.dataset.range || "7d") as Range, ids)], { type: "text/csv" });

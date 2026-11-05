@@ -19,11 +19,11 @@ const jsonLd = [
 </Desktop>
 
 <script>
-  import { accounts, type AccountId } from "../data/demo";
+  import { accounts, standby, type AccountId, type Standby } from "../data/demo";
   import { applyPrefs, loadPrefs, savePrefs, loadOrder, saveOrder, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
   import { glyphHTML, lane as mbLane } from "../data/menubar";
   import { widgetHTML } from "../data/widgetView";
-  import { limitsHTML, whenWords, type Design } from "../data/panelView";
+  import { limitsHTML, standbyLimitsHTML, whenWords, type Design } from "../data/panelView";
   import { showWhatNow } from "../data/whatNow";
 
   const PEEK = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -124,6 +124,7 @@ const jsonLd = [
         case "dock": return [pr.showInDock ? "shows the usage" : "no Dock icon"];
         case "hold": return [pr.hold ? "details and menu" : "off"];
         case "dot": return pr.dot ? ["while its window is open", "window open"] : ["none"];
+        case "sessionsFollow": return [pr.sessionsFollow ? "to the account you switch to" : "stay with each account"];
         case "mbOn": return [pr.mb.on ? "shows the usage" : "no icon"];
       }
       return [""];
@@ -219,13 +220,42 @@ const jsonLd = [
 
     // Cancel at the row's end; a small × in a narrow window (CSS picks the label)
     const cancelKey = `<button type="button" class="key k login-x" data-login-cancel aria-label="Cancel"><span class="lx-t">Cancel</span><span class="lx-x" aria-hidden="true">×</span></button>`;
-    // Claude Code ▸ Login back to showing the account: menu closed, no address field, no grey line
+    // every pop-up of the Accounts row closed
+    const closeMenus = () => {
+      $$(".c-c .login-menu").forEach((m) => (m.hidden = true));
+      $$('.c-c [aria-haspopup="menu"]').forEach((b) => b.setAttribute("aria-expanded", "false"));
+    };
+    // Claude Code ▸ Accounts back to rest: menus closed, Add account instead of the address field, no grey line
     const loginReset = () => {
-      $("[data-login-menu]")!.hidden = true; $("[data-login-btn]")!.setAttribute("aria-expanded", "false");
-      $("[data-login-btn]")!.hidden = false;
-      $("[data-login-edit]")!.hidden = true; $("[data-login-line]")!.hidden = true;
+      closeMenus();
+      $("[data-add-row]")!.hidden = false;
+      $("[data-login-edit]")!.hidden = true;
+      const line = $("[data-login-line]")!; line.hidden = true; line.classList.remove("bad");
       const mail = $<HTMLInputElement>("[data-login-mail]")!; mail.hidden = false; mail.value = "";
       $("[data-login-keys]")!.innerHTML = `<button type="button" class="key k lt" style="--lamp:rgb(74,222,128)" data-login-go>Sign in</button>${cancelKey}`;
+    };
+    // A profile's standby accounts: the demo's (removable here), then what Add account added on this page. "ok": limits
+    // read; "new": found on this Mac, no numbers yet; "waiting": signed in from the address row, not finished.
+    type Box = { email: string; state: "ok" | "new" | "waiting"; s?: Standby };
+    const SPARE = "spare@example.com";
+    const added: Record<AccountId, Box[]> = { home: [], work: [], side: [] };
+    const removedSb = new Set<string>();
+    const boxes = (): Box[] => [
+      ...standby[acc].filter((s) => !removedSb.has(`${acc}:${s.email}`)).map((s) => ({ email: s.email, state: "ok" as const, s })),
+      ...added[acc],
+    ];
+    const boxHTML = (x: Box) => {
+      const design = loadCardStyle();
+      const body = x.state === "ok" && x.s
+        ? `${standbyLimitsHTML(x.s, design)}<small class="abox-note">Its sign-in renews by itself, so its limits stay current.</small>`
+        : x.state === "new"
+          ? `<small class="abox-note">No numbers yet: the agent reads them within a few minutes.</small>`
+          : `<div class="abox-why"><span>Waiting for the sign-in: finish it in the browser, or sign in again.</span><button type="button" class="key k" data-sb-signin="${x.email}">Sign in…</button></div>`;
+      return `<div class="abox"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
+        `<button type="button" class="abox-title" data-sb-btn="${x.email}" aria-haspopup="menu" aria-expanded="false"><span class="email">${x.email}</span><span class="chev" aria-hidden="true">⌃⌄</span></button>` +
+        `<span class="login-menu" data-sb-menu="${x.email}" role="menu" hidden></span>` +
+        (x.s ? `<small>${x.s.plan} · ${x.s.org}</small>` : "") +
+        `</span><span class="disp xs abox-badge">Standby</span></div>${body}</div>`;
     };
 
     // Menu bar: every style and colour drawn as it would look (55 % / 77 %, as the app's card), the Label and When
@@ -353,8 +383,12 @@ const jsonLd = [
         if (busy) { sw.classList.add(swOn(k, pr) ? "pulse-on" : "pulse-off"); $(`[data-sw-t="${k}"]`)!.textContent = swOn(k, pr) ? "turning on…" : "turning off…"; }
       }
       placeColumns();
-      // the Account pop-up starts closed, showing the account, on every profile
+      // Accounts: closed and at rest on every profile; the account in use with its limits in the dashboard's card style,
+      // then the standby ones
       loginReset();
+      $("[data-abox-detail]")!.textContent = `${a.plan} · ${acc === "work" ? "Work" : "Personal"}`;
+      $("[data-abox-limits]")!.innerHTML = limitsHTML(acc, loadCardStyle(), false);
+      $("[data-standby-boxes]")!.innerHTML = boxes().map(boxHTML).join("");
       // Folder: this profile's folder, the other profiles' dimmed with who is signed in there
       $<HTMLSelectElement>("[data-folder]")!.innerHTML = `<option selected>${a.dir}</option>` +
         accounts.filter((x) => x.id !== acc).map((x) => `<option disabled>${x.dir} ${x.email} · ${prefs[x.id].name}'s</option>`).join("");
@@ -430,8 +464,8 @@ const jsonLd = [
         // the menu bar icon is slow (it pulses until the icon is up or gone); the others are instant (one pulse)
         pulse(b, $(`[data-sw-t="${k}"]`), toOn, k === "mbOn" ? 1400 : 600, () => {
           if (k === "mbOn") { pr.mb.on = toOn; commit(); show(); return; }
-          const f = k as "hold" | "notify" | "notifyBack" | "windowFollows" | "showFable" | "dot";
-          pr[f] = toOn; commit(); show(); if (f !== "showFable" && f !== "dot") say(f);
+          const f = k as "hold" | "notify" | "notifyBack" | "windowFollows" | "showFable" | "dot" | "sessionsFollow";
+          pr[f] = toOn; commit(); show(); if (f !== "showFable" && f !== "dot" && f !== "sessionsFollow") say(f);
         });
         return;
       }
@@ -468,48 +502,80 @@ const jsonLd = [
       }
       if (pick("[data-remove]")) { $("[data-dialog]")!.hidden = false; return; }
       if (pick("[data-uninstall]")) { $("[data-udialog]")!.hidden = false; return; }
-      // Claude Code ▸ Login (26.11.0, final shape): a pop-up in line with Folder. Its menu: ✓ the account Claude Code is
-      // signed in to, the other profiles' accounts dimmed (one profile per account), Sign in to another account…, and
-      // Renew sign-in by itself (✓ when on; it used to be its own row)
+      // Claude Code ▸ Accounts (app build 238). The account in use: its address is a pop-up with ✓ it and Renew sign-in
+      // by itself. Add account: the accounts found on this Mac (one click adds it; other profiles' dimmed), then Sign in to
+      // another account…, which turns the row into the address field. A standby account's address: Sign in again… and
+      // Remove from <profile>. Nothing signs in or changes on this Mac: the demo keeps what you add in this page only.
+      const menuToggle = (btnSel: string, menuSel: string, html: () => string) => {
+        const m = $(menuSel)!, open = m.hidden;
+        closeMenus();
+        if (open) { m.innerHTML = html(); m.hidden = false; $(btnSel)?.setAttribute("aria-expanded", "true"); }
+      };
       if (pick("[data-login-btn]")) {
-        const m = $("[data-login-menu]")!, open = m.hidden;
-        if (open) {
-          const own = accounts.find((x) => x.id === acc)!;
-          // as the app's: the account Claude Code is signed in to, accounts in unused Claude Code folders (picking one
-          // links the profile to it; nothing changes in the demo), the other profiles' dimmed, then the two actions
-          m.innerHTML = `<span class="lm-row on"><span class="ok">✓</span> ${own.email}<em>${own.plan} · this profile</em></span>` +
-            `<button type="button" class="lm-row act" data-login-spare>spare@example.com<em>in ~/.claude-spare</em></button>` +
-            accounts.filter((x) => x.id !== acc).map((x) => `<span class="lm-row dim">${x.email}<em>${x.plan} · ${prefs[x.id].name}'s</em></span>`).join("") +
-            `<hr><button type="button" class="lm-row act" data-login-other>Sign in to another account…</button>` +
-            `<hr><button type="button" class="lm-row act" data-login-renew>${p().renew ? '<span class="ok">✓</span> ' : ""}Renew sign-in by itself</button>`;
-        }
-        m.hidden = !open; $("[data-login-btn]")!.setAttribute("aria-expanded", String(open));
+        const own = accounts.find((x) => x.id === acc)!;
+        menuToggle("[data-login-btn]", "[data-login-menu]", () =>
+          `<span class="lm-row on"><span class="ok">✓</span> ${own.email}<em>${own.plan} · this profile</em></span>` +
+          `<hr><button type="button" class="lm-row act" data-login-renew>${p().renew ? '<span class="ok">✓</span> ' : ""}Renew sign-in by itself</button>`);
         return;
       }
       if (pick("[data-login-renew]")) { p().renew = !p().renew; commit(); loginReset(); say("renew"); return; }
-      if ((b = pick("[data-login-other], [data-login-spare]"))) {
-        const spare = b.matches("[data-login-spare]");   // an unused folder's account: the same sign-in, its address filled in
-        // the value becomes the address field, with Sign in and Cancel under it, and one grey line under the row
+      if (pick("[data-add-btn]")) {
+        const have = boxes().map((s) => s.email);
+        menuToggle("[data-add-btn]", "[data-add-menu]", () =>
+          `<span class="lm-row lm-head">Found on this Mac</span>` +
+          (have.includes(SPARE) ? `<span class="lm-row dim">Nothing else found</span>` : `<button type="button" class="lm-row act" data-add-found>${SPARE}<em>in ~/.claude-spare</em></button>`) +
+          accounts.filter((x) => x.id !== acc).map((x) => `<span class="lm-row dim">${x.email}<em>${x.plan} · ${prefs[x.id].name}'s</em></span>`).join("") +
+          `<hr><button type="button" class="lm-row act" data-login-other>Sign in to another account…</button>`);
+        return;
+      }
+      if (pick("[data-add-found]")) { added[acc].push({ email: SPARE, state: "new" }); closeMenus(); show(); return; }
+      if (pick("[data-login-other]")) {
+        // the Add account row becomes the address field, with Sign in and Cancel, and one grey line under the row
         loginReset();
-        $("[data-login-btn]")!.hidden = true;
+        $("[data-add-row]")!.hidden = true;
         $("[data-login-edit]")!.hidden = false;
         const line = $("[data-login-line]")!;
         line.hidden = false;
-        line.textContent = `Claude Code signs in through Terminal; ${who()} stays on ${accounts.find((x) => x.id === acc)!.email} until then.`;
-        if (spare) $<HTMLInputElement>("[data-login-mail]")!.value = "spare@example.com";
+        line.textContent = `Claude Code signs in through Terminal, in a folder of its own; ${who()} keeps working meanwhile.`;
         $<HTMLInputElement>("[data-login-mail]")!.focus();
         return;
       }
       if (pick("[data-login-go]")) {
-        // waiting for the browser: "● signing in…" with Cancel (in the demo, nothing signs in)
-        const mail = $<HTMLInputElement>("[data-login-mail]")!.value.trim() || "the new address";
-        $("[data-login-mail]")!.hidden = true;
-        $("[data-login-keys]")!.innerHTML = `<span class="signing"><i></i>signing in…</span>${cancelKey}`;
-        $("[data-login-line]")!.textContent = `Finish signing in as ${mail} in the browser. If it shows another claude.ai account, switch it there first. (This is a demo, so nothing signs in.)`;
+        // the account is added, waiting for its sign-in in the browser (in the demo, nothing signs in)
+        const mail = $<HTMLInputElement>("[data-login-mail]")!.value.trim();
+        const line = $("[data-login-line]")!;
+        if (!mail.includes("@") || mail.startsWith("@") || mail.endsWith("@")) { line.textContent = "Type the account's email address."; line.classList.add("bad"); return; }
+        if (boxes().some((s) => s.email.toLowerCase() === mail.toLowerCase()) || accounts.find((x) => x.id === acc)!.email === mail.toLowerCase()) { line.textContent = `That's already one of ${who()}'s accounts.`; line.classList.add("bad"); return; }
+        const owner = accounts.find((x) => x.id !== acc && x.email === mail.toLowerCase());
+        if (owner) { line.textContent = `That's the account of “${prefs[owner.id].name}”. One profile per account.`; line.classList.add("bad"); return; }
+        added[acc].push({ email: mail, state: "waiting" });
+        loginReset(); show();
+        line.hidden = false;
+        line.textContent = `Finish in the browser as ${mail}; switch its claude.ai account first if needed. (This is a demo, so nothing signs in.)`;
         return;
       }
       if (pick("[data-login-cancel]")) { loginReset(); return; }
-      if (!pick("[data-login-menu]") && $("[data-login-menu]") && !$("[data-login-menu]")!.hidden) { $("[data-login-menu]")!.hidden = true; $("[data-login-btn]")!.setAttribute("aria-expanded", "false"); }
+      if ((b = pick("[data-sb-btn]"))) {
+        const email = b.dataset.sbBtn!;
+        menuToggle(`[data-sb-btn="${email}"]`, `[data-sb-menu="${email}"]`, () =>
+          `<button type="button" class="lm-row act" data-sb-signin="${email}">${boxes().find((s) => s.email === email)?.state === "ok" ? "Sign in again…" : "Sign in…"}</button>` +
+          `<hr><button type="button" class="lm-row act" data-sb-remove="${email}">Remove from ${who()}</button>`);
+        return;
+      }
+      if ((b = pick("[data-sb-signin]"))) {
+        closeMenus();
+        const line = $("[data-login-line]")!;
+        line.hidden = false; line.classList.remove("bad");
+        line.textContent = `Claude Code's own sign-in opens in Terminal for ${b.dataset.sbSignin}. (This is a demo, so nothing signs in.)`;
+        return;
+      }
+      if ((b = pick("[data-sb-remove]"))) {
+        // removing a standby account leaves its folder as it is
+        const email = b.dataset.sbRemove!;
+        added[acc] = added[acc].filter((s) => s.email !== email); removedSb.add(`${acc}:${email}`);
+        closeMenus(); show(); applyPrefs(prefs); return;
+      }
+      if (!pick(".login-menu") && $$(".login-menu").some((m) => !m.hidden)) closeMenus();
       if (pick("[data-udialog-close]") || t.matches("[data-udialog]")) { $("[data-udialog]")!.hidden = true; return; }
       if (pick("[data-dialog-close]") || t.matches("[data-dialog]")) { $("[data-dialog]")!.hidden = true; return; }
     });
@@ -542,7 +608,7 @@ const jsonLd = [
     });
     root.addEventListener("keydown", (e) => {
       // Esc closes the Login pop-up, or cancels Sign in to another account
-      if (e.key === "Escape" && (!$("[data-login-menu]")!.hidden || !$("[data-login-edit]")!.hidden)) { loginReset(); return; }
+      if (e.key === "Escape" && ($$(".c-c .login-menu").some((m) => !m.hidden) || !$("[data-login-edit]")!.hidden)) { loginReset(); return; }
       // Return in the address field presses Sign in
       if (e.key === "Enter" && (e.target as HTMLElement).matches?.("[data-login-mail]")) { e.preventDefault(); $<HTMLButtonElement>("[data-login-go]")?.click(); return; }
       const t = e.target; if (!isEF(t)) return;
