@@ -210,8 +210,12 @@ jobs:
         run: |
           recheck() {
             local wt="$RUNNER_TEMP/recheck-worktree" rc=0
+            # the flip must be exactly one commit on top of the fetched main (a rebase that dropped it, or replayed
+            # more than one commit, is not what was checked)
+            [ "$(git rev-parse HEAD~1)" = "$(git rev-parse FETCH_HEAD)" ] || { echo "::error::after the rebase the flip is not one commit on top of main"; return 1; }
             git -c core.hooksPath=/dev/null diff --no-color --no-ext-diff --no-renames --src-prefix=a/ --dst-prefix=b/ HEAD~1 HEAD > "$RUNNER_TEMP/recheck.patch" || return 1
-            git -c core.hooksPath=/dev/null worktree add -q --detach "$wt" HEAD~1 || return 1
+            # no checkout: the checker reads pages through git, so no file (or filter) of the new main is written to disk
+            git -c core.hooksPath=/dev/null worktree add -q --no-checkout --detach "$wt" HEAD~1 || return 1
             python3 -I "$RUNNER_TEMP/check-publish-patch.py" --root "$wt" "$RUNNER_TEMP/recheck.patch" "$RUNNER_TEMP/handoff/pages.txt" > /dev/null || rc=$?
             git -c core.hooksPath=/dev/null worktree remove --force "$wt" || true
             return "$rc"
