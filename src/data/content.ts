@@ -17,17 +17,24 @@ export const kindLabel: Record<string, string> = {
 
 const byUpdated = (a: Entry, b: Entry) => +b.data.updated - +a.data.updated || +b.data.published - +a.data.published;
 
+/** The one rule for "live": a page is live unless its front matter says `draft: true`. */
+export const isLive = (entry: Entry) => entry.data.draft !== true;
+/** Dev and Vercel previews also show drafts (with a "Scheduled for" badge and noindex), so a try sees the whole batch.
+ *  Production builds, and a plain local `astro build`, hide them. */
+export const showDrafts = import.meta.env.DEV || process.env.VERCEL_ENV === "preview";
+const visible = <T extends Entry>(entries: T[]) => (showDrafts ? entries : entries.filter(isLive));
+
 export async function getUseCases() {
-  return (await getCollection("useCases")).sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99) || a.data.title.localeCompare(b.data.title));
+  return visible(await getCollection("useCases")).sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99) || a.data.title.localeCompare(b.data.title));
 }
 // Counted with a file glob first: asking Astro for an empty collection logs a warning on every page.
 const blogFiles = Object.keys(import.meta.glob("/src/content/blog/*.md"));
 export async function getPosts() {
-  return blogFiles.length === 0 ? [] : (await getCollection("blog")).sort(byUpdated);
+  return blogFiles.length === 0 ? [] : visible(await getCollection("blog")).sort(byUpdated);
 }
-/** The Blog key and the /blog/ pages exist only once there is a first article. */
+/** The Blog key and the /blog/ pages exist only once there is a first live article (a draft doesn't count in production). */
 export async function hasBlog() {
-  return blogFiles.length > 0;
+  return (await getPosts()).length > 0;
 }
 
 export const pathOf = (section: Section, id: string) => `${sections[section].path}${id}/`;
