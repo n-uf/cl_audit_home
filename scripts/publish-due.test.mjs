@@ -85,3 +85,86 @@ test("an empty root exits 0 with no output", () => {
   const empty = mkdtempSync(join(tmpdir(), "publish-due-empty-"));
   assert.equal(execFileSync("node", [script, "--root", empty, "--today", TODAY], { encoding: "utf8" }), "");
 });
+
+// ---- front matter that is hard to read: scripts/fixtures/publish-edge (blog/ = all readable and due or not due, use-cases/ = unreadable)
+const edge = join(here, "fixtures", "publish-edge");
+const edgeOriginal = (rel) => readFileSync(join(edge, rel), "latin1");
+/** a copy of the edge fixtures with only the named folders ("blog", "use-cases") */
+function edgeRoot(...dirs) {
+  const r = mkdtempSync(join(tmpdir(), "publish-due-edge-"));
+  for (const d of dirs) cpSync(join(edge, "src/content", d), join(r, "src/content", d), { recursive: true });
+  return r;
+}
+const runIn = (r, ...args) => execFileSync("node", [script, "--root", r, "--today", TODAY, ...args], { encoding: "utf8" });
+const readIn = (r, rel) => readFileSync(join(r, rel), "latin1");
+
+test("draft: True and draft: TRUE (what Astro's YAML takes as true) flip to false; a trailing comment stays", () => {
+  const r = edgeRoot("blog");
+  runIn(r);
+  const cap = "src/content/blog/capital-true.md";
+  assert.equal(readIn(r, cap), edgeOriginal(cap).replace("draft: True", "draft: false"));
+  const up = "src/content/blog/upper-true-comment.md";
+  assert.equal(readIn(r, up), edgeOriginal(up).replace("draft: TRUE   #", "draft: false   #"));
+});
+
+test("a published timestamp counts by its UTC day: 23:00Z today is due, +05:00 past midnight is still today in UTC, -05:00 late evening is tomorrow", () => {
+  const r = edgeRoot("blog");
+  const out = runIn(r).split("\n").filter(Boolean);
+  assert.ok(out.includes("timestamp-due"));
+  assert.ok(out.includes("timestamp-offset-due"));
+  assert.ok(!out.includes("timestamp-offset-future"));
+  const future = "src/content/blog/timestamp-offset-future.md";
+  assert.equal(readIn(r, future), edgeOriginal(future));
+  const due = "src/content/blog/timestamp-due.md";
+  assert.equal(readIn(r, due), edgeOriginal(due).replace("draft: true", "draft: false"));
+});
+
+test("a UTF-8 byte-order mark at the start of the file doesn't hide the draft, and is kept", () => {
+  const r = edgeRoot("blog");
+  assert.ok(runIn(r).split("\n").includes("bom"));
+  const bom = "src/content/blog/bom.md";
+  const after = readIn(r, bom);
+  assert.ok(after.startsWith("ï»¿---"));
+  assert.equal(after, edgeOriginal(bom).replace("draft: true", "draft: false"));
+});
+
+test("draft: after an indented block is found, and an indented draft: inside another key's block is left alone", () => {
+  const r = edgeRoot("blog");
+  assert.ok(runIn(r).split("\n").includes("after-block"));
+  const f = "src/content/blog/after-block.md";
+  const after = readIn(r, f);
+  assert.equal(after, edgeOriginal(f).replace("\ndraft: true\nauthor", "\ndraft: false\nauthor"));
+  assert.match(after, /^ {2}draft: true$/m);
+});
+
+test("the readable edge drafts are listed, in file order", () => {
+  const r = edgeRoot("blog");
+  assert.deepEqual(runIn(r, "--dry-run").split("\n").filter(Boolean),
+    ["after-block", "bom", "capital-true", "timestamp-due", "timestamp-offset-due", "upper-true-comment"]);
+});
+
+test("unreadable draft or published lines: exit 1 naming each file, the files stay as they are, the readable ones are still flipped", () => {
+  const r = edgeRoot("blog", "use-cases");
+  let err;
+  try { runIn(r); } catch (e) { err = e; }
+  assert.ok(err, "expected a non-zero exit");
+  assert.equal(err.status, 1);
+  // stdout still lists the pages that were flipped
+  assert.deepEqual(err.stdout.split("\n").filter(Boolean),
+    ["after-block", "bom", "capital-true", "timestamp-due", "timestamp-offset-due", "upper-true-comment"]);
+  assert.match(readIn(r, "src/content/blog/capital-true.md"), /^draft: false$/m);
+  for (const name of ["draft-yes", "draft-quoted", "published-unreadable", "published-missing"]) {
+    const rel = `src/content/use-cases/${name}.md`;
+    assert.ok(err.stderr.includes(rel), `stderr names ${rel}`);
+    assert.equal(readIn(r, rel), edgeOriginal(rel), `${name} untouched`);
+  }
+  assert.match(err.stderr, /draft: yes.*draft must be true or false/);
+  assert.match(err.stderr, /published: next Tuesday.*published must be a date/);
+  assert.match(err.stderr, /no `published:` line/);
+});
+
+test("--dry-run with an unreadable file also exits 1 and changes nothing", () => {
+  const r = edgeRoot("blog", "use-cases");
+  assert.throws(() => runIn(r, "--dry-run"), (e) => e.status === 1);
+  assert.equal(readIn(r, "src/content/blog/capital-true.md"), edgeOriginal("src/content/blog/capital-true.md"));
+});
