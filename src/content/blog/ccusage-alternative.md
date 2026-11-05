@@ -5,7 +5,7 @@ h1: "ccusage alternative for Mac: cl_audit vs ccusage"
 mainKeyword: "ccusage alternative"
 kind: comparison
 published: 2026-11-02
-updated: 2026-11-04
+updated: 2026-11-05
 author: n-uf
 takeaways:
   - "ccusage reports token use and estimated cost from local logs in the terminal; cl_audit shows how much of each profile's 5-hour and weekly limits is used, in the Dock."
@@ -88,7 +88,7 @@ cl_audit's background agent reads each profile's 5-hour limit and weekly limit f
 
 - Dock icons: a profile with **Usage in the Dock** on gets its own icon with both limits. When a limit is full, the icon counts down to when the profile is back.
 - Alerts: a notification when a limit reaches a level you set, and another when it resets (Notify when back).
-- History: tokens per day, and where they go by project, model and surface, over 24 h, 7 d and 30 d. It's read from Claude Code's session files on your Mac, and the dashboard demo names the Terminal, the desktop Code tab, VS Code and SDK apps as surfaces. You can see it in the [Claude usage dashboard demo](/dashboard/), or read more about how to [see where your Claude Code tokens go](/use-cases/claude-code-usage-history/).
+- History: tokens per day, and where they go by project, model and surface, over 24 h, 7 d and 30 d. It's read from Claude Code's session files on your Mac, and the dashboard demo names the Terminal, the desktop Code tab, VS Code and SDK apps as surfaces. You can see it in the [Claude usage dashboard demo](/dashboard/), or read more about how to [see where your Claude Code tokens go](/use-cases/claude-code-usage-history/). In the app, the **CSV** key next to the period saves one row per day, profile and model, with the cost estimate.
 
 Its README says there's no cl_audit server, no analytics and nothing to sign up for. It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. A profile that uses an API key is billed per token and has no limits to show.
 
