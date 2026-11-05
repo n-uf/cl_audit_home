@@ -5,13 +5,13 @@ h1: "Claude Code usage history on your Mac"
 mainKeyword: "claude code usage history"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-04
+updated: 2026-11-05
 author: n-uf
 order: 3
 takeaways:
   - "cl_audit reads the session files Claude Code already writes on your Mac and charts your Claude Code usage history over 24 hours, 7 days or 30 days."
   - "It shows when you use Claude, tokens per day, and where they go by project, model and surface (Terminal, the desktop Code tab, VS Code, SDK apps)."
-  - "The history is kept for each profile, so you can see one account or several together."
+  - "The history is kept for each profile, so you can see one account or several together, and the CSV key saves it as a file."
   - "Nothing is uploaded: only the time, model, token counts, project folder and surface of each reply are read, on your Mac."
   - "Usage from claude.ai chats, other computers and cloud sessions isn't in it, because those don't write session files on this Mac."
 faq:
@@ -20,7 +20,9 @@ faq:
   - q: "Can I see usage by project?"
     a: "Yes. The \"Where it goes\" chart splits the share of tokens in the period by project, by model and by surface, so you can see which project or which model used most. The profile chips next to the period keys filter it to one account or more."
   - q: "Does it count cache reads?"
-    a: "Not in the tokens chart: it counts input, cache writes and output, and says on the chart that cache reads are not counted. The cost estimate in the totals does include them, priced apart at the API's cache-read rate."
+    a: "Not in the tokens chart: it counts input, cache writes and output, and says on the chart that cache reads are not counted. The cost estimate in the totals does include them, priced apart at the API's cache-read rate. The CSV export lists each kind of token separately, cache reads included."
+  - q: "Can I export the history, and does it show a cost?"
+    a: "Yes to both. The CSV key next to the period saves one row per day, profile and model, with the cost estimate at API list prices, such as \"≈ $123 at list prices\". It is not your bill: use on a Pro, Max, Ultra or Team plan is paid by the plan."
   - q: "Is anything uploaded?"
     a: "No. The history is read from files on your Mac. cl_audit has no server and no analytics, and its only network requests go to Anthropic, to read each profile's limits and which account it is signed in to."
 sources:
@@ -60,6 +62,12 @@ Pick 24 h, 7 d or 30 d and the charts redraw. It's free, and it runs on a Mac wi
 Above the charts, a small display gives the period's totals: replies, tokens and a cost estimate, such as "1,242 replies · 34.2M tokens · ≈ $982.12 at list prices". The estimate is what the same tokens would cost on Anthropic's API at list prices, per model. It isn't your bill, and models without a published price are left out. The **CSV** key next to the period saves the history as a file, one row per day, profile and model. The period you pick and the **Show** chips are kept between launches.
 
 You can click through all of it on the [demo dashboard](/dashboard/), which runs on sample data for three made-up profiles: home, work and side.
+
+## Save it as CSV, and what the cost estimate means
+
+In the app, the **CSV** key next to the period saves that period as a file: one row per day, profile and model, with the replies and each kind of token (input, output, 5-minute and 1-hour cache writes, and cache reads). It can split the rows by project too, by folder name only. The cost estimate is in the file as well.
+
+The estimate prices the same tokens at Anthropic's API list prices, per model, with cache writes and cache reads priced apart. It is not your bill: use on a Pro, Max, Ultra or Team plan is paid for by the plan, so the figure says what the tokens are worth at list prices, not what you owe. The prices are built into cl_audit, dated, and updated with its releases.
 
 ## How do you check Claude usage history by project or model?
 
@@ -108,7 +116,8 @@ Claude Code has a built-in `/usage` command, and ccusage is a well-known open-so
 | Split by | Project, model and surface | Skills, subagents, plugins and MCP servers (plan breakdown) | Project (`--instances`, `--project`) and model (`--breakdown`) |
 | Several accounts | One history per profile, shown together or one at a time | The account Claude Code is signed in to | Not covered on the README page |
 | Plan limits | 5-hour and weekly limits in the Dock and on the cards | Plan usage bars for the account you're signed in to | 5-hour billing windows and dollar costs; the README doesn't describe plan-limit percentages |
-| Cost | Free, source-available (PolyForm Perimeter 1.0.1) | Part of Claude Code | Free, MIT licence |
+| Dollar figures | An estimate at API list prices in the totals and the CSV; not a bill | A session cost, which Anthropic's docs say isn't relevant for billing for Pro, Max and Ultra subscribers | Costs in USD, estimated from token counts |
+| Price | Free, source-available (PolyForm Perimeter 1.0.1) | Part of Claude Code | Free, MIT licence |
 
 Where each makes more sense:
 
