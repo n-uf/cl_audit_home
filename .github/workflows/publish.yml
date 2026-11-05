@@ -8,7 +8,8 @@
 # A crash of the script (any exit code but 0 and 3), or changed files with no page listed, fail the run (nothing is
 # committed). Exit 3 means some page's front matter can't be read: it is named in the log, the other due pages are
 # still built, published and pushed, and the run then goes red.
-# Undo: revert the publish commit, or set `draft: true` again. No secrets and no deploy hooks are used.
+# Undo: revert the publish commit, or set `draft: true` again. No deploy hooks. One secret: PUBLISH_DEPLOY_KEY, the
+# private half of the repo's write deploy key, which may bypass main's ruleset (protected main, required checks).
 # GitHub can run a schedule up to about an hour late, and switches schedules off in a repo with no activity for
 # 60 days: re-enable it from the Actions tab if that happens.
 name: publish
@@ -31,9 +32,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      # main is protected by a ruleset that deploy keys may bypass: check out with the repo's write deploy key, so
+      # the push (and the rebase retries) go over SSH as "publish-bot (scheduled publishing)". Full history for the rebase.
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: main
+          ssh-key: ${{ secrets.PUBLISH_DEPLOY_KEY }}
+          fetch-depth: 0
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:

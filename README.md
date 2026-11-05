@@ -67,7 +67,8 @@ line or Related link; a live page linking to one fails the build); `npm run dev`
 "Scheduled for <date>" badge and `noindex`. `.github/workflows/publish.yml` runs daily at 00:10 UTC, sets
 `draft: false` on every page whose date has come (`scripts/publish-due.mjs`, `--dry-run` lists them), builds the
 site (a red build pushes nothing) and pushes `publish: <section>/<slug>` (e.g. `publish: blog/some-page`) to `main`,
-retrying a rejected push up to 3 times. To undo, revert that commit, or set `draft: true` again (with a future `published`).
+retrying a rejected push up to 3 times. It pushes over SSH with the repo's write deploy key (secret
+`PUBLISH_DEPLOY_KEY`), which may bypass `main`'s ruleset. To undo, revert that commit, or set `draft: true` again (with a future `published`).
 A draft's `updated` must equal its `published` (the schema requires `updated >= published`, and the flip changes
 only `draft`, so a draft dated ahead needs the same future date in both). `.github/workflows/ci.yml` runs the tests
 and a plain build on every pull request, so a live page linking to a draft fails there, not after the merge.
