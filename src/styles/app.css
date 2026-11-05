@@ -1637,6 +1637,16 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* the card's Open window key: its LED is there but dark while the window is closed (lit = running, 26.11.0) */
 .pill.tint.unlit::before { background: #3a3532; box-shadow: inset 0 1px 1px rgba(0,0,0,.55); }
 .face-silver .pill.tint.unlit::before { background: #9a9a96; box-shadow: inset 0 1px 1px rgba(0,0,0,.35); }
+/* Claude Code card: every row stacks, label above and the value whole below (app feat/claude-code-card) */
+.settings .s-cols .c-c .srow.stk { flex-direction: column; align-items: stretch; gap: 5px; padding: 7px 0 8px; }
+/* (doubled .stk: beats the label-width rules for narrow windows, which in a column would set a height) */
+.settings .s-cols .c-c .srow.stk.stk > span:first-child { flex: none; width: auto; }
+.settings .s-cols .c-c .srow.stk.stk > :last-child { flex: none; width: 100%; }
+.c-c .share-v { font-size: 13px; color: var(--soft); overflow-wrap: anywhere; }
+.c-c .share-v.mono, .c-c select.mono { font-family: var(--mono); font-size: 12px; }
+.c-c .folder-btn { cursor: default; }
+.c-c .login-edit { flex-wrap: wrap; }
+.c-c .login-edit .field { min-width: 180px; }   /* the address takes its own line only when the card is narrow */
 /* General ▸ Dock: the EXPERIMENTAL display under Keep in order, before the description */
 .exp-disp { display: inline-flex; margin: 2px 0 6px; }
 .g-note.caution { display: block; max-width: none; }   /* the warning runs the card's width, as the app's */
