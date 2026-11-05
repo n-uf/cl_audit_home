@@ -57,22 +57,37 @@ const sw = (key: string, label: string, on = true) => `<span class="ctl-pair"><b
       </div>
 
       <div class="card c-c"><h4>Claude Code <i class="idot" title="The Claude Code folder this profile uses and its sign-in. Its Claude window comes with it: the usual Claude app for the profile using ~/.claude, its own Claude window (own sign-in, chats and settings) for any other.">i</i></h4>
-        <!-- As New profile (app feat/claude-code-card): Account first, then Folder, then (any folder but ~/.claude) Share
-             from and Shared, read-only. Every row stacks, label above and the value whole below, so long addresses and
-             paths are never cut. -->
-        <div class="srow vcol stk"><span>Account <i class="idot" title="The claude.ai account Claude Code in this folder is signed in to. cl_audit's background agent reads the sign-in from the Keychain, read-only, the same way Claude Code does; no new Keychain permission. The pop-up lists the accounts on this Mac and Sign in to another account…, which opens Claude Code's own sign-in in Terminal and links the profile once it's done.
+        <!-- As the app (build 238): Accounts first, one box per account (IN USE, STANDBY), Add account, then Sessions
+             follow, Folder and (any folder but ~/.claude) Share from and Shared, read-only. Every row stacks, label above
+             and the value whole below, so long addresses and paths are never cut. -->
+        <div class="srow vcol stk"><span>Accounts <i class="idot" title="The claude.ai accounts this profile has. It works on one at a time, IN USE: the one Claude Code in its folder is signed in to. The others STANDBY: their limits show too, read from a sign-in kept for each in a small folder of its own, so you can see which has room. Add account lists the accounts found on this Mac (signed in in a Claude Code folder, or used by this profile's Claude window) and Sign in to another account…, which opens Claude Code's own sign-in in Terminal in a new folder. An account belongs to one profile. cl_audit's background agent reads each sign-in from the Keychain, read-only, the same way Claude Code does; no new Keychain permission, and no sign-in is ever copied. Removing a standby account leaves its folder as it is.
 
-Renew sign-in (in the pop-up): Claude Code's sign-in uses a short-lived access key, which Claude Code swaps for a fresh one whenever it runs. cl_audit only reads that key, so after a while without Claude Code it runs out and the usage stops updating. On: cl_audit then runs Claude Code once in the background (a one-line prompt, “Reply with OK.”, on Haiku, nothing saved) so it swaps the key; at most every 30 min, using a sliver of this profile's usage. Off: the usage waits until you next use Claude Code.">i</i></span>
-          <!-- Account: a pop-up, the account Claude Code is signed in to in green. Its menu: ✓ that account, accounts in
-               unused folders, the other profiles' accounts dimmed, Sign in to another account…, Renew sign-in by itself.
-               Sign in to another account… turns the value into the address field with Sign in and Cancel. -->
-          <span class="login-ctl">
-            <button type="button" class="menu login-btn" data-login-btn aria-haspopup="menu" aria-expanded="false"><span class="email login-mail" data-text="email">{a.email}</span></button>
-            <span class="login-menu" data-login-menu role="menu" hidden></span>
+Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a short-lived access key, which Claude Code swaps for a fresh one whenever it runs. cl_audit only reads that key, so after a while without Claude Code it runs out and the usage stops updating. On: cl_audit then runs Claude Code once in the background (a one-line prompt, “Reply with OK.”, on Haiku, nothing saved) so it swaps the key; at most every 30 min, using a sliver of this profile's usage. Off: the usage waits until you next use Claude Code. Standby accounts' sign-ins are always renewed this way, so their limits stay current.">i</i></span>
+          <div class="acc-list">
+            <!-- IN USE: a lit lamp, the address as a pop-up (✓ it, Renew sign-in by itself), plan and organisation, the
+                 limits in the dashboard's card style -->
+            <div class="abox">
+              <div class="abox-head"><i class="abox-lamp on"></i>
+                <span class="abox-t login-ctl">
+                  <button type="button" class="abox-title" data-login-btn aria-haspopup="menu" aria-expanded="false"><span class="email" data-text="email">{a.email}</span><span class="chev" aria-hidden="true">⌃⌄</span></button>
+                  <span class="login-menu" data-login-menu role="menu" hidden></span>
+                  <small data-abox-detail>{a.plan} · Personal</small>
+                </span>
+                <span class="disp xs abox-badge"><span class="g">In use</span></span></div>
+              <div class="abox-limits" data-abox-limits></div>
+            </div>
+            <div class="acc-standby" data-standby-boxes></div>
+            <!-- Add account: what was found on this Mac, then Sign in to another account… (the address row in place) -->
+            <div class="add-acc" data-add-row>
+              <span class="add-wrap"><button type="button" class="key k" data-add-btn aria-haspopup="menu" aria-expanded="false">Add account ▾</button><span class="login-menu" data-add-menu role="menu" hidden></span></span>
+              <small class="sub">The profile works on one at a time.</small>
+            </div>
             <span class="login-edit" data-login-edit hidden><input class="field" data-login-mail type="email" placeholder="name@example.com" aria-label="Address of the other account" />
               <span class="login-keys" data-login-keys><button type="button" class="key k lt" style="--lamp:rgb(74,222,128)" data-login-go>Sign in</button><button type="button" class="key k login-x" data-login-cancel aria-label="Cancel"><span class="lx-t">Cancel</span><span class="lx-x" aria-hidden="true">×</span></button></span></span>
-          </span></div>
+          </div></div>
         <p class="g-note sub login-line" data-login-line hidden></p>
+        <div class="srow vcol stk"><span>Sessions follow <i class="idot" title="When this profile switches to another of its accounts, its Claude window's Code sessions go with it: the sessions, the sidebar's sections and groups, pins and scheduled tasks, so the window opens the same on the other account. Off: each account keeps its own. Chats and Projects on claude.ai belong to each account and never move.">i</i></span><Fragment set:html={sw("sessionsFollow", "Sessions follow")} /></div>
+        <p class="g-note sub rline">Sessions, sections, groups, pins and scheduled tasks.</p>
         <div class="srow vcol stk"><span>Folder <i class="idot" title="The Claude Code folder for this profile, like ~/.claude: its sign-in, settings and history live there. One profile per folder; folders are used where they are (Claude Code names a folder's Keychain sign-in after its path).">i</i></span><span class="folder-ctl"><select class="menu mono" data-folder aria-label="Folder"></select><span class="folder-btn" title="Choose another folder…" aria-hidden="true"><svg width="15" height="12" viewBox="0 0 15 12"><path d="M1 2.2C1 1.5 1.5 1 2.2 1h3.3l1.4 1.5h5.9c.7 0 1.2.5 1.2 1.2v6.1c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></span></div>
         <div data-share hidden>
           <div class="srow vcol stk"><span>Share from <i class="idot" title="The Claude Code folder this profile's folder links some items from (instructions, agents, skills, commands, memory & history), so edits there show up here too. Sign-in, plugins and usage stay separate.">i</i></span><span class="share-v mono" data-share-from></span></div>

@@ -1647,6 +1647,46 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .c-c .folder-btn { cursor: default; }
 .c-c .login-edit { flex-wrap: wrap; }
 .c-c .login-edit .field { min-width: 180px; }   /* the address takes its own line only when the card is narrow */
+/* Claude Code ▸ Accounts (app build 238): one box per account in a lit window, a lamp, the address as a pop-up, plan
+   and organisation, IN USE or STANDBY; the limits in the dashboard's card style; Add account under them */
+.settings .s-cols .c-c .srow.stk.stk > .acc-list { display: grid; gap: 8px; align-items: stretch; }
+.abox { display: grid; gap: 8px; padding: 9px 11px 10px; border-radius: 8px; background: var(--win-bg); box-shadow: var(--win-shadow); min-width: 0; }
+.face-silver .appwin .abox { --text: #1c1c1e; --soft: #2e3033; --muted: #55585c; color: var(--text); text-shadow: none; }
+.abox-head { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+.abox-lamp { flex: none; width: 7px; height: 7px; margin-top: 6px; border-radius: 50%; background: #3a3532; box-shadow: inset 0 1px 1px rgba(0,0,0,.55); }
+.abox-lamp.on { background: rgb(var(--led-on)); box-shadow: 0 0 6px rgba(var(--led-on), .85); }
+.abox-t { flex: 1; min-width: 0; display: grid; gap: 2px; position: relative; }
+.abox-t small { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.abox-title { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 0; border: 0; background: none; color: var(--text); font: 600 13px/1.3 var(--font); cursor: pointer; text-align: left; }
+.abox-title .email { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.abox-title .chev { font-size: 8px; color: var(--muted); letter-spacing: -.1em; }
+.abox-badge { flex: none; }
+.abox .pn-limits { margin: 0; }
+.abox-note { font-size: 10.5px; color: var(--muted); }
+.abox-why { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 11.5px; color: #f59e0b; }
+.face-silver .abox-why { color: #8a4f00; }
+.abox .login-menu, .add-wrap .login-menu { top: calc(100% + 4px); left: 0; right: auto; }
+.add-acc { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.add-wrap { position: relative; }
+.add-acc small { font-size: 11px; }
+.lm-row.lm-head { font-size: 10.5px; opacity: .55; padding-top: 2px; }
+.login-line.bad { color: #f87171; }
+.face-silver .login-line.bad { color: #b42318; }
+/* the dashboard card: the offer while a limit is full ("Switch to team-2…", the key alone) and each standby account's
+   limits, small: "Standby · address", then a row per limit */
+.sb-offer { display: flex; justify-content: flex-end; margin-top: 8px; }
+.sb { display: grid; gap: 5px; margin-top: 10px; }
+.sb-head { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-head .email { color: var(--soft); }
+.sb-row { display: grid; grid-template-columns: 46px minmax(0, 1fr) 38px 92px; align-items: center; gap: 8px; }
+.sb-name { font-size: 11.5px; color: var(--soft); }
+.sb-row b { font: 700 11px var(--mono); text-align: right; }
+.sb-when { font-size: 10.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,.1); overflow: hidden; }
+.sb-bar i { display: block; height: 100%; border-radius: 2px; }
+.sb-segs { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; height: 5px; }
+.sb-segs i { border-radius: 1px; background: rgba(255,255,255,.1); }
+.face-silver :is(.sb-bar, .sb-segs i) { background: rgba(0,0,0,.12); }
 /* General ▸ Dock: the EXPERIMENTAL display under Keep in order, before the description */
 .exp-disp { display: inline-flex; margin: 2px 0 6px; }
 .g-note.caution { display: block; max-width: none; }   /* the warning runs the card's width, as the app's */
