@@ -33,6 +33,9 @@ sources:
   - title: "Anthropic Help Center: Use Claude Code with your Pro, Max, or Ultra plan"
     url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
     checked: 2026-11-02
+  - title: "Anthropic Help Center: What is the Ultra plan?"
+    url: "https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan"
+    checked: 2026-11-05
   - title: "Anthropic Help Center: How do usage and length limits work?"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
     checked: 2026-11-02
@@ -96,7 +99,7 @@ Each seat keeps its own limits. cl_audit shows them; it doesn't add them up or h
 
 It's one profile per seat. If you add a profile for a seat another profile already has, cl_audit refuses it. A personal plan and a Team seat on one email still work, because they're different seats.
 
-cl_audit shows limits for plans that have them: Pro, Max, Ultra and Team. A verified Ultra account has no 5-hour limit, so its profile shows the week alone. A profile that signs in with an API key is billed per token and has no usage limits to show.
+cl_audit shows limits for plans that have them: Pro, Max, Ultra and Team. Anthropic says a verified Ultra account has no 5-hour limit, so its card shows the week alone. A profile that signs in with an API key is billed per token and has no usage limits to show.
 
 ## Accounts for clients
 
