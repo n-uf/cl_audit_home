@@ -87,6 +87,8 @@ job, `report`, turns the run red when either job failed or some page's front mat
 pages are published all the same). To check the deploy key without flipping anything (Actions > publish > Run
 workflow, tick `verify-key`), a fourth job, `verify-key`, takes the same checkout and ssh hardening as `push` and only
 runs `git ls-remote origin refs/heads/main` over ssh, printing main's SHA; build, push and report don't run then.
+That proves the key authenticates over the pinned ssh path, not that it can write or bypass the ruleset (the key was
+added with write access; the first real flip exercises both).
 A draft's `updated` must equal its `published` (the schema requires `updated >= published`, and the flip changes
 only `draft`, so a draft dated ahead needs the same future date in both). `.github/workflows/ci.yml` runs the tests
 and a plain build on every pull request, so a live page linking to a draft fails there, not after the merge.
