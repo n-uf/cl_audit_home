@@ -23,7 +23,7 @@ faq:
   - q: "Do I need a tracker to see my Claude usage?"
     a: "No. Anthropic's help page says Settings ▸ Usage shows how much you have used and the time remaining, and its Claude Code docs say /usage shows plan usage bars to subscribers. A tracker saves you opening those, and some add history or alerts."
   - q: "Can a tracker show several Claude accounts at once?"
-    a: "Some can. cl_audit's README describes one profile per account seat, and Claude Usage Tracker's README describes multiple profiles in the menu bar. ClaudeBar lists several logins for Codex; the other pages don't mention several Claude accounts."
+    a: "Some can. cl_audit's README describes profiles that each hold one or more Claude accounts, and Claude Usage Tracker's README describes multiple profiles in the menu bar. ClaudeBar lists several logins for Codex; the other pages don't mention several Claude accounts."
 sources:
   - title: "cl_audit README (n-uf)"
     url: "https://github.com/n-uf/cl_audit"
@@ -87,7 +87,7 @@ You may not need a tracker at all. Anthropic's help page says Settings ▸ Usage
 
 | Tool | Shows usage in | Several accounts | History | Price | Licence | Needs |
 |---|---|---|---|---|---|---|
-| cl_audit | Dock icons (one per profile) and a window | Yes, one profile per account seat | Yes: tokens per day from Claude Code's session files, over 24 h / 7 d / 30 d, with CSV export and a cost estimate at API list prices | Free | PolyForm Perimeter 1.0.1 (source-available) | Apple silicon, macOS 13+, Claude Code signed in |
+| cl_audit | Dock icons (one per profile) and a window | Yes, one or more accounts per profile | Yes: tokens per day from Claude Code's session files, over 24 h / 7 d / 30 d, with CSV export and a cost estimate at API list prices | Free | PolyForm Perimeter 1.0.1 (source-available) | Apple silicon, macOS 13+, Claude Code signed in |
 | ClaudeUsageBar | Menu bar | Not mentioned | Not mentioned | Not stated | MIT | macOS 12+ |
 | Claude Usage Tracker | Menu bar | Yes, "unlimited" profiles | Yes, charts over time | Not stated | MIT | macOS 14+ |
 | Usagebar | Menu bar | Not mentioned | Not mentioned | $9 one-time, with a free tier | Not stated | macOS, no minimum stated |

@@ -10,7 +10,7 @@ author: n-uf
 takeaways:
   - "Anthropic's help pages treat a personal account and a Team account as separate accounts, with their own usage limits, billing, chats and projects (checked 2 November 2026)."
   - "Team usage limits are per member. They can't be shared or transferred, and each seat is for one named individual."
-  - "A personal plan and a Team seat on the same email are two seats. cl_audit links one profile to one seat, so each gets its own."
+  - "A personal plan and a Team seat on the same email are two seats. cl_audit counts them as two accounts, and an account belongs to one profile, so each can get its own."
   - "The Claude app shows one account at a time. With cl_audit, each profile has its own Claude window and its own Claude Code folder, side by side."
   - "cl_audit is free and independent, not affiliated with Anthropic. It doesn't pool limits or move work between accounts."
 faq:
@@ -108,7 +108,7 @@ The two pages don't agree on the default. Joining by invite asks you; upgrading 
 
 Once you have both on one email, Anthropic's login page describes the switch: click your initials in the bottom left corner, pick the account, and look for the check mark on the active one. That page covers accounts tied to the same email. It doesn't describe switching between accounts on different addresses.
 
-In cl_audit, a **profile** is one Claude setup: a Claude Code folder with its sign-in and, if you want them, a Claude window and a Dock icon. Each profile is linked to one **seat**, a claude.ai account plus its organisation. A personal plan and a Team seat on the same email are two seats, so each gets its own profile. cl_audit refuses a seat another profile already has. The [cl_audit FAQ](/faq/) has more on profiles versus accounts.
+In cl_audit, a **profile** is one Claude setup: a Claude Code folder with its sign-in and, if you want them, a Claude window and a Dock icon. A profile works on one claude.ai account at a time (it can keep others on standby), and an account belongs to one profile; cl_audit tells accounts apart by account and organisation. A personal plan and a Team seat on the same email are two accounts, so each can get its own profile. cl_audit refuses an account another profile already has. The [cl_audit FAQ](/faq/) has more on profiles versus accounts.
 
 ## Using both at once
 
@@ -143,7 +143,7 @@ Commenters give their reasons. One wants a hard wall between work and personal f
 
 Some habits that help, whatever tool you use:
 
-- **One profile per seat, named and coloured differently.** In cl_audit a profile has a name, an icon label of up to six letters and its own colour, so you can tell the windows apart. Turning **Show emails** off (Settings ▸ General ▸ Privacy) hides email addresses in cl_audit's own screens, which helps when you share your screen.
+- **Name and colour each profile differently.** In cl_audit a profile has a name, an icon label of up to six letters and its own colour, so you can tell the windows apart. Turning **Show emails** off (Settings ▸ General ▸ Privacy) hides email addresses in cl_audit's own screens, which helps when you share your screen.
 - **Separate Claude Code folders.** Give each profile its own folder, so each keeps its own sign-in. cl_audit can share items such as `CLAUDE.md`, agents, skills, commands or memory from one folder with a new profile; sign-ins and usage stay separate. Share only what belongs on both sides (the [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) guide shows how the folders work). A personal notes file doesn't belong in a work folder.
 - **Check for an API key.** Anthropic's help page for Claude Code says that if an `ANTHROPIC_API_KEY` environment variable is set, Claude Code uses the key instead of your subscription, and you get API charges rather than the plan's included usage. A profile that uses an API key has no usage limits for cl_audit to show.
 - **Keep personal work out of the Team seat.** The Primary Owner can request data exports, and your organization may have its own policies. Ask your Primary Owner what applies to you.

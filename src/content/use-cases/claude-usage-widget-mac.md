@@ -88,7 +88,7 @@ With two to four profiles, the next three resets go below the limits when there'
 
 ## Several accounts on one desktop
 
-With two accounts on one Mac, one widget lists both. Say you have a work Team seat and a personal plan: each shows with its own limits. The page on [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/) explains how cl_audit keeps one profile per seat.
+With two accounts on one Mac, one widget lists both. Say you have a work Team seat and a personal plan: each shows with its own limits. The page on [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/) explains how cl_audit keeps each account in one profile.
 
 The widget follows your **profile order**. Drag a profile's tile left or right along the top of Settings, or drag its card on the dashboard; it's saved when you let go. The dashboard, the launcher, the menu bar icons, the usage history and the widget all use that order, so "Work" can be the first row everywhere. The Dock icons stay wherever you put them in the Dock.
 
