@@ -55,10 +55,18 @@ Claude window, Dock icon, profile settings, General settings, New profile, Remov
 ```bash
 npm install
 npm run dev      # http://localhost:5190
-npm run build    # static site in dist/
+npm run build    # static site in dist/, then scripts/check-links.mjs (no live page may link to a missing page)
+npm test         # scripts/publish-due.mjs on a fixture folder
 ```
 
 Deployed by Vercel from `main` (GitHub connection).
+
+**Scheduled publishing.** A finished use-case page or article merges to `main` with `draft: true` and its go-live
+date (UTC) in `published`. A draft is built nowhere in production (no page, sitemap entry, list card, `llms.txt`
+line or Related link; a live page linking to one fails the build); `npm run dev` and Vercel previews show it with a
+"Scheduled for <date>" badge and `noindex`. `.github/workflows/publish.yml` runs daily at 00:10 UTC, sets
+`draft: false` on every page whose date has come (`scripts/publish-due.mjs`, `--dry-run` lists them) and pushes
+`publish: <slug>` to `main`. To undo, revert that commit, or set `draft: true` again (with a future `published`).
 
 ---
 
