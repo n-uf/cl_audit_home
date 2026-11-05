@@ -1,6 +1,8 @@
 # Scheduled publishing: every day at 00:10 UTC, pages merged as `draft: true` whose `published` date has come
 # are flipped to `draft: false` (scripts/publish-due.mjs), committed as `publish: <slug>[, <slug>]` and pushed to main.
 # Vercel builds that push through its Git connection like any other. Nothing due: no commit, no deploy.
+# A crash of the script, or changed files with no slug listed, fail the run (nothing is committed). A page whose front
+# matter the script can't read is named in the log and makes the run red, after the other due pages were published.
 # Undo: revert the publish commit, or set `draft: true` again. No secrets and no deploy hooks are used.
 # GitHub can run a schedule up to about an hour late, and switches schedules off in a repo with no activity for
 # 60 days: re-enable it from the Actions tab if that happens.
@@ -31,14 +33,33 @@ jobs:
         with:
           node-version: 22
 
+      # shell: bash makes GitHub run the script with -eo pipefail, so a failing command fails the step.
+      # Exit 1 from the script means some page's front matter can't be read: the readable due pages were still flipped,
+      # so they are committed and pushed below, and the job is failed at the end to make the run red.
       - name: Flip due drafts
-        run: node scripts/publish-due.mjs | tee "$RUNNER_TEMP/due.txt"
+        id: flip
+        shell: bash
+        run: |
+          code=0
+          node scripts/publish-due.mjs > "$RUNNER_TEMP/due.txt" || code=$?
+          cat "$RUNNER_TEMP/due.txt"
+          echo "code=${code}" >> "$GITHUB_OUTPUT"
+          if [ "$code" -gt 1 ]; then
+            echo "::error::publish-due.mjs crashed (exit ${code})"
+            exit "$code"
+          fi
 
       - name: Commit and push
+        shell: bash
         run: |
           if [ -z "$(git status --porcelain)" ]; then
             echo "Nothing due."
             exit 0
+          fi
+          if [ ! -s "$RUNNER_TEMP/due.txt" ]; then
+            echo "::error::files changed but publish-due.mjs listed no slug; not committing"
+            git status --porcelain
+            exit 1
           fi
           slugs=$(paste -sd, "$RUNNER_TEMP/due.txt" | sed 's/,/, /g')
           git config user.name 'github-actions[bot]'
@@ -47,3 +68,10 @@ jobs:
           git commit -m "publish: ${slugs}"
           git pull --rebase origin main
           git push origin HEAD:main
+
+      - name: Fail on front matter that can't be read
+        if: steps.flip.outputs.code == '1'
+        shell: bash
+        run: |
+          echo "::error::some page's front matter can't be read, so it was not published; see the Flip due drafts step"
+          exit 1
