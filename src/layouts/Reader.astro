@@ -5,7 +5,8 @@
 import Desktop from "./Desktop.astro";
 import "../styles/reader.css";
 import { download, version, requires } from "../data/site";
-import { sections, pathOf, dateText, pageInfo, kindLabel, type Entry, type Section } from "../data/content";
+import ScheduledBadge from "../components/ScheduledBadge.astro";
+import { sections, pathOf, dateText, pageInfo, kindLabel, isLive, showDrafts, type Entry, type Section } from "../data/content";
 import { orgNode, webPage, article, breadcrumbs, faqPage } from "../data/schema";
 
 interface Props { entry: Entry; section: Section; headings: { depth: number; slug: string; text: string }[] }
@@ -15,6 +16,8 @@ const sec = sections[section];
 const path = pathOf(section, entry.id);
 // the page's own share image (scripts/render-og-pages.py), 1200x630; also its Article image, so the two match
 const ogImage = `/og/${entry.id}.png`;
+// a draft is built only in dev and previews: it gets the "Scheduled for" badge and noindex
+const scheduled = showDrafts && !isLive(entry);
 
 // the table of contents lists the ## headings; with fewer than four it adds nothing
 const toc = headings.filter((h) => h.depth === 2);
@@ -31,7 +34,7 @@ const jsonLd = [
   orgNode,
 ];
 ---
-<Desktop title={d.title} description={d.description} page={section} headline={d.h1} jsonLd={jsonLd} ogImage={ogImage}>
+<Desktop title={d.title} description={d.description} page={section} headline={d.h1} jsonLd={jsonLd} ogImage={ogImage} noindex={scheduled}>
   <div class="content-inner reader">
     <nav class="crumbs" aria-label="Breadcrumb">
       <ol>
@@ -40,7 +43,7 @@ const jsonLd = [
         <li aria-current="page">{d.h1}</li>
       </ol>
     </nav>
-    <p class="byline"><span class="kind">{kindLabel[d.kind]}</span> <span class="divider" aria-hidden="true"></span> Updated <time datetime={d.updated.toISOString().slice(0, 10)}>{dateText(d.updated)}</time> · by <a href="https://n-uf.com">n-uf</a></p>
+    <p class="byline"><span class="kind">{kindLabel[d.kind]}</span> <span class="divider" aria-hidden="true"></span> Updated <time datetime={d.updated.toISOString().slice(0, 10)}>{dateText(d.updated)}</time> · by <a href="https://n-uf.com">n-uf</a>{scheduled && <><span class="divider" aria-hidden="true"></span><ScheduledBadge date={d.published} /></>}</p>
 
     <div class="card takeaways">
       <h4>Key takeaways</h4>
