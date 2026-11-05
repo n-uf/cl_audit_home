@@ -21,6 +21,8 @@ const article = z.object({
   related: z.array(sitePath).min(2).max(4),
   order: z.number().int().optional(),   // optional: where a use case sits in the /use-cases/ list (lowest first); otherwise by title
 }).refine((d) => d.updated >= d.published, { message: "updated is earlier than published", path: ["updated"] })
+  // For a draft dated ahead (draft: true, published in the future) set `updated` equal to `published`: this rule needs
+  // updated >= published, and scripts/publish-due.mjs changes only the `draft` line when the day comes.
   // a live page can't be dated in the future (UTC days); only a draft may wait for its date
   .refine((d) => d.draft || d.published.toISOString().slice(0, 10) <= new Date().toISOString().slice(0, 10),
     { message: "published is a future date but the page is not a draft: set draft: true (it goes live on that date)", path: ["published"] });
