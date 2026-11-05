@@ -543,6 +543,21 @@ const jsonLd = [
         ? "Email addresses show everywhere in cl_audit."
         : "Email addresses are left out of the launcher, dashboard, panels and Dock menus, and blurred in Settings — for screen sharing.");
     }));
+    // Privacy ▸ Usage history (26.11.0), shared with the dashboard: off, its history (charts, totals, CSV) is hidden
+    const hsw = $("[data-toggle-history]")!;
+    const syncHistory = () => {
+      const on = !document.documentElement.classList.contains("no-history");
+      setSwitch(hsw, on); $("[data-history-t]")!.textContent = on ? "from this Mac's session files" : "off";
+    };
+    syncHistory();
+    hsw.addEventListener("click", () => {
+      const on = document.documentElement.classList.contains("no-history");   // it was off, so it turns on
+      try { localStorage.setItem("cl_audit.usageHistory", on ? "1" : "0"); } catch {}
+      applyPrefs(prefs); syncHistory();
+      showWhatNow("Usage history", on ? "on" : "off", on
+        ? "The dashboard's history, cost estimate and CSV are read from Claude Code's session files on this Mac again."
+        : "cl_audit reads none of Claude Code's session files, so the dashboard's history, cost estimate and CSV are hidden. The limits still come from Anthropic.");
+    });
     show();
   }
   document.addEventListener("astro:page-load", setup);

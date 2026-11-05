@@ -220,4 +220,8 @@ export function applyPrefs(p = loadPrefs()) {
   let showEmails = true;
   try { showEmails = localStorage.getItem("cl_audit.showEmails") !== "0"; } catch {}
   root.classList.toggle("hide-emails", !showEmails);
+  // General ▸ Privacy ▸ Usage history (26.11.0): off, no session file is read, so the dashboard's history is hidden
+  let history = true;
+  try { history = localStorage.getItem("cl_audit.usageHistory") !== "0"; } catch {}
+  root.classList.toggle("no-history", !history);
 }
