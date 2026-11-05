@@ -71,7 +71,8 @@ retrying a rejected push up to 3 times. It pushes over SSH with the repo's write
 `main`'s ruleset; the key (`PUBLISH_DEPLOY_KEY`) is a secret of the `publish` environment, released to runs on `main`
 only. To undo, revert that commit, or set `draft: true` again (with a future `published`).
 The workflow runs as two jobs, so that no third-party code shares a job with that key. `build` has no secret: it
-flips the drafts, runs `npm ci` and `npm run build`, and hands the flip over as a `git diff` patch plus the page list.
+flips the drafts, uploads the flip as a `git diff` patch plus the page list before anything third-party runs, then runs
+`npm ci` and `npm run build` (only a green build lets `push` start).
 `push` holds the key and runs no node or npm. Both jobs check out `github.sha` (the commit the run started on), and
 only the patch and the page list cross between them, never a commit id. Before applying the patch, `push` runs
 `scripts/check-publish-patch.py` from its own checkout (Python standard library only; tests in
@@ -81,8 +82,11 @@ the front matter written back as `draft: false`, the page's `published` day is t
 list equals the files in the patch. Then it commits (one line, `publish: ...`) and pushes with git hooks off, ssh
 reading no config, agent or proxy, and GitHub's SSH host key pinned. If main moved and `push` has to rebase, it
 checks the flip again on the new main (with a copy of the checker saved before the rebase) and pushes nothing unless
-that passes. A third job, `report`, turns the run red when
-either job failed or some page's front matter couldn't be read (the readable pages are published all the same).
+that passes. Before committing it also checks that the files git staged are exactly the page list's files. A third
+job, `report`, turns the run red when either job failed or some page's front matter couldn't be read (the readable
+pages are published all the same). To check the deploy key without flipping anything (Actions > publish > Run
+workflow, tick `verify-key`), a fourth job, `verify-key`, takes the same checkout and ssh hardening as `push` and only
+runs `git ls-remote origin refs/heads/main` over ssh, printing main's SHA; build, push and report don't run then.
 A draft's `updated` must equal its `published` (the schema requires `updated >= published`, and the flip changes
 only `draft`, so a draft dated ahead needs the same future date in both). `.github/workflows/ci.yml` runs the tests
 and a plain build on every pull request, so a live page linking to a draft fails there, not after the merge.
