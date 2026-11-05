@@ -1,7 +1,8 @@
 ---
 import Desktop from "../../layouts/Desktop.astro";
 import "../../styles/reader.css";
-import { getUseCases, pathOf, dateText } from "../../data/content";
+import ScheduledBadge from "../../components/ScheduledBadge.astro";
+import { getUseCases, pathOf, dateText, isLive, showDrafts } from "../../data/content";
 import { orgNode, webPage, breadcrumbs } from "../../data/schema";
 
 const items = await getUseCases();
@@ -24,6 +25,7 @@ const jsonLd = [
           <h2><a href={pathOf("usecases", e.id)}>{e.data.h1}</a></h2>
           <p>{e.data.description}</p>
           <span class="when">Updated {dateText(e.data.updated)}</span>
+          {showDrafts && !isLive(e) && <ScheduledBadge date={e.data.published} />}
         </div>
       ))}
     </div>

@@ -15,8 +15,9 @@
 .byline { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: -4px 0 0; font-size: 12.5px; color: var(--muted); }
 .byline a { color: var(--link); }
 .byline .divider { width: 1px; height: 14px; background: rgba(0,0,0,.45); box-shadow: 1px 0 0 rgba(255,255,255,.08); }
-.byline .kind { font: 600 9.5px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; padding: 4px 7px; border-radius: 3px; color: var(--text);
+.byline .kind, .sched { font: 600 9.5px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; padding: 4px 7px; border-radius: 3px; color: var(--text);
   background: var(--win-bg); box-shadow: var(--win-shadow); }
+.sched { justify-self: start; }   /* "Scheduled for <date>" on a draft (dev and previews only), in the byline and on the list cards */
 
 /* key takeaways */
 .takeaways ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
@@ -135,7 +136,7 @@
 .face-silver .appwin .prose :is(th, td) { border-top-color: rgba(0,0,0,.16); box-shadow: none; }
 .face-silver .appwin :is(.faq-card h4, .takeaways h4, .toc h4) { color: rgba(30,32,34,.7); }
 .face-silver .appwin .prose a:not(.key):not(.pill), .face-silver .appwin .byline a, .face-silver .appwin .related a, .face-silver .appwin .sources a { color: var(--link); }
-.face-silver .appwin :is(.prose table, .byline .kind) { --text: #1c1c1e; --soft: #2e3033; --muted: #55585c; --faint: #6c6f73; color: var(--text); text-shadow: none; }
+.face-silver .appwin :is(.prose table, .byline .kind, .sched) { --text: #1c1c1e; --soft: #2e3033; --muted: #55585c; --faint: #6c6f73; color: var(--text); text-shadow: none; }
 .face-silver .appwin .card.toc li a:not(.key):not(.pill):not(.tile) { color: var(--soft); }
 .face-black .prose :is(th, td) { border-top-color: rgba(0,0,0,.55); }
 

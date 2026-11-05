@@ -4,7 +4,8 @@ import { render } from "astro:content";
 import Desktop from "../../layouts/Desktop.astro";
 import Reader from "../../layouts/Reader.astro";
 import "../../styles/reader.css";
-import { getPosts, pathOf, dateText, kindLabel } from "../../data/content";
+import ScheduledBadge from "../../components/ScheduledBadge.astro";
+import { getPosts, pathOf, dateText, kindLabel, isLive, showDrafts } from "../../data/content";
 import { orgNode, webPage, breadcrumbs } from "../../data/schema";
 import { withActions } from "../../data/actions";
 import { withImages } from "../../data/images";
@@ -45,6 +46,7 @@ const jsonLd = [
             <h2><a href={pathOf("blog", e.id)}>{e.data.h1}</a></h2>
             <p>{e.data.description}</p>
             <span class="when">Updated {dateText(e.data.updated)}</span>
+            {showDrafts && !isLive(e) && <ScheduledBadge date={e.data.published} />}
           </div>
         ))}
       </div>
