@@ -72,7 +72,7 @@ sources:
     url: "https://platform.claude.com/docs/en/about-claude/pricing"
     checked: 2026-11-05
   - title: "cl_audit README, version 26.11.0 (n-uf/cl_audit): limits, alerts, usage credits"
-    url: "https://github.com/n-uf/cl_audit"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.0/README.md"
     checked: 2026-11-05
 related:
   - /blog/claude-usage-limit-reached/
@@ -180,6 +180,6 @@ If you keep several Claude setups on one Mac, cl_audit, our free [Claude usage t
 
 ![cl_audit alert settings: Notify at and Notify when back](/img/guides/alert-settings.webp "cl_audit's Alerts: Notify at a level, and Notify when back for the reset. Sample data.")
 
-While a profile is spending usage credits, its card, panels and Dock icon's menu say so: "Using usage credits · $4.20 spent". At other times nothing about credits is shown. With alerts on, cl_audit also sends one when a profile starts spending credits ("Claude Work is using usage credits · The 5-hour limit is full · $0.40 spent so far") and another when they run out. Your balance and spend limit stay in Settings ▸ Usage and `/usage`.
+While a profile is spending usage credits, its card, panels and Dock icon's menu say so: "Using usage credits · $4.20 spent". At other times nothing about credits is shown. With alerts on, cl_audit also sends a notification when a profile starts spending credits ("Claude Work is using usage credits · The 5-hour limit is full · $0.40 spent so far") and another when they run out. Your balance and spend limit stay in Settings ▸ Usage and `/usage`.
 
 [How the alerts work](/use-cases/claude-usage-limit-alerts/) covers both settings, and [the install steps](/install/) are short. The [cl_audit FAQ](/faq/) says what the Dock icon shows while a limit is full.
