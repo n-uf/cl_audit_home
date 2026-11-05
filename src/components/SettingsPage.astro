@@ -168,8 +168,10 @@ const sw = (key: string, label: string, on = true) => `<span class="ctl-pair"><b
         <div class="srow"><span>Alerts <i class="idot" title="Alerts come from cl_audit when a limit reaches the level set for each profile. macOS asks once; you can change it in System Settings ▸ Notifications ▸ cl_audit.">i</i></span><span class="disp"><span class="g">Allowed</span></span></div>
         <div class="srow"><span>Last read</span><span class="v-soft">1 min ago</span></div>
       </div>
-      <div class="card"><h4>Privacy</h4>
+      <div class="card"><h4>Privacy <i class="idot" title="What cl_audit shows and what it reads on this Mac.">i</i></h4>
         <div class="srow"><span>Show emails <i class="idot" title="Off: email addresses are left out of the dashboard, the launcher, the usage panels and the Dock icon menus, and blurred in Settings (hover one to see it). For screen sharing and screenshots.">i</i></span><button type="button" class="mswitch on" role="switch" aria-checked="true" data-toggle-emails aria-label="Show emails"></button></div>
+        <!-- 26.11.0: whether cl_audit reads Claude Code's session files at all (off: the dashboard's history is hidden) -->
+        <div class="srow"><span>Usage history <i class="idot" title="The dashboard's history (when you use Claude, tokens per day, where they go), the cost estimate, the CSV export and the launcher's 7-day row. Read from the session files Claude Code keeps on this Mac: only the time, model, token counts, project folder and surface of each reply, never the messages. Off: no session file is read, and those are hidden. The limits come from Anthropic either way.">i</i></span><span class="ctl-pair"><button type="button" class="mswitch on" role="switch" aria-checked="true" data-toggle-history aria-label="Usage history"></button><span class="sw-t" data-history-t>from this Mac's session files</span></span></div>
       </div>
       <div class="card" data-gcard="about"><h4>About</h4>
         <div class="srow"><span>Version <i class="idot" title="Calendar version: the year and month of the release, then a counter within that month (26.10.1 = the second release in October 2026). The build counts every change.">i</i></span><span class="disp">{version} <em>· build {build}</em></span></div>
