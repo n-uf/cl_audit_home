@@ -162,7 +162,7 @@ const jsonLd = [
         cancelled: `Cancelled: the sessions are back with ${from}.`,
         code: `The switch is waiting for this sign-in; ${name}'s window stays closed until it's done or cancelled. (In this demo the sign-in finishes by itself.)`,
         done: `Done: ${name} works on ${to}.`,
-      }[phase as string];
+      }[phase as "pending" | "cancelled" | "code" | "done"];
       const l = q("[data-sw-line]"); l.hidden = !line; l.textContent = line ?? "";
     };
     // the steps that run on by themselves in the demo, and after how long
@@ -177,11 +177,13 @@ const jsonLd = [
       others.forEach((s) => dash.querySelectorAll<HTMLElement>(s).forEach((el) => (el.style.display = on ? "none" : "")));
       if (on) { draw(); page.scrollIntoView({ block: "start" }); }
     };
+    // Esc in the confirmation is Cancel
+    page.addEventListener("keydown", (e) => { if (e.key === "Escape" && !q("[data-sw-confirm]").hidden) q("[data-sw-no]").click(); });
     (window as any).clOpenSwitch = () => { if (phase === "done" || phase === "cancelled") phase = "ready"; show(true); };
     page.addEventListener("click", (e) => {
       const t = e.target as HTMLElement, has = (s: string) => !!t.closest(s);
       if (has("[data-sw-back]")) { show(false); return; }
-      if (has("[data-sw-go]")) { q("[data-sw-confirm]").hidden = false; return; }
+      if (has("[data-sw-go]")) { q("[data-sw-confirm]").hidden = false; q<HTMLButtonElement>("[data-sw-yes]").focus(); return; }
       if (has("[data-sw-no]")) { q("[data-sw-confirm]").hidden = true; return; }
       if (has("[data-sw-yes]")) { q("[data-sw-confirm]").hidden = true; go("closing"); return; }
       if (has("[data-sw-stop]")) { go("pending"); return; }
@@ -242,7 +244,10 @@ const jsonLd = [
     dash.addEventListener("click", (e) => {
       if ((e.target as HTMLElement).closest("[data-switch-offer]")) (window as any).clOpenSwitch?.();
     });
-    if (new URLSearchParams(location.search).get("switch") === "work") (window as any).clOpenSwitch?.();
+    if (new URLSearchParams(location.search).get("switch") === "work") {
+      (window as any).clOpenSwitch?.();
+      history.replaceState(history.state, "", location.pathname);   // a reload shows the dashboard again
+    }
     dash.querySelector<HTMLButtonElement>("[data-csv]")?.addEventListener("click", () => {
       const ids = allIds.filter((id) => !load().includes(id)) as AccountId[];
       const blob = new Blob([csvFor((dash.dataset.range || "7d") as Range, ids)], { type: "text/csv" });
