@@ -5,7 +5,7 @@ h1: "Best Claude usage trackers for Mac (2026)"
 mainKeyword: "best claude usage tracker"
 kind: best-tools
 published: 2026-11-02
-updated: 2026-11-04
+updated: 2026-11-05
 author: n-uf
 takeaways:
   - "Which Claude usage tracker suits you depends on where you want to see your usage: the menu bar, the Dock, the terminal or the browser."
@@ -108,7 +108,7 @@ The limits are read from Anthropic for each profile, with that profile's Claude 
 
 Where it isn't the pick:
 
-- It's still mainly a Dock app. A menu bar icon per profile is off by default, and the widget needs macOS 14 or later.
+- It's still mainly a Dock app. A menu bar icon per profile is off by default ([how the menu bar icons work](/use-cases/claude-usage-menu-bar-mac/)), and the widget needs macOS 14 or later.
 - It needs a Mac with Apple silicon and macOS 13 or later, plus Claude Code signed in for each profile. The Claude app is only needed for Claude windows.
 - An API-key profile has no limits to show.
 - It isn't signed with an Apple Developer ID yet, so the first time, macOS makes you click Open Anyway.
@@ -168,7 +168,7 @@ How we'd choose, including when it isn't cl_audit:
 
 ## Is there a Claude usage widget for Mac?
 
-Only cl_audit, our own tool. Its "Claude usage" widget is in the macOS widget gallery (macOS 14 or later) and shows every profile's 5-hour and weekly limits in three sizes. Its look is set in Settings ▸ General ▸ Widget. The five menu bar apps stay in the menu bar. ClaudeBar's README also lists a Notch view and a Touch Bar view. If you need a desktop widget from another tool, check each project's page, since they change.
+Only cl_audit, our own tool. Its "Claude usage" widget is in the macOS widget gallery (macOS 14 or later) and shows every profile's 5-hour and weekly limits in three sizes. Its look is set in Settings ▸ General ▸ Widget. The five menu bar apps stay in the menu bar. ClaudeBar's README also lists a Notch view and a Touch Bar view. If you need a desktop widget from another tool, check each project's page, since they change. How to add it, what it draws for one profile or several, and how to set its look are on the [Claude usage widget for Mac](/use-cases/claude-usage-widget-mac/) page.
 
 ## Is there a Claude usage tracker on GitHub?
 
