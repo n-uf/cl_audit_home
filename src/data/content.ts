@@ -41,6 +41,19 @@ export const pathOf = (section: Section, id: string) => `${sections[section].pat
 /** "2026-11-02" date -> "2 Nov 2026" */
 export const dateText = (d: Date) => releasedText(d.toISOString().slice(0, 10));
 
+/** Is a site path a page of this build? "built": a fixed page, or an entry that is live (or a draft, where drafts are
+ *  shown); "unbuilt": an entry whose draft is hidden in this build; "none": no page at all. For {{live:}} blocks (live.ts). */
+export async function pageStatus(path: string): Promise<"built" | "unbuilt" | "none"> {
+  if (pages.some((p) => p.path === path)) return "built";
+  for (const section of ["usecases", "blog"] as const) {
+    if (!path.startsWith(sections[section].path)) continue;
+    const all: Entry[] = section === "usecases" ? await getCollection("useCases") : blogFiles.length === 0 ? [] : await getCollection("blog");
+    const e = all.find((x) => pathOf(section, x.id) === path);
+    if (e) return showDrafts || isLive(e) ? "built" : "unbuilt";
+  }
+  return "none";
+}
+
 /** The title and description of a site path, for the Related cards. Throws on a path that doesn't exist, so a broken link fails the build. */
 export async function pageInfo(path: string): Promise<{ title: string; description: string }> {
   const fixed = pages.find((p) => p.path === path);
