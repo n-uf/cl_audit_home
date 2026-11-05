@@ -3,7 +3,7 @@
 // Claude open dot, how long a Dock click shows the usage before opening Claude, and what a profile includes
 // (Usage in the Dock, Claude window).
 import { accounts, type AccountId } from "./demo";
-import { limitsHTML, backWords, creditsHTML, type Design } from "./panelView";
+import { limitsHTML, backWords, cardExtrasHTML, type Design } from "./panelView";
 import manifest from "./icon-manifest.json";   // written by scripts/render-icons.sh
 
 export const styles = [
@@ -36,6 +36,7 @@ export type Prefs = {
   dockRuns: DockRuns;      // Dock icon ▸ Runs: At login, With its window, When started (26.10.11)
   windowFollows: boolean;  // Claude window ▸ With Dock icon: opens and quits with the Dock icon
   opensFromDock: boolean;  // Claude window ▸ Opens from: Dock click too (true) or Only when asked (26.11.0)
+  sessionsFollow: boolean; // Claude Code ▸ Sessions follow: the window's sessions and sidebar go with the account (on)
   notifyBack: boolean;     // Alerts ▸ Notify when back: one alert when a full limit resets
   iconFollows?: boolean;   // before 26.10.11 (read once to carry it over into dockRuns)
   showFable: boolean;      // Profile ▸ Fable's limit: shown and alerted (only where the plan has one; 26.11.0)
@@ -54,9 +55,9 @@ const mbOn = (on: boolean): MenuBarLook => ({ on, style: "bars", colours: "level
 export const dockRunsChoices: [DockRuns, string][] = [["login", "At login"], ["window", "With its window"], ["started", "When started"]];
 
 const defaults: Record<AccountId, Prefs> = {
-  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 3, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments", dataDir: "Claude", iconColor: "orange", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, opensFromDock: true, notifyBack: true, showFable: true, mb: mbOn(true) },
-  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, opensFromDock: true, notifyBack: true, showFable: true, mb: mbOn(true) },
-  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, win: true, dockRuns: "started", windowFollows: false, opensFromDock: true, notifyBack: true, showFable: true, mb: mbOn(false) },
+  home: { name: "home", label: "HOME", color: "orange", style: "bars", click: "Usage, then Claude", peek: 3, hold: true, window: "Standard", refresh: "5 min", notify: true, notifyAt: 90, login: true, renew: false, panel: "segments", dataDir: "Claude", iconColor: "orange", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, opensFromDock: true, sessionsFollow: true, notifyBack: true, showFable: true, mb: mbOn(true) },
+  work: { name: "work", label: "WORK", color: "teal", style: "rings", click: "Usage, then Claude", peek: 3, hold: true, window: "Separate", refresh: "5 min", notify: true, notifyAt: 85, login: true, renew: true, panel: "rings", dataDir: "Claude-work", iconColor: "teal", frame: "", dot: true, showInDock: true, win: true, dockRuns: "login", windowFollows: false, opensFromDock: true, sessionsFollow: true, notifyBack: true, showFable: true, mb: mbOn(true) },
+  side: { name: "side", label: "SIDE", color: "purple", style: "statusBar", click: "Usage, then Claude", peek: 3, hold: false, window: "Separate", refresh: "10 min", notify: false, notifyAt: 90, login: false, renew: false, panel: "glow", dataDir: "Claude-side", iconColor: "purple", frame: "", dot: true, showInDock: true, win: true, dockRuns: "started", windowFollows: false, opensFromDock: true, sessionsFollow: true, notifyBack: true, showFable: true, mb: mbOn(false) },
 };
 
 /** The profiles' order (26.11.0): set by dragging a profile's tile along the Settings strip. The dashboard, the
@@ -202,7 +203,7 @@ export function applyPrefs(p = loadPrefs()) {
     const id = el.dataset.cardLimits as AccountId, key = `${design}:${p[id].showFable ? 1 : 0}`;
     if (el.dataset.design === key) return;
     el.dataset.design = key;
-    el.innerHTML = limitsHTML(id, design, false) + creditsHTML(id);
+    el.innerHTML = limitsHTML(id, design, false) + cardExtrasHTML(id, design);
   });
   // the profiles' order (26.11.0): dashboard keys and cards, the history's legend, the launcher (its ⌘1, ⌘2… follow)
   // and the Settings strip; never the Dock
