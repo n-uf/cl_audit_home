@@ -8,7 +8,7 @@ published: 2026-11-02
 updated: 2026-11-05
 author: n-uf
 takeaways:
-  - "On a Pro, Max, Ultra, Team or seat-based Enterprise plan, Settings > Usage shows the current 5-hour session and the weekly limits, with reset times."
+  - "On a Pro, Max, Ultra, Team or seat-based Enterprise plan, Settings > Usage shows the weekly limits and, except on a verified Ultra account, the current 5-hour session, with reset times."
   - "In Claude Code, /usage shows plan usage bars for subscribers; /cost and /stats are aliases."
   - "Claude and Claude Code share one limit, so the same figures apply to claude.ai, the Claude app and Terminal."
   - "Anthropic's own views show one account at a time; a Dock tracker such as cl_audit shows each account's limits side by side."
