@@ -87,7 +87,7 @@ You may not need a tracker at all. Anthropic's help page says Settings ▸ Usage
 
 | Tool | Shows usage in | Several accounts | History | Price | Licence | Needs |
 |---|---|---|---|---|---|---|
-| cl_audit | Dock icons (one per profile) and a window | Yes, one profile per account seat | Yes: tokens per day from Claude Code's session files, over 24 h / 7 d / 30 d | Free | PolyForm Perimeter 1.0.1 (source-available) | Apple silicon, macOS 13+, Claude Code signed in |
+| cl_audit | Dock icons (one per profile) and a window | Yes, one profile per account seat | Yes: tokens per day from Claude Code's session files, over 24 h / 7 d / 30 d, with CSV export and a cost estimate at API list prices | Free | PolyForm Perimeter 1.0.1 (source-available) | Apple silicon, macOS 13+, Claude Code signed in |
 | ClaudeUsageBar | Menu bar | Not mentioned | Not mentioned | Not stated | MIT | macOS 12+ |
 | Claude Usage Tracker | Menu bar | Yes, "unlimited" profiles | Yes, charts over time | Not stated | MIT | macOS 14+ |
 | Usagebar | Menu bar | Not mentioned | Not mentioned | $9 one-time, with a free tier | Not stated | macOS, no minimum stated |
@@ -104,7 +104,7 @@ cl_audit is a free, source-available Mac app. Each profile is one Claude setup: 
 
 ![Dock icons showing three Claude profiles' usage limits](/img/guides/dock-profiles.webp "cl_audit's Dock icons: home at 34% of its 5-hour limit, work full and counting down, side at 12%. Sample data.")
 
-The limits are read from Anthropic for each profile, with that profile's Claude Code sign-in. Usage history comes from Claude Code's session files on your Mac, so it covers the Terminal, the desktop Code tab, VS Code and SDK apps: tokens per day, by project, model and surface. The README says there is no cl_audit server and nothing else goes over the network. You can [try the dashboard demo](/dashboard/) without installing.
+The limits are read from Anthropic for each profile, with that profile's Claude Code sign-in. Usage history comes from Claude Code's session files on your Mac, so it covers the Terminal, the desktop Code tab, VS Code and SDK apps: tokens per day, by project, model and surface. The README says there is no cl_audit server and nothing else goes over the network. You can [try the dashboard demo](/dashboard/) without installing. In the app, the history also saves as a CSV file, and its totals include a cost estimate at API list prices, which is not your bill.
 
 Where it isn't the pick:
 
