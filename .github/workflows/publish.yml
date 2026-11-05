@@ -5,17 +5,24 @@
 #
 # Two jobs, so third-party code never shares a job with the write key:
 #   build  has no environment and no secret (permissions: contents: read, checkout without credentials). It flips the
-#          due drafts, runs `npm ci` and `npm run build` (a red build stops the run: nothing is pushed), and hands the
-#          flip over as a `git diff` patch plus the page list in one artifact. Dependencies' install and build
-#          scripts run here, and can reach nothing but a read-only token.
-#   push   has `environment: publish` and the deploy key, and runs no node, npm, pnpm or npx. It checks out main over
-#          SSH (GitHub's ed25519 host key pinned, git hooks switched off), downloads the artifact and first runs
-#          scripts/check-publish-patch.py (python3 standard library only, from main) on it: the patch is applied only
-#          if it changes nothing but `draft: true` -> `draft: false` lines of existing pages under src/content/blog
-#          and src/content/use-cases, and the page list equals the files in the patch. Then it commits and pushes.
-#          A rejected push (main moved during the build) runs `git pull --rebase` (no rebuild) and tries again,
-#          3 pushes at most; a refusal for any other reason, or a rebase conflict (aborted), fails the run.
+#          due drafts, saves the flip as a patch (before any third-party code runs), then runs `npm ci` and
+#          `npm run build` (a red build stops the run: nothing is pushed; no npm cache is used) and hands the patch
+#          over with the page list in one artifact. Dependencies' install and build scripts run here, and can reach
+#          nothing but a read-only token.
+#   push   has `environment: publish` and the deploy key, and runs no node, npm, pnpm or npx. It checks out the same
+#          commit as build over SSH (GitHub's ed25519 host key pinned, git hooks switched off, ssh reading no config,
+#          agent, proxy or system known_hosts), downloads the artifact and first runs
+#          scripts/check-publish-patch.py (python3 standard library only, from its own checkout) on it: the patch is
+#          applied only if it is under 64 KB and changes nothing but the front-matter `draft: true` -> `draft: false`
+#          line of existing pages under src/content/blog and src/content/use-cases that are due (`published` on or
+#          before today, UTC), and the page list equals the files in the patch. The commit message is the checker's
+#          one `publish: ...` line. Then it pushes. A rejected push (main moved during the build) runs
+#          `git pull --rebase` (no rebuild) and tries again, 3 pushes at most; a refusal for any other reason, or a
+#          rebase conflict (aborted), fails the run.
 #   report decides the colour of the run: red when build or push failed, or when build's publish-due exited 3.
+# Both jobs check out ${{ github.sha }}, the commit the run started on. Only the page list and the patch cross from
+# build to push: no commit id does, so a compromised build can't make the key push a commit (a fork's head, an orphan)
+# whose checker says yes. The checker runs from push's own checkout.
 # Why: with one job, any dependency's install or build script could read the key from disk or core.sshCommand, or
 # hijack the later push through $GITHUB_ENV (BASH_ENV, LD_PRELOAD), $GITHUB_PATH (a fake ssh) or a planted
 # .git/hooks/pre-push. Now the key exists only in a job that runs nothing from npm, and what the build job hands over
@@ -61,10 +68,11 @@ jobs:
       code: ${{ steps.flip.outputs.code }}         # publish-due.mjs's exit code (0, 3 or a crash)
       ready: ${{ steps.ready.outputs.ready }}      # 'true' only after a green build and the upload of the patch
     steps:
-      # no key, no token left on disk: nothing in this job can push
+      # the commit this run started on (the push job checks out the same one); no key, no token left on disk, so
+      # nothing in this job can push
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          ref: main
+          ref: ${{ github.sha }}
           persist-credentials: false
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
@@ -139,20 +147,30 @@ jobs:
         run: '[ -n "$KEY" ] || { echo "::error::secret PUBLISH_DEPLOY_KEY is not set: the job pushes to main with the write deploy key"; exit 1; }'
 
       # main is protected by a ruleset that deploy keys may bypass: check out with the repo's write deploy key, so
-      # the push (and the rebase retries) go over SSH as "publish-bot (scheduled publishing)". Full history for the
-      # rebase. The host key is GitHub's published ed25519 key (https://api.github.com/meta, "ssh_keys";
+      # the push (and the rebase retries) go over SSH as "publish-bot (scheduled publishing)". The commit is
+      # github.sha, the one the build job built, never one the build names. Full history for the rebase. The host
+      # key is GitHub's published ed25519 key (https://api.github.com/meta, "ssh_keys";
       # SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU), and the connection is strict about it.
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          ref: main
+          ref: ${{ github.sha }}
           ssh-key: ${{ secrets.PUBLISH_DEPLOY_KEY }}
           ssh-known-hosts: 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl'
           ssh-strict: true
           fetch-depth: 0
 
-      # no git hook of the checkout runs in this job, whatever the working tree holds
-      - name: Switch git hooks off
-        run: git config core.hooksPath /dev/null
+      # No git hook of the checkout runs in this job, whatever the working tree holds. Checkout left core.sshCommand
+      # with the key and the known-hosts file it wrote; ssh is now also told to read no config file (-F /dev/null),
+      # no agent, no proxy and no system known_hosts, to use only that key, and to accept only the pinned ed25519 key.
+      - name: Switch git hooks off and lock down ssh
+        run: |
+          git config core.hooksPath /dev/null
+          cmd=$(git config --local --get core.sshCommand)
+          if [ -z "$cmd" ]; then
+            echo "::error::checkout set no core.sshCommand"
+            exit 1
+          fi
+          git config core.sshCommand "$cmd -F /dev/null -o IdentitiesOnly=yes -o IdentityAgent=none -o ProxyCommand=none -o GlobalKnownHostsFile=/dev/null -o HostKeyAlgorithms=ssh-ed25519 -o BatchMode=yes"
 
       - name: Download the flip
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -160,19 +178,26 @@ jobs:
           name: publish-flip
           path: ${{ runner.temp }}/handoff
 
-      # the patch was made in a job that ran third-party code: apply it only if it is exactly a draft flip
-      - name: Check and apply the patch
+      # The patch was made in a job that ran third-party code: apply it only if the checker (run from this job's own
+      # checkout) says it is exactly a flip of due pages. The commit message is the checker's one line; git apply's
+      # output goes to stderr and never into the message.
+      - name: Check, apply and commit the patch
         run: |
-          python3 -I scripts/check-publish-patch.py --root "$GITHUB_WORKSPACE" "$RUNNER_TEMP/handoff/publish.patch" "$RUNNER_TEMP/handoff/pages.txt"
-          git apply --check "$RUNNER_TEMP/handoff/publish.patch"
-          git apply --index "$RUNNER_TEMP/handoff/publish.patch"
-
-      - name: Commit and push
-        run: |
-          pages=$(paste -sd, "$RUNNER_TEMP/handoff/pages.txt" | sed 's/,/, /g')
+          git switch -q -c publish-flip
+          message=$(python3 -I scripts/check-publish-patch.py --root "$GITHUB_WORKSPACE" "$RUNNER_TEMP/handoff/publish.patch" "$RUNNER_TEMP/handoff/pages.txt")
+          if [[ "$message" != "publish: "* || "$message" == *$'\n'* ]]; then
+            echo "::error::the patch check printed an unexpected commit message"
+            exit 1
+          fi
+          git apply --check "$RUNNER_TEMP/handoff/publish.patch" >&2
+          git apply --index "$RUNNER_TEMP/handoff/publish.patch" >&2
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git -c core.hooksPath=/dev/null commit -m "publish: ${pages}"
+          git -c core.hooksPath=/dev/null commit -q -m "$message"
+          git -c core.hooksPath=/dev/null log --stat -1
+
+      - name: Push to main
+        run: |
           for attempt in 1 2 3; do
             if git -c core.hooksPath=/dev/null push origin HEAD:main 2> "$RUNNER_TEMP/push.err"; then cat "$RUNNER_TEMP/push.err"; exit 0; fi
             cat "$RUNNER_TEMP/push.err" >&2
