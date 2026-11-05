@@ -151,7 +151,7 @@ const jsonLd = [
       const k = (e.target as HTMLElement).closest<HTMLElement>("[data-switch-offer]");
       if (!k) return;
       const to = k.textContent!.replace(/^Switch to |…$/g, "");
-      showWhatNow(`Switch to ${to}`, "", `In cl_audit this opens the Switch page: both accounts' limits, what stays and what follows to ${to}. This is a demo, so nothing switches.`);
+      showWhatNow(`Switch to ${to}`, "", `In cl_audit this opens the Switch page: both accounts' limits, what stays and what follows to ${to}, and the steps. This is a demo, so nothing opens.`);
     });
     dash.querySelector<HTMLButtonElement>("[data-csv]")?.addEventListener("click", () => {
       const ids = allIds.filter((id) => !load().includes(id)) as AccountId[];
