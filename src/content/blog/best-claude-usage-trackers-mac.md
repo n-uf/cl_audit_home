@@ -104,7 +104,7 @@ cl_audit is a free, source-available Mac app. Each profile is one Claude setup: 
 
 ![Dock icons showing three Claude profiles' usage limits](/img/guides/dock-profiles.webp "cl_audit's Dock icons: home at 34% of its 5-hour limit, work full and counting down, side at 12%. Sample data.")
 
-The limits are read from Anthropic for each profile, with that profile's Claude Code sign-in. Usage history comes from Claude Code's session files on your Mac, so it covers the Terminal, the desktop Code tab, VS Code and SDK apps: tokens per day, by project, model and surface. The README says there is no cl_audit server and nothing else goes over the network. You can [try the dashboard demo](/dashboard/) without installing. In the app, the history also saves as a CSV file, and its totals include a cost estimate at API list prices, which is not your bill.
+The limits are read from Anthropic for each profile, with that profile's Claude Code sign-in. Usage history comes from Claude Code's session files on your Mac, so it covers the Terminal, the desktop Code tab, VS Code and SDK apps: tokens per day, by project, model and surface. The README says there is no cl_audit server and nothing else goes over the network. You can [try the dashboard demo](/dashboard/) without installing.
 
 Where it isn't the pick:
 
