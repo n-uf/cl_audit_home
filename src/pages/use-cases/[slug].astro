@@ -4,14 +4,15 @@ import Reader from "../../layouts/Reader.astro";
 import { getUseCases, pathOf } from "../../data/content";
 import { withActions } from "../../data/actions";
 import { withImages } from "../../data/images";
+import { withLiveBlocks } from "../../data/live";
 
 export async function getStaticPaths() {
   return (await getUseCases()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
-// the body with its images as sized figures (src/data/images.ts), then its action buttons (src/data/actions.ts);
-// the plain component if there is no rendered HTML
-const html = entry.rendered?.html ? withActions(withImages(entry.rendered.html), pathOf("usecases", entry.id), entry.data.mainKeyword) : undefined;
+// the body with its {{live:}} blocks resolved (src/data/live.ts), its images as sized figures (src/data/images.ts), then its
+// action buttons (src/data/actions.ts); the plain component if there is no rendered HTML
+const html = entry.rendered?.html ? withActions(withImages(await withLiveBlocks(entry.rendered.html, entry.filePath ?? `src/content/use-cases/${entry.id}.md`)), pathOf("usecases", entry.id), entry.data.mainKeyword) : undefined;
 ---
 <Reader entry={entry} section="usecases" headings={headings}>{html ? <Fragment set:html={html} /> : <Content />}</Reader>
