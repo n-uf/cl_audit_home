@@ -1,0 +1,32 @@
+# CI for pull requests: unit tests, then a plain production build (drafts hidden, as on main).
+# Why a plain build: Vercel's PR preview shows drafts, so a live page linking to a draft passes there; only a build
+# without drafts (npm run build -> astro build + scripts/check-links.mjs) fails on it. Without this check the first
+# failing build would be production on main, which blocks every later deploy, the daily publish included.
+name: ci
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - run: npm test
+
+      - run: npm run build
