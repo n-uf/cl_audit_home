@@ -5,21 +5,21 @@ h1: "How to check Claude usage on a Mac"
 mainKeyword: "how to check claude usage"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-04
 author: n-uf
 takeaways:
   - "On a Pro, Max, Ultra, Team or seat-based Enterprise plan, Settings > Usage shows the current 5-hour session and the weekly limits, with reset times."
   - "In Claude Code, /usage shows plan usage bars for subscribers; /cost and /stats are aliases."
   - "Claude and Claude Code share one limit, so the same figures apply to claude.ai, the Claude app and Terminal."
   - "Anthropic's own views show one account at a time; a Dock tracker such as cl_audit shows each account's limits side by side."
-  - "cl_audit puts usage in the Dock, not the menu bar, and it is not a widget."
+  - "cl_audit is mainly a Dock app. It can also add a menu bar icon per profile and a \"Claude usage\" widget (macOS 14 or later)."
 faq:
   - q: "How do I check my Claude usage?"
     a: "Open Settings > Usage in Claude (claude.ai/settings/usage in a browser). Under Current session it shows how much of your 5-hour limit you've used and how long is left, and it shows when your weekly limits reset. In Claude Code, type /usage."
   - q: "How do I check Claude usage in the terminal?"
     a: "Start claude and type /usage. On a Pro, Max, Ultra, Team or Enterprise plan it shows plan usage bars next to the session cost and activity stats. /cost and /stats are aliases for the same command."
   - q: "Is there a widget for tracking Claude usage on macOS?"
-    a: "cl_audit is not a widget and has no menu bar item. It shows each profile's 5-hour and weekly limits on its own Dock icon and on a dashboard window. Tools that live in the menu bar exist; the best-trackers article lists them."
+    a: "cl_audit has one: \"Claude usage\" in the widget gallery on macOS 14 or later, with every profile's 5-hour and weekly limits. It is mainly a Dock app, though: each profile's limits are on its own Dock icon and on a dashboard window, and a menu bar icon per profile is optional. Other tools live in the menu bar; the best-trackers article lists them."
   - q: "Does Claude Code use the same limit as claude.ai?"
     a: "Yes. Anthropic's help page says usage on claude.ai and Claude Desktop counts toward the same limit as Claude Code, and the Claude Code help article says activity in both tools counts against the same limits. One check covers all of them."
   - q: "Can I see usage for two Claude accounts at once?"
@@ -171,7 +171,7 @@ It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in 
 
 ### Is there a widget for tracking Claude usage on macOS?
 
-Not from cl_audit. It isn't a macOS widget and has no menu bar item. It uses Dock icons, one small app per profile, plus a dashboard window for the full picture. For a Notification Center widget or a number in the menu bar, look at the best-trackers article. The [FAQ](/faq/) covers what else cl_audit does and doesn't do.
+From cl_audit, yes. "Claude usage" appears in the macOS widget gallery (macOS 14 or later) and shows every profile's 5-hour and weekly limits, in three sizes. Its look is set in Settings ▸ General ▸ Widget. cl_audit itself is still mainly a Dock app, with Dock icons, one small app per profile, plus a dashboard window for the full picture. Each profile can also have its own menu bar icon, off by default (profile settings ▸ Menu bar). For other menu bar numbers, look at the best-trackers article. The [FAQ](/faq/) covers what else cl_audit does and doesn't do.
 
 ### Usage history
 

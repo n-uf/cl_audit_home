@@ -5,7 +5,7 @@ h1: "Claude limit reset time for the 5-hour and weekly limits"
 mainKeyword: "claude limit reset time"
 kind: what-is
 published: 2026-11-02
-updated: 2026-11-03
+updated: 2026-11-04
 author: n-uf
 takeaways:
   - "The 5-hour limit resets in full five hours after you send the first message of its period."
@@ -135,11 +135,11 @@ One message is easy to misread. If `/usage` says something like "rate limited un
 
 **A countdown in the Dock, with cl_audit.** If you keep several Claude setups on one Mac, opening Settings ▸ Usage in each one gets old fast. [cl_audit](/), our free Mac app, reads the same 5-hour and weekly figures from Anthropic for each profile, with their reset times, using that profile's Claude Code sign-in. When a limit is full, the profile's card says when it's back, as a countdown and as a time: "in 1h 42m", "back at 15:28". Resets further off read like "back Thu 09:00" or "back 11 Nov". The Dock icon turns into the countdown, with a red frame, and the launcher shows it too.
 
-cl_audit shows this in the Dock, not the menu bar, and it needs Claude Code signed in for each profile. Its figures come from an Anthropic endpoint that isn't a public interface, so a newer Claude version can change it; the cl_audit FAQ says to update the app if something stops working.
+cl_audit shows this mainly in the Dock (a menu bar icon per profile is optional), and it needs Claude Code signed in for each profile. Its figures come from an Anthropic endpoint that isn't a public interface, so a newer Claude version can change it; the cl_audit FAQ says to update the app if something stops working.
 
 ## Getting a notification at the reset
 
-![cl_audit alert settings: Notify at and Notify when back](/img/guides/alert-settings.webp "cl_audit's Updates and alerts: Notify at a level, and Notify when back for the reset. Sample data.")
+![cl_audit alert settings: Notify at and Notify when back](/img/guides/alert-settings.webp "cl_audit's Alerts card: Notify at a level, and Notify when back for the reset. Sample data.")
 
 Most of waiting for a reset is remembering to come back. The pages we checked describe three things on Anthropic's side, and none of them tells you a limit is back:
 
@@ -149,7 +149,7 @@ Most of waiting for a reset is remembering to come back. The pages we checked de
 
 Those carry on your work. They don't reach you while you're away from the screen.
 
-For that, cl_audit's background agent sends macOS notifications. In each profile's settings, under Updates and alerts, you pick a level to be notified at, and Notify when back (on by default) sends one more alert when a full limit resets, such as "Claude Work is back · The 5-hour limit reset at 15:28". If the other limit is still full, it waits for that one. You get one alert per limit and reset, and at the reset the agent reads the profile again at once, so the card and the Dock icon update straight away.
+For that, cl_audit's background agent sends macOS notifications. In each profile's settings, under Alerts, you pick a level to be notified at, and Notify when back (on by default) sends one more alert when a full limit resets, such as "Claude Work is back · The 5-hour limit reset at 15:28". If the other limit is still full, it waits for that one. You get one alert per limit and reset, and at the reset the agent reads the profile again at once, so the card and the Dock icon update straight away.
 
 Setting those up is covered on the page about [getting an alert before a limit is full](/use-cases/claude-usage-limit-alerts/). They run for every profile, which matters if you switch between a personal plan and a work seat during the day.
 

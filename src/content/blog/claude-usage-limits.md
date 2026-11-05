@@ -5,7 +5,7 @@ h1: "Claude usage limits explained: the 5-hour and weekly limits"
 mainKeyword: "claude usage limits"
 kind: what-is
 published: 2026-11-02
-updated: 2026-11-03
+updated: 2026-11-04
 author: n-uf
 takeaways:
   - "Paid Claude plans have two usage limits: a session limit that resets every five hours and a weekly limit that resets once a week."
@@ -159,7 +159,7 @@ On Team plans, limits are per member, not shared by the team. One person reachin
 
 **Warnings.** Claude Code can warn you before a window runs out, with a message such as "You've used 85% of your session limit" and the reset time. Anthropic's Claude Code plan page says you'll see warnings as you approach any limit. To get them as macOS alerts instead, see [how cl_audit's alerts work](/use-cases/claude-usage-limit-alerts/).
 
-**With more than one Claude setup on a Mac,** opening Settings ▸ Usage in each one gets old fast. cl_audit is our free Mac app for that: it reads the same 5-hour and weekly figures from Anthropic for each profile, using that profile's Claude Code sign-in, and shows them in the Dock (not the menu bar). It needs Claude Code signed in for each profile. cl_audit is an independent tool, not affiliated with Anthropic. [How to check Claude usage on a Mac](/blog/check-claude-usage-mac/) compares it with the other ways.
+**With more than one Claude setup on a Mac,** opening Settings ▸ Usage in each one gets old fast. cl_audit is our free Mac app for that: it reads the same 5-hour and weekly figures from Anthropic for each profile, using that profile's Claude Code sign-in, and shows them in the Dock, with an optional menu bar icon per profile. It needs Claude Code signed in for each profile. cl_audit is an independent tool, not affiliated with Anthropic. [How to check Claude usage on a Mac](/blog/check-claude-usage-mac/) compares it with the other ways.
 
 ## What happens when you hit the limit
 

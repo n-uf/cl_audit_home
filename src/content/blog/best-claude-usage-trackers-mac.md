@@ -5,19 +5,19 @@ h1: "Best Claude usage trackers for Mac (2026)"
 mainKeyword: "best claude usage tracker"
 kind: best-tools
 published: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-04
 author: n-uf
 takeaways:
   - "Which Claude usage tracker suits you depends on where you want to see your usage: the menu bar, the Dock, the terminal or the browser."
   - "Five of the eight tools here are menu bar apps (ClaudeUsageBar, Claude Usage Tracker, Usagebar, CodexBar and ClaudeBar); ccusage is a terminal tool and Claude Monitor is a browser extension."
-  - "cl_audit shows each profile's 5-hour and weekly limits in its own Dock icon. It is our own tool; the others use the menu bar, the terminal or the browser."
+  - "cl_audit shows each profile's 5-hour and weekly limits in its own Dock icon, and can add a menu bar icon per profile and a widget. It is our own tool, and mainly a Dock app."
   - "Claude Usage Tracker also handles several accounts: its README describes multiple profiles, all visible in the menu bar at once."
   - "You can check your usage without installing anything: Settings ▸ Usage on claude.ai, or /usage in Claude Code."
 faq:
   - q: "What is the best Claude usage tracker for Mac?"
     a: "It depends on where you want to see your usage. A menu bar app suits a quick glance, ccusage suits terminal reports, and for several accounts there's Claude Usage Tracker in the menu bar or cl_audit in the Dock. cl_audit is our own tool, so check the others' pages too."
   - q: "Is there a Claude usage widget for Mac?"
-    a: "None of the tools here is a desktop widget. cl_audit shows usage in Dock icons and a window, and most of the others live in the menu bar. ClaudeBar's README also lists a Notch view and a Touch Bar view."
+    a: "Only cl_audit, our own tool, has one: \"Claude usage\" in the widget gallery on macOS 14 or later. The other tools here are not desktop widgets; most live in the menu bar. ClaudeBar's README also lists a Notch view and a Touch Bar view."
   - q: "Which Claude usage trackers are on GitHub?"
     a: "ClaudeUsageBar, Claude Usage Tracker, CodexBar, ClaudeBar, ccusage and cl_audit all publish their source on GitHub, and Claude Monitor's page says its source is there too. Usagebar's page doesn't mention a public repository."
   - q: "Do I need a tracker to see my Claude usage?"
@@ -108,7 +108,7 @@ The limits are read from Anthropic for each profile, with that profile's Claude 
 
 Where it isn't the pick:
 
-- It has no menu bar item and no widget. Usage lives in the Dock and in its window.
+- It's still mainly a Dock app. A menu bar icon per profile is off by default, and the widget needs macOS 14 or later.
 - It needs a Mac with Apple silicon and macOS 13 or later, plus Claude Code signed in for each profile. The Claude app is only needed for Claude windows.
 - An API-key profile has no limits to show.
 - It isn't signed with an Apple Developer ID yet, so the first time, macOS makes you click Open Anyway.
@@ -168,7 +168,7 @@ How we'd choose, including when it isn't cl_audit:
 
 ## Is there a Claude usage widget for Mac?
 
-Not among these. cl_audit shows usage in Dock icons and in its window, with no menu bar item and no widget. The five menu bar apps stay in the menu bar. ClaudeBar's README also lists a Notch view and a Touch Bar view. If you need a desktop widget, check each project's page, since they change.
+Only cl_audit, our own tool. Its "Claude usage" widget is in the macOS widget gallery (macOS 14 or later) and shows every profile's 5-hour and weekly limits in three sizes. Its look is set in Settings ▸ General ▸ Widget. The five menu bar apps stay in the menu bar. ClaudeBar's README also lists a Notch view and a Touch Bar view. If you need a desktop widget from another tool, check each project's page, since they change.
 
 ## Is there a Claude usage tracker on GitHub?
 

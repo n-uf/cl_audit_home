@@ -5,7 +5,7 @@ h1: "A Claude Team and personal account on one Mac"
 mainKeyword: "claude team and personal account"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-04
 author: n-uf
 takeaways:
   - "Anthropic's help pages treat a personal account and a Team account as separate accounts, with their own usage limits, billing, chats and projects (checked 2 November 2026)."
@@ -122,17 +122,18 @@ If you only need the second account in a browser, a second browser profile with 
 
 **With cl_audit:**
 
-1. Open cl_audit, go to Settings and choose **New profile**. Name it (for example "work").
-2. Pick its Claude Code folder: a new one such as `~/.claude-work`, or an existing one such as `~/.claude`.
-3. Choose what it includes with two switches, **Usage in the Dock** and **Claude window**. The profile on `~/.claude` opens the usual Claude app. Any other folder gets its own Claude window, with its own sign-in, chats and settings.
-4. Quit the Claude app until the folder is set up. While it's open, it writes its own sign-in and settings. This step only applies to profiles with a Claude window.
-5. Sign in, in two parts. First Claude Code (cl_audit has Terminal run `claude auth login` for that folder), then the Claude window, both to the same claude.ai account. The sign-in screens are Anthropic's own, so cl_audit never sees the password.
+1. Open cl_audit, go to Settings and choose **＋ (New profile)**. Name it (for example "work").
+2. Start with the account, in the **Account** pop-up of the Claude Code card. It lists accounts already signed in to a Claude Code folder no profile uses yet. Picking one connects that folder as it is: its sign-in, settings and history stay. Accounts other profiles have are dimmed. For an account that isn't listed, choose **Sign in to another account…**. cl_audit makes a new folder such as `~/.claude-work` (it can share instructions, agents, skills, commands or memory from another folder) and opens Claude Code's own sign-in in Terminal with the address filled in. The address only fills in the sign-in form; the account the browser is signed in to at claude.ai decides, so switch it there first.
+3. Choose what it includes with two switches, **Claude window** and **Usage in the Dock**. The profile on `~/.claude` opens the usual Claude app. Any other folder gets its own Claude window, with its own sign-in, chats and settings.
+4. Quit the Claude app before you create or connect the folder. While it's open, it writes its own sign-in and settings. This step only applies to profiles with a Claude window.
+5. Sign in, in two parts. First Claude Code, then the Claude window (its Code sidebar starts empty), both to the same claude.ai account. The sign-in screens are Anthropic's own, so cl_audit never sees the password.
+6. Add the Dock icon, or choose Start reading usage if you only want the numbers.
 
 A common layout: the personal profile on `~/.claude` with the usual Claude app, the work profile on `~/.claude-work` with its own Claude window, both open at once. The other way round works too. Give `~/.claude` to whichever you open most.
 
 Each profile can have its own Dock icon showing that seat's 5-hour and weekly limits, which cl_audit's background agent reads from Anthropic with the profile's Claude Code sign-in. You see both seats' limits without switching accounts. The [demo dashboard](/dashboard/) shows three sample profiles. Limits stay separate: cl_audit doesn't pool them or move work from one account to the other, and whether someone may use more than one Claude account is set by Anthropic's terms.
 
-You need a Mac with Apple silicon and macOS 13 or later, and Claude Code signed in for each profile. The Claude app is only needed for Claude windows. cl_audit works with plans that have usage limits (Pro, Max, Team). It isn't signed with an Apple Developer ID yet, so macOS asks you to approve it once; the [install page](/install/) has the steps.
+You need a Mac with Apple silicon and macOS 13 or later, and Claude Code signed in for each profile. The Claude app is only needed for Claude windows. cl_audit works with plans that have usage limits (Pro, Max, Ultra, Team). It isn't signed with an Apple Developer ID yet, so macOS asks you to approve it once; the [install page](/install/) has the steps.
 
 ## Keeping a Claude Team and personal account apart
 

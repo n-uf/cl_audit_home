@@ -5,7 +5,7 @@ h1: "Claude usage limit reached? Which limit it is, and what you can do now"
 mainKeyword: "claude usage limit reached"
 kind: how-to
 published: 2026-11-03
-updated: 2026-11-03
+updated: 2026-11-04
 author: n-uf
 takeaways:
   - "Claude usage limit reached means you've used up your 5-hour session limit, your weekly limit or, on Max and Ultra, the separate weekly limit for Fable."
@@ -171,8 +171,8 @@ If you suspect the meter itself, there is a user report about that. A GitHub iss
 
 Claude warns you before you run out. The Claude app shows "Approaching session limit" or "Approaching weekly limit", or a percentage such as "You've used X% of your weekly limit". Claude Code can say "You've used 85% of your session limit" with the reset time. Settings ▸ Usage in Claude and `/usage` in Claude Code show the bars whenever you ask. In the Desktop app you can click the usage ring, and Claude Code's status line can show the `rate_limits` fields.
 
-All of those live inside the app you're using. If you run several Claude setups on one Mac, or leave long tasks running while you're in another app, cl_audit, our free [Claude usage tracker for Mac](/), puts each profile's 5-hour and weekly limits in the Dock (not the menu bar). It needs Claude Code signed in for each profile. When a limit is full, the Dock icon turns into a countdown and the card says when the profile is back, as in "back at 15:28".
+All of those live inside the app you're using. If you run several Claude setups on one Mac, or leave long tasks running while you're in another app, cl_audit, our free [Claude usage tracker for Mac](/), puts each profile's 5-hour and weekly limits in the Dock, with an optional menu bar icon per profile. It needs Claude Code signed in for each profile. When a limit is full, the Dock icon turns into a countdown and the card says when the profile is back, as in "back at 15:28".
 
-![cl_audit alert settings: Notify at and Notify when back](/img/guides/alert-settings.webp "cl_audit's Updates and alerts: Notify at a level, and Notify when back for the reset. Sample data.")
+![cl_audit alert settings: Notify at and Notify when back](/img/guides/alert-settings.webp "cl_audit's Alerts card: Notify at a level, and Notify when back for the reset. Sample data.")
 
-In a profile's settings, under Updates and alerts, Notify at sends a macOS notification at a level you pick, from 50% to 100%. Notify when back, on by default, sends one more when a full limit resets. [How the alerts work](/use-cases/claude-usage-limit-alerts/) covers both, and [the install steps](/install/) are short. The [cl_audit FAQ](/faq/) has the rest, including what the app shows while a limit is full.
+In a profile's settings, under Alerts, Notify at sends a macOS notification at a level you pick, from 50% to 100%. Notify when back, on by default, sends one more when a full limit resets. [How the alerts work](/use-cases/claude-usage-limit-alerts/) covers both, and [the install steps](/install/) are short. The [cl_audit FAQ](/faq/) has the rest, including what the app shows while a limit is full.

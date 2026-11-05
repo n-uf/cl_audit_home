@@ -5,11 +5,11 @@ h1: "ccusage alternative for Mac: cl_audit vs ccusage"
 mainKeyword: "ccusage alternative"
 kind: comparison
 published: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-04
 author: n-uf
 takeaways:
   - "ccusage reports token use and estimated cost from local logs in the terminal; cl_audit shows how much of each profile's 5-hour and weekly limits is used, in the Dock."
-  - "cl_audit covers limits and several accounts. It doesn't replace ccusage's reports, JSON output or dollar estimates."
+  - "cl_audit covers limits and several accounts. It doesn't replace ccusage's reports or JSON output; its cost figure is an estimate at API list prices."
   - "ccusage's README lists many coding agents besides Claude Code; cl_audit is for Claude on a Mac with Apple silicon."
   - "The two can run side by side, but their token totals will not match exactly."
 faq:
@@ -20,7 +20,7 @@ faq:
   - q: "Is there a ccusage Mac app?"
     a: "ccusage's README describes a command-line tool you run with npx, not a Mac app. cl_audit is a Mac app, but it's a different tool, not a graphical version of ccusage."
   - q: "Does cl_audit show cost in dollars?"
-    a: "No. cl_audit's usage history is in tokens and replies, and the dashboard demo shows no dollar amounts. If you want cost estimates, ccusage's README says it shows costs in USD for each day, month and session."
+    a: "As an estimate, yes. The usage history's totals show what the same tokens would cost at API list prices (for example \"≈ $123 at list prices\"), and so does the CSV export. It isn't your bill, and models without a published price are left out. ccusage's README says it shows costs in USD for each day, month and session."
   - q: "Why don't the token totals in cl_audit and ccusage match?"
     a: "They count differently. cl_audit's dashboard says its tokens are input plus cache writes plus output, with cache reads not counted. ccusage's README says it tracks cache creation and cache read tokens separately."
 sources:
@@ -103,10 +103,10 @@ It isn't signed with an Apple Developer ID yet, so the first time you open it, m
 | What it reads | Local usage data from coding-agent tools | Limits from Anthropic; history from Claude Code's local session files |
 | 5-hour and weekly limits | Not described as read from Anthropic; `blocks` reports Claude Code's 5-hour windows | Yes, read from Anthropic for each profile |
 | Token history | Daily, weekly, monthly and session reports | Tokens per day over 24 h / 7 d / 30 d, by project, model and surface |
-| Cost in dollars | Yes, estimated in USD | No, history is in tokens |
+| Cost in dollars | Yes, estimated in USD | An estimate at API list prices, not your bill |
 | Several Claude accounts | Not described (custom data directories are supported) | Yes, one profile per seat |
 | Alerts | Not described | Yes, at a level you set and when a limit is back |
-| Scripts and JSON | Yes, `--json` and filters | Not described in its README |
+| Scripts and JSON | Yes, `--json` and filters | No JSON described in its README; the usage history exports as CSV |
 | Other agents | Codex, OpenCode, Gemini CLI and many more | Claude only |
 | Needs | No operating system named | Apple silicon, macOS 13+, Claude Code signed in |
 | Licence | MIT | PolyForm Perimeter 1.0.1 (source-available) |
@@ -117,8 +117,8 @@ It isn't signed with an Apple Developer ID yet, so the first time you open it, m
 
 We'd pick ccusage over cl_audit for any of these, and for some there's no cl_audit equivalent at all.
 
-- **Scripting and reports.** `--json`, date filters, timezones and configuration files make ccusage easy to put in a script or a weekly routine. cl_audit's README describes a window and Dock icons, not terminal reports or an export.
-- **Cost estimates.** If you want a dollar figure per day or per project, ccusage gives you one. cl_audit shows tokens only. On a subscription plan that figure is an estimate from token counts and model pricing, not a bill. Anthropic's Claude Code docs say much the same of the session cost in `/usage`: it's computed locally from token counts and, for Pro, Max and Ultra subscribers, isn't relevant for billing.
+- **Scripting and reports.** `--json`, date filters, timezones and configuration files make ccusage easy to put in a script or a weekly routine. cl_audit's README describes a window and Dock icons, not terminal reports or JSON; its history only exports as CSV.
+- **Cost estimates.** If you want a dollar figure per day or per project from a report, ccusage gives you one. cl_audit's usage history also shows an estimate at API list prices, in its totals and in the CSV, but it's a side note to the tokens. On a subscription plan either figure is an estimate from token counts and model pricing, not a bill. Anthropic's Claude Code docs say much the same of the session cost in `/usage`: it's computed locally from token counts and, for Pro, Max and Ultra subscribers, isn't relevant for billing.
 - **Other coding agents.** ccusage reads Codex, OpenCode, Amp, Gemini CLI and many more. cl_audit is only about Claude.
 - **Other platforms.** cl_audit needs a Mac with Apple silicon and macOS 13 or later. ccusage's README names no operating system, so check it for yours.
 - **Nothing to install.** `npx ccusage@latest` runs it from the terminal. cl_audit installs an app, a background agent and, if you ask for them, Dock icon apps in `/Applications`.
@@ -133,7 +133,7 @@ We'd pick ccusage over cl_audit for any of these, and for some there's no cl_aud
 
 ## Is there a ccusage Mac app?
 
-Not according to its README, which describes a command-line tool run with `npx`, `bunx`, `pnpm dlx` or `nix run`, with no Mac app and no menu bar item. If you were looking for a ccusage alternative with a window, cl_audit is a Mac app. It isn't a graphical front end for ccusage, though: it has no terminal reports or JSON, and its history is in tokens, not dollars.
+Not according to its README, which describes a command-line tool run with `npx`, `bunx`, `pnpm dlx` or `nix run`, with no Mac app and no menu bar item. If you were looking for a ccusage alternative with a window, cl_audit is a Mac app. It isn't a graphical front end for ccusage, though: it has no terminal reports or JSON, and its history is mostly tokens, with only a dollar estimate at API list prices beside them.
 
 ## Is there another Claude Code usage monitor?
 

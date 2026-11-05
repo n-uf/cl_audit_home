@@ -5,7 +5,7 @@ h1: "Claude usage limit notifications"
 mainKeyword: "claude usage limit notification"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-03
+updated: 2026-11-04
 author: n-uf
 order: 2
 takeaways:
@@ -16,7 +16,7 @@ takeaways:
   - "Each profile has its own level and its own refresh interval, and Notify when back is on by default."
 faq:
   - q: "Can I get an alert before I hit the Claude limit?"
-    a: "Yes. In a profile's settings, under Updates and alerts, Notify at sends a Mac notification when the 5-hour or weekly limit reaches the level you set, for example 90%. It fires once per limit and reset."
+    a: "Yes. In a profile's settings, under Alerts, Notify at sends a Mac notification when the 5-hour or weekly limit reaches the level you set, for example 90%. It fires once per limit and reset."
   - q: "Does it notify me when the limit resets?"
     a: "Yes. Notify when back, on by default, sends one notification when a full limit resets, for example \"Claude Work is back\". If the other limit is still full, it waits for that one."
   - q: "Do alerts work with the app closed?"
@@ -51,7 +51,7 @@ You keep working. The notification turns up before a long task stops halfway, no
 
 Every notification comes from cl_audit itself, and you get them per profile. (A **profile** is one Claude setup in cl_audit: a Claude Code folder with its sign-in and, if you want them, a Claude window and a Dock icon.)
 
-1. **A limit reaches your level.** You pick the level per profile, in the profile's settings under Updates and alerts. When the 5-hour limit or the weekly limit gets there, macOS shows a notification. This is the early warning.
+1. **A limit reaches your level.** You pick the level per profile, in the profile's settings under Alerts. When the 5-hour limit or the weekly limit gets there, macOS shows a notification. This is the early warning.
 2. **A limit is full.** At 100% the percentage tells you nothing new. What you want to know is when the profile works again, so that's what it says: "Claude Work: 5-hour limit full · Back at 15:28, in 1h 42m".
 3. **A full limit has reset.** This one is **Notify when back**: "Claude Work is back · The 5-hour limit reset at 15:28". It's on by default and you can turn it off per profile. If the other limit is still full, it waits for that one too, so you never hear "back" while the profile is still stuck.
 
@@ -86,9 +86,9 @@ If Anthropic doesn't say when a limit resets, the card says "full · reset time 
 
 ## Setting the level and how often cl_audit reads
 
-![cl_audit alert settings: Notify at and Notify when back](/img/guides/alert-settings.webp "Updates and alerts in a profile's settings: how often to read, Notify at a level, and Notify when back. Sample data.")
+![cl_audit alert settings: Notify at and Notify when back](/img/guides/alert-settings.webp "The Alerts card in a profile's settings: how often to read, Notify at a level, and Notify when back. Sample data.")
 
-In cl_audit, open Settings, pick a profile and find **Updates and alerts**. Three settings there matter for alerts:
+In cl_audit, open Settings, pick a profile and find **Alerts**. Three settings there matter for alerts:
 
 - **Notify at**: the percentage at which the early warning goes out, from 50% to 100% in steps of 5. Switch it off and that profile sends neither the level alert nor the "full" alert; Notify when back has its own switch.
 - **Refresh every**: how often the agent asks Anthropic for this profile's usage, for example every 5 minutes. The settings page notes that checking doesn't use any of your limits.
