@@ -5,7 +5,7 @@ h1: "How to check Claude usage on a Mac"
 mainKeyword: "how to check claude usage"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-04
+updated: 2026-11-05
 author: n-uf
 takeaways:
   - "On a Pro, Max, Ultra, Team or seat-based Enterprise plan, Settings > Usage shows the current 5-hour session and the weekly limits, with reset times."
@@ -175,7 +175,7 @@ From cl_audit, yes. "Claude usage" appears in the macOS widget gallery (macOS 14
 
 ### Usage history
 
-Limits tell you how full you are, not where it went. Claude Code writes session files on your Mac, and cl_audit reads them (only time, model, token counts, project folder and surface of each reply). From those it charts tokens per day and where they go by project, model and surface, over 24 hours, 7 days or 30 days. Nothing is uploaded. Usage from claude.ai chats, other computers or cloud sessions isn't in it. See [Claude Code usage history](/use-cases/claude-code-usage-history/), or the [demo dashboard](/dashboard/) with sample data.
+Limits tell you how full you are, not where it went. Claude Code writes session files on your Mac, and cl_audit reads them (only time, model, token counts, project folder and surface of each reply). From those it charts tokens per day and where they go by project, model and surface, over 24 hours, 7 days or 30 days. Nothing is uploaded. Usage from claude.ai chats, other computers or cloud sessions isn't in it. See [Claude Code usage history](/use-cases/claude-code-usage-history/), or the [demo dashboard](/dashboard/) with sample data. In the app, the totals also give a cost estimate at API list prices (not your bill), and the CSV key saves the period as a file.
 
 ## For several accounts at once
 
