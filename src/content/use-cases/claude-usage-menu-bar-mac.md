@@ -35,7 +35,7 @@ sources:
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
     checked: 2026-11-05
   - title: "Anthropic Help Center: Use Claude Code with your Pro, Max, or Ultra plan"
-    url: "https://support.claude.com/en/articles/11145838-using-claude-code-with-your-pro-or-max-plan"
+    url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
     checked: 2026-11-05
   - title: "Claude Code docs: Commands"
     url: "https://code.claude.com/docs/en/commands"
@@ -72,7 +72,7 @@ Each icon shows one profile's 5-hour limit and weekly limit. A **profile** is on
 
 A plan without a 5-hour limit (Ultra) shows the week alone, with no empty 5-hour row.
 
-There's no separate icon for Claude Code. Anthropic's Claude Code help page says all activity in Claude and Claude Code counts against the same limits, so a profile's icon moves when you chat in its Claude window and when you run Claude Code under its sign-in. If you came looking for Claude Code usage in the menu bar on a Mac, this is the same icon.
+There's no separate icon for Claude Code. Anthropic's Claude Code help page says all activity in Claude and Claude Code counts against the same limits, so a profile's icon moves when you chat in its Claude window and when you run Claude Code under its sign-in. So the same icon is your Claude Code usage in the menu bar too.
 
 ## How to turn it on
 
@@ -153,7 +153,7 @@ The menu bar suits you better when:
 
 The Dock icon shows more, though. It has its own click action, a details panel on press and hold, and when a limit is full it turns into the countdown with a red frame. If that's enough, leave the menu bar off. For the desktop or Notification Center there's also [the Claude usage widget for Mac](/use-cases/claude-usage-widget-mac/).
 
-## How cl_audit differs from other menu bar apps
+## How cl_audit differs from menu bar-only trackers
 
 Several Claude usage menu bar apps exist, and some do things cl_audit doesn't. [Our round-up of Claude usage trackers for Mac](/blog/best-claude-usage-trackers-mac/) describes each from its own page. In short:
 
@@ -168,7 +168,7 @@ If all you want is a menu bar tool, a dedicated menu bar app may be simpler. Cla
 
 ## Check against Claude's own numbers
 
-An icon only shows what Anthropic reports. Anthropic's help page says Settings ▸ Usage in the Claude app shows your current session and your next reset time, and Claude Code's `/usage` shows plan usage limits. cl_audit's dashboard has the same figures for every profile; the [demo dashboard](/dashboard/) shows it with sample data.
+An icon only shows what Anthropic reports. Anthropic's help page says Settings ▸ Usage on claude.ai shows your current session and your next reset time, and Claude Code's docs say `/usage` shows plan usage limits. cl_audit's dashboard has the same figures for every profile; the [demo dashboard](/dashboard/) shows it with sample data.
 
 ## Getting it
 
