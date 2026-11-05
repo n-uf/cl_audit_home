@@ -429,7 +429,10 @@ const jsonLd = [
         const m = $("[data-login-menu]")!, open = m.hidden;
         if (open) {
           const own = accounts.find((x) => x.id === acc)!;
+          // as the app's: the account Claude Code is signed in to, accounts in unused Claude Code folders (picking one
+          // links the profile to it; nothing changes in the demo), the other profiles' dimmed, then the two actions
           m.innerHTML = `<span class="lm-row on"><span class="ok">✓</span> ${own.email}<em>${own.plan} · this profile</em></span>` +
+            `<button type="button" class="lm-row act" data-login-spare>spare@example.com<em>in ~/.claude-spare</em></button>` +
             accounts.filter((x) => x.id !== acc).map((x) => `<span class="lm-row dim">${x.email}<em>${x.plan} · ${prefs[x.id].name}'s</em></span>`).join("") +
             `<hr><button type="button" class="lm-row act" data-login-other>Sign in to another account…</button>` +
             `<hr><button type="button" class="lm-row act" data-login-renew>${p().renew ? '<span class="ok">✓</span> ' : ""}Renew sign-in by itself</button>`;
@@ -438,7 +441,8 @@ const jsonLd = [
         return;
       }
       if (pick("[data-login-renew]")) { p().renew = !p().renew; commit(); loginReset(); say("renew"); return; }
-      if (pick("[data-login-other]")) {
+      if ((b = pick("[data-login-other], [data-login-spare]"))) {
+        const spare = b.matches("[data-login-spare]");   // an unused folder's account: the same sign-in, its address filled in
         // the value becomes the address field, with Sign in and Cancel under it, and one grey line under the row
         loginReset();
         $("[data-login-btn]")!.hidden = true;
@@ -446,6 +450,7 @@ const jsonLd = [
         const line = $("[data-login-line]")!;
         line.hidden = false;
         line.textContent = `Signs in through Claude Code in Terminal; ${who()} stays on ${accounts.find((x) => x.id === acc)!.email} until then.`;
+        if (spare) $<HTMLInputElement>("[data-login-mail]")!.value = "spare@example.com";
         $<HTMLInputElement>("[data-login-mail]")!.focus();
         return;
       }
