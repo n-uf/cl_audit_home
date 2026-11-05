@@ -3,6 +3,7 @@
 // Looks: System (the Mac's own widget background), Std, Black, Silver. A full limit is red; drawn from the demo.
 import { accounts } from "./demo";
 import type { Design } from "./panelView";
+import { ordered } from "./prefs";   // the profiles' order (Settings strip)
 
 const level = (p: number) => (p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
 
@@ -23,7 +24,7 @@ function meter(design: Design, p: number, elapsed: number) {
 
 /** The medium widget as HTML: one row per profile. */
 export function widgetHTML(design: Design, plate: string) {
-  const rows = accounts.map((a) => {
+  const rows = ordered(accounts).map((a) => {
     const lim = (tag: string, p: number, left: number, win: number) =>
       `<span class="wg-lim${design === "numbers" ? " big" : ""}"><span class="wg-tag">${tag}</span><b style="color:${level(p)}">${p}%</b>${meter(design, p, Math.round((1 - left / win) * 100))}</span>`;
     return `<div class="wg-row"><span class="wg-name"><i style="background:${a.hex}"></i>${a.name}</span>${lim("5h", a.five, a.fiveLeftMin, 300)}${lim("wk", a.week, a.weekLeftMin, 10080)}</div>`;

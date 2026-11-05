@@ -1,6 +1,7 @@
 // The dashboard's usage history as HTML, drawn the way the app draws it. Used by the server for the first
 // render (so the page has full HTML) and by the browser whenever the Show chips change the profiles.
 import { accounts, allIds, breakdown, formatTokens, modelShares, range, type AccountId, type Range } from "./demo";
+import { loadOrder } from "./prefs";
 
 // ── The cost estimate and the CSV (cl_audit 26.11.0) ──────────────────────────────────────────────────────────────
 // What the same tokens would cost on Anthropic's API at list prices, per model, with cache writes and reads priced
@@ -32,7 +33,12 @@ export const costText = (kind: Range, ids: AccountId[] = allIds) => `≈ $${rows
 /** The CSV the app's CSV key saves: one row per day, profile and model (made-up demo rows here). */
 export function csvFor(kind: Range, ids: AccountId[] = allIds) {
   const head = "date,profile,model,replies,input,output,cache_write_5m,cache_write_1h,cache_read,total,cost_usd_list";
-  return [head, ...rowsFor(kind, ids).map((x) => [x.date, x.profile, x.model, x.replies, x.input, x.output, x.cw5, x.cw1h, x.read, x.total, x.cost.toFixed(2)].join(","))].join("\n") + "\n";
+  // within a day, the profiles in the chosen order (Settings strip); the sort is stable, so the days keep theirs
+  const rank = (name: string) => loadOrder().indexOf(accounts.find((a) => a.name === name)?.id as AccountId);
+  const rows = rowsFor(kind, ids).map((x, i) => ({ x, i }));
+  const day = new Map<string, number>(); rows.forEach(({ x, i }) => { if (!day.has(x.date)) day.set(x.date, i); });
+  rows.sort((a, b) => day.get(a.x.date)! - day.get(b.x.date)! || rank(a.x.profile) - rank(b.x.profile) || a.i - b.i);
+  return [head, ...rows.map(({ x }) => x).map((x) => [x.date, x.profile, x.model, x.replies, x.input, x.output, x.cw5, x.cw1h, x.read, x.total, x.cost.toFixed(2)].join(","))].join("\n") + "\n";
 }
 
 const hourTicks = [0, 3, 6, 9, 12, 15, 18, 21];
