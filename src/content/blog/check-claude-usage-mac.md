@@ -141,6 +141,8 @@ It needs `jq`. Per the docs, `rate_limits` is only there for claude.ai Pro, Max 
 
 Status lines run in Terminal. cl_audit's README notes that the Claude app's Code tab doesn't run them.
 
+{{live:/blog/claude-code-status-line/}}Our [Claude Code status line guide](/blog/claude-code-status-line/) has the setup, working examples and how to customize the line.{{/live}}
+
 ## On claude.ai in a browser
 
 Go to claude.ai/settings/usage. It's the same page as in the app, and it shows only the account you're signed in to, so sign in to the right one first.
