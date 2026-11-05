@@ -72,12 +72,15 @@ retrying a rejected push up to 3 times. It pushes over SSH with the repo's write
 only. To undo, revert that commit, or set `draft: true` again (with a future `published`).
 The workflow runs as two jobs, so that no third-party code shares a job with that key. `build` has no secret: it
 flips the drafts, runs `npm ci` and `npm run build`, and hands the flip over as a `git diff` patch plus the page list.
-`push` holds the key and runs no node or npm: before applying the patch it runs `scripts/check-publish-patch.py`
-(Python standard library only; tests in `scripts/check-publish-patch.test.mjs`), which refuses it unless every file
-is an existing `src/content/blog/<slug>.md` or `src/content/use-cases/<slug>.md` with exactly one change, a
-`draft: true` line written back as `draft: false`, and the page list equals the files in the patch. Then it commits
-and pushes with git hooks off and GitHub's SSH host key pinned. A third job, `report`, turns the run red when either
-job failed or some page's front matter couldn't be read (the readable pages are published all the same).
+`push` holds the key and runs no node or npm. Both jobs check out `github.sha` (the commit the run started on), and
+only the patch and the page list cross between them, never a commit id. Before applying the patch, `push` runs
+`scripts/check-publish-patch.py` from its own checkout (Python standard library only; tests in
+`scripts/check-publish-patch.test.mjs`), which refuses it unless it is under 64 KB, every file is an existing
+`src/content/blog/<slug>.md` or `src/content/use-cases/<slug>.md` with exactly one change, a `draft: true` line inside
+the front matter written back as `draft: false`, the page's `published` day is today (UTC) or earlier, and the page
+list equals the files in the patch. Then it commits (one line, `publish: ...`) and pushes with git hooks off, ssh
+reading no config, agent or proxy, and GitHub's SSH host key pinned. A third job, `report`, turns the run red when
+either job failed or some page's front matter couldn't be read (the readable pages are published all the same).
 A draft's `updated` must equal its `published` (the schema requires `updated >= published`, and the flip changes
 only `draft`, so a draft dated ahead needs the same future date in both). `.github/workflows/ci.yml` runs the tests
 and a plain build on every pull request, so a live page linking to a draft fails there, not after the merge.
