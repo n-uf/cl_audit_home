@@ -6,7 +6,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "dev": "astro dev --port 5190",
-    "build": "astro build",
+    "build": "astro build && node scripts/check-links.mjs",
     "preview": "astro preview --port 5190"
   },
   "dependencies": {
