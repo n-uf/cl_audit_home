@@ -59,7 +59,7 @@ cl_audit is a Mac app, so this is a macOS widget only, with no iPhone, Android o
 
 For each profile, the widget draws the two limits paid Claude plans have: the 5-hour limit and the weekly limit. (A **profile** is one Claude setup in cl_audit: a Claude Code folder with its sign-in and, if you want them, a Claude window and a Dock icon.) When a limit is full, the widget says when it's back, in the same words as the rest of cl_audit: "back at 15:28".
 
-Anthropic's help page says paid plans have a session limit that resets every five hours and weekly limits that reset once a week. Another of its pages says these limits are shared across Claude and Claude Code. So one row covers what you used in the Claude app and in Claude Code on that profile. If you were looking for a Claude Code usage widget on macOS, this is it: there's no separate Claude Code limit to show.
+Anthropic's help page says paid plans have a session limit, whose five hours start with your first message, and weekly limits that reset once a week. Another of its pages says these limits are shared across Claude and Claude Code. So one row covers what you used in the Claude app and in Claude Code on that profile, and there's no separate Claude Code row to add.
 
 Ultra is the exception. Anthropic's page on Claude Code with paid plans says Ultra plans have a weekly limit, and verified Ultra accounts don't have a five-hour session limit. For a profile on Ultra the widget shows the week alone, without an empty 5-hour row.
 
@@ -84,11 +84,11 @@ You don't pick a layout. The widget fits itself to the size you chose and to how
 | 3 or 4 | In the large size, a block for each profile, drawn a size larger. |
 | More than 4 | A row for each profile. |
 
-With two to four profiles, the next three resets go below the limits when there's room. That's handy when you want to know which profile comes back first. cl_audit's notes describe the layouts by number of profiles and for the large size, not every size in turn, so check the gallery's preview when you choose one.
+With two to four profiles, the next three resets go below the limits when there's room. cl_audit's notes describe the layouts by number of profiles and for the large size, not every size in turn, so check the gallery's preview when you choose one.
 
 ## Several accounts on one desktop
 
-This is where a Claude usage desktop widget earns its place. Say you have a work Team seat and a personal plan on one Mac: the widget lists both, each with its own limits. The page on [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/) explains how cl_audit keeps one profile per seat.
+With two accounts on one Mac, one widget lists both. Say you have a work Team seat and a personal plan: each shows with its own limits. The page on [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/) explains how cl_audit keeps one profile per seat.
 
 The widget follows your **profile order**. Drag a profile's tile left or right along the top of Settings, or drag its card on the dashboard; it's saved when you let go. The dashboard, the launcher, the menu bar icons, the usage history and the widget all use that order, so "Work" can be the first row everywhere. The Dock icons stay wherever you put them in the Dock.
 
@@ -119,7 +119,7 @@ The widget never asks Anthropic for anything. It only reads what cl_audit saves 
 
 The reading is done by cl_audit's background agent, for every profile, as often as each profile's Alerts card says. The agent has no window or Dock icon, and macOS starts it at login, so it keeps reading with the cl_audit window and the Dock icons closed. macOS then refreshes the widget every few minutes. The numbers on it are as old as the last read, plus a short wait.
 
-That's enough for a Claude limit widget, which you only glance at. For "tell me before I run out", the widget is the wrong tool: [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) come from the same agent and reach you whatever is open.
+That's enough for something you only glance at. For "tell me before I run out", the widget is the wrong tool: [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) come from the same agent and reach you whatever is open.
 
 If the widget looks stale, open cl_audit. Settings ▸ General ▸ Usage in the background says whether it's reading, and when it last read.
 
@@ -131,7 +131,7 @@ If the widget looks stale, open cl_audit. Settings ▸ General ▸ Usage in the 
 
 If a widget isn't your thing, cl_audit can also put [an icon per profile in the menu bar](/use-cases/claude-usage-menu-bar-mac/). And if you only check now and then, Anthropic's help page says Settings ▸ Usage in Claude shows how much you've used and the time left in the current session, with no install at all.
 
-For history by day and project, see [Claude Code usage history](/use-cases/claude-code-usage-history/). Other trackers live in the menu bar; [this round-up of Claude usage trackers for Mac](/blog/best-claude-usage-trackers-mac/) compares them with cl_audit.
+For history by day and project, see [Claude Code usage history](/use-cases/claude-code-usage-history/). Most other trackers live in the menu bar; [this round-up of Claude usage trackers for Mac](/blog/best-claude-usage-trackers-mac/) compares them with cl_audit.
 
 ## Get the widget
 
