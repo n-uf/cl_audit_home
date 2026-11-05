@@ -36,7 +36,7 @@ sources:
     checked: 2026-11-03
   - title: "Manage usage credits for paid Claude plans (Claude Help Center)"
     url: "https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans"
-    checked: 2026-11-03
+    checked: 2026-11-05
   - title: "Manage usage credits for Team and seat-based Enterprise plans (Claude Help Center)"
     url: "https://support.claude.com/en/articles/12005970-manage-usage-credits-for-team-and-seat-based-enterprise-plans"
     checked: 2026-11-03
@@ -48,7 +48,7 @@ sources:
     checked: 2026-11-03
   - title: "Claude Fable models on your plan (Claude Help Center)"
     url: "https://support.claude.com/en/articles/15424964-claude-fable-models-on-your-plan"
-    checked: 2026-11-03
+    checked: 2026-11-05
   - title: "What is the Pro plan? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/8325606-what-is-the-pro-plan"
     checked: 2026-11-03
@@ -171,8 +171,8 @@ If you suspect the meter itself, there is a user report about that. A GitHub iss
 
 Claude warns you before you run out. The Claude app shows "Approaching session limit" or "Approaching weekly limit", or a percentage such as "You've used X% of your weekly limit". Claude Code can say "You've used 85% of your session limit" with the reset time. Settings ▸ Usage in Claude and `/usage` in Claude Code show the bars whenever you ask. In the Desktop app you can click the usage ring, and Claude Code's status line can show the `rate_limits` fields.
 
-All of those live inside the app you're using. If you run several Claude setups on one Mac, or leave long tasks running while you're in another app, cl_audit, our free [Claude usage tracker for Mac](/), puts each profile's 5-hour and weekly limits in the Dock, with an optional menu bar icon per profile. It needs Claude Code signed in for each profile. When a limit is full, the Dock icon turns into a countdown and the card says when the profile is back, as in "back at 15:28". On Max and Ultra, Fable's weekly limit gets a third row, which you can turn off per profile. While a profile is spending usage credits, its card says so: "Using usage credits · $4.20 spent".
+All of those live inside the app you're using. If you run several Claude setups on one Mac, or leave long tasks running while you're in another app, cl_audit, our free [Claude usage tracker for Mac](/), puts each profile's 5-hour and weekly limits in the Dock, with an optional menu bar icon per profile. It needs Claude Code signed in for each profile. When a limit is full, the Dock icon turns into a countdown and the card says when the profile is back, as in "back at 15:28". On Max and Ultra, Fable's weekly limit gets a third row on the card, and you can turn it off per profile. While a profile is spending usage credits, its card says so: "Using usage credits · $4.20 spent".
 
 ![cl_audit alert settings: Notify at and Notify when back](/img/guides/alert-settings.webp "cl_audit's Alerts card: Notify at a level, and Notify when back for the reset. Sample data.")
 
-In a profile's settings, under Alerts, Notify at sends a macOS notification at a level you pick, from 50% to 100%. Notify when back, on by default, sends one more when a full limit resets. With alerts on, cl_audit also tells you when a profile starts spending usage credits and when they run out. [How the alerts work](/use-cases/claude-usage-limit-alerts/) covers both, and [the install steps](/install/) are short. The [cl_audit FAQ](/faq/) has the rest, including what the app shows while a limit is full.
+In a profile's settings, under Alerts, Notify at sends a macOS notification at a level you pick, from 50% to 100%. Notify when back, on by default, sends one more when a full limit resets. With alerts on, cl_audit also tells you when a profile starts spending usage credits and when they run out. [How the alerts work](/use-cases/claude-usage-limit-alerts/) covers each one, and [the install steps](/install/) are short. The [cl_audit FAQ](/faq/) has the rest, including what the app shows while a limit is full.
