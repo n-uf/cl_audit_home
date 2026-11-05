@@ -1687,6 +1687,39 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .sb-segs { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; height: 5px; }
 .sb-segs i { border-radius: 1px; background: rgba(255,255,255,.1); }
 .face-silver :is(.sb-bar, .sb-segs i) { background: rgba(0,0,0,.12); }
+/* The Switch page (app build 252), shown in place of the dashboard: two columns of cards, the steps with numbered
+   circles (green while under way, a tick when done) and the keys for the current step */
+.sw-page { display: grid; gap: 12px; position: relative; }
+.sw-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.sw-head h3 { margin: 0; font-size: 17px; font-weight: 600; }
+.sw-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.sw-col { display: grid; gap: 12px; min-width: 0; }
+@media (max-width: 799px) { .sw-cols { grid-template-columns: minmax(0, 1fr); } }
+.sw-page .acc-list { display: grid; gap: 8px; padding: 6px 0; }
+.sw-page .abox-t .email { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sw-page .srow > span:first-child { flex: 0 0 90px; }
+.sw-page .srow > .v-soft { flex: 1; text-align: left; min-width: 0; }
+.sw-steps { list-style: none; margin: 4px 0 0; padding: 0; display: grid; }
+.sw-steps li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-top: 1px solid rgba(0,0,0,.35); counter-increment: sw; }
+.sw-steps li:first-child { border-top: 0; }
+.sw-steps li > i { flex: none; width: 22px; height: 22px; border-radius: 50%; box-shadow: inset 0 0 0 1.2px rgba(255,255,255,.35); display: grid; place-items: center; font: 600 11px var(--font); font-style: normal; color: var(--muted); }
+.sw-steps li > i::before { content: counter(sw); }
+.sw-steps li.now > i { box-shadow: inset 0 0 0 1.2px rgb(var(--led-on)); color: rgb(var(--led-on)); }
+.sw-steps li.done > i { background: rgb(var(--led-on)); box-shadow: none; color: rgba(0,0,0,.75); }
+.sw-steps li.done > i::before { content: "✓"; font-weight: 700; }
+.sw-steps li > div { display: grid; gap: 2px; min-width: 0; }
+.sw-steps b { font-size: 13px; font-weight: 600; }
+.sw-steps span { font-size: 11.5px; color: var(--muted); }
+.face-silver .sw-steps li > i { box-shadow: inset 0 0 0 1.2px rgba(0,0,0,.35); }
+.sw-keys { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.sw-keys > span:empty { flex: 1; }
+.sw-plain { border: 0; background: none; padding: 0; color: var(--muted); font: inherit; font-size: 12.5px; cursor: pointer; }
+.sw-plain:hover { color: var(--text); }
+.sw-busy { margin-left: auto; font-size: 12px; color: #f59e0b; }
+.face-silver .sw-busy { color: #8a4f00; }
+.sw-line { margin: 6px 0 0; }
+.sw-c-btns { gap: 8px; }
+.sw-page .dialog-veil { position: fixed; z-index: 40; }
 /* General ▸ Dock: the EXPERIMENTAL display under Keep in order, before the description */
 .exp-disp { display: inline-flex; margin: 2px 0 6px; }
 .g-note.caution { display: block; max-width: none; }   /* the warning runs the card's width, as the app's */
