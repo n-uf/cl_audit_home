@@ -135,7 +135,7 @@ One message is easy to misread. If `/usage` says something like "rate limited un
 
 **A countdown in the Dock, with cl_audit.** If you keep several Claude setups on one Mac, opening Settings ▸ Usage in each one gets old fast. [cl_audit](/), our free Mac app, reads the same 5-hour and weekly figures from Anthropic for each profile, with their reset times, using that profile's Claude Code sign-in. When a limit is full, the profile's card says when it's back, as a countdown and as a time: "in 1h 42m", "back at 15:28". Resets further off read like "back Thu 09:00" or "back 11 Nov". The Dock icon turns into the countdown, with a red frame, and the launcher shows it too.
 
-cl_audit shows this mainly in the Dock (a menu bar icon per profile is optional and can show the countdown too, and the widget, on macOS 14 or later, shows when a full limit is back), and it needs Claude Code signed in for each profile. Its figures come from an Anthropic endpoint that isn't a public interface, so a newer Claude version can change it; the cl_audit FAQ says to update the app if something stops working.
+cl_audit shows this mainly in the Dock, and it needs Claude Code signed in for each profile. A menu bar icon per profile is optional and can show the countdown too. The "Claude usage" widget (macOS 14 or later) shows when a full limit is back. Its figures come from an Anthropic endpoint that isn't a public interface, so a newer Claude version can change it; the cl_audit FAQ says to update the app if something stops working.
 
 ## Getting a notification at the reset
 
