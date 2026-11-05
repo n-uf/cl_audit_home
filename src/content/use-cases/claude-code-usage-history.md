@@ -22,7 +22,7 @@ faq:
   - q: "Does it count cache reads?"
     a: "Not in the tokens chart: it counts input, cache writes and output, and says on the chart that cache reads are not counted. The cost estimate in the totals does include them, priced apart at the API's cache-read rate. The CSV export lists each kind of token separately, cache reads included."
   - q: "Can I export the history, and does it show a cost?"
-    a: "Yes to both. The CSV key next to the period saves one row per day, profile and model, with the cost estimate at API list prices, such as \"≈ $123 at list prices\". It is not your bill: use on a Pro, Max, Ultra or Team plan is paid by the plan."
+    a: "Yes to both. The totals show a cost estimate at API list prices, such as \"≈ $123 at list prices\", and the CSV key next to the period saves one row per day, profile and model, with that estimate. It isn't your bill: use on a Pro, Max, Ultra or Team plan is paid for by the plan."
   - q: "Is anything uploaded?"
     a: "No. The history is read from files on your Mac. cl_audit has no server and no analytics, and its only network requests go to Anthropic, to read each profile's limits and which account it is signed in to."
 sources:
@@ -31,7 +31,7 @@ sources:
     checked: 2026-11-02
   - title: "Claude Code docs: Manage costs effectively (the /usage command)"
     url: "https://code.claude.com/docs/en/costs"
-    checked: 2026-11-02
+    checked: 2026-11-05
   - title: "Claude Code docs: Settings (CLAUDE_CONFIG_DIR)"
     url: "https://code.claude.com/docs/en/settings"
     checked: 2026-11-02
@@ -63,11 +63,11 @@ Above the charts, a small display gives the period's totals: replies, tokens and
 
 You can click through all of it on the [demo dashboard](/dashboard/), which runs on sample data for three made-up profiles: home, work and side.
 
-## Save it as CSV, and what the cost estimate means
+## Export the history to CSV
 
-In the app, the **CSV** key next to the period saves that period as a file: one row per day, profile and model, with the replies and each kind of token (input, output, 5-minute and 1-hour cache writes, and cache reads). It can split the rows by project too, by folder name only. The cost estimate is in the file as well.
+The CSV file has one row per day, profile and model, with the replies, each kind of token (input, output, 5-minute and 1-hour cache writes, cache reads) and the cost estimate. Rows can also be split by project, by folder name only.
 
-The estimate prices the same tokens at Anthropic's API list prices, per model, with cache writes and cache reads priced apart. It is not your bill: use on a Pro, Max, Ultra or Team plan is paid for by the plan, so the figure says what the tokens are worth at list prices, not what you owe. The prices are built into cl_audit, dated, and updated with its releases.
+The estimate prices cache writes and cache reads apart. On a Pro, Max, Ultra or Team plan the plan pays for your use, so the figure is what the tokens would cost on the API, not what you owe. The prices are built into cl_audit, dated, and updated with its releases.
 
 ## How do you check Claude usage history by project or model?
 
@@ -106,7 +106,7 @@ The **Show** chips choose which profiles are in the charts. A "usage only" profi
 
 ## How it compares with /usage and ccusage
 
-Claude Code has a built-in `/usage` command, and ccusage is a well-known open-source command-line tool. All three read local data, but they answer different questions. The table is based on Anthropic's cost-management page and the ccusage README, both checked on 2 November 2026.
+Claude Code has a built-in `/usage` command, and ccusage is a well-known open-source command-line tool. All three read local data, but they answer different questions. The table is based on Anthropic's cost-management page (checked on 5 November 2026) and the ccusage README (2 November 2026).
 
 | | cl_audit | `/usage` in Claude Code | ccusage |
 |---|---|---|---|
