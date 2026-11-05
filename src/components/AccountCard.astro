@@ -42,7 +42,7 @@ const open = !!a.winOpen;   // the demo's starting state; data/cardState.ts take
 
   <Fragment set:html={cardLimitsHTML(a.id as AccountId, "segments")} />
   <div class="acc-actions">
-    <button type="button" class={`pill small tint ${a.tint}`} data-open-desktop={a.id} data-open-label>{open ? "Show window" : "Open window"}</button>
+    <button type="button" class={`pill small tint ${a.tint}${open ? "" : " unlit"}`} data-open-desktop={a.id} data-open-label>{open ? "Show window" : "Open window"}</button>
     <button type="button" class="pill small" data-open-terminal={a.id}>Terminal</button>
     <span class="more-wrap">
       <button type="button" class="pill small more-btn" data-more aria-haspopup="menu" aria-expanded="false" aria-label={`More for ${a.name}`} title={`More for ${a.name}`}>⋯</button>

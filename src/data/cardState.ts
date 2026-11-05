@@ -98,6 +98,7 @@ export function renderCards() {
       const b = card.querySelector<HTMLElement>("[data-open-label]");
       const label = s.win ? "Show window" : "Open window";
       if (b && b.textContent !== label) b.textContent = label;
+      b?.classList.toggle("unlit", !s.win);   // a lit LED means running: dark while the window is closed (26.11.0)
     });
     document.querySelectorAll<HTMLElement>(`[data-win-badge="${a.id}"]`).forEach((b) => (b.hidden = !(s.win && !s.winBusy)));
   }
