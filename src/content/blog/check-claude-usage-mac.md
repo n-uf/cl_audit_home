@@ -175,7 +175,7 @@ From cl_audit, yes. "Claude usage" appears in the macOS widget gallery (macOS 14
 
 ### Usage history
 
-Limits tell you how full you are, not where it went. Claude Code writes session files on your Mac, and cl_audit reads them (only time, model, token counts, project folder and surface of each reply). From those it charts tokens per day and where they go by project, model and surface, over 24 hours, 7 days or 30 days. Nothing is uploaded. Usage from claude.ai chats, other computers or cloud sessions isn't in it. See [Claude Code usage history](/use-cases/claude-code-usage-history/), or the [demo dashboard](/dashboard/) with sample data. In the app, the totals also give a cost estimate at API list prices (not your bill), and the CSV key saves the period as a file.
+Limits tell you how full you are, not where it went. Claude Code writes session files on your Mac, and cl_audit reads them (only time, model, token counts, project folder and surface of each reply). From those it charts tokens per day and where they go by project, model and surface, over 24 hours, 7 days or 30 days. Nothing is uploaded. Usage from claude.ai chats, other computers or cloud sessions isn't in it. The totals add a cost estimate at API list prices, which isn't your bill, and the **CSV** key saves the period as a file. See [Claude Code usage history](/use-cases/claude-code-usage-history/), or the [demo dashboard](/dashboard/) with sample data.
 
 ## For several accounts at once
 
