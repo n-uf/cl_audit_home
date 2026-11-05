@@ -10,7 +10,7 @@ author: n-uf
 order: 2
 takeaways:
   - "cl_audit sends three Mac notifications for each Claude profile: a limit reaches the level you set, a limit is full and when it's back, and a full limit has reset."
-  - "The alerts cover the 5-hour limit and the weekly limit for every profile, plus Fable's weekly limit where the plan has one, and each fires once per limit and reset. Other alerts say when usage credits start or run out, and when a Claude window was reopened after a Claude update."
+  - "The alerts cover every profile's 5-hour and weekly limits, and Fable's weekly limit where the plan has one; each fires once per limit and reset. Others tell you when usage credits start or run out."
   - "One background agent reads every profile's usage, so alerts arrive with the cl_audit window, the Dock icons and the Claude windows all closed."
   - "Reset times come from Anthropic's usage figures; when Anthropic doesn't give one, cl_audit says so and never makes one up."
   - "Each profile has its own level and its own refresh interval, and Notify when back is on by default."
@@ -38,6 +38,15 @@ sources:
   - title: "Claude Code docs: Commands (/usage)"
     url: "https://code.claude.com/docs/en/commands"
     checked: 2026-11-03
+  - title: "Anthropic Help Center: Claude Fable models on your plan"
+    url: "https://support.claude.com/en/articles/15424964-claude-fable-models-on-your-plan"
+    checked: 2026-11-05
+  - title: "Anthropic Help Center: Manage usage credits for paid Claude plans"
+    url: "https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans"
+    checked: 2026-11-05
+  - title: "cl_audit README (n-uf/cl_audit): alerts, after a Claude update"
+    url: "https://github.com/n-uf/cl_audit"
+    checked: 2026-11-05
 related:
   - /
   - /use-cases/multiple-claude-accounts/
@@ -63,9 +72,9 @@ Each alert fires once per limit and reset. A limit sitting at 92% won't ping you
 
 The same agent sends three more kinds of alert.
 
-- **Fable's weekly limit.** Where the plan gives Fable a weekly limit of its own, it alerts the way the other two do: "Claude Main: Fable weekly limit full · Back Thu 09:00", then "Claude Main: Fable is back". Its row on the card turns red, but it doesn't take the full-limit box or turn the Dock icon into a countdown, because the profile can still work with the other models. Each profile can leave Fable's limit out (Profile ▸ Fable's limit); when it's off, it's neither shown nor alerted.
-- **Usage credits.** Usage credits carry a profile past its plan limits, and they're paid for. With alerts on, you get one when a profile starts spending them ("Claude Work is using usage credits · The 5-hour limit is full · $0.40 spent so far") and one when they run out. While they're being spent, the card also says "Using usage credits · $4.20 spent".
-- **A Claude window reopened.** Claude's quiet updates quit every window and reopen only the standard one. cl_audit's agent opens the profile windows the update closed, in the background, and tells you once: "Claude updated to 1.2.0 · Reopened Work's window". A window you closed yourself is left alone, and so is a profile without its Claude window switch. Claude Code tasks the quit stopped aren't restarted.
+- **Fable's weekly limit.** On Max and Ultra, and on premium Team and Enterprise seats, Fable has a weekly limit of its own. It alerts like the other two: "Claude Main: Fable weekly limit full · Back Thu 09:00", then "Claude Main: Fable is back". Its row on the card turns red, but the Dock icon doesn't become a countdown, since the other models still work. To leave it out for a profile, turn off Profile ▸ Fable's limit; then it's neither shown nor alerted.
+- **Usage credits.** They let a profile keep working past its plan limits, billed apart from the plan. With alerts on, you hear when a profile starts spending them ("Claude Work is using usage credits · The 5-hour limit is full · $0.40 spent so far") and when they run out. Meanwhile the card says "Using usage credits · $4.20 spent".
+- **A Claude window reopened.** Claude updates itself quietly, quitting every window and reopening only the standard one. cl_audit's agent reopens the profile windows the update closed, in the background, and tells you once: "Claude updated to 1.2.0 · Reopened Work's window". A window you closed yourself stays closed. Claude Code tasks the quit stopped aren't restarted.
 
 ## The countdown on the dashboard and in the Dock
 
