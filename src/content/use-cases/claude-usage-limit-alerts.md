@@ -5,12 +5,12 @@ h1: "Claude usage limit notifications"
 mainKeyword: "claude usage limit notification"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-04
+updated: 2026-11-05
 author: n-uf
 order: 2
 takeaways:
   - "cl_audit sends three Mac notifications for each Claude profile: a limit reaches the level you set, a limit is full and when it's back, and a full limit has reset."
-  - "The alerts cover the 5-hour limit and the weekly limit, for every profile, and each fires once per limit and reset."
+  - "The alerts cover the 5-hour limit and the weekly limit for every profile, plus Fable's weekly limit where the plan has one, and each fires once per limit and reset. Other alerts say when usage credits start or run out, and when a Claude window was reopened after a Claude update."
   - "One background agent reads every profile's usage, so alerts arrive with the cl_audit window, the Dock icons and the Claude windows all closed."
   - "Reset times come from Anthropic's usage figures; when Anthropic doesn't give one, cl_audit says so and never makes one up."
   - "Each profile has its own level and its own refresh interval, and Notify when back is on by default."
@@ -23,6 +23,8 @@ faq:
     a: "Yes. cl_audit's background agent reads every profile and sends the alerts, so they arrive with the cl_audit window, the Dock icons and the Claude windows closed. macOS starts the agent at login and again if it crashes."
   - q: "Can each account have its own level?"
     a: "Yes. The level, the refresh interval and Notify when back are set per profile, so a work seat can warn you at 80% while a personal plan warns at 95% or stays quiet."
+  - q: "Does cl_audit alert me about Fable's limit or usage credits?"
+    a: "Yes. Where the plan gives Fable a weekly limit of its own, it alerts like the other two (\"Fable weekly limit full · Back Thu 09:00\", then \"Fable is back\"), unless you've turned Fable's limit off for that profile. With alerts on, cl_audit also tells you when a profile starts spending usage credits and when they run out."
 sources:
   - title: "Anthropic Help Center: How do usage and length limits work?"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
@@ -57,6 +59,14 @@ Every notification comes from cl_audit itself, and you get them per profile. (A 
 
 Each alert fires once per limit and reset. A limit sitting at 92% won't ping you every five minutes.
 
+## Fable, usage credits and Claude updates
+
+The same agent sends three more kinds of alert.
+
+- **Fable's weekly limit.** Where the plan gives Fable a weekly limit of its own, it alerts the way the other two do: "Claude Main: Fable weekly limit full · Back Thu 09:00", then "Claude Main: Fable is back". Its row on the card turns red, but it doesn't take the full-limit box or turn the Dock icon into a countdown, because the profile can still work with the other models. Each profile can leave Fable's limit out (Profile ▸ Fable's limit); when it's off, it's neither shown nor alerted.
+- **Usage credits.** Usage credits carry a profile past its plan limits, and they're paid for. With alerts on, you get one when a profile starts spending them ("Claude Work is using usage credits · The 5-hour limit is full · $0.40 spent so far") and one when they run out. While they're being spent, the card also says "Using usage credits · $4.20 spent".
+- **A Claude window reopened.** Claude's quiet updates quit every window and reopen only the standard one. cl_audit's agent opens the profile windows the update closed, in the background, and tells you once: "Claude updated to 1.2.0 · Reopened Work's window". A window you closed yourself is left alone, and so is a profile without its Claude window switch. Claude Code tasks the quit stopped aren't restarted.
+
 ## The countdown on the dashboard and in the Dock
 
 A full limit also shows up outside Notification Center. On the [Claude usage dashboard](/dashboard/), the profile's card gets one box beside the limits, for the full limit that holds the profile back (the one that resets last). It reads "5-hour full", then how long until it's back in large type ("in 1h 42m"), and the time under that ("back at 15:28").
@@ -70,7 +80,9 @@ You'll see the same countdown in a few more places:
 - the details panel, which has the same box;
 - the launcher, next to the profile;
 - the Dock icon's menu, which starts with "5-hour full · back at 15:28, in 1h 42m";
-- the Dock icon itself: the time in large figures, "5H FULL" under it, and a red frame.
+- the Dock icon itself: the time in large figures, "5H FULL" under it, and a red frame;
+- the profile's menu bar icon, if you turned one on (profile settings ▸ Menu bar, off by default): the countdown beside the icon ("1h 42m"), or just red, as you choose;
+- the "Claude usage" widget (macOS 14 or later), which shows when a full limit is back.
 
 With nothing full, the cards look as usual. At the reset, the agent reads that profile again straight away and the card goes back to its normal layout.
 
@@ -98,7 +110,7 @@ Changes save as you make them. You can try all three on the [demo settings page]
 
 A lower level buys you more time; a level close to 100% means fewer alerts and less warning. If the weekly limit is what you watch, somewhere in the high eighties or nineties may do. For a profile that runs long agent tasks, you may want to hear sooner. It depends on how fast you burn through a limit, and you can change it whenever you like.
 
-The first time, macOS asks once whether cl_audit may send notifications. Missed it? It's in System Settings ▸ Notifications ▸ cl_audit, and cl_audit's General settings show whether alerts are allowed.
+The first time, macOS asks once whether cl_audit may send notifications. Missed it? It's in System Settings ▸ Notifications ▸ cl_audit, and Settings ▸ General ▸ Usage in the background shows whether alerts are allowed.
 
 ## Claude usage alerts for every account, from one agent
 
