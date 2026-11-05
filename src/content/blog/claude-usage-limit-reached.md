@@ -136,7 +136,7 @@ Two other messages look similar but aren't about your plan's allowance. "You've 
 | Another model, in Claude Code | After an Opus or Sonnet limit, `/model` to a model outside that family | No help with the session or weekly limit, which cover all models |
 | A bigger plan | The new plan's limits apply right away | It costs more; [Claude Max vs Pro](/blog/claude-max-vs-pro/) compares the two |
 
-On Pro, Max and Ultra you turn usage credits on yourself. Open the Usage credits section in Settings ▸ Usage, click Enable, add a payment method if you haven't, and add funds; you can also set a monthly spend limit. Your limits keep resetting as usual while you use them. Instead of the error, Claude then shows "5-hour limit resets [time] - continuing with usage credits" or "Now using credits".
+On Pro, Max and Ultra you turn usage credits on yourself. Open the Usage credits section in Settings ▸ Usage, click Enable, add a payment method if you haven't, and add funds; you can also set a monthly spend limit. Your limits keep resetting as usual while you use them. Instead of the error, Claude then shows "5-hour limit resets [time] - continuing with usage credits" or "Now using credits". {{live:/blog/claude-usage-credits/}}What credits cost, which models need them from the start and how Team owners set them up is in [how Claude usage credits work](/blog/claude-usage-credits/).{{/live}}
 
 Some things don't help. A new chat doesn't give you a fresh allowance, because Anthropic describes usage limits as covering all your conversations. Moving to another app doesn't either: Claude, Claude Code, Claude Desktop and IDE use all draw on the same limits. And switching models does nothing for a session or weekly limit.
 
