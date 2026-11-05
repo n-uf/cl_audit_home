@@ -23,7 +23,7 @@ const jsonLd = [
   import { applyPrefs, loadPrefs, savePrefs, loadOrder, saveOrder, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
   import { glyphHTML, lane as mbLane } from "../data/menubar";
   import { widgetHTML } from "../data/widgetView";
-  import { panelHTML, limitsHTML, whenWords, type Design } from "../data/panelView";
+  import { limitsHTML, whenWords, type Design } from "../data/panelView";
   import { showWhatNow } from "../data/whatNow";
 
   const PEEK = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -364,9 +364,9 @@ const jsonLd = [
       $$<HTMLImageElement>("[data-gallery]").forEach((img) => (img.src = iconSrc(acc, img.dataset.gallery as Style, pr.iconColor)));
       $$<HTMLElement>("[data-style]").forEach((b) => b.classList.toggle("on", b.dataset.style === pr.style));
       $$<HTMLImageElement>("[data-lane-img]").forEach((img) => (img.src = img.dataset.laneImg === "full" ? `/img/acc/lane-${acc}-full.png` : laneSrc(acc, pr.style, img.dataset.laneImg!, pr.iconColor)));
-      // Usage panel: each design drawn small with this profile's numbers
+      // Usage panel: the keys and one large preview of the chosen panel's limits, with this profile's numbers
       $$<HTMLElement>("[data-panel]").forEach((b) => b.classList.toggle("on", b.dataset.panel === pr.panel));
-      $$<HTMLElement>("[data-panel-mini]").forEach((el) => (el.innerHTML = panelHTML(acc, el.dataset.panelMini as Design, { large: false, name: pr.name })));
+      $("[data-panel-prev]")!.innerHTML = limitsHTML(acc, pr.panel as Design, false);
     };
 
     root.addEventListener("click", (e) => {

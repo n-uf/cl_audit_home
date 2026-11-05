@@ -14,7 +14,7 @@
 // Profile tiles can be dragged along the strip to change the profiles' order (settings.astro).
 import { accounts } from "../data/demo";
 import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices, dockRunsChoices, menuBarFamilies, appIconStyles, appIconSrc, appIconDefault } from "../data/prefs";
-import { panelHTML, limitsHTML, designs } from "../data/panelView";
+import { limitsHTML, designs } from "../data/panelView";
 import { lane as mbLane } from "../data/menubar";
 import { version, build, changelog } from "../data/site";
 import AccIcon from "./AccIcon.astro";
@@ -102,9 +102,11 @@ const sw = (key: string, label: string, on = true) => `<span class="ctl-pair"><b
           <div class="srow" data-peekrow><span>Usage shows for <i class="idot" data-peek-info title="How long the usage panel stays up after a click, before the Claude window opens.">i</i></span><span class="stepper"><button type="button" data-step="peek" data-dir="-1" aria-label="Shorter">−</button><span data-value="peek">3 s</span><button type="button" data-step="peek" data-dir="1" aria-label="Longer">＋</button></span></div>
           <div class="srow"><span>Press and hold <i class="idot" title="Press and hold the icon for its details panel and a short menu. Double-click or ⌥-click also opens the panel; right-click shows the full menu.">i</i></span><Fragment set:html={sw("hold", "Press and hold")} /></div>
           <div class="srow stacked"><span>Usage panel <i class="idot" title="How the usage panel looks when you click or press and hold this Dock icon. The dashboard's cards have one style for all profiles, in General.">i</i></span>
-            <div class="up-tiles" role="group" aria-label="Usage panel">{panels.map(([k, n]) => (
-              <button type="button" class:list={["up-tile", { on: k === "segments" }]} data-panel={k}><span class="up-mini" data-panel-mini={k} set:html={panelHTML("home", k as any, { large: false })} /><span>{n}</span></button>
-            ))}</div>
+            <!-- as General ▸ Card style: the keys, then one large preview of the chosen panel's limits (build 189) -->
+            <div class="design-pane">
+              <span class="switch small-switch" role="group" aria-label="Usage panel">{panels.map(([k, n]) => <button type="button" data-panel={k} class:list={{ on: k === "segments" }}>{n}</button>)}</span>
+              <div class="card-prev" data-panel-prev set:html={limitsHTML("home", "segments", false)} />
+            </div>
           </div>
           <div class="srow stacked"><span>Icon <i class="idot" title="How this profile's Dock icon draws the usage: numbers, rings, the panels' looks, or tiles in the level colours.">i</i></span>
             <div class="gallery g5">
