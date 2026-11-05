@@ -23,6 +23,10 @@
 #          checker saved at github.sha, against the new main (a page whose `published` moved into the future
 #          meanwhile is no longer due): not accepted, nothing is pushed. A cancelled run does not push.
 #   report decides the colour of the run: red when build or push failed, or when build's publish-due exited 3.
+# A manual run with `verify-key` ticked runs only a fourth job, verify-key (environment publish, no node): the key
+# check, the same checkout and hardening as push, and `git ls-remote origin refs/heads/main` over ssh, printing the
+# SHA. It proves the key, the ssh path and the host pin before the first real flip, and pushes nothing. build, push
+# and report are skipped then; `inputs.verify-key` is empty on schedule runs, so those are unaffected.
 # Both jobs check out ${{ github.sha }}, the commit the run started on. Only the page list and the patch cross from
 # build to push: no commit id does, so a compromised build can't make the key push a commit (a fork's head, an orphan)
 # whose checker says yes. The checker runs from push's own checkout.
@@ -46,6 +50,11 @@ on:
   schedule:
     - cron: '10 0 * * *'
   workflow_dispatch:
+    inputs:
+      verify-key:
+        description: "Only check the deploy key: run the verify-key job (key, ssh path and host pin, git ls-remote) and nothing else. Nothing is flipped, built or pushed."
+        type: boolean
+        default: false
 
 permissions:
   contents: read   # the push goes over SSH with the deploy key, not with the job's token
@@ -61,7 +70,8 @@ defaults:
 
 jobs:
   build:
-    if: github.repository == 'n-uf/cl_audit_home'
+    # `inputs.verify-key` is empty on a schedule run, so the schedule is unaffected; true runs only verify-key
+    if: github.repository == 'n-uf/cl_audit_home' && !inputs.verify-key
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -138,7 +148,7 @@ jobs:
   push:
     needs: build
     # no `always()`: the implicit success() keeps a cancelled run from pushing
-    if: needs.build.outputs.ready == 'true'
+    if: needs.build.outputs.ready == 'true' && !inputs.verify-key
     # the deploy key is an environment secret; the `publish` environment deploys from main only
     environment: publish
     runs-on: ubuntu-latest
@@ -169,15 +179,9 @@ jobs:
       # No git hook of the checkout runs in this job, whatever the working tree holds. Checkout left core.sshCommand
       # with the key and the known-hosts file it wrote; ssh is now also told to read no config file (-F /dev/null),
       # no agent, no proxy and no system known_hosts, to use only that key, and to accept only the pinned ed25519 key.
+      # The same script runs in the verify-key job.
       - name: Switch git hooks off and lock down ssh
-        run: |
-          git config core.hooksPath /dev/null
-          cmd=$(git config --local --get core.sshCommand)
-          if [ -z "$cmd" ]; then
-            echo "::error::checkout set no core.sshCommand"
-            exit 1
-          fi
-          git config core.sshCommand "$cmd -F /dev/null -o IdentitiesOnly=yes -o IdentityAgent=none -o ProxyCommand=none -o GlobalKnownHostsFile=/dev/null -o HostKeyAlgorithms=ssh-ed25519 -o BatchMode=yes"
+        run: bash scripts/lock-down-git-ssh.sh
 
       - name: Download the flip
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -257,11 +261,56 @@ jobs:
           echo "::error::push to main was rejected 3 times"
           exit 1
 
+  # Run by hand (Actions > publish > Run workflow, verify-key ticked) before the first real flip: with nothing due
+  # the push job never runs, so the key, the ssh options and the host pin would otherwise first be used on a real
+  # flip. This job takes the same steps as push up to the hardening (same key check, same checkout settings, same
+  # lock-down script; scripts/publish-workflow.test.mjs fails if they drift apart) and then only lists main's tip
+  # over ssh: nothing is flipped, built, committed or pushed, and build, push and report do not run.
+  verify-key:
+    if: github.repository == 'n-uf/cl_audit_home' && inputs.verify-key
+    environment: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Check the deploy key secret
+        env:
+          KEY: ${{ secrets.PUBLISH_DEPLOY_KEY }}
+        run: '[ -n "$KEY" ] || { echo "::error::secret PUBLISH_DEPLOY_KEY is not set: the job pushes to main with the write deploy key"; exit 1; }'
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          ssh-key: ${{ secrets.PUBLISH_DEPLOY_KEY }}
+          ssh-known-hosts: 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl'
+          ssh-strict: true
+          fetch-depth: 0
+
+      - name: Switch git hooks off and lock down ssh
+        run: bash scripts/lock-down-git-ssh.sh
+
+      # origin must be the ssh URL: over https a public repo lists its refs with no key at all, and the run would
+      # prove nothing. ls-remote then goes over the pinned, locked-down ssh with the deploy key.
+      - name: List main over ssh
+        run: |
+          url=$(git remote get-url origin)
+          if [ "$url" != "git@github.com:n-uf/cl_audit_home.git" ]; then
+            echo "::error::origin is ${url}, not the ssh URL: this would not use the deploy key"
+            exit 1
+          fi
+          sha=$(git -c core.hooksPath=/dev/null ls-remote origin refs/heads/main | cut -f1)
+          if [ -z "$sha" ]; then
+            echo "::error::git ls-remote returned no refs/heads/main"
+            exit 1
+          fi
+          echo "::notice::The deploy key reached ${url} over ssh; main is at ${sha} (this run's commit is $(git rev-parse HEAD))."
+
   # the run is red when build or push failed, and when some page's front matter couldn't be read (exit 3), even
   # though the readable pages were published; otherwise green
   report:
     needs: [build, push]
-    if: ${{ !cancelled() && needs.build.result != 'skipped' }}
+    if: ${{ !cancelled() && needs.build.result != 'skipped' && !inputs.verify-key }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions: {}
