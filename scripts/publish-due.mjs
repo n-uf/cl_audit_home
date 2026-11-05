@@ -5,15 +5,18 @@
 // (YYYY-MM-DD, UTC). Production builds don't render drafts. This script, run daily at 00:10 UTC by
 // .github/workflows/publish.yml, looks at every .md under src/content/blog and src/content/use-cases and, for each
 // one whose front matter has `draft: true` and a `published` date on or before today (UTC), changes that one
-// line to `draft: false` and nothing else in the file. It prints one slug (the file name without .md) per line.
-// The workflow commits the change as `publish: <slug>[, <slug>]` and pushes to main; Vercel then deploys it.
+// line to `draft: false` and nothing else in the file. It prints one `<section>/<slug>` per line (the folder under
+// src/content and the file name without .md, e.g. `blog/claude-usage-credits`).
+// The workflow commits the change as `publish: <section>/<slug>[, <section>/<slug>]` and pushes to main; Vercel then
+// deploys it.
 //
 // What it reads: `draft: true|True|TRUE` (what Astro's YAML takes as true; the flip is always written as `false`),
 // `published:` as a date or, for a timestamp, its UTC day, a leading UTF-8 byte-order mark, CRLF line ends, and only
 // top-level keys (an indented `draft:` inside another key's block is not looked at).
-// Exit code: 0 whether or not anything is due; 1 if some file has a `draft:` line, or a draft's `published:` line, it
+// Exit code: 0 whether or not anything is due; 3 if some file has a `draft:` line, or a draft's `published:` line, it
 // can't interpret (the others are still processed and listed; that file is left untouched and named on stderr);
-// 2 for any other error.
+// 2 for any other error the script catches. Anything else (Node's own 1 when this file fails to load, a signal) is a
+// crash too: only 0 and 3 mean the script ran through, which is what publish.yml relies on.
 //
 //   node scripts/publish-due.mjs [--dry-run] [--today YYYY-MM-DD] [--root <dir>]
 //     --dry-run  list the due slugs, change nothing
@@ -23,7 +26,7 @@
 // To undo a publish: revert the publish commit, or set `draft: true` again in the page's front matter (a page
 // whose date has passed flips back on the next run, so also move `published` to a future date to hold it).
 import { readdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
-import { join, resolve, dirname } from "node:path";
+import { join, resolve, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DIRS = ["src/content/blog", "src/content/use-cases"];
@@ -142,14 +145,14 @@ function main() {
       }
       if (next === null) continue;
       if (!dryRun) writeFileSync(file, next, "latin1");
-      due.push(name.slice(0, -3));
+      due.push(`${basename(dir)}/${name.slice(0, -3)}`);
     }
   }
-  for (const slug of due) console.log(slug);
+  for (const page of due) console.log(page);
   if (errors.length > 0) {
     for (const line of errors) console.error(`publish-due: ${line}`);
     console.error(`publish-due: ${errors.length} file(s) skipped because their front matter can't be read; fix them, they stay drafts until then`);
-    process.exitCode = 1; // after the others were processed
+    process.exitCode = 3; // after the others were processed; not 1, which Node itself uses when the script fails to load
   }
 }
 
