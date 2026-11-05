@@ -11,15 +11,19 @@ const article = z.object({
   h1: z.string().min(10).max(90),
   mainKeyword: z.string().min(3),
   kind: z.enum(["use-case", "how-to", "what-is", "comparison", "best-tools"]),
-  published: z.coerce.date(),
+  published: z.coerce.date(),         // the day the page goes live (UTC); for a draft, the day it is scheduled for
   updated: z.coerce.date(),
+  draft: z.boolean().default(false),  // true: scheduled, not live yet; scripts/publish-due.mjs flips it on its date
   author: z.literal("n-uf"),
   takeaways: z.array(z.string().min(20)).min(3).max(5),
   faq: z.array(z.object({ q: z.string().endsWith("?"), a: z.string().min(40) })).min(4).max(5),
   sources: z.array(z.object({ title: z.string(), url: z.string().url(), checked: z.coerce.date() })).default([]),
   related: z.array(sitePath).min(2).max(4),
   order: z.number().int().optional(),   // optional: where a use case sits in the /use-cases/ list (lowest first); otherwise by title
-}).refine((d) => d.updated >= d.published, { message: "updated is earlier than published", path: ["updated"] });
+}).refine((d) => d.updated >= d.published, { message: "updated is earlier than published", path: ["updated"] })
+  // a live page can't be dated in the future (UTC days); only a draft may wait for its date
+  .refine((d) => d.draft || d.published.toISOString().slice(0, 10) <= new Date().toISOString().slice(0, 10),
+    { message: "published is a future date but the page is not a draft: set draft: true (it goes live on that date)", path: ["published"] });
 
 export const collections = {
   useCases: defineCollection({ loader: glob({ pattern: "*.md", base: "./src/content/use-cases" }), schema: article }),
