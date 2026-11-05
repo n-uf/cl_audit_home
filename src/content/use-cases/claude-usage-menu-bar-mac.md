@@ -17,7 +17,7 @@ faq:
   - q: "Can I see my Claude usage in the Mac menu bar?"
     a: "Yes, with cl_audit. Switch on In the menu bar in a profile's settings and that profile gets its own icon with its 5-hour and weekly limits. It's off by default, because cl_audit mainly shows usage in the Dock."
   - q: "Does each Claude account get its own menu bar icon?"
-    a: "Each profile does, and each profile is linked to one account seat. Style, colours and label are set per profile, so two icons side by side can look different. A short label such as WORK or MAIN before an icon tells them apart."
+    a: "Each profile does, and an account belongs to one profile. Style, colours and label are set per profile, so two icons side by side can look different. A short label such as WORK or MAIN before an icon tells them apart."
   - q: "Do I need the Dock icons to use the menu bar icons?"
     a: "No. cl_audit's background agent draws the menu bar icon, not the Dock icon app, so it works with the Dock icon on or off. A usage only profile, with Usage in the Dock and Claude window both off, can still have one."
   - q: "What does the menu bar icon show when a limit is full?"

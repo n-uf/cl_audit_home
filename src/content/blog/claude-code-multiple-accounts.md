@@ -5,14 +5,14 @@ h1: "Claude Code multiple accounts with CLAUDE_CONFIG_DIR"
 mainKeyword: "claude code multiple accounts"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-04
+updated: 2026-11-05
 author: n-uf
 takeaways:
   - "Anthropic's docs give one way to stay signed in to several Claude Code accounts: a separate configuration directory per account, chosen with CLAUDE_CONFIG_DIR."
   - "Each directory has its own settings, session history and login; on macOS Claude Code keys the Keychain entry to the directory."
   - "A zsh alias per account is the whole switch: claude-work and claude-personal can run in two Terminal windows at once."
   - "A new folder starts empty, so CLAUDE.md, agents and skills have to be copied or shared."
-  - "cl_audit builds the folders for you as profiles and shows each profile's 5-hour and weekly limits; it is one profile per seat and doesn't pool limits."
+  - "cl_audit builds the folders for you as profiles and shows each profile's 5-hour and weekly limits; an account belongs to one profile, and it doesn't pool limits."
 faq:
   - q: "Can Claude Code use two accounts at the same time?"
     a: "Yes, with one configuration folder per account. Anthropic's authentication docs say to set CLAUDE_CONFIG_DIR to the directory of the account you want when you start claude. Each directory has its own settings, session history and login, so two Terminal windows can run two accounts."
@@ -155,7 +155,7 @@ A profile in cl_audit is one Claude setup: a Claude Code folder with its sign-in
 2. The two switches. **Claude window** gives the profile a Claude app window signed in to the same account (quit the Claude app first; this step is only for profiles with a Claude window). **Usage in the Dock** gives it a Dock icon with its usage. With both off, the profile is usage only: its limits show on the dashboard and in alerts, with nothing in the Dock.
 3. Sign in. Claude's own sign-in does the work, and cl_audit never sees the password. With a Claude window, you then sign that window in to the same account; its Code sidebar starts empty. Last, add the Dock icon or choose Start reading usage.
 
-An account another profile already has is refused: each profile is linked to one seat (account plus organisation, checked by their ids), and no two profiles share one. A personal plan and a Team seat on one email are two seats, so they're two profiles. A profile only shows the limits its own seat already has.
+An account another profile already has is refused: an account belongs to one profile (account plus organisation, checked by their ids). A personal plan and a Team seat on one email are two accounts, so they can be two profiles. A profile only shows the limits its own accounts already have.
 
 After setup, the pieces you'd otherwise script yourself are in the app (see [your Claude Code history by day](/use-cases/claude-code-usage-history/) for the numbers):
 
