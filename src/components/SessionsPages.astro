@@ -1,0 +1,120 @@
+---
+// The pages the Sessions card opens (switch UX round 2), in place of the profile's settings like the Switch page:
+// Restore (a preview, then steps, then checks, and an undo of its own; or "Not yet" while a switch is unfinished),
+// Export and Import. settings.astro shows them and fills in the profile's name ([data-pn]) and the backup's name
+// ([data-bk-name]). Sample figures only; nothing on this Mac changes.
+---
+<div class="sess-pages" data-sess-pages hidden>
+  <!-- Restore… -->
+  <section class="sw-page" data-sp="restore">
+    <div class="sw-head"><h3 data-rs-head>Restore <span data-pn>work</span> from “<span data-bk-name></span>”</h3></div>
+    <div class="sw-run" data-rs="preview"><span class="disp"><em>Preview · nothing written yet · nothing is ever overwritten</em></span></div>
+    <div class="sw-run" data-rs="run"><span class="disp"><span class="b">Restoring ●</span> <em>· step 2 of 3 · <span data-rs-count>52</span> of 86 back</em></span><span class="spacer"></span><button type="button" class="pill small tint t-red" data-rs-stop>Stop, keep what's back</button></div>
+    <div class="sw-run" data-rs="done"><span class="disp"><span class="g">Restored</span> <em>· 86 back · nothing overwritten · 3 listed</em></span><span class="spacer"></span><button type="button" class="key k" data-rs-undo>Undo this restore</button><button type="button" class="key k" data-sess-back>Back to <span data-pn>work</span>'s settings</button></div>
+    <div class="sw-run" data-rs="refused"><span class="disp"><span class="a">Not yet</span> <em>· one thing first · nothing written</em></span></div>
+    <div class="sw-cols">
+      <div class="sw-col">
+        <div class="card"><h4>What happens <i class="idot" title="What the restore will do with each thing in the backup, worked out before anything is written. It merges and never overwrites.">i</i></h4>
+          <div class="srow"><span>Back where it was</span><span class="v-soft"><b>70</b> entries the switch moved, unchanged since</span></div>
+          <div class="srow"><span>Missing, restored</span><span class="v-soft"><b>4</b> entries · <b>12</b> transcripts</span></div>
+          <div class="srow"><span>Made after it</span><span class="v-soft"><b>6</b> sessions: kept</span></div>
+          <div class="srow"><span>Changed since</span><span class="v-soft"><b>3</b>: this copy kept, listed</span></div>
+          <div class="srow"><span>In use</span><span class="v-soft"><b>1</b> transcript a running Claude Code session holds: left alone, listed</span></div>
+          <div class="srow"><span>Older than 30 days</span><span class="v-soft"><b>12</b>: Claude Code would delete them again. <button type="button" class="key k" data-sess-keep>Keep for 90 days</button></span></div>
+        </div>
+        <div class="card"><h4>Stays as it is <i class="idot" title="A restore brings back sessions only. It leaves the account, sign-ins, MCP settings and claude.ai alone.">i</i></h4>
+          <div class="srow"><span>Account</span><span class="v-soft">The profile stays on the account it's on: a switch changes that</span></div>
+          <div class="srow"><span>Sign-ins</span><span class="v-soft">Never in a backup</span></div>
+          <div class="srow"><span>MCP</span><span class="v-soft">The window's MCP settings: never touched</span></div>
+          <div class="srow"><span>claude.ai</span><span class="v-soft">Chats and Projects</span></div>
+        </div>
+      </div>
+      <div class="sw-col">
+        <div class="card" data-rs="preview"><h4>Steps <i class="idot" title="What restoring does, in order, each step checked before the next. A receipt is kept as it goes, so if the Mac stops, the next start finishes it first.">i</i></h4>
+          <ol class="sw-steps">
+            <li><i></i><div><b><span data-pn>work</span>'s Claude window closes</b><span>Only that window, about half a minute.</span></div></li>
+            <li><i></i><div><b>What's listed comes back</b><span>Merged by the rules on the left; nothing overwritten.</span></div></li>
+            <li><i></i><div><b>The window opens; the sidebar, as before</b><span>Press Return in the session that opens.</span></div></li>
+          </ol>
+          <div class="sw-keys"><button type="button" class="key k" data-sess-back>Cancel</button><span></span><button type="button" class="pill small tint t-green" data-rs-go>Close and restore 86</button></div>
+        </div>
+        <div class="card" data-rs="run"><h4>Steps</h4>
+          <ol class="sw-steps">
+            <li class="done"><i></i><div><b><span data-pn>work</span>'s Claude window closed</b></div></li>
+            <li class="now"><i></i><div><b>What's listed comes back</b><div class="chk"><span class="disp"><em><span data-rs-count>52</span> of 86 · nothing overwritten</em></span></div></div></li>
+            <li><i></i><div><b>The window opens; the sidebar, as before</b></div></li>
+          </ol>
+          <p class="g-note sub">It keeps a receipt as it goes, like a switch: if the Mac stops, the next start finishes it first.</p>
+        </div>
+        <div class="card" data-rs="done"><h4>Steps</h4>
+          <ol class="sw-steps">
+            <li class="done"><i></i><div><b><span data-pn>work</span>'s Claude window</b><div class="chk"><span class="disp"><span class="g">Open again ✓</span></span></div></div></li>
+            <li class="done"><i></i><div><b>What's listed came back</b><div class="chk"><span class="disp"><span class="g">86 back · 0 overwritten ✓</span></span></div><span>3 changed since stayed as they were.</span></div></li>
+            <li class="warn"><i></i><div><b>The sidebar, as before</b><div class="chk"><span class="disp"><em>Press Return in “cl_audit · arrange sidebar”</em></span></div></div></li>
+          </ol>
+          <p class="g-note sub">Undo this restore takes back exactly what it put back.</p>
+        </div>
+        <div class="card" data-rs="refused"><h4>First</h4>
+          <ol class="sw-steps">
+            <li class="warn"><i></i><div><b>A switch of <span data-pn>work</span> is unfinished</b><span>It stopped half way. Undo it first: its receipt puts back exactly what it moved, then restore if anything's still missing.</span></div></li>
+          </ol>
+          <p class="g-note sub">One switch, restore or import at a time.</p>
+          <div class="sw-keys"><button type="button" class="key k" data-sess-back>Back</button><span></span><button type="button" class="pill small tint t-green dimmed">Close and restore 86</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Export… -->
+  <section class="sw-page" data-sp="export">
+    <div class="sw-head"><h3>Export <span data-pn>work</span>'s sessions</h3></div>
+    <div class="sw-run"><span class="disp"><em>Preview · nothing written yet</em></span></div>
+    <div class="sw-cols">
+      <div class="sw-col">
+        <div class="card"><h4>What <i class="idot" title="Which sessions go in the file.">i</i></h4>
+          <div class="srow"><span>From</span><select class="menu" aria-label="From"><option>This profile, as it is now</option><option>One of its backups</option><option>All profiles</option></select></div>
+          <div class="srow"><span>Claude Code</span><span class="v-soft">310 sessions, with rewind history</span></div>
+          <div class="srow"><span>Claude window</span><span class="v-soft">84 Code-tab entries, 12 tasks</span></div>
+        </div>
+        <div class="card"><h4>Keys found <i class="idot" title="Sessions can hold keys pasted into them. They stay out of the file unless it gets a password.">i</i></h4>
+          <div class="srow"><span>Found</span><span class="v-soft"><b>5</b> sessions hold keys: 2 GitHub tokens, 3 private keys</span></div>
+          <div class="srow"><span>Those 5</span><select class="menu" aria-label="Sessions with keys"><option>Leave them out</option><option>Keep them: needs a password</option></select></div>
+        </div>
+      </div>
+      <div class="sw-col">
+        <div class="card"><h4>Preview</h4>
+          <div class="srow"><span>~/projects/app</span><span class="v-soft"><b>210</b> · 3.9 GB</span></div>
+          <div class="srow"><span>~/projects/site</span><span class="v-soft"><b>95</b> · 1.6 GB</span></div>
+          <div class="srow"><span>~/projects/infra</span><span class="v-soft"><b>5</b> with keys: left out</span></div>
+          <p class="g-note sub">One file that Finder opens. Accounts appear only as a fingerprint of their id, never an address or a token.</p>
+          <div class="sw-keys"><button type="button" class="key k" data-sess-back>Cancel</button><span></span><button type="button" class="pill small tint t-green" data-sess-demo="Export">Export 305 sessions · ≈ 5.5 GB</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Import… -->
+  <section class="sw-page" data-sp="import">
+    <div class="sw-head"><h3>Import into <span data-pn>work</span></h3></div>
+    <div class="sw-run"><span class="disp"><em>Preview · nothing written yet · nothing is ever overwritten</em></span></div>
+    <div class="sw-cols">
+      <div class="sw-col">
+        <div class="card"><h4>From <i class="idot" title="The file you picked, and the profile it goes into.">i</i></h4>
+          <div class="srow"><span>File</span><span class="v-soft">an export made on another Mac</span></div>
+          <p class="g-note sub">The file is unpacked as a backup of <span data-pn>work</span> first, then restored from: the same rules as Restore.</p>
+        </div>
+      </div>
+      <div class="sw-col">
+        <div class="card"><h4>What happens</h4>
+          <div class="srow"><span>New</span><span class="v-soft"><b>210</b>: added</span></div>
+          <div class="srow"><span>Already here</span><span class="v-soft"><b>60</b> with the same content: skipped</span></div>
+          <div class="srow"><span>Grown on both sides</span><span class="v-soft"><b>3</b>: this profile's copy stays, listed</span></div>
+          <div class="srow"><span>Code-tab entries</span><span class="v-soft"><b>10</b>: the window closes and opens again</span></div>
+          <div class="srow"><span>Folder not here</span><span class="v-soft"><b>30</b>: added, shown once that folder exists</span></div>
+          <div class="sw-keys"><button type="button" class="key k" data-sess-back>Cancel</button><span></span><button type="button" class="pill small tint t-green" data-sess-demo="Import">Close and import 210 sessions</button></div>
+          <p class="g-note sub">Undo last import, under the profile's Sessions afterwards, removes exactly what it added.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -43,6 +43,32 @@ const jsonLd = [
     let prefs = loadPrefs();
     let acc = (root.dataset.acc || "home") as AccountId;
     let general = false;
+    // ── Sessions (switch UX round 2): the card's backups, and the pages it opens in place of the profile's settings ──
+    // page: "" (the settings), "restore", "export", "import" (and "switch", the Switch page). Restore runs preview →
+    // run → done, or "refused" while a switch of the profile is unfinished. Sample figures; nothing on this Mac changes.
+    let page = "", rs: "preview" | "run" | "done" | "refused" = "preview", bkName = "", rsTimer = 0;
+    const madeNow: Record<string, string[]> = {};
+    const backupsOf = (id: AccountId) => [
+      ...(madeNow[id] ?? []).map((n) => [n, "84 sessions · 12 tasks · sidebar · 40 MB"]),
+      ...(standby[id].length ? [[`Before switch to ${standby[id][0].email.split("@")[0]} · 5 Nov 18:40`, "84 sessions · 12 tasks · sidebar · transcripts · 5.5 GB, sharing space with the originals"]] : []),
+      ["Manual · 2 Nov 09:12", "79 sessions · 12 tasks · sidebar · 40 MB"],
+    ];
+    const showPage = () => {
+      const pages = root.querySelector<HTMLElement>("[data-sess-pages]")!;
+      const sess = ["restore", "export", "import"].includes(page);
+      pages.hidden = general || !sess;
+      pages.querySelectorAll<HTMLElement>("[data-sp]").forEach((s) => (s.hidden = s.dataset.sp !== page));
+      pages.querySelectorAll<HTMLElement>("[data-rs]").forEach((s) => (s.hidden = s.dataset.rs !== rs));
+      const n = prefs[acc].name.trim() || "this profile";
+      root.querySelectorAll<HTMLElement>("[data-pn]").forEach((e) => (e.textContent = n));
+      root.querySelectorAll<HTMLElement>("[data-bk-name]").forEach((e) => (e.textContent = bkName));
+      const h = pages.querySelector<HTMLElement>("[data-rs-head]");
+      if (h) h.innerHTML = `${rs === "run" ? "Restoring" : rs === "done" ? "Restored:" : "Restore"} ${n} from “${bkName}”`;
+      root.querySelector<HTMLElement>("[data-bk-list]")!.innerHTML = backupsOf(acc).map(([t, d]) =>
+        `<div class="bk"><b>${t}</b><small>${d}</small><span class="bk-keys"><button type="button" class="key k" data-bk-restore="${t}">Restore…</button><button type="button" class="pill small more-btn" data-bk-more aria-label="More">⋯</button></span></div>`).join("");
+      if (sess) (window as any).scrollTo?.({ top: 0 });
+    };
+    const openPage = (p: string) => { page = p; clearTimeout(rsTimer); show(); };
     // "Profile settings…" on a dashboard card lands here with that profile selected
     try {
       const want = sessionStorage.getItem("cl_audit.settingsProfile");
@@ -359,8 +385,10 @@ const jsonLd = [
       }
       if (!changing && !flash) statusIdle();
       $$<HTMLElement>("[data-select-acc]").forEach((t) => t.classList.toggle("sel", general ? t.dataset.selectAcc === "general" : t.dataset.selectAcc === acc));
-      $("[data-profile-view]")!.hidden = general;
+      // a page the profile's settings opened (Restore, Export, Import, the Switch page) takes their place
+      $("[data-profile-view]")!.hidden = general || !!page;
       $("[data-general-view]")!.hidden = !general;
+      showPage();
       if (general) {
         // General ▸ Dashboard cards: the picked style and its preview (a look, so no note)
         const cs = loadCardStyle();
@@ -468,6 +496,7 @@ const jsonLd = [
       if ((b = pick("[data-select-acc]"))) {
         // a value typed but not saved goes to the profile it was typed for; one that can't be saved is dropped
         for (const f of ["name", "label"] as const) { saveEdit(f); if (drafts[f]) revertEdit(f); }
+        page = "";
         if (b.dataset.selectAcc === "general") general = true; else { general = false; acc = b.dataset.selectAcc as AccountId; }
         show(); return;
       }
@@ -566,6 +595,54 @@ const jsonLd = [
         return;
       }
       if ((b = pick("[data-sb-cancel]"))) { added[acc] = added[acc].filter((s) => s.email !== b!.dataset.sbCancel); show(); return; }
+      // Sessions: Back up now, a backup's Restore… and ⋯, Export…, Import…, and the keys on their pages
+      if (pick("[data-bk-now]")) {
+        const d = new Date(), name = `Manual · ${d.getDate()} ${d.toLocaleString("en-GB", { month: "short" })} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+        (madeNow[acc] ??= []).unshift(name); show();
+        status('<span class="g">Saved</span> <em>· backup</em>', 2500);
+        return;
+      }
+      if ((b = pick("[data-bk-restore]"))) {
+        bkName = b.dataset.bkRestore!;
+        rs = (window as any).clSwitchPending?.[acc] ? "refused" : "preview";
+        openPage("restore"); return;
+      }
+      if (pick("[data-bk-more]")) { showWhatNow("⋯", "", "Show in Finder, and Delete. This is a demo, so nothing is deleted."); return; }
+      if ((b = pick("[data-sess-go]"))) { openPage(b.dataset.sessGo!); return; }
+      if (pick("[data-sess-back]")) { openPage(""); return; }
+      if (pick("[data-sess-keep]")) {
+        const sel = root.querySelector<HTMLSelectElement>('.c-s select[aria-label="Keep for"]'); if (sel) sel.selectedIndex = 1;
+        showWhatNow("Keep for", "90 days", "Claude Code keeps this profile's sessions for 90 days before deleting them, so the older ones in the backup stay once they're back.");
+        return;
+      }
+      if (pick("[data-rs-go]")) {
+        // the steps run with sample timings: the window closes, what's listed comes back, the window opens again
+        rs = "run"; show();
+        let n = 52;
+        const tick = () => {
+          n = Math.min(86, n + 6);
+          root.querySelectorAll<HTMLElement>("[data-rs-count]").forEach((e) => (e.textContent = String(n)));
+          if (n < 86) rsTimer = window.setTimeout(tick, 250); else { rs = "done"; show(); }
+        };
+        rsTimer = window.setTimeout(tick, 400);
+        return;
+      }
+      if (pick("[data-rs-stop]")) {
+        clearTimeout(rsTimer); openPage("");
+        showWhatNow("Restore stopped", "", "What's already back stays; the rest is still in the backup. This is a demo, so nothing changed.");
+        return;
+      }
+      if (pick("[data-rs-undo]")) {
+        openPage("");
+        showWhatNow("Undo this restore", "", "It takes back exactly what the restore put back. This is a demo, so nothing changed.");
+        return;
+      }
+      if ((b = pick("[data-sess-demo]"))) {
+        const what = b.dataset.sessDemo!;
+        openPage("");
+        showWhatNow(what, "", what === "Export" ? "cl_audit writes one file of this profile's sessions. This is a demo, so nothing is written." : "cl_audit unpacks the file as a backup of this profile, then restores from it. This is a demo, so nothing changed.");
+        return;
+      }
       if (pick("[data-sb-terminal]")) { showWhatNow("Show Terminal", "", "Terminal comes forward with Claude Code's own sign-in for the new account. This is a demo, so nothing opens."); return; }
       if (pick("[data-login-other]")) {
         // the Add account row becomes the address field, with Sign in and Cancel, and one grey line under the row
