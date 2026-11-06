@@ -1780,7 +1780,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* Settings and the card: the selected standby account's "Standby" display becomes a Switch account key, in place */
 .acc-pick .sw-acc { display: none; flex: none; border: 0; cursor: pointer; font: inherit; }
 .acc-pick .abox.sel .sw-acc { display: inline-flex; align-items: center; }
-.acc-pick .abox.sel .abox-badge { display: none; }
+.acc-pick .abox.sel:has(.sw-acc) .abox-badge { display: none; }
 .acc-pick .sw-acc:hover { filter: brightness(1.07); }
 .acc-pick .sw-acc:active { transform: translateY(1px); box-shadow: inset 0 3px 4px rgba(0,0,0,.5), inset 0 0 0 1px rgba(0,0,0,.5), 0 0 0 1.5px #0b0c0d; }
 /* the dashboard card: the standby accounts as unlit trays under its own limits, most room first */
@@ -1843,3 +1843,15 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .mbm-it .chev { margin-left: auto; font-size: 13px; line-height: 1; opacity: .7; }
 .mbm-it .ck { width: 11px; flex: none; font-size: 11px; }
 .mbm-it.open { background: #0a64d6; color: #fff; }
+.mbm-it:has(.r, .chev, .ck) { display: flex; align-items: center; gap: 6px; }
+.mbm-it.cur, .mbm-it.cur:hover { background: none; color: inherit; }
+/* the site's menus drop down, so the Switch account submenu opens under its item, indented */
+.mbm-subm { margin: 2px 0 4px 10px; padding-left: 4px; border-left: 1px solid rgba(255,255,255,.12); }
+/* the tile whose Switch page is open: its display flush on its right (settings strip) */
+.settings .strip .tile.sw-host { border-top-right-radius: 0; border-bottom-right-radius: 0; margin-right: -8px; }
+.settings .strip .sw-disp.two { height: auto; align-self: stretch; padding: 0 16px; font-size: 11px; border-radius: 0 5px 5px 0; transform: translateY(1px); }
+/* demo only: the cases a switch can meet when something goes wrong */
+.sw-demo { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12px; }
+.sw-demo .switch { flex-wrap: wrap; height: auto; }
+.sw-page .switch > button.dis { opacity: .4; }
+.sw-page .switch > button:disabled { cursor: default; }
