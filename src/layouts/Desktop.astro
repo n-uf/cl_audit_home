@@ -131,10 +131,21 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     const item = t.closest<HTMLElement>("[data-mbm]");
     if (item && openId) {
       const id = openId as AccountId, what = item.dataset.mbm;
+      // Switch account ›: its submenu opens under it (the menu stays open)
+      if (what === "submenu") {
+        const sub = item.nextElementSibling as HTMLElement | null;
+        if (sub) { sub.hidden = !sub.hidden; item.classList.toggle("open", !sub.hidden); item.setAttribute("aria-expanded", String(!sub.hidden)); }
+        return;
+      }
       closeMenu();
       if (what === "Open Claude window") w_.clOpenDesktop?.(id);
       else if (what === "Dashboard") location.href = "/dashboard/";
-      else if (what === "switch") { if (location.pathname.startsWith("/dashboard") && w_.clOpenSwitch) w_.clOpenSwitch(); else location.href = `/dashboard/?switch=${id}`; }
+      else if (what === "switch") {
+        // the Switch page, in Settings as in the app, with that account picked
+        const to = item.dataset.to ?? "";
+        if (location.pathname.startsWith("/settings") && w_.clOpenSwitch) w_.clOpenSwitch(id, to);
+        else location.href = `/settings/?switch=${id}&to=${encodeURIComponent(to)}`;
+      }
       else if (what === "Profile settings…") { try { sessionStorage.setItem("cl_audit.settingsProfile", id); } catch {} location.href = "/settings/"; }
       else if (what === "hide") { const p = loadPrefs(); p[id].mb.on = false; savePrefs(p); applyPrefs(p); }
       return;
