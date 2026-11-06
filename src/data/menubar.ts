@@ -3,7 +3,7 @@
 // 5-hour inside), Ring + number, Number (the fuller limit), Two numbers. Colours: the level colours, System (the menu
 // bar's own colour), Accent (the Mac's accent colour) or the profile's colour. A full limit shows the countdown beside
 // the icon ("1h 42m"), or only turns red; in System it's never red (the countdown shows it).
-import { accounts, standby, shortName, type AccountId } from "./demo";
+import { accounts, standby, byRoom, shortName, type AccountId } from "./demo";
 import { countdownWords, fableShown } from "./panelView";
 import type { MenuBarLook } from "./prefs";
 
@@ -62,15 +62,27 @@ export function menuHTML(id: AccountId, name: string) {
   const row = (n: string, p: number, sub: string, hot: boolean) =>
     `<div class="mbm-row"><span>${n}</span><span class="mbm-bar"><i style="width:${Math.min(100, p)}%;background:${level(p)}"></i></span><b style="color:${level(p)}">${p}%</b></div><div class="mbm-sub${hot ? " hot" : ""}">${sub}</div>`;
   const when = (m: number) => (m >= 1440 ? `in ${Math.round(m / 1440)} days` : m >= 60 ? `in ${Math.floor(m / 60)} h ${m % 60} min` : `in ${m} min`);
+  // a profile with other accounts (switch UX round 2): the account in use under its name, then "Switch account ›", a
+  // submenu with the account in use ticked and every standby account, most room first, each with its week. While a
+  // limit is full, the one with the most room also sits on the top level, right under the full line.
+  const sb = byRoom(standby[id]), full = a.five >= 100 || a.week >= 100;
+  const best = full ? sb.find((s) => s.five < 100 && s.week < 100) : undefined;
+  const sw = (s: { email: string; week: number }, label: string) => `<button type="button" class="mbm-it" data-mbm="switch" data-to="${s.email}">${label}<span class="r">week ${s.week}%</span></button>`;
+  const switching = sb.length
+    ? (best ? sw(best, `Switch to ${shortName(best.email)}…`) : "") +
+      `<button type="button" class="mbm-it" data-mbm="submenu" aria-expanded="false">Switch account<span class="chev">›</span></button>` +
+      `<div class="mbm-subm" hidden><div class="mbm-it cur"><span class="ck">✓</span>${shortName(a.email)}<span class="r">in use · week ${a.week}%</span></div><hr>` +
+      sb.map((s) => sw(s, `<span class="ck"></span>${shortName(s.email)}…`)).join("") + "</div><hr>"
+    : "";
   return `<div class="mbm-head"><i style="background:${a.hex}"></i><b>Claude ${name}</b><span>${a.plan}</span></div>` +
+    (sb.length ? `<div class="mbm-acc"><i></i>${shortName(a.email)} <span>· in use</span></div>` : "") +
     (a.five >= 100 ? `<div class="mbm-sub hot">5-hour full · in ${countdownWords(a.fiveLeftMin)}</div>` : "") +
     row("5-hour", a.five, a.five >= 100 ? "full" : `resets ${when(a.fiveLeftMin)}`, a.five >= 100) +
     row("Week", a.week, `resets ${when(a.weekLeftMin)}`, false) +
     (fableShown(id) ? row("Fable", a.fable!, `resets ${when(a.fableLeftMin)}`, false) : "") +
     (a.credits != null ? `<div class="mbm-sub credit">Using usage credits · $${a.credits.toFixed(2)} spent</div>` : "") +
-    `<div class="mbm-sub">Read ${a.updated}</div><hr>` +
-    ["Open Claude window", "Refresh now", "Dashboard", "Profile settings…"].map((t) => `<button type="button" class="mbm-it" data-mbm="${t}">${t}</button>`).join("") +
-    // the profile's other accounts: "Switch to team-2…" each, opening the Switch page (app build 252)
-    (standby[id].length ? "<hr>" + standby[id].map((s) => `<button type="button" class="mbm-it" data-mbm="switch">Switch to ${shortName(s.email)}…</button>`).join("") : "") +
+    `<div class="mbm-sub">Read ${a.updated}</div><hr>` + switching +
+    ["Open Claude window", "Refresh now"].map((t) => `<button type="button" class="mbm-it" data-mbm="${t}">${t}</button>`).join("") + "<hr>" +
+    ["Dashboard", "Profile settings…"].map((t) => `<button type="button" class="mbm-it" data-mbm="${t}">${t}</button>`).join("") +
     `<hr><button type="button" class="mbm-it" data-mbm="hide">Hide from the menu bar</button>`;
 }

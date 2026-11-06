@@ -2,7 +2,6 @@
 import Desktop from "../layouts/Desktop.astro";
 import AccountCard from "../components/AccountCard.astro";
 import History from "../components/History.astro";
-import SwitchPage from "../components/SwitchPage.astro";
 import { accounts } from "../data/demo";
 import { orgNode, webPage, breadcrumbs } from "../data/schema";
 
@@ -33,7 +32,6 @@ const jsonLd = [
     </div>
     <div class="dash-cards">{accounts.map((a) => <AccountCard {...a} />)}</div>
     <History />
-    <SwitchPage />
     <!-- 26.10.5: until the first scan of the session files is done, the history says it's reading them (once per
          visit; set before the first paint so the numbers don't flash) -->
     <script is:inline>
@@ -56,10 +54,7 @@ const jsonLd = [
 <script>
   import { rangeHTML, sharesHTML, totalsHTML, csvFor } from "../data/historyView";
   import { loadPrefs, loadOrder, saveOrder, applyPrefs } from "../data/prefs";
-  import { allIds, accounts, standby, shortName, type AccountId, type Range, type Standby } from "../data/demo";
-  import { standbyLimitsHTML } from "../data/panelView";
-  import { loadCardStyle } from "../data/prefs";
-  import { showWhatNow } from "../data/whatNow";
+  import { allIds, type AccountId, type Range } from "../data/demo";
 
   const KEY = "cl_audit.dashboardHidden";
   const CHARTS = "cl_audit.dashboardCharts";   // charts switched off with their keys
@@ -108,95 +103,6 @@ const jsonLd = [
     applyCharts(dash);
   }
 
-  // ── The Switch page (app build 252): the steps run with sample timings; nothing on this Mac changes ──
-  // Phases as the app's SwitchRunner: ready, closing, moving, code (Claude Code's sign-in), window (the window's own
-  // sign-in), sidebar (press Return in the session that opens), done; cancelled; pending (a switch that stopped half
-  // way, with Undo).
-  type Phase = "ready" | "closing" | "moving" | "code" | "window" | "sidebar" | "done" | "cancelled" | "pending";
-  function setupSwitch(dash: HTMLElement) {
-    const page = dash.querySelector<HTMLElement>("[data-sw-page]");
-    if (!page) return;
-    const q = <T extends HTMLElement = HTMLElement>(s: string) => page.querySelector<T>(s)!;
-    const work = accounts.find((x) => x.id === "work")!, sb = standby.work[0];
-    const name = work.name, from = shortName(work.email), to = shortName(sb.email);
-    const inUse: Standby = { email: work.email, plan: work.plan, org: "Work", five: work.five, week: work.week, fiveLeftMin: work.fiveLeftMin, weekLeftMin: work.weekLeftMin };
-    let phase: Phase = "ready", timer = 0;
-    const others = [".dash-bar", ".dash-cards", "#history"];
-    const at = () => ({ ready: 0, cancelled: 0, pending: 0, closing: 1, moving: 2, code: 3, window: 3, sidebar: 5, done: 6 } as const)[phase];
-    const btn = (attr: string, label: string, green = false, plain = false) =>
-      `<button type="button" class="${plain ? "sw-plain" : `pill small${green ? " tint t-green" : ""}`}" ${attr}>${label}</button>`;
-    const draw = () => {
-      const design = loadCardStyle(), switched = phase === "done";
-      // once switched, team-2 is in use and the account it came from stands by
-      q("[data-sw-in-mail]").textContent = switched ? sb.email : work.email;
-      q("[data-sw-in-plan]").textContent = switched ? `${sb.plan} · ${sb.org}` : `${work.plan} · Work`;
-      q("[data-sw-in-limits]").innerHTML = standbyLimitsHTML(switched ? sb : inUse, design);
-      q("[data-sw-to-mail]").textContent = switched ? work.email : sb.email;
-      q("[data-sw-to-plan]").textContent = switched ? `${work.plan} · Work` : `${sb.plan} · ${sb.org}`;
-      q("[data-sw-to-limits]").innerHTML = standbyLimitsHTML(switched ? inUse : sb, design);
-      q("[data-sw-to-badge]").textContent = switched ? "Standby" : "Switch to";
-      page.querySelectorAll<HTMLElement>("[data-sw-steps] li").forEach((li) => {
-        const n = +li.dataset.step!;
-        li.classList.toggle("done", at() > n); li.classList.toggle("now", at() === n);
-      });
-      q("[data-step3-t]").textContent = phase === "code" ? `Claude Code signs in as ${to}` : phase === "window" ? `The window signs in as ${to}` : `Claude Code and the window sign in as ${to}`;
-      q("[data-step3-d]").textContent = phase === "code" ? `Finish in the browser as ${sb.email}; Terminal shows Claude Code's sign-in.`
-        : phase === "window" ? `In the window: log out, then sign in as ${sb.email}.` : "Claude Code in Terminal and the browser, then the window's own sign-in.";
-      q("[data-step5-d]").textContent = "Press Return in the session that opens, so the sidebar is arranged as before." +
-        (at() >= 2 ? " 9 sessions go back in 3 groups; 2 sessions are pinned again. It archives itself when done." : "");
-      const keys = {
-        ready: btn("data-sw-back", "Back", false, true) + "<span></span>" + btn("data-sw-go", `Close and switch to ${to}`, true),
-        cancelled: btn("data-sw-back", "Back", false, true) + "<span></span>" + btn("data-sw-go disabled", `Close and switch to ${to}`, true),
-        pending: btn("data-sw-back", "Back", false, true) + "<span></span>" + btn("data-sw-undo", "Undo", true),
-        closing: `<span></span><span class="sw-busy">closing the window…</span>`,
-        moving: btn("data-sw-stop", "Stop here (demo)", false, true) + `<span class="sw-busy">moving…</span>`,
-        code: btn("data-sw-cancel", "Cancel switch", false, true) + "<span></span>" + btn("data-sw-signin", "Sign in again…"),
-        window: "<span></span>" + btn("data-sw-show", "Show window") + btn("data-sw-done1", "Done", true),
-        sidebar: btn("data-sw-open", "Open the session", false, true) + "<span></span>" + btn("data-sw-done2", "Done", true),
-        done: "<span></span>" + btn("data-sw-back", `Back to ${name}`, true),
-      }[phase];
-      q("[data-sw-keys]").innerHTML = keys;
-      const when = new Date().toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
-      const line = {
-        pending: `A switch on ${when} stopped half way: 14 sessions moved, ${name} not switched. Undo puts them back.`,
-        cancelled: `Cancelled: the sessions are back with ${from}.`,
-        code: `The switch is waiting for this sign-in; ${name}'s window stays closed until it's done or cancelled. (In this demo the sign-in finishes by itself.)`,
-        done: `Done: ${name} works on ${to}.`,
-      }[phase as "pending" | "cancelled" | "code" | "done"];
-      const l = q("[data-sw-line]"); l.hidden = !line; l.textContent = line ?? "";
-    };
-    // the steps that run on by themselves in the demo, and after how long
-    const AUTO: Partial<Record<Phase, [Phase, number]>> = { closing: ["moving", 1400], moving: ["code", 1600], code: ["window", 2600] };
-    const go = (p: Phase) => {
-      clearTimeout(timer); phase = p; draw();
-      const next = AUTO[p];
-      if (next) timer = window.setTimeout(() => go(next[0]), next[1]);
-    };
-    const show = (on: boolean) => {
-      page.hidden = !on;
-      others.forEach((s) => dash.querySelectorAll<HTMLElement>(s).forEach((el) => (el.style.display = on ? "none" : "")));
-      if (on) { draw(); page.scrollIntoView({ block: "start" }); }
-    };
-    // Esc in the confirmation is Cancel
-    page.addEventListener("keydown", (e) => { if (e.key === "Escape" && !q("[data-sw-confirm]").hidden) q("[data-sw-no]").click(); });
-    (window as any).clOpenSwitch = () => { if (phase === "done" || phase === "cancelled") phase = "ready"; show(true); };
-    page.addEventListener("click", (e) => {
-      const t = e.target as HTMLElement, has = (s: string) => !!t.closest(s);
-      if (has("[data-sw-back]")) { show(false); return; }
-      if (has("[data-sw-go]")) { q("[data-sw-confirm]").hidden = false; q<HTMLButtonElement>("[data-sw-yes]").focus(); return; }
-      if (has("[data-sw-no]")) { q("[data-sw-confirm]").hidden = true; return; }
-      if (has("[data-sw-yes]")) { q("[data-sw-confirm]").hidden = true; go("closing"); return; }
-      if (has("[data-sw-stop]")) { go("pending"); return; }
-      if (has("[data-sw-undo]")) { go("ready"); return; }
-      if (has("[data-sw-cancel]")) { go("cancelled"); return; }
-      if (has("[data-sw-signin]")) { showWhatNow("Sign in again…", "", `Claude Code's own sign-in opens in Terminal again, with ${sb.email} filled in. (A demo: nothing opens.)`); return; }
-      if (has("[data-sw-show]")) { showWhatNow("Show window", "", `${name}'s Claude window comes forward: log out there, then sign in as ${sb.email}. (A demo: nothing opens.)`); return; }
-      if (has("[data-sw-done1]")) { go("sidebar"); return; }
-      if (has("[data-sw-open]")) { showWhatNow("cl_audit · arrange sidebar", "", `A session by that name opens in ${name}'s Claude window with its prompt filled in: press Return. The first time, macOS asks to let cl_audit control Claude. (A demo: nothing opens.)`); return; }
-      if (has("[data-sw-done2]")) { go("done"); return; }
-    });
-  }
-
   function setup() {
     // the strip's one display: "Updated · just now"; hovering it says what cl_audit's background agent reads (26.10.11)
     const upd = document.querySelector<HTMLElement>("[data-updated]");
@@ -239,15 +145,18 @@ const jsonLd = [
       setTimeout(() => { d.innerHTML = "Updated <em>· just now</em>"; k.classList.remove("busy"); k.textContent = "↻"; }, 1400);
     });
     // CSV (26.11.0): saves the period and the shown profiles as CSV, as the app's key does; the rows are the demo's
-    // "Switch to team-2…" under a full limit's box opens the Switch page in place of the dashboard, as in the app
-    setupSwitch(dash);
+    // the standby trays on a card (switch UX round 2): click one to select it (again to deselect); while a limit is full
+    // the one with the most room is selected already. Its Switch account key opens the Switch page, in Settings as in
+    // the app, with it picked.
     dash.addEventListener("click", (e) => {
-      if ((e.target as HTMLElement).closest("[data-switch-offer]")) (window as any).clOpenSwitch?.();
+      const t = e.target as HTMLElement;
+      const key = t.closest<HTMLElement>("[data-card-switch]");
+      if (key) { location.href = `/settings/?switch=${key.dataset.cardSwitch}&to=${encodeURIComponent(key.dataset.to!)}`; return; }
+      const tray = t.closest<HTMLElement>(".sb-pick .abox");
+      if (!tray) return;
+      const sel = !tray.classList.contains("sel");
+      tray.parentElement!.querySelectorAll(".abox").forEach((x) => x.classList.toggle("sel", sel && x === tray));
     });
-    if (new URLSearchParams(location.search).get("switch") === "work") {
-      (window as any).clOpenSwitch?.();
-      history.replaceState(history.state, "", location.pathname);   // a reload shows the dashboard again
-    }
     dash.querySelector<HTMLButtonElement>("[data-csv]")?.addEventListener("click", () => {
       const ids = allIds.filter((id) => !load().includes(id)) as AccountId[];
       const blob = new Blob([csvFor((dash.dataset.range || "7d") as Range, ids)], { type: "text/csv" });
