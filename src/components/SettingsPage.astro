@@ -19,6 +19,7 @@ import { lane as mbLane } from "../data/menubar";
 import { version, build, changelog } from "../data/site";
 import AccIcon from "./AccIcon.astro";
 import SessionsPages from "./SessionsPages.astro";
+import SwitchPage from "./SwitchPage.astro";
 
 const a = accounts[0];
 const panels = [["glow", "Glow"], ["rings", "Rings"], ["numbers", "Numbers"], ["segments", "Segments"], ["pace", "Pace"]];
@@ -202,6 +203,7 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
 
   <!-- the pages a profile's Sessions card opens, and its Switch page, in place of its settings -->
   <SessionsPages />
+  <SwitchPage />
 
   <!-- General settings (26.11.0): cl_audit (Usage in the background, Privacy, About) · How usage looks (Face, Dashboard
        cards, Widget) · The Dock (App icon, Dock). In two columns The Dock goes under cl_audit (settings.astro moves it);

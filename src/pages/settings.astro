@@ -25,6 +25,7 @@ const jsonLd = [
   import { widgetHTML } from "../data/widgetView";
   import { limitsHTML, standbyLimitsHTML, whenWords, type Design } from "../data/panelView";
   import { showWhatNow } from "../data/whatNow";
+  import { initSwitch } from "../data/switchDemo";
 
   const PEEK = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
   const clickTitle: Record<string, string> = { "Usage, then Claude": "Usage, then Claude", Claude: "Open Claude", "Details panel": "Details panel" };
@@ -54,6 +55,10 @@ const jsonLd = [
       ["Manual · 2 Nov 09:12", "79 sessions · 12 tasks · sidebar · 40 MB"],
     ];
     const showPage = () => {
+      // the Switch page (only the demo's "work" has accounts to switch to); its tile's display goes when it closes
+      const swOpen = !general && page === "switch";
+      root.querySelector<HTMLElement>("[data-sw-page]")!.hidden = !swOpen;
+      if (!swOpen) swi.hideDisplay();
       const pages = root.querySelector<HTMLElement>("[data-sess-pages]")!;
       const sess = ["restore", "export", "import"].includes(page);
       pages.hidden = general || !sess;
@@ -69,6 +74,15 @@ const jsonLd = [
       if (sess) (window as any).scrollTo?.({ top: 0 });
     };
     const openPage = (p: string) => { page = p; clearTimeout(rsTimer); show(); };
+    const swi = initSwitch(root.querySelector<HTMLElement>("[data-sw-page]")!, {
+      close: () => openPage(""),
+      tile: () => root.querySelector<HTMLElement>('.strip [data-select-acc="work"]'),
+    });
+    // "Switch account" (Settings, the dashboard card, the menus): the Switch page with that account picked
+    (window as any).clOpenSwitch = (id: string, email?: string) => {
+      if (id !== "work") return;
+      general = false; acc = "work"; page = "switch"; show(); swi.open(email);
+    };
     // "Profile settings…" on a dashboard card lands here with that profile selected
     try {
       const want = sessionStorage.getItem("cl_audit.settingsProfile");
@@ -802,6 +816,12 @@ const jsonLd = [
       });
     });
     show();
+    // from the dashboard card's or a menu's "Switch account": /settings/?switch=work&to=<address>
+    const qs = new URLSearchParams(location.search);
+    if (qs.get("switch")) {
+      (window as any).clOpenSwitch(qs.get("switch"), qs.get("to") ?? undefined);
+      history.replaceState(history.state, "", location.pathname);   // a reload shows the settings again
+    }
   }
   document.addEventListener("astro:page-load", setup);
 </script>
