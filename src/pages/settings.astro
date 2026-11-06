@@ -68,7 +68,7 @@ const jsonLd = [
       root.querySelectorAll<HTMLElement>("[data-pn]").forEach((e) => (e.textContent = n));
       root.querySelectorAll<HTMLElement>("[data-bk-name]").forEach((e) => (e.textContent = bkName));
       const h = pages.querySelector<HTMLElement>("[data-rs-head]");
-      if (h) h.innerHTML = `${rs === "run" ? "Restoring" : rs === "done" ? "Restored:" : "Restore"} ${n} from “${bkName}”`;
+      if (h) h.innerHTML = `${rs === "done" ? `${n} restored` : `${rs === "run" ? "Restoring" : "Restore"} ${n}`} from “${bkName}”`;
       root.querySelector<HTMLElement>("[data-bk-list]")!.innerHTML = backupsOf(acc).map(([t, d]) =>
         `<div class="bk"><b>${t}</b><small>${d}</small><span class="bk-keys"><button type="button" class="key k" data-bk-restore="${t}">Restore…</button><button type="button" class="pill small more-btn" data-bk-more aria-label="More">⋯</button></span></div>`).join("");
       if (sess) (window as any).scrollTo?.({ top: 0 });
@@ -163,7 +163,8 @@ const jsonLd = [
         case "notify": return [pr.notify ? "" : "off"];   // on: the level stepper instead of words
         case "dock": return [pr.showInDock ? "shows the usage" : "no Dock icon"];
         case "hold": return [pr.hold ? "details and menu" : "off"];
-        case "dot": return pr.dot ? ["while its window is open", "window open"] : ["none"];        case "mbOn": return [pr.mb.on ? "shows the usage" : "no icon"];
+        case "dot": return pr.dot ? ["while its window is open", "window open"] : ["none"];
+        case "mbOn": return [pr.mb.on ? "shows the usage" : "no icon"];
       }
       return [""];
     };
@@ -297,7 +298,7 @@ const jsonLd = [
       const body = x.state === "ok" && x.s ? standbyLimitsHTML(x.s, design)
         : x.state === "wait" ? `<div class="ap-addr"><span class="ap-why">Finish the sign-in in the browser, as ${x.email}.</span><button type="button" class="sw-plain" data-sb-cancel="${x.email}">Cancel</button><button type="button" class="pill small" data-sb-terminal>Show Terminal</button></div>`
         : x.state === "wrong" ? `<div class="ap-addr"><span class="ap-why">The browser signed in as ${accounts.find((y) => y.id === acc)!.email.split("@")[0]}, not ${x.email.split("@")[0]}. Switch the browser's account, then sign in again.</span><button type="button" class="sw-plain" data-sb-cancel="${x.email}">Cancel</button><button type="button" class="pill small" data-sb-signin="${x.email}">Sign in again…</button></div>`
-        : `<small class="ap-note">No numbers yet: cl_audit reads them within a few minutes, from the sign-in kept in its folder, and keeps that sign-in renewed.</small>`;
+        : `<small class="ap-note">No numbers yet: cl_audit reads them within a few minutes, from a sign-in it keeps for this account, and keeps that sign-in renewed.</small>`;
       // only an account with numbers can be switched to from here; the key takes the Standby display's place
       const key = x.state === "ok" ? `<button type="button" class="disp xs trustlike sw-acc" data-sw-acc="${x.email}"><em>Switch</em> account</button>` : "";
       return `<div class="abox unlit${picked === x.email ? " sel" : ""}" data-pick="${x.state === "ok" ? x.email : ""}"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
@@ -444,7 +445,7 @@ const jsonLd = [
       // Accounts: closed and at rest on every profile; the account in use with its limits in the dashboard's card style,
       // then the standby ones
       loginReset();
-      $("[data-abox-detail]")!.textContent = `${a.plan} · ${acc === "work" ? "Work" : "Personal"} · ${who()} works on it`;
+      $("[data-abox-detail]")!.textContent = `${a.plan} · ${acc === "work" ? "Work" : "Personal"} · in use by ${who()}`;
       if (!boxes().some((x) => x.email === picked)) picked = "";
       $("[data-pick-hint]")!.hidden = !boxes().some((x) => x.state === "ok");
       $("[data-abox-limits]")!.innerHTML = limitsHTML(acc, loadCardStyle(), false);

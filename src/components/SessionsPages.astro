@@ -17,8 +17,8 @@
         <div class="card"><h4>What happens <i class="idot" title="What the restore will do with each thing in the backup, worked out before anything is written. It merges and never overwrites.">i</i></h4>
           <div class="srow"><span>Back where it was</span><span class="v-soft"><b>70</b> entries the switch moved, unchanged since</span></div>
           <div class="srow"><span>Missing, restored</span><span class="v-soft"><b>4</b> entries · <b>12</b> transcripts</span></div>
-          <div class="srow"><span>Made after it</span><span class="v-soft"><b>6</b> sessions: kept</span></div>
-          <div class="srow"><span>Changed since</span><span class="v-soft"><b>3</b>: this copy kept, listed</span></div>
+          <div class="srow"><span>Made after the backup</span><span class="v-soft"><b>6</b> sessions: kept</span></div>
+          <div class="srow"><span>Changed since</span><span class="v-soft"><b>3</b>: left as they are now, listed</span></div>
           <div class="srow"><span>In use</span><span class="v-soft"><b>1</b> transcript a running Claude Code session holds: left alone, listed</span></div>
           <div class="srow"><span>Older than 30 days</span><span class="v-soft"><b>12</b>: Claude Code would delete them again. <button type="button" class="key k" data-sess-keep>Keep for 90 days</button></span></div>
         </div>
@@ -33,7 +33,7 @@
         <div class="card" data-rs="preview"><h4>Steps <i class="idot" title="What restoring does, in order, each step checked before the next. A receipt is kept as it goes, so if the Mac stops, the next start finishes it first.">i</i></h4>
           <ol class="sw-steps">
             <li><i></i><div><b><span data-pn>work</span>'s Claude window closes</b><span>Only that window, about half a minute.</span></div></li>
-            <li><i></i><div><b>What's listed comes back</b><span>Merged by the rules on the left; nothing overwritten.</span></div></li>
+            <li><i></i><div><b>What's listed comes back</b><span>Merged by the rules in What happens; nothing overwritten.</span></div></li>
             <li><i></i><div><b>The window opens; the sidebar, as before</b><span>Press Return in the session that opens.</span></div></li>
           </ol>
           <div class="sw-keys"><button type="button" class="key k" data-sess-back>Cancel</button><span></span><button type="button" class="pill small tint t-green" data-rs-go>Close and restore 86</button></div>
@@ -108,11 +108,11 @@
         <div class="card"><h4>What happens</h4>
           <div class="srow"><span>New</span><span class="v-soft"><b>210</b>: added</span></div>
           <div class="srow"><span>Already here</span><span class="v-soft"><b>60</b> with the same content: skipped</span></div>
-          <div class="srow"><span>Grown on both sides</span><span class="v-soft"><b>3</b>: this profile's copy stays, listed</span></div>
+          <div class="srow"><span>Changed on both sides</span><span class="v-soft"><b>3</b>: this profile's copy stays, listed</span></div>
           <div class="srow"><span>Code-tab entries</span><span class="v-soft"><b>10</b>: the window closes and opens again</span></div>
           <div class="srow"><span>Folder not here</span><span class="v-soft"><b>30</b>: added, shown once that folder exists</span></div>
           <div class="sw-keys"><button type="button" class="key k" data-sess-back>Cancel</button><span></span><button type="button" class="pill small tint t-green" data-sess-demo="Import">Close and import 210 sessions</button></div>
-          <p class="g-note sub">Undo last import, under the profile's Sessions afterwards, removes exactly what it added.</p>
+          <p class="g-note sub">Afterwards, Undo last import (under the profile's Sessions) removes exactly what it added.</p>
         </div>
       </div>
     </div>

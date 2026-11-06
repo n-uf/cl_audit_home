@@ -82,7 +82,7 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
             <!-- the standby accounts, unlit, most room first: click one to select it (again to deselect); its Standby
                  display becomes a Switch account key, which opens the Switch page with it picked -->
             <div class="acc-pick" data-standby-boxes></div>
-            <p class="g-note sub" data-pick-hint hidden>Click a standby account to select it: a Switch account key takes the place of “Standby” and opens the Switch page. Click it again to deselect.</p>
+            <p class="g-note sub" data-pick-hint hidden>Click a standby account to select it: a Switch account key takes the place of “Standby” and opens the Switch page. Click the account again to deselect.</p>
             <!-- Add account: what was found on this Mac, then Sign in to another account… (the address row in place) -->
             <div class="add-acc" data-add-row>
               <span class="add-wrap"><button type="button" class="key k" data-add-btn aria-haspopup="menu" aria-expanded="false">Add account <span class="chev" aria-hidden="true">⌄</span></button><span class="login-menu" data-add-menu role="menu" hidden></span></span>
@@ -103,14 +103,14 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
       <!-- Sessions (switch UX round 2): what's kept, its backups, Export and Import. A backup is a quick copy on this Mac
            (clones, seconds, almost no space); an export is a file. One format; Import restores the way a backup does.
            The keys open their pages in place of the profile's settings, like the Switch page. Sample figures only. -->
-      <div class="card c-c c-s"><h4>Sessions <i class="idot" title="This profile's Code sessions: Claude Code's in its folder, and the Claude window's Code tab with its scheduled tasks and sidebar. Backups, Export and Import keep copies of them. A sign-in is never in a copy.">i</i></h4>
-        <div class="srow vcol stk"><span>Kept here <i class="idot" title="What this profile has now, on this Mac.">i</i></span><span class="v-soft"><b>310</b> in Claude Code · <b>84</b> in the Claude window (24 in the sidebar) · 5.6 GB · since 6 Oct. Claude Code deletes its own after 30 days.</span></div>
-        <div class="srow vcol stk"><span>Keep for <i class="idot" title="How long Claude Code keeps this profile's sessions before deleting them. Longer keeps more to back up and restore.">i</i></span><select class="menu" aria-label="Keep for"><option>30 days (Claude Code's default)</option><option>90 days</option><option>A year</option></select></div>
+      <div class="card c-c c-s"><h4>Sessions <i class="idot" title="This profile's Code sessions: Claude Code's in its folder, and the Claude window's Code tab with its scheduled tasks and sidebar. Backups and Export keep copies of them; Restore and Import bring them back. A sign-in is never in a copy.">i</i></h4>
+        <div class="srow vcol stk"><span>Kept here <i class="idot" title="What this profile has now, on this Mac.">i</i></span><span class="v-soft"><b>310</b> in Claude Code · <b>84</b> in the Claude window (24 in the sidebar) · 5.6 GB · since 6 Oct. Claude Code deletes its own after the Keep for time (30 days by default).</span></div>
+        <div class="srow vcol stk"><span>Keep for <i class="idot" title="How long Claude Code keeps this profile's sessions before deleting them. A longer time leaves more to back up and restore.">i</i></span><select class="menu" aria-label="Keep for"><option>30 days (Claude Code's default)</option><option>90 days</option><option>A year</option></select></div>
         <div class="srow vcol stk"><span>Backups <i class="idot" title="Quick copies on this Mac: one is made whenever a switch moves the sessions, and another when you press Back up now. They're clones, so they share space with the originals. Restore puts back what's missing and never overwrites.">i</i></span>
           <div class="bk-list">
             <div data-bk-list></div>
             <div class="bk-row"><button type="button" class="key k" data-bk-now>Back up now</button><small class="ap-note"><span data-pn>work</span>'s window is open: close it first, or the Code-tab list and sidebar records are left out.</small></div>
-            <small class="ap-note">⋯ holds Show in Finder and Delete. The last 3 are kept, and any under 30 days.</small>
+            <small class="ap-note">⋯ holds Show in Finder and Delete. The last 3 are kept, plus any made in the last 30 days.</small>
           </div></div>
         <div class="srow vcol stk"><span>Export <i class="idot" title="One file of this profile's sessions, for another Mac or for keeping, in the same format as a backup.">i</i></span><span class="bk-row"><button type="button" class="key k" data-sess-go="export">Export…</button><small class="ap-note">Never exported. A file for another Mac or for keeping.</small></span></div>
         <div class="srow vcol stk"><span>Import <i class="idot" title="From an export of this profile, another profile or another Mac. It's restored the way a backup is: a preview first, nothing overwritten.">i</i></span><span class="bk-row"><button type="button" class="key k" data-sess-go="import">Import…</button><small class="ap-note">From an export of this profile, another profile or another Mac.</small></span></div>
