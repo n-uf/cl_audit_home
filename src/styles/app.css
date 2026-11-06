@@ -1741,3 +1741,105 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   .login-edit { flex-wrap: wrap; }
   .login-edit .field { flex: 1 1 100%; }
 }
+
+/* ── Switching accounts, round 2 (the switch UX sketch, sections A–G) ─────────────────────────────────────────────
+   Display colours, one meaning each: green = in use, mint = switching and the account switched to, amber = waiting
+   or a warning, red = failed. Only the account in use is lit; every other account is unlit: recessed, lamp off, its
+   level in its own colours but dimmed and without glow. */
+.disp .b { color: #a6fff3; text-shadow: 0 0 3px rgba(127,249,234,.85), 0 0 9px rgba(127,249,234,.4); }
+.abox.unlit { background: rgba(0,0,0,.24); box-shadow: var(--well); }
+.abox.unlit .abox-t b, .abox.unlit .abox-title, .abox.unlit .pn-name { color: var(--soft); }
+.abox.unlit .pn-segs i[style] { opacity: .5; box-shadow: none !important; }
+.abox.unlit .pn-pct, .abox.unlit .sb-row b { opacity: .7; }
+.abox.unlit .sb-segs i[style] { opacity: .5; }
+.face-silver .appwin .abox.unlit { background: rgba(0,0,0,.08); box-shadow: inset 0 1px 3px rgba(0,0,0,.25); }
+/* picking an account: the picked one's row lights in mint across the panel, a lit bar at its left, a mint lamp */
+.acc-pick { display: grid; gap: 12px; min-width: 0; }
+.acc-pick .abox { cursor: pointer; position: relative; }
+.card:has(.acc-pick) { z-index: 0; }
+.acc-pick .abox.sel { background: #141518 !important; box-shadow: inset 0 1px 3px rgba(0,0,0,.75), inset 0 0 0 1px rgba(127,249,234,.22) !important; }
+.acc-pick .abox.sel::before { content: ""; position: absolute; left: -6px; top: 8px; bottom: 8px; width: 3px; border-radius: 2px;
+  background: linear-gradient(90deg, #e2fffa, #7ff3e2); box-shadow: 0 0 4px rgba(127,249,234,.8), 0 0 10px rgba(127,249,234,.35); }
+.acc-pick .abox.sel::after { content: ""; position: absolute; left: -16px; right: -16px; top: -6px; bottom: -6px; z-index: -1;
+  background: linear-gradient(180deg, rgba(127,249,234,.13), rgba(127,249,234,.06));
+  box-shadow: inset 0 1px 0 rgba(127,249,234,.32), inset 0 -1px 0 rgba(127,249,234,.20); }
+.acc-flow .acc-pick .abox.sel::after { left: -64px; }
+.acc-pick .abox.sel .abox-lamp { background: #8ff3e4 !important; box-shadow: 0 0 6px rgba(127,249,234,.85) !important; }
+.acc-pick .abox.sel .abox-t b, .acc-pick .abox.sel .abox-title { color: var(--text); }
+.acc-pick .nolim { font-size: 11.5px; color: var(--muted); }
+/* the lit displays: "Switching to" in mint glass; the Switch account key wears the Login Security badge's lit glass */
+.disp.litp { padding: 0 8px; border-radius: 3px; letter-spacing: .12em; font-weight: 700; font-size: 9.5px; text-shadow: none; color: #052b26;
+  background: radial-gradient(120% 180% at 50% 55%, #8ff3e4 0%, #76e3d3 55%, #61cfbf 100%);
+  box-shadow: inset 0 2px 3px rgba(0,0,0,.42), inset 0 -1px 1px rgba(0,0,0,.15), inset 0 0 0 1px rgba(0,0,0,.45), 0 0 0 1.5px #0b0c0d, 0 1px 0 1.5px rgba(255,255,255,.05); }
+.disp.litp::after { inset: 0 0 50% 0; background: linear-gradient(180deg, rgba(255,255,255,.12), transparent); }
+.disp.litp em { color: rgba(5,43,38,.74); }
+.disp.trustlike { color: #04302b; text-shadow: none; background: linear-gradient(180deg, #8ffbee, #6ef0df);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.55), 0 0 10px rgba(127,249,234,.35); }
+.disp.trustlike::after { background: linear-gradient(180deg, rgba(255,255,255,.22), transparent); }
+.disp.trustlike em { color: rgba(4,48,43,.55); text-shadow: none; }
+/* Settings and the card: the selected standby account's "Standby" display becomes a Switch account key, in place */
+.acc-pick .sw-acc { display: none; flex: none; border: 0; cursor: pointer; font: inherit; }
+.acc-pick .abox.sel .sw-acc { display: inline-flex; align-items: center; }
+.acc-pick .abox.sel .abox-badge { display: none; }
+.acc-pick .sw-acc:hover { filter: brightness(1.07); }
+.acc-pick .sw-acc:active { transform: translateY(1px); box-shadow: inset 0 3px 4px rgba(0,0,0,.5), inset 0 0 0 1px rgba(0,0,0,.5), 0 0 0 1.5px #0b0c0d; }
+/* the dashboard card: the standby accounts as unlit trays under its own limits, most room first */
+.sb-pick { margin-top: 10px; }
+.sbx { gap: 6px; padding: 7px 10px 8px; }
+.sbx .abox-head { align-items: center; }
+.sbx .abox-lamp { margin-top: 0; }
+.sbx .abox-t b.email { font-size: 12.5px; font-weight: 600; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.sb-rows { display: grid; gap: 5px; }
+/* the Switch page: NOW and TO engraved beside the boxes */
+.acc-flow { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 12px 10px; align-items: center; padding: 4px 0; }
+.acc-flow > .lbl { align-self: start; padding-top: 12px; font: 600 9.5px/1.2 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.acc-flow .pick-note { grid-column: 2; margin: 0; }
+/* the profile's tile while its Switch page is open: a display flush on its right, two lines */
+.tile-group { display: inline-flex; align-items: stretch; gap: 0; }
+.tile-group > .tile:first-child { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.tile-group > .tile:last-child { border-radius: 4px; }
+.tile-group .sw-disp { position: relative; height: auto; align-self: stretch; padding: 0 16px; font-size: 11px; border-radius: 0 5px 5px 0; transform: translateY(1px); }
+.sw-disp.two { flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px; min-width: 128px; }
+.sw-disp.two .l1 { font-size: 8px; letter-spacing: .18em; color: rgba(var(--glow), .45); text-shadow: none; }
+.sw-disp.two .l1.b { color: #a6fff3; text-shadow: 0 0 3px rgba(127,249,234,.7); }
+.sw-disp.two .l2 { font-size: 11.5px; }
+/* the line at the top of a running switch, restore or import: a display and its keys */
+.sw-run { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.sw-run .disp { flex: 0 1 auto; }
+.sw-run .spacer { flex: 1; }
+.t-red { --tint: 242, 101, 90; }
+.pill.dimmed { opacity: .45; pointer-events: none; }
+/* a check under a step: a small display window; a failed step red, one waiting for you amber */
+.sw-steps .chk { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.sw-steps .chk .disp { height: auto; min-height: 18px; max-width: 100%; padding: 2px 7px; font-size: 9px; line-height: 1.35; white-space: normal; }
+.sw-steps li.fail > i { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,.7); color: rgba(0,0,0,.8); }
+.sw-steps li.fail > i::before { content: "!"; font-weight: 800; }
+.sw-steps li.warn > i { box-shadow: inset 0 0 0 1.2px #ffb24a, 0 0 6px rgba(255,170,60,.45); color: #ffb24a; }
+.sw-steps.reached li:not(.done):not(.now):not(.fail):not(.warn) b { color: var(--muted); }
+/* Add account: the Login pop-up's look, two lines a row; a new account a standby box from the start */
+.lm-cap { padding: 4px 8px 2px; font-size: 10.5px; opacity: .55; }
+.ap-addr { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.ap-note { font-size: 11px; color: var(--muted); }
+.ap-why { font-size: 11.5px; color: #ffb24a; flex: 1 1 200px; }
+.face-silver .ap-why { color: #8a4f00; }
+.sw-plain { border: 0; background: none; padding: 0; color: var(--muted); font: inherit; font-size: 12.5px; cursor: pointer; }
+.key.latched { transform: translateY(1px); background: var(--alu-down); box-shadow: var(--key-down); }
+/* the profile's Sessions card: backups, export, import (and the pages they open, like the Switch page) */
+.bk-list { display: grid; gap: 6px; min-width: 0; }
+.bk { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; align-items: center; padding: 8px 10px; border-radius: 8px; background: rgba(0,0,0,.24); box-shadow: var(--well); }
+.bk b { font-size: 12.5px; font-weight: 600; min-width: 0; }
+.bk small { grid-column: 1; font-size: 11px; color: var(--muted); }
+.bk .bk-keys { grid-column: 2; grid-row: 1 / span 2; display: flex; gap: 6px; align-items: center; }
+@media (max-width: 560px) { .bk { grid-template-columns: minmax(0, 1fr); } .bk .bk-keys { grid-column: 1; grid-row: auto; flex-wrap: wrap; margin-top: 4px; } }
+.bk-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.v-soft b { color: var(--text); font-family: var(--mono); font-weight: 700; }
+.settings .s-cols .c-c .srow.stk.stk > .v-soft { display: block; text-align: left; }
+.settings .s-cols .c-c .srow.stk.stk > .bk-list { display: grid; gap: 6px; align-items: stretch; }
+/* menus: the account in use under the profile's name, and the Switch account submenu */
+.mbm-acc { display: flex; align-items: center; gap: 6px; padding: 0 8px 5px; font-size: 11.5px; }
+.mbm-acc i { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 4px rgba(34,197,94,.85); }
+.mbm-acc span { opacity: .55; }
+.mbm-it .r { margin-left: auto; padding-left: 10px; opacity: .5; font-size: 11.5px; white-space: nowrap; }
+.mbm-it .chev { margin-left: auto; font-size: 13px; line-height: 1; opacity: .7; }
+.mbm-it .ck { width: 11px; flex: none; font-size: 11px; }
+.mbm-it.open { background: #0a64d6; color: #fff; }
