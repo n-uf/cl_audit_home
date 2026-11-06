@@ -75,8 +75,12 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
                 </span>
                 <span class="disp xs abox-badge"><span class="g">In use</span></span></div>
               <div class="abox-limits" data-abox-limits></div>
+              <small class="abox-note">Its limits come from a sign-in kept for it, renewed by itself.</small>
             </div>
-            <div class="acc-standby" data-standby-boxes></div>
+            <!-- the standby accounts, unlit, most room first: click one to select it (again to deselect); its Standby
+                 display becomes a Switch account key, which opens the Switch page with it picked -->
+            <div class="acc-pick" data-standby-boxes></div>
+            <p class="g-note sub" data-pick-hint hidden>Click a standby account to select it: a Switch account key takes the place of “Standby” and opens the Switch page. Click it again to deselect.</p>
             <!-- Add account: what was found on this Mac, then Sign in to another account… (the address row in place) -->
             <div class="add-acc" data-add-row>
               <span class="add-wrap"><button type="button" class="key k" data-add-btn aria-haspopup="menu" aria-expanded="false">Add account <span class="chev" aria-hidden="true">⌄</span></button><span class="login-menu" data-add-menu role="menu" hidden></span></span>
@@ -86,8 +90,6 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
               <span class="login-keys" data-login-keys><button type="button" class="key k lt" style="--lamp:rgb(74,222,128)" data-login-go>Sign in</button><button type="button" class="key k login-x" data-login-cancel aria-label="Cancel"><span class="lx-t">Cancel</span><span class="lx-x" aria-hidden="true">×</span></button></span></span>
           </div></div>
         <p class="g-note sub login-line" data-login-line hidden></p>
-        <div class="srow vcol stk"><span>Sessions follow <i class="idot" title="When this profile switches to another of its accounts, its Claude window's Code sessions go with it: the sessions, the sidebar's sections and groups, pins and scheduled tasks, so the window opens the same on the other account. Off: each account keeps its own. Chats and Projects on claude.ai belong to each account and never move.">i</i></span><Fragment set:html={sw("sessionsFollow", "Sessions follow")} /></div>
-        <p class="g-note sub rline">Sessions, sections, groups, pins and scheduled tasks.</p>
         <div class="srow vcol stk"><span>Folder <i class="idot" title="The Claude Code folder for this profile, like ~/.claude: its sign-in, settings and history live there. One profile per folder; folders are used where they are (Claude Code names a folder's Keychain sign-in after its path).">i</i></span><span class="folder-ctl"><select class="menu mono" data-folder aria-label="Folder"></select><span class="folder-btn" title="Choose another folder…" aria-hidden="true"><svg width="15" height="12" viewBox="0 0 15 12"><path d="M1 2.2C1 1.5 1.5 1 2.2 1h3.3l1.4 1.5h5.9c.7 0 1.2.5 1.2 1.2v6.1c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></span></div>
         <div data-share hidden>
           <div class="srow vcol stk"><span>Share from <i class="idot" title="The Claude Code folder this profile's folder links some items from (instructions, agents, skills, commands, memory & history), so edits there show up here too. Sign-in, plugins and usage stay separate.">i</i></span><span class="share-v mono" data-share-from></span></div>

@@ -14,9 +14,15 @@ export type AccountId = "home" | "work" | "side";
 export type Standby = { email: string; plan: string; org: string; five: number; week: number; fiveLeftMin: number; weekLeftMin: number };
 export const standby: Record<AccountId, Standby[]> = {
   home: [],
-  work: [{ email: "team-2@work.example", plan: "Team", org: "Work", five: 12, week: 30, fiveLeftMin: 210, weekLeftMin: 4 * 1440 + 100 }],
+  // most room first wherever they're listed (by the fuller of the two limits)
+  work: [
+    { email: "team-2@work.example", plan: "Team", org: "Work", five: 12, week: 30, fiveLeftMin: 210, weekLeftMin: 4 * 1440 + 100 },
+    { email: "team-3@work.example", plan: "Team", org: "Work", five: 40, week: 88, fiveLeftMin: 95, weekLeftMin: 1440 + 600 },
+  ],
   side: [],
 };
+/** A profile's standby accounts, most room first (the fuller of their two limits, lowest first). */
+export const byRoom = <T extends { five: number; week: number }>(list: T[]) => [...list].sort((a, b) => Math.max(a.five, a.week) - Math.max(b.five, b.week));
 /** "team-2": an account's short name, its address before the @ (AccountNames.short). */
 export const shortName = (email: string) => email.split("@")[0];
 
