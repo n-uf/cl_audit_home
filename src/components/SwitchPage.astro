@@ -10,7 +10,7 @@ const a = accounts.find((x) => x.id === "work")!;
 const from = shortName(a.email);
 const list = byRoom(standby.work);
 ---
-<section class="sw-page" data-sw-page hidden aria-label="Switch accounts">
+<section class="sw-page" data-sw-page hidden aria-label="Switch account">
   <div class="sw-head"><h3 data-sw-head>Switch Claude {a.name} to <span class="tn">{shortName(list[0].email)}</span></h3></div>
   <!-- the line at the top while it runs, when it's done or when something went wrong: a display and the keys out -->
   <div class="sw-run" data-sw-run hidden></div>
@@ -31,7 +31,7 @@ const list = byRoom(standby.work);
       </div>
     </div>
     <div class="sw-col">
-      <div class="card"><h4>Sessions <i class="idot" title="The Claude window's Code sessions: the sidebar's sessions, sections and groups, pins and scheduled tasks. Moved, they open the same on the other account; left, each account keeps its own. Chats and Projects on claude.ai belong to each account and never move.">i</i></h4>
+      <div class="card"><h4>Sessions <i class="idot" title="The Claude window's Code sessions: the sidebar's sessions, sections and groups, pins and scheduled tasks. If they move, the window opens the same on the other account. If they stay, each account keeps its own. Chats and Projects on claude.ai belong to each account and never move.">i</i></h4>
         <div class="srow"><span>Move them?</span><span class="switch small-switch" role="group" aria-label="Move the sessions?"><button type="button" data-sw-q="move">Move to <span class="tn">{shortName(list[0].email)}</span></button><button type="button" data-sw-q="leave">Leave with {from}</button></span></div>
         <p class="g-note sub" data-sw-qline>Choose one to go on: nothing is chosen for you.</p>
         <div class="srow"><span>Sessions</span><span class="v-soft">14 in the sidebar (and 3 archived)</span></div>
@@ -39,7 +39,7 @@ const list = byRoom(standby.work);
         <div class="srow"><span>Routines</span><span class="v-soft">2 scheduled tasks</span></div>
         <p class="g-note sub">Chats and Projects on claude.ai don't move; they belong to each account.</p>
       </div>
-      <div class="card" data-sw-backup><h4>Backup <i class="idot" title="Whenever the sessions move, cl_audit backs them up first, right after the window closes and before anything moves, the way claude-transplant keeps what it moves. Never in a backup: sign-ins, and the sidebar kept on claude.ai (the switch's own record puts that back). It's listed under the profile's Sessions until you delete it or it ages out.">i</i></h4>
+      <div class="card" data-sw-backup><h4>Backup <i class="idot" title="Whenever the sessions move, cl_audit backs them up first, right after the window closes and before anything moves. Never in a backup: sign-ins, and the sidebar kept on claude.ai (the switch's own record puts that back). It's listed under the profile's Sessions until you delete it or it ages out.">i</i></h4>
         <div class="srow"><span>When</span><span class="v-soft" data-sw-bwhen>Every time the sessions move: right after the window closes, before anything moves</span></div>
         <div class="srow"><span>What</span><span class="v-soft">The window's Code-tab list for both accounts, scheduled tasks, its sidebar records; cl_audit's records</span></div>
         <div class="srow"><span>Takes</span><span class="v-soft">About 3 s, as clones: they share space with the originals</span></div>
@@ -55,7 +55,7 @@ const list = byRoom(standby.work);
     <div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="sw-c-title">
       <b id="sw-c-title" data-sw-c-title></b>
       <p data-sw-c-text></p>
-      <p class="sub">This is a demo: nothing on your Mac changes.</p>
+      <p class="sub">This is a demo, so nothing on your Mac changes.</p>
       <div class="dialog-btns sw-c-btns"><button type="button" class="pill small" data-sw-no>Cancel</button><button type="button" class="pill small tint t-green" data-sw-yes>Close and switch</button></div>
     </div>
   </div>

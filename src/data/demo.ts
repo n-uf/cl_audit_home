@@ -30,7 +30,7 @@ export const accounts = [
   { id: "home" as AccountId, name: "home", label: "HOME", email: "you@example.com", plan: "Max", hex: "#d97757", color: "var(--acc-home)", tint: "t-orange",
     icon: "/img/acc/home-bars-orange.png", dir: "~/.claude", data: "~/Library/Application Support/Claude", five: 34, fiveWhen: "in 3 h 12 min", week: 12, weekWhen: "in 6 days", fiveLeftMin: 192, weekLeftMin: 6 * 1440 + 200, updated: "just now", winOpen: true,
     fable: 41 as number | null, fableLeftMin: 2 * 1440 + 620, credits: null as number | null },
-  { id: "work" as AccountId, name: "work", label: "WORK", email: "you@work.example", plan: "Team", hex: "#14b8a6", color: "var(--acc-work)", tint: "t-teal",
+  { id: "work" as AccountId, name: "work", label: "WORK", email: "team-1@work.example", plan: "Team", hex: "#14b8a6", color: "var(--acc-work)", tint: "t-teal",
     icon: "/img/acc/work-full.png", dir: "~/.claude-work", data: "~/Library/Application Support/Claude-work", five: 100, fiveWhen: "in 1h 42m", week: 61, weekWhen: "in 3 days", fiveLeftMin: 102, weekLeftMin: 3 * 1440 + 300, updated: "1 min ago", winOpen: true,
     fable: null as number | null, fableLeftMin: 0, credits: 4.2 as number | null },
   { id: "side" as AccountId, name: "side", label: "SIDE", email: "side@example.com", plan: "Pro", hex: "#8b5cf6", color: "var(--acc-side)", tint: "t-purple",
