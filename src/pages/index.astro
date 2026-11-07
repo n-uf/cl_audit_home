@@ -7,6 +7,7 @@ import { accounts } from "../data/demo";
 import { repo, site, version, released, releasedText, changelog, download, requires, checkedWith, stage } from "../data/site";
 import { cardLimitsHTML } from "../data/panelView";
 import { getPosts, pathOf } from "../data/content";
+import { orgNode, orgRef } from "../data/schema";
 
 // "Guides" near the end: three articles, the most searched topics first (then the newest)
 const featured = ["claude-usage-limits", "check-claude-usage-mac", "best-claude-usage-trackers-mac"];
@@ -77,18 +78,18 @@ const relReason = {
 const relText = `cl_audit ${version}${stage ? ` (${stage})` : ""} · ${releasedText()} · ${requires}. Checked with Claude Code ${checkedWith.claudeCode} and the Claude app ${checkedWith.claudeApp}. Newer Claude versions may need a cl_audit update.`;
 const spark = [[10, 4, 6], [14, 2, 8], [6, 22, 3], [5, 24, 2], [7, 26, 4], [9, 20, 3], [3, 8, 1]];
 
-// the same node id on every n-uf site, so search engines see one maker
-const org = { "@type": "Organization", "@id": "https://n-uf.com/#org", name: "n-uf", url: "https://n-uf.com", sameAs: ["https://github.com/n-uf"] };
 // spellings people type for the name; "cl audit" alone also matches unrelated audit firms
 const alternateName = ["cl-audit", "cl audit"];
-const jsonLd = [{
+// the n-uf Organization node first, on its own (the same id on every n-uf site, so search engines see one
+// maker); the other nodes point to it by id
+const jsonLd = [orgNode, {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": `${site}/#website`,
   name: "cl_audit",
   alternateName,
   url: `${site}/`,
-  publisher: { "@id": org["@id"] },
+  publisher: orgRef,
 }, {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -98,7 +99,7 @@ const jsonLd = [{
   url: `${site}/`,
   isPartOf: { "@id": `${site}/#website` },
   about: { "@id": `${site}/#app` },
-  publisher: { "@id": org["@id"] },
+  publisher: orgRef,
 }, {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
@@ -124,8 +125,8 @@ const jsonLd = [{
   ],
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   isAccessibleForFree: true,
-  author: org,
-  publisher: { "@id": org["@id"] },
+  author: orgRef,
+  publisher: orgRef,
 }, {
   "@context": "https://schema.org",
   "@type": "FAQPage",
