@@ -59,9 +59,16 @@ sources:
   - title: "Manage API key environment variables in Claude Code (Claude Help Center)"
     url: "https://support.claude.com/en/articles/12304248-manage-api-key-environment-variables-in-claude-code"
     checked: 2026-11-05
-  - title: "cl_audit README, release 26.11.0 (n-uf/cl_audit)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.0/README.md"
-    checked: 2026-11-05
+  - title: "cl_audit README, release 26.11.1 (n-uf/cl_audit): Accounts, the Switch page, Backups"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/README.md"
+    checked: 2026-11-07
+    supports: "Accounts boxes (IN USE, STANDBY), Add account, the Switch page and its steps, Cancel switch, Undo this switch…"
+    quote: "A profile works on one at a time, marked IN USE"
+  - title: "cl_audit 26.11.1 release notes (n-uf/cl_audit)"
+    url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.1"
+    checked: 2026-11-07
+    supports: "Move them? asked every time; a backup before the sessions move; Stopped half way · Undo it"
+    quote: "asks Move them? about the sessions every time, with nothing chosen"
 related:
   - /blog/claude-code-multiple-accounts/
   - /blog/claude-code-vscode-multiple-accounts/
@@ -133,14 +140,20 @@ Signing out and in is fine once a week. If you move between a client account and
 
 ## Switching with cl_audit profiles
 
-A cl_audit profile is one Claude setup: a Claude Code folder with its own sign-in, and optionally a Claude window and a Dock icon. Each profile is linked to one seat (account and organisation), and no two profiles share one. So switching becomes picking a profile.
+A cl_audit profile is one Claude setup: a Claude Code folder with its own sign-in, and optionally a Claude window and a Dock icon. A profile has one or more accounts of your own and works on one at a time. An account belongs to one profile, checked by account and organisation. So switching is either picking another profile, or moving one profile to another of its accounts.
 
 ![The cl_audit launcher listing each profile with its limits](/img/guides/launcher-profiles.webp "The launcher: ⌘↩ opens Terminal with Claude Code set to that profile's folder. Sample data.")
 
 When you add a profile with **New profile**, Terminal runs `claude auth login` for its folder. That's Claude's own sign-in, so cl_audit never sees your password. After that, ⌘↩ on a profile in the launcher opens Terminal with its folder, and its 5-hour and weekly limits show in the Dock, read with that profile's Claude Code sign-in.
 
-To move a profile to another account instead of making a new one, open **Settings ▸ the profile ▸ Claude Code ▸ Account** and choose **Sign in to another account…**. Type the address and press **Sign in**: Claude Code's own sign-in opens in Terminal with the address filled in, and you finish in the browser. Once it's done, cl_audit links the profile to the new account by itself, and the profile keeps its name, look, Dock icon, Claude window and settings. If another profile already has that account, cl_audit refuses and names that profile, because it's one profile per account.
+To give a profile another account, open **Settings ▸ the profile ▸ Claude Code ▸ Accounts**. Each account has a box: the one Claude Code in the profile's folder is signed in to is **IN USE**, the others are **STANDBY**. **Add account** is a pop-up, macOS's own menu of the accounts cl_audit finds on this Mac, and one click adds one. Its last item, **Sign in to another account…**, is for an account that isn't on this Mac yet: cl_audit makes a folder for it (say `~/.claude-ultra-2`) and opens Claude Code's own sign-in in Terminal with the address filled in. A standby account's limits keep showing, from the sign-in kept in that small folder, renewed by itself. No sign-in is ever copied between folders, and an account another profile already has is greyed out.
 
-If you sign in from Terminal yourself (`claude auth login` in the profile's folder), cl_audit's background agent notices within half a minute and the old account's numbers go. The profile shows no numbers until you press **Use this account** under Account, since they'd be the other account's. Claude Code's sign-in is the one cl_audit reads the usage from, so signing in only the Claude app leaves the numbers on the old account; a profile with a Claude window needs both sign-ins moved. For a week after linking, the line under Account says when it happened and which account it was, and that **New profile** gives the old account a profile of its own again.
+The switch itself happens on the **Switch page**. You get there from a standby box's **Switch account** key in Settings, from the same key on the profile's dashboard card, where the standby accounts sit in unlit trays (while a limit is full, the tray with the most room is selected already), from **Switch account ›** in the menu bar icon's and Dock icon's menus, or from **Switch account…** in the full-limit alert. The page shows the account in use under NOW and your other accounts under TO, most room first. Then it asks one question, every time, with nothing chosen: **Move them?** "Them" is the Claude window's Code sessions, with their sections, groups, pins and scheduled tasks. **Move to ultra-2** takes them along, **Leave with ultra-1** leaves them. Claude Code's own history stays in the folder either way.
 
-cl_audit doesn't pool limits or move work between accounts, and whether you may use more than one Claude account is set by Anthropic's terms. It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. For the Claude app side, see [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit is free, and you can [download cl_audit](/install/) to try it.
+**Close and switch** then goes step by step, each step checked before the next. Only that profile's Claude window closes. If the sessions move, a backup comes first: APFS clones, so a few seconds, and never a sign-in. If it can't be made, nothing moves. Claude Code's sign-in opens in Terminal for the profile's folder, you finish it in the browser, and cl_audit checks it's the account you picked before going on. The window opens again for its own sign-in, checked the same way. If the sessions moved, a session named "cl_audit · arrange sidebar" opens last: press Return in it, and it puts them back in their groups and pins.
+
+**Cancel switch** stays in sight until Claude Code has signed in, and puts everything back. A switch that stops half way, even after a crash, shows "Stopped half way · Undo it" beside the profile's tile in Settings, and **Undo** on its Switch page. Once the profile is on the new account, **Undo this switch…** switches it back and, if the sessions moved, restores what the switch changed from its backup. Nothing is overwritten.
+
+If you sign in from Terminal yourself (`claude auth login` in the profile's folder), cl_audit's background agent notices within half a minute and the old account's numbers go. The profile shows no numbers until you press **Use this account** in the box of the account in use, under Accounts, since they'd be the other account's. Claude Code's sign-in is the one cl_audit reads the usage from, so signing in only the Claude app leaves the numbers on the old account; a profile with a Claude window needs both sign-ins moved. For a week after linking, the line under Accounts says when it happened and which account it was. To keep watching the old account's limits, add it back as a standby account with **Add account**, or give it a profile of its own with **New profile**.
+
+Each account's limits are its own, and cl_audit doesn't pool them. A profile moves to another of your accounts only when you press **Close and switch**, and whether you may use more than one Claude account is set by Anthropic's terms. cl_audit needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. The [Claude account switcher](/use-cases/switch-claude-accounts/) page has the whole switch, backup and Undo included; for several profiles side by side, see [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit is free, and you can [download cl_audit](/install/) to try it.
