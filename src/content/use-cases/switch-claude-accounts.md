@@ -86,7 +86,7 @@ related:
 
 cl_audit is a free Claude account switcher for Mac that moves one profile between accounts of your own. A profile can hold several accounts and works on one at a time. When you start a switch, cl_audit closes only that profile's Claude window, asks whether its Code sessions come along, makes a backup if they do, and checks each sign-in against the account you picked. cl_audit is an independent tool, not affiliated with Anthropic.
 
-Say your profile Main has a personal account, ultra-1@example.com, and a second one, ultra-2@example.com. Both accounts' limits show on Main's card. A switch changes which of the two Main works on, and only when you ask for it.
+Say your profile Main has a personal account, `ultra-1@example.com`, and a second one, `ultra-2@example.com`. Both accounts' limits show on Main's card. A switch changes which of the two Main works on, and only when you ask for it.
 
 ## A profile with more than one account
 
