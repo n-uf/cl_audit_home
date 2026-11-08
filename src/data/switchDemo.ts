@@ -44,7 +44,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
         run: run('<span class="r">Stopped at step 1</span> <em>· nothing moved</em>', K("data-sw-back", `Back to ${name}'s settings`), GO("data-sw-again", "Try again")),
         acc: before, ses: "Nothing moved: all 14 stay with " + from + ".",
         steps: [["fail", chk("r", "Window · still open after 45 s") + sp("It may be asking about unsaved work. Answer it there, then Try again.") + keyRow(["data-sw-showwin", "Show the Claude window"])], ["", ""], ["", ""], ["", ""], ["", ""]] },
-      half: { head: `Switch Claude ${name} to ${T()}`, d: ["", "Switch stopped", "r", "undo needed"],
+      half: { head: `Switch Claude ${name} to ${T()}`, d: ["", "Stopped half way", "r", "Undo it"],
         run: run(`<span class="r">Stopped half way</span> <em>· 9 of 14 sessions moved · ${name} still on ${from}</em>`, K("data-sw-receipt", "Show the receipt"), GO("data-sw-undo", "Undo: put the 9 back")),
         acc: before, ses: `9 of 14 moved to ${T()}, then it stopped; the other 5 are still with ${from}. ${name}'s window stays closed until Undo, so it never shows half a sidebar.`,
         steps: [["done", ""], ["fail", chk("r", "Moved 9 of 14 · stopped") + sp("Couldn't write in the Claude window's folder. Nothing is deleted: the 9 are parked, listed in the receipt.")], ["", ""], ["", ""], ["", ""]] },
@@ -147,7 +147,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       display("", "Switch from", "g", from);
     } else if (phase === "done") {
       head.textContent = `Claude ${name} switched to ${T()}`; runEl.hidden = false;
-      runEl.innerHTML = run(`<span class="g">Claude ${name} is on ${T()}</span> <em>· ${from} on standby</em>`, K("data-sw-undoswitch", "Undo this switch"), K("data-sw-back", `Back to ${name}'s settings`));
+      runEl.innerHTML = run(`<span class="g">Claude ${name} is on ${T()}</span> <em>· ${from} on standby</em>`, K("data-sw-undoswitch", "Undo this switch…"), K("data-sw-back", `Back to ${name}'s settings`));
       keys.innerHTML = "";
       display("", "Switched to", "g", T());
     } else {
@@ -184,7 +184,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     if (has("[data-sw-cancel]")) { clearTimeout(timer); phase = "fail"; fail = "cancel"; draw(); return; }
     if (has("[data-sw-again]")) { phase = "ready"; draw(); return; }
     if (has("[data-sw-undo]")) { phase = "fail"; fail = "cancel"; draw(); return; }
-    if (has("[data-sw-undoswitch]")) { phase = "ready"; draw(); showWhatNow("Undo this switch", "", `It puts ${name} back on ${from}: the same switch the other way, and the sessions come back if they moved. This is a demo, so nothing changed.`); return; }
+    if (has("[data-sw-undoswitch]")) { phase = "ready"; draw(); showWhatNow("Undo this switch…", "", `It switches ${name} back to ${from}. If the sessions moved, it then restores them from the backup the switch made. This is a demo, so nothing changed.`); return; }
     const notes: [string, string, string][] = [
       ["[data-sw-showwin]", "Show the Claude window", `${name}'s Claude window comes forward. This is a demo, so nothing opens.`],
       ["[data-sw-signin]", "Sign in again…", `Claude Code's own sign-in opens in Terminal again, with ${to} filled in. This is a demo, so nothing opens.`],
