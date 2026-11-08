@@ -1,11 +1,11 @@
 ---
 title: "Claude usage menu bar icons for Mac | cl_audit"
 description: "Claude usage in the Mac menu bar: cl_audit can give each profile its own icon, style and colour. It's off by default; the Dock icons stay the main way."
-h1: "A Claude usage menu bar icon for each account"
+h1: "A Claude usage menu bar icon for each profile"
 mainKeyword: "claude usage menu bar"
 kind: use-case
 published: 2026-11-05
-updated: 2026-11-05
+updated: 2026-11-08
 author: n-uf
 order: 5
 takeaways:
@@ -17,11 +17,11 @@ faq:
   - q: "Can I see my Claude usage in the Mac menu bar?"
     a: "Yes, with cl_audit. Switch on In the menu bar in a profile's settings and that profile gets its own icon with its 5-hour and weekly limits. It's off by default, because cl_audit mainly shows usage in the Dock."
   - q: "Does each Claude account get its own menu bar icon?"
-    a: "Each profile does, and an account belongs to one profile. Style, colours and label are set per profile, so two icons side by side can look different. A short label such as WORK or MAIN before an icon tells them apart."
+    a: "Each profile does, and an account belongs to one profile. A profile with several accounts still has one icon, showing the account in use. Style, colours and label are set per profile, and a short label such as WORK or MAIN before an icon tells them apart."
   - q: "Do I need the Dock icons to use the menu bar icons?"
     a: "No. cl_audit's background agent draws the menu bar icon, not the Dock icon app, so it works with the Dock icon on or off. A usage only profile, with Usage in the Dock and Claude window both off, can still have one."
   - q: "What does the menu bar icon show when a limit is full?"
-    a: "You pick it under When full on the Menu bar card: the countdown beside the icon (for example 1h 42m), or red only. With the System colour a full limit shows by its countdown, since System draws the icon in the menu bar's own colour."
+    a: "You pick it under When full on the Menu bar card: the countdown beside the icon (for example 1h 42m), or crimson only. With the System colour a full limit shows by its countdown, since System draws the icon in the menu bar's own colour."
   - q: "Does it show Claude Code usage in the menu bar?"
     a: "It shows the limits Anthropic reports for the profile, read with that profile's Claude Code sign-in. Anthropic's help page says Claude and Claude Code count against the same limits, so one icon covers both."
 sources:
@@ -31,6 +31,16 @@ sources:
   - title: "cl_audit CHANGELOG, 26.11.0 (2026-11-05)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.0/CHANGELOG.md"
     checked: 2026-11-05
+  - title: "cl_audit README at v26.11.1 (n-uf): the menus, Switch account ›, crimson for a full limit"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/README.md"
+    checked: 2026-11-07
+    supports: "Switch account ›, Switch to … while a limit is full, Switch back to …; When full: crimson only"
+    quote: "A full limit is crimson, except in System, where its countdown shows it."
+  - title: "cl_audit CHANGELOG, 26.11.1 (2026-11-07)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
+    checked: 2026-11-07
+    supports: "crimson from 95 %, a full limit included, in the menu bar icon and its menu"
+    quote: "a vivid crimson (#eb445b) from 95 % up, a full limit included"
   - title: "Anthropic Help Center: How do usage and length limits work?"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
     checked: 2026-11-05
@@ -112,9 +122,9 @@ The **Label** is either none or the profile's label before its icon: up to six l
 
 ## When a limit is full
 
-At 100%, what you want to know is when the profile works again. **When full** has two choices: the countdown beside the icon ("1h 42m"), or red only.
+At 100%, what you want to know is when the profile works again. **When full** has two choices: the countdown beside the icon ("1h 42m"), or crimson only.
 
-A full limit turns red in every colour choice except System, where the countdown shows it instead. At the reset, the agent reads that profile again right away.
+A full limit turns crimson in every colour choice except System, where the countdown shows it instead. At the reset, the agent reads that profile again right away.
 
 For a notification on top of that, see how the [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) work. The agent sends them whether or not a profile has a menu bar icon.
 
@@ -130,7 +140,9 @@ A click opens that profile's own menu:
 
 In the menu bar, in the profile's settings, puts it back.
 
-## One icon per account
+A profile with more than one account shows the account in use under the profile's name ("ultra-1 · in use") and has **Switch account ›**: a submenu with the account in use ticked, then your other accounts, most room first, each with its week ("week 12%", or "no numbers"). While a limit is full, the one with the most room also sits on the top level, first among the actions: "Switch to ultra-3…  week 12%". Once the account you left is back after its reset, **Switch back to ultra-1…** shows above Switch account ›. All of these only open cl_audit's Switch page; nothing switches until you press **Close and switch** there. {{live:/use-cases/switch-claude-accounts/}}The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers what a switch moves and how to undo one.{{/live}}
+
+## One icon per profile
 
 With [several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/), you switch on only the icons you want. A work seat can sit in the menu bar all day while a personal plan stays in the Dock.
 
@@ -151,7 +163,7 @@ The menu bar suits you better when:
 - **You work on a laptop screen.** With the Dock hidden or short of room, the top of the screen is where you already look.
 - **You want a menu.** Refresh now and Open Claude window are one click away.
 
-The Dock icon shows more, though. It has its own click action, a details panel on press and hold, and when a limit is full it turns into the countdown with a red frame. If that's enough, leave the menu bar off. For the desktop or Notification Center there's also [the Claude usage widget for Mac](/use-cases/claude-usage-widget-mac/).
+The Dock icon shows more, though. It has its own click action, a details panel on press and hold, and when a limit is full it turns into the countdown with a crimson frame. If that's enough, leave the menu bar off. For the desktop or Notification Center there's also [the Claude usage widget for Mac](/use-cases/claude-usage-widget-mac/).
 
 ## How cl_audit differs from menu bar-only trackers
 
