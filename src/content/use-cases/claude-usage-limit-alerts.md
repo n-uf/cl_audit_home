@@ -5,7 +5,7 @@ h1: "Claude usage limit notifications"
 mainKeyword: "claude usage limit notification"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-05
+updated: 2026-11-08
 author: n-uf
 order: 2
 takeaways:
@@ -47,6 +47,11 @@ sources:
   - title: "cl_audit README (n-uf/cl_audit): alerts, after a Claude update"
     url: "https://github.com/n-uf/cl_audit"
     checked: 2026-11-05
+  - title: "cl_audit README, release 26.11.1 (n-uf/cl_audit): alerts for a profile with several accounts; crimson for a full limit"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/README.md"
+    checked: 2026-11-07
+    supports: "The other account has 92% of its week left; Switch back… or Stay; the switch is waiting for you; crimson frame"
+    quote: "alerts reach the lock screen, so they never name an account"
 related:
   - /
   - /use-cases/multiple-claude-accounts/
@@ -72,9 +77,19 @@ Each alert fires once per limit and reset. A limit sitting at 92% won't ping you
 
 The same agent sends three more kinds of alert.
 
-- **Fable's weekly limit.** On Max and Ultra, and on premium Team and Enterprise seats, Fable has a weekly limit of its own. It alerts like the other two: "Claude Main: Fable weekly limit full · Back Thu 09:00", then "Claude Main: Fable is back". Its row on the card turns red, but the Dock icon doesn't become a countdown, since the other models still work. To leave it out for a profile, turn off Profile ▸ Fable's limit; then it's neither shown nor alerted.
+- **Fable's weekly limit.** On Max and Ultra, and on premium Team and Enterprise seats, Fable has a weekly limit of its own. It alerts like the other two: "Claude Main: Fable weekly limit full · Back Thu 09:00", then "Claude Main: Fable is back". Its row on the card turns crimson, but the Dock icon doesn't become a countdown, since the other models still work. To leave it out for a profile, turn off Profile ▸ Fable's limit; then it's neither shown nor alerted.
 - **Usage credits.** They let a profile keep working past its plan limits, billed apart from the plan. With alerts on, you hear when a profile starts spending them ("Claude Work is using usage credits · The 5-hour limit is full · $0.40 spent so far") and when they run out. Meanwhile the card says "Using usage credits · $4.20 spent".
 - **A Claude window reopened.** Claude updates itself quietly, quitting every window and reopening only the standard one. cl_audit's agent reopens the profile windows the update closed, in the background, and tells you once: "Claude updated to 1.2.0 · Reopened Work's window". A window you closed yourself stays closed. Claude Code tasks the quit stopped aren't restarted.
+
+## When a profile has more than one account
+
+A profile can hold several accounts of your own and works on one at a time. For such a profile the full-limit alert says a little more, and two alerts are added.
+
+- **A limit is full.** If another of the profile's accounts has room, the alert says how much ("The other account has 92% of its week left") and has **Switch account…** next to **Later**. It never names the account, because alerts can show on the lock screen.
+- **The other account is back.** After a switch, when the account you left gets its full limit back, one alert says so ("Claude Main: the other account is back · Its week starts again") with **Switch back…** and **Stay**. It follows the profile's Notify when back.
+- **The switch is waiting for you.** When a switch needs you (Claude Code's sign-in in the browser, the Claude window's sign-in, the Return in the sidebar session) and its page isn't in front, one alert says which step ("Step 3 of 5: finish the sign-in in the browser"), with **Show switch** and, at Claude Code's sign-in, **Cancel switch**.
+
+Switch account… and Switch back… only open the Switch page. Nothing switches until you press **Close and switch** there, and each account's limits stay its own. {{live:/use-cases/switch-claude-accounts/}}What a switch moves, and how to undo one, is on the [Claude account switcher](/use-cases/switch-claude-accounts/) page.{{/live}}
 
 ## The countdown on the dashboard and in the Dock
 
@@ -89,8 +104,8 @@ You'll see the same countdown in a few more places:
 - the details panel, which has the same box;
 - the launcher, next to the profile;
 - the Dock icon's menu, which starts with "5-hour full · back at 15:28, in 1h 42m";
-- the Dock icon itself: the time in large figures, "5H FULL" under it, and a red frame;
-- the profile's menu bar icon, if you turned one on (profile settings ▸ Menu bar, off by default): the countdown beside the icon ("1h 42m"), or just red, as you choose;
+- the Dock icon itself: the time in large figures, "5H FULL" under it, and a crimson frame;
+- the profile's menu bar icon, if you turned one on (profile settings ▸ Menu bar, off by default): the countdown beside the icon ("1h 42m"), or just crimson, as you choose;
 - the "Claude usage" widget (macOS 14 or later), which shows when a full limit is back.
 
 With nothing full, the cards look as usual. At the reset, the agent reads that profile again straight away and the card goes back to its normal layout.
