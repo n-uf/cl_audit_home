@@ -30,7 +30,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   const keyRow = (...ks: [string, string][]) => `<div class="chk">${ks.map(([a, t]) => `<button type="button" class="key k" ${a}>${t}</button>`).join("")}</div>`;
   const sp = (t: string) => `<span>${t}</span>`;
   const K = (a: string, t: string) => `<button type="button" class="key k" ${a}>${t}</button>`;
-  const GO = (a: string, t: string, dim = false) => `<button type="button" class="pill small tint t-green${dim ? " dimmed" : ""}" ${a}>${t}</button>`;
+  const GO = (a: string, t: string, dim = false) => `<button type="button" class="pill small tint t-green${dim ? " dimmed" : ""}"${dim ? ' aria-disabled="true"' : ""} ${a}>${t}</button>`;
   const STOP = (a: string, t: string) => `<button type="button" class="pill small tint t-red" ${a}>${t}</button>`;
   const run = (disp: string, ...ks: string[]) => `<span class="disp">${disp}</span><span class="spacer"></span>${ks.join("")}`;
   const titles = () => [`${name}'s Claude window closes`, `The sessions move to ${T()}`, `Claude Code signs in as ${T()}`, `The Claude window signs in as ${T()}`, "The sidebar, as before"];
@@ -108,7 +108,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     // the accounts: NOW lit; under TO every standby account, most room first, the picked one lit in mint
     if (phase === "ready") {
       const now = box(inUse, true, B.use, "", '<small class="abox-note">Its limits stay in sight after the switch: it keeps a sign-in of its own.</small>');
-      const pick = `<div class="acc-pick">${list.map((s) => box(s, false, s.email === to ? B.to : B.sb, s.email === to ? " sel" : "", "", ` data-sw-to="${s.email}"`)).join("")}</div>`;
+      const pick = `<div class="acc-pick" role="radiogroup" aria-label="Switch to">${list.map((s) => box(s, false, s.email === to ? B.to : B.sb, s.email === to ? " sel" : "", "", ` data-sw-to="${s.email}" role="radio" tabindex="0" aria-checked="${s.email === to}" aria-label="${s.email}"`)).join("")}</div>`;
       q("[data-sw-acc-flow]").innerHTML = flow("Now", now, "To", pick) + '<p class="g-note sub pick-note">Pick the account to switch to; the one with the most room is on top.</p>';
     } else if (phase === "done") {
       q("[data-sw-acc-flow]").innerHTML = flow("Now", box(target(), true, B.use), "Before", box(inUse, false, B.sb));
@@ -168,11 +168,12 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   page.addEventListener("click", (e) => {
     const t = e.target as HTMLElement, has = (s: string) => t.closest<HTMLElement>(s);
     let b: HTMLElement | null;
-    if ((b = has("[data-sw-to]")) && phase === "ready") { to = b.dataset.swTo!; draw(); return; }
+    if ((b = has("[data-sw-to]")) && phase === "ready") { to = b.dataset.swTo!; draw(); page.querySelector<HTMLElement>(`[data-sw-to="${to}"]`)?.focus(); return; }
     if ((b = has("[data-sw-q]")) && phase === "ready") { answer = b.dataset.swQ as "move" | "leave"; draw(); return; }
     if ((b = has("[data-sw-fail]"))) { clearTimeout(timer); if (phase === "fail" && fail === b.dataset.swFail) { phase = "ready"; } else { phase = "fail"; fail = b.dataset.swFail as Fail; } draw(); return; }
     if (has("[data-sw-back]")) { clearTimeout(timer); hooks.close(); return; }
     if (has("[data-sw-go]")) {
+      if (!answer) return;   // nothing is chosen for you: the key works once the question is answered
       q("[data-sw-c-title]").textContent = `Switch Claude ${name} to ${T()}?`;
       q("[data-sw-c-text]").textContent = answer === "move"
         ? `${name}'s Claude window closes and a backup is made. Its 14 sessions (and 3 archived) and 2 scheduled tasks move to ${T()}, with a receipt to undo it. Then Claude Code signs in as ${T()} in Terminal and the browser, and the window opens for its own sign-in. Once it's on ${T()}, a session opens there to arrange the sidebar: press Return in it.`
@@ -201,9 +202,9 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     open(pickEmail?: string) {
       if (phase === "done" || (phase === "fail" && fail === "cancel")) phase = "ready";
       if (phase === "ready") { answer = ""; if (pickEmail && list.some((s) => s.email === pickEmail)) to = pickEmail; }
-      draw();
+      if (NEXT[phase]) go(phase); else draw();   // a run paused by closing the page goes on
     },
-    /** Takes the tile's display away (the page closed): it shows only while the page is open. */
-    hideDisplay() { const tile = hooks.tile(); tile?.classList.remove("sw-host"); const d = tile?.nextElementSibling; if (d?.matches(".sw-disp")) d.remove(); },
+    /** Takes the tile's display away (the page closed): it shows only while the page is open; a run pauses. */
+    hideDisplay() { clearTimeout(timer); const tile = hooks.tile(); tile?.classList.remove("sw-host"); const d = tile?.nextElementSibling; if (d?.matches(".sw-disp")) d.remove(); },
   };
 }
