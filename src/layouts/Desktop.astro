@@ -152,6 +152,23 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     }
     if (openId && !t.closest("[data-mb-menu]")) closeMenu();
   });
+  // the standby trays on a card (switch UX round 2), on the dashboard and the home page: click one to select it (again
+  // to deselect); while a limit is full the one with the most room is selected already. Its Switch account key opens
+  // the Switch page, in Settings as in the app, with it picked.
+  document.addEventListener("click", (e) => {
+    const t = e.target as HTMLElement;
+    const key = t.closest<HTMLElement>("[data-card-switch]");
+    if (key) { location.href = `/settings/?switch=${key.dataset.cardSwitch}&to=${encodeURIComponent(key.dataset.to!)}`; return; }
+    const tray = t.closest<HTMLElement>(".sb-pick .abox");
+    if (!tray) return;
+    const sel = !tray.classList.contains("sel");
+    tray.parentElement!.querySelectorAll(".abox").forEach((x) => x.classList.toggle("sel", sel && x === tray));
+  });
+  // account boxes that can be picked (the trays, the Switch page's list) take Return and Space like a key
+  document.addEventListener("keydown", (e) => {
+    const t = e.target as HTMLElement;
+    if ((e.key === "Enter" || e.key === " ") && t.matches?.(".abox[tabindex]")) { e.preventDefault(); t.click(); }
+  });
   // the Silver face has a light menu bar: redraw the icons for it
   new MutationObserver(() => w_.clMenuBar()).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
   import { initCards } from "../data/cardState";
