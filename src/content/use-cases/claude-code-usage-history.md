@@ -5,7 +5,7 @@ h1: "Claude Code usage history on your Mac"
 mainKeyword: "claude code usage history"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-05
+updated: 2026-11-08
 author: n-uf
 order: 3
 takeaways:
@@ -16,7 +16,7 @@ takeaways:
   - "Usage from claude.ai chats, other computers and cloud sessions isn't in it, because those don't write session files on this Mac."
 faq:
   - q: "Where does Claude Code store its usage history?"
-    a: "In plain-text session files on your Mac, one per session, under a projects folder in Claude Code's folder (~/.claude by default, or your CLAUDE_CONFIG_DIR folder). Anthropic's docs say Claude Code deletes most of them after 30 days by default. cl_audit reads these files to draw the history."
+    a: "In plain-text session files on your Mac, one per session, under a projects folder in Claude Code's folder (~/.claude by default, or your CLAUDE_CONFIG_DIR folder). Anthropic's docs say Claude Code deletes most of them after 30 days by default, though from v2.1.248 it keeps sessions started or last continued in Claude Desktop or Cowork unless you set desktopSessionCleanupPeriodDays. cl_audit reads these files to draw the history."
   - q: "Can I see usage by project?"
     a: "Yes. The \"Where it goes\" chart splits the share of tokens in the period by project, by model and by surface, so you can see which project or which model used most. The profile chips next to the period keys filter it to one account or more."
   - q: "Does it count cache reads?"
@@ -26,9 +26,16 @@ faq:
   - q: "Is anything uploaded?"
     a: "No. The history is read from files on your Mac. cl_audit has no server and no analytics, and its only network requests go to Anthropic, to read each profile's limits and which account it is signed in to."
 sources:
-  - title: "Claude Code docs: Explore the .claude directory"
+  - title: "Claude Code docs: Explore the .claude directory (Cleaned up automatically)"
     url: "https://code.claude.com/docs/en/claude-directory"
-    checked: 2026-11-02
+    checked: 2026-11-07
+    supports: "cleanupPeriodDays defaults to 30 days; Desktop and Cowork transcripts kept from v2.1.248"
+    quote: "Requires Claude Code v2.1.248 or later; earlier versions delete them after cleanupPeriodDays."
+  - title: "Claude Code docs: All settings (cleanupPeriodDays, desktopSessionCleanupPeriodDays)"
+    url: "https://code.claude.com/docs/en/settings-reference"
+    checked: 2026-11-07
+    supports: "desktopSessionCleanupPeriodDays sets an age limit for Claude Desktop and Cowork transcripts"
+    quote: "Set an age limit in days for Claude Desktop and Cowork transcripts"
   - title: "Claude Code docs: Manage costs effectively (the /usage command)"
     url: "https://code.claude.com/docs/en/costs"
     checked: 2026-11-05
@@ -88,7 +95,7 @@ That source sets two limits.
 
 It's the history of this Mac only. claude.ai chats, other computers and cloud sessions don't write session files here, so their usage isn't in it.
 
-And Claude Code doesn't keep the files forever. Anthropic's docs say it deletes most of them once they're older than `cleanupPeriodDays`, 30 days by default. cl_audit's longest view is 30 days.
+And Claude Code doesn't keep the files forever. Anthropic's docs say it deletes most of them once they're older than `cleanupPeriodDays`, 30 days by default. Since Claude Code v2.1.248, sessions you started or last continued in Claude Desktop or Cowork are kept at any age, unless `desktopSessionCleanupPeriodDays` or your organisation's managed settings set a limit. cl_audit's longest view is 30 days.
 
 The history counts tokens. It doesn't say how close you are to a limit: for that, cl_audit reads each profile's 5-hour and weekly limits from Anthropic and shows them on the cards and in the Dock. [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) covers how those turn into alerts.
 
