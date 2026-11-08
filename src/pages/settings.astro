@@ -640,7 +640,7 @@ const jsonLd = [
       if (pick("[data-sess-back]")) { openPage(""); return; }
       if (pick("[data-sess-keep]")) {
         const sel = root.querySelector<HTMLSelectElement>('.c-s select[aria-label="Keep for"]'); if (sel) sel.selectedIndex = 1;
-        showWhatNow("Keep for", "90 days", "Claude Code keeps this profile's sessions for 90 days before deleting them, so the older ones in the backup stay once they're back.");
+        showWhatNow("Keep for", "90 days", "Claude Code keeps this profile's terminal sessions for 90 days before deleting them, so the older ones in the backup stay once they're back.");
         return;
       }
       if (pick("[data-rs-go]")) {
