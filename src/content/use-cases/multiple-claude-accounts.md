@@ -5,7 +5,7 @@ h1: "Multiple Claude accounts on one Mac"
 mainKeyword: "multiple claude accounts"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-05
+updated: 2026-11-08
 author: n-uf
 order: 1
 takeaways:
@@ -45,9 +45,11 @@ sources:
   - title: "Claude Code docs: Commands (/usage)"
     url: "https://code.claude.com/docs/en/commands"
     checked: 2026-11-02
-  - title: "Anthropic Usage Policy"
+  - title: "Anthropic Usage Policy (effective Nov 12, 2026)"
     url: "https://www.anthropic.com/legal/aup"
-    checked: 2026-11-02
+    checked: 2026-11-07
+    supports: "multiple accounts to avoid detection or circumvent guardrails; automation in account creation; ban evasion"
+    quote: "Circumvent a ban through the use of a different account"
   - title: "claude-fix README (sarhej/claude-fix)"
     url: "https://github.com/sarhej/claude-fix"
     checked: 2026-11-02
@@ -99,7 +101,7 @@ Each seat keeps its own limits. cl_audit shows them; it doesn't add them up or h
 
 An account belongs to one profile. If you add one that another profile already has, cl_audit refuses it. A personal plan and a Team seat on one email still work, because they're different accounts.
 
-A profile can also keep a second account on standby. Its limits show too, from a sign-in kept in a small Claude Code folder of its own, so you can see which account has room. When a limit is full, the profile's card selects the standby account with the most room and shows its **Switch account** key. You add one under Settings ▸ the profile ▸ Claude Code ▸ **Accounts**.
+A profile can also keep a second account on standby. Its limits show too, from a sign-in kept in a small Claude Code folder of its own, so you can see which account has room. When a limit is full, the profile's card selects the standby account with the most room and shows its **Switch account** key. You add one under Settings ▸ the profile ▸ Claude Code ▸ **Accounts**. {{live:/use-cases/switch-claude-accounts/}}If you'd rather move one profile between your own accounts than run several side by side, the [Claude account switcher](/use-cases/switch-claude-accounts/) page shows how.{{/live}}
 
 cl_audit shows limits for plans that have them: Pro, Max, Ultra and Team. Anthropic says a verified Ultra account has no 5-hour limit, so its card shows the week alone. A profile that signs in with an API key is billed per token and has no usage limits to show.
 
@@ -151,7 +153,7 @@ Email addresses show in the launcher and on cards. If you share your screen, tur
 
 cl_audit doesn't get around usage limits. It doesn't pool limits across accounts: each account's limits are its own, and each profile shows its own accounts' limits, nothing more. A profile can switch to another of your own accounts, and the switch can move its Code sessions there if you choose; it doesn't switch on its own. The [FAQ](/faq/) covers how the usage figures are read.
 
-Whether you may hold more than one Claude account is up to Anthropic's terms. On 2 November 2026, Anthropic's Usage Policy listed, among things not to do: coordinating malicious activity across multiple accounts, creating multiple accounts to avoid detection or get around product guardrails, and using a different account to get around a ban.
+Whether you may hold more than one Claude account is up to Anthropic's terms. Anthropic's Usage Policy, as it read on 7 November 2026 (effective 12 November 2026), lists among things not to do: coordinating malicious activity across multiple accounts; creating multiple accounts to avoid detection, get around product guardrails or send repeated inputs that break the policy; automating account creation; and using a different account to get around a ban.
 
 This page is about keeping a work seat and a personal plan apart. cl_audit can't tell you how Anthropic's terms apply to your own case. If you're unsure, read the terms or ask Anthropic.
 
