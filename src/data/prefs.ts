@@ -35,7 +35,8 @@ export type Prefs = {
   win: boolean;            // Claude window ▸ Claude window: the profile has one (off: none; both off = usage only)
   dockRuns: DockRuns;      // Dock icon ▸ Runs: At login, With its window, When started (26.10.11)
   windowFollows: boolean;  // Claude window ▸ With Dock icon: opens and quits with the Dock icon
-  opensFromDock: boolean;  // Claude window ▸ Opens from: Dock click too (true) or Only when asked (26.11.0)  notifyBack: boolean;     // Alerts ▸ Notify when back: one alert when a full limit resets
+  opensFromDock: boolean;  // Claude window ▸ Opens from: Dock click too (true) or Only when asked (26.11.0)
+  notifyBack: boolean;     // Alerts ▸ Notify when back: one alert when a full limit resets
   iconFollows?: boolean;   // before 26.10.11 (read once to carry it over into dockRuns)
   showFable: boolean;      // Profile ▸ Fable's limit: shown and alerted (only where the plan has one; 26.11.0)
   mb: MenuBarLook;         // Menu bar (26.11.0)
