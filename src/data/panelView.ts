@@ -7,7 +7,8 @@ export type Design = "glow" | "rings" | "numbers" | "segments" | "pace";
 
 // the usage levels (26.11.1): green under 50 %, amber 50–79, red 80–94, crimson from 95 (a full limit included)
 const level = (p: number) => (p >= 95 ? "#eb445b" : p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
-const short = (min: number) => (min >= 1440 ? `${Math.round(min / 1440)} days` : min >= 60 ? `${Math.floor(min / 60)} h ${min % 60} min` : `${min} min`);
+const dayWords = (min: number) => { const d = Math.round(min / 1440); return d === 1 ? "1 day" : `${d} days`; };
+const short = (min: number) => (min >= 1440 ? dayWords(min) : min >= 60 ? `${Math.floor(min / 60)} h ${min % 60} min` : `${min} min`);
 
 type L = { name: string; title: string; p: number; left: number; elapsed: number };
 /** Whether a profile's Fable row shows: its plan has Fable's own weekly limit and Profile ▸ Fable's limit is on (the

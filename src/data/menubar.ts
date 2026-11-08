@@ -61,7 +61,7 @@ export function menuHTML(id: AccountId, name: string) {
   const a = accounts.find((x) => x.id === id)!;
   const row = (n: string, p: number, sub: string, hot: boolean) =>
     `<div class="mbm-row"><span>${n}</span><span class="mbm-bar"><i style="width:${Math.min(100, p)}%;background:${level(p)}"></i></span><b style="color:${level(p)}">${p}%</b></div><div class="mbm-sub${hot ? " hot" : ""}">${sub}</div>`;
-  const when = (m: number) => (m >= 1440 ? `in ${Math.round(m / 1440)} days` : m >= 60 ? `in ${Math.floor(m / 60)} h ${m % 60} min` : `in ${m} min`);
+  const when = (m: number) => (m >= 1440 ? (Math.round(m / 1440) === 1 ? "in 1 day" : `in ${Math.round(m / 1440)} days`) : m >= 60 ? `in ${Math.floor(m / 60)} h ${m % 60} min` : `in ${m} min`);
   // a profile with other accounts (switch UX round 2): the account in use under its name, then "Switch account ›", a
   // submenu with the account in use ticked and every standby account, most room first, each with its week. While a
   // limit is full, the one with the most room also sits on the top level, right under the full line.
