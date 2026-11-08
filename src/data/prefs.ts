@@ -21,7 +21,7 @@ export const colors: Record<string, string> = {
 };
 // The icon's own colour and frame: the same plus graphite and "by usage" (follows the 5-hour level).
 export const tileColors: Record<string, string> = { ...colors, graphite: "#3f3f46", usage: "usage" };
-const levelHex = (p: number) => (p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
+const levelHex = (p: number) => (p >= 95 ? "#eb445b" : p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
 
 export type Prefs = {
   name: string; label: string; color: keyof typeof colors | string; style: Style;

@@ -5,7 +5,8 @@ import { accounts, standby, byRoom, type AccountId, type Standby } from "./demo"
 
 export type Design = "glow" | "rings" | "numbers" | "segments" | "pace";
 
-const level = (p: number) => (p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
+// the usage levels (26.11.1): green under 50 %, amber 50–79, red 80–94, crimson from 95 (a full limit included)
+const level = (p: number) => (p >= 95 ? "#eb445b" : p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
 const short = (min: number) => (min >= 1440 ? `${Math.round(min / 1440)} days` : min >= 60 ? `${Math.floor(min / 60)} h ${min % 60} min` : `${min} min`);
 
 type L = { name: string; title: string; p: number; left: number; elapsed: number };
@@ -60,7 +61,7 @@ export const segLit = (p: number) => (p > 0 ? Math.max(1, Math.round((p / 100) *
 function segments(l: L, large: boolean) {
   const lit = segLit(l.p);
   const segs = Array.from({ length: 12 }, (_, i) => {
-    const zone = ((i + 1) / 12) * 100, c = zone > 80 ? "#ef4444" : zone > 50 ? "#f59e0b" : "#22c55e";
+    const zone = ((i + 1) / 12) * 100, c = zone >= 95 ? "#eb445b" : zone > 80 ? "#ef4444" : zone > 50 ? "#f59e0b" : "#22c55e";
     return i < lit ? `<i style="background:${c};box-shadow:0 0 5px ${c}80"></i>` : "<i></i>";
   }).join("");
   return `<div class="pn-lim"><div class="pn-row"><span class="pn-name strong${large ? "" : " sm"}">${large ? l.title : l.name}</span><span class="pn-sub">· in ${short(l.left)}</span><span class="spacer"></span>${pct(l, large ? 15 : 13)}</div>
@@ -122,7 +123,7 @@ function fullHTML(id: AccountId, design: Design) {
     const hot = l.p >= 100;
     const words = hot ? (l.name === f.name ? "full" : `full · resets ${whenWords(new Date(Date.now() + l.left * 60000))}`) : `in ${short(l.left)}`;
     const meter = design === "segments"
-      ? `<div class="pn-segs fl-segs">${Array.from({ length: 12 }, (_, i) => { const z = ((i + 1) / 12) * 100, c = z > 80 ? "#ef4444" : z > 50 ? "#f59e0b" : "#22c55e"; return i < segLit(l.p) ? `<i style="background:${c};box-shadow:0 0 5px ${c}80"></i>` : "<i></i>"; }).join("")}</div>`
+      ? `<div class="pn-segs fl-segs">${Array.from({ length: 12 }, (_, i) => { const z = ((i + 1) / 12) * 100, c = z >= 95 ? "#eb445b" : z > 80 ? "#ef4444" : z > 50 ? "#f59e0b" : "#22c55e"; return i < segLit(l.p) ? `<i style="background:${c};box-shadow:0 0 5px ${c}80"></i>` : "<i></i>"; }).join("")}</div>`
       : bar(l, 6, true);
     return `<div class="fl-row"><div class="fl-name"><b>${l.name}</b><span class="${hot ? "fl-hot" : ""}">${words}</span></div>${meter}${pct(l, 12.5)}</div>`;
   }).join("");
