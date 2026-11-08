@@ -1,4 +1,8 @@
 {
+  "accounts-card.webp": {
+    "width": 427,
+    "height": 630
+  },
   "alert-settings.webp": {
     "width": 459,
     "height": 156
@@ -18,6 +22,14 @@
   "menubar-settings.webp": {
     "width": 459,
     "height": 509
+  },
+  "sessions-card.webp": {
+    "width": 459,
+    "height": 639
+  },
+  "switch-page.webp": {
+    "width": 1400,
+    "height": 820
   },
   "usage-history.webp": {
     "width": 964,
