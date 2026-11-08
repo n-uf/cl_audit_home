@@ -157,7 +157,7 @@ export function standbyLimitsHTML(s: Standby, design: Design) {
 export function cardExtrasHTML(id: AccountId, design: Design) {
   const sb = byRoom(standby[id]);
   const best = fullLimit(id) ? sb.find((s) => s.five < 100 && s.week < 100) : undefined;
-  const trays = sb.map((s) => `<div class="abox unlit sbx${s === best ? " sel" : ""}"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t"><b class="email">${s.email}</b></span><span class="disp xs abox-badge"><em>Standby</em></span><button type="button" class="disp xs trustlike sw-acc" data-card-switch="${id}" data-to="${s.email}"><em>Switch</em> account</button></div><div class="sb-rows">${standbyLs(s).map((l) => {
+  const trays = sb.map((s) => `<div class="abox unlit sbx${s === best ? " sel" : ""}" tabindex="0" role="group" aria-label="${s.email}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t"><b class="email">${s.email}</b></span><span class="disp xs abox-badge"><em>Standby</em></span><button type="button" class="disp xs trustlike sw-acc" data-card-switch="${id}" data-to="${s.email}"><em>Switch</em> account</button></div><div class="sb-rows">${standbyLs(s).map((l) => {
     const meter = design === "segments"
       ? `<span class="sb-segs">${Array.from({ length: 12 }, (_, i) => i < segLit(l.p) ? `<i style="background:${level(((i + 1) / 12) * 100)}"></i>` : "<i></i>").join("")}</span>`
       : `<span class="sb-bar"><i style="width:${l.p}%;background:${level(l.p)}"></i></span>`;

@@ -145,18 +145,6 @@ const jsonLd = [
       setTimeout(() => { d.innerHTML = "Updated <em>· just now</em>"; k.classList.remove("busy"); k.textContent = "↻"; }, 1400);
     });
     // CSV (26.11.0): saves the period and the shown profiles as CSV, as the app's key does; the rows are the demo's
-    // the standby trays on a card (switch UX round 2): click one to select it (again to deselect); while a limit is full
-    // the one with the most room is selected already. Its Switch account key opens the Switch page, in Settings as in
-    // the app, with it picked.
-    dash.addEventListener("click", (e) => {
-      const t = e.target as HTMLElement;
-      const key = t.closest<HTMLElement>("[data-card-switch]");
-      if (key) { location.href = `/settings/?switch=${key.dataset.cardSwitch}&to=${encodeURIComponent(key.dataset.to!)}`; return; }
-      const tray = t.closest<HTMLElement>(".sb-pick .abox");
-      if (!tray) return;
-      const sel = !tray.classList.contains("sel");
-      tray.parentElement!.querySelectorAll(".abox").forEach((x) => x.classList.toggle("sel", sel && x === tray));
-    });
     dash.querySelector<HTMLButtonElement>("[data-csv]")?.addEventListener("click", () => {
       const ids = allIds.filter((id) => !load().includes(id)) as AccountId[];
       const blob = new Blob([csvFor((dash.dataset.range || "7d") as Range, ids)], { type: "text/csv" });
