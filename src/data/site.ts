@@ -4,9 +4,9 @@ export const site = "https://cl-audit.n-uf.com";
 
 // The current cl_audit release. Update on each cl_audit release (version from the app's VERSION file,
 // date from its CHANGELOG.md); the footer, the Install page and the structured data read these.
-export const version = "26.11.0";
-export const released = "2026-11-05";
-export const build = "219";   // the release's build number (About shows "26.11.0 · build 219")
+export const version = "26.11.1";
+export const released = "2026-11-07";
+export const build = "323";   // the release's build number (About shows "26.11.1 · build 323")
 export const changelog = `${repo}/blob/main/CHANGELOG.md`;
 /** The release stage the site shows next to the version (Overview display and At a glance, Install). Set to ""
  *  when cl_audit leaves alpha and every label goes. GitHub releases stay normal releases: the Download link
@@ -18,7 +18,7 @@ export const requires = "Apple silicon · macOS 13 or later";
 /** The Claude versions this release was checked with (the app's release notes list them too). cl_audit relies on
  *  how Claude Code saves its login and on Anthropic's usage figures, neither a public interface, so newer Claude
  *  versions can change them. Update with each release. */
-export const checkedWith = { claudeCode: "2.1.318", claudeApp: "4.16336.0" };
+export const checkedWith = { claudeCode: "2.1.318", claudeApp: "4.23118.0" };
 export const driftNote = "cl_audit relies on how Claude Code saves its login and on Anthropic's usage figures, which aren't public interfaces. A newer Claude version can change them; if something stops working, update cl_audit.";
 
 /** "2026-10-24" -> "24 Oct 2026". */
