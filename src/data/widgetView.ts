@@ -5,13 +5,13 @@ import { accounts } from "./demo";
 import { segLit, type Design } from "./panelView";
 import { ordered } from "./prefs";   // the profiles' order (Settings strip)
 
-const level = (p: number) => (p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
+const level = (p: number) => (p >= 95 ? "#eb445b" : p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
 
 function meter(design: Design, p: number, elapsed: number) {
   const c = level(p);
   if (design === "segments") {
     const lit = segLit(p);   // anything above 0 % lights the first segment
-    return `<span class="wg-segs">${Array.from({ length: 12 }, (_, i) => { const z = ((i + 1) / 12) * 100; return i < lit ? `<i style="background:${z > 80 ? "#ef4444" : z > 50 ? "#f59e0b" : "#22c55e"}"></i>` : "<i></i>"; }).join("")}</span>`;
+    return `<span class="wg-segs">${Array.from({ length: 12 }, (_, i) => { const z = ((i + 1) / 12) * 100; return i < lit ? `<i style="background:${z >= 95 ? "#eb445b" : z > 80 ? "#ef4444" : z > 50 ? "#f59e0b" : "#22c55e"}"></i>` : "<i></i>"; }).join("")}</span>`;
   }
   if (design === "rings") {
     const r = 6, cir = 2 * Math.PI * r;

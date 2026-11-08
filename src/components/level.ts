@@ -1,6 +1,7 @@
 // The app's level colours: under 50 % green, under 80 % amber, then red.
-export const level = (p: number) => (p >= 80 ? "r" : p >= 50 ? "a" : "g");
-export const levelColor = (p: number) => (p >= 80 ? "var(--red)" : p >= 50 ? "var(--amber)" : "var(--green)");
+export const level = (p: number) => (p >= 95 ? "c" : p >= 80 ? "r" : p >= 50 ? "a" : "g");
+// 26.11.1: a fourth level, crimson from 95 % (a full limit included)
+export const levelColor = (p: number) => (p >= 95 ? "#eb445b" : p >= 80 ? "var(--red)" : p >= 50 ? "var(--amber)" : "var(--green)");
 
 /** 12 segments like the app's panels: filled by usage, coloured by position (6 green, 3 amber, 3 red). */
 export const segments = (p: number) => {

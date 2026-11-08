@@ -7,7 +7,7 @@
 const NS = "http://www.w3.org/2000/svg";
 const START: [number, number][] = [[34, 12], [78, 61], [12, 40]];   // the demo profiles: 5-hour, week
 const NAMES = ["home", "work", "side"];
-const level = (p: number) => (p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
+const level = (p: number) => (p >= 95 ? "#eb445b" : p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
 const rnd = (a: number, b: number) => a + Math.random() * (b - a);
 let stop: (() => void) | undefined;
 

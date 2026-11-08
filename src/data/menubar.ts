@@ -7,8 +7,8 @@ import { accounts, standby, byRoom, shortName, type AccountId } from "./demo";
 import { countdownWords, fableShown } from "./panelView";
 import type { MenuBarLook } from "./prefs";
 
-const level = (p: number) => (p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
-const RED = "#ef4444", ACCENT = "#0a84ff";
+const level = (p: number) => (p >= 95 ? "#eb445b" : p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
+const RED = "#eb445b", ACCENT = "#0a84ff";   // a full limit is crimson (26.11.1: from 95 %)
 
 /** The icon as HTML. `five`/`week` null = no numbers yet; `dark` = the menu bar it sits in. */
 export function glyphHTML(look: MenuBarLook, five: number | null, week: number | null, o: { label?: string; hex?: string; dark: boolean; countdown?: string }) {
