@@ -646,11 +646,11 @@ const jsonLd = [
       if (pick("[data-rs-go]")) {
         // the steps run with sample timings: the window closes, what's listed comes back, the window opens again
         rs = "run"; show();
-        let n = 52;
+        let n = 14;
         const tick = () => {
-          n = Math.min(86, n + 6);
+          n = Math.min(26, n + 2);
           root.querySelectorAll<HTMLElement>("[data-rs-count]").forEach((e) => (e.textContent = String(n)));
-          if (n < 86) rsTimer = window.setTimeout(tick, 250); else { rs = "done"; show(); }
+          if (n < 26) rsTimer = window.setTimeout(tick, 250); else { rs = "done"; show(); }
         };
         rsTimer = window.setTimeout(tick, 400);
         return;
