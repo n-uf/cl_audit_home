@@ -49,6 +49,7 @@ const jsonLd = [
     // run → done, or "refused" while a switch of the profile is unfinished. Sample figures; nothing on this Mac changes.
     let page = "", rs: "preview" | "run" | "done" | "refused" = "preview", bkName = "", rsTimer = 0;
     const madeNow: Record<string, string[]> = {};
+    const bkKeep = { last: 3, days: 30 };   // General ▸ Backups
     const backupsOf = (id: AccountId) => [
       ...(madeNow[id] ?? []).map((n) => [n, "84 sessions · 12 tasks · sidebar · 40 MB"]),
       ...(standby[id].length ? [[`Before switch to ${standby[id][0].email.split("@")[0]} · 5 Nov 18:40`, "84 sessions · 12 tasks · sidebar · transcripts · 5.5 GB, sharing space with the originals"]] : []),
@@ -610,6 +611,18 @@ const jsonLd = [
         return;
       }
       if ((b = pick("[data-sb-cancel]"))) { added[acc] = added[acc].filter((s) => s.email !== b!.dataset.sbCancel); show(); return; }
+      // General ▸ Backups (26.11.1): the last N of each profile, and any under D days (the app's own day steps)
+      if ((b = pick("[data-bk-step]"))) {
+        const DAYS = [0, 7, 14, 30, 60, 90, 180, 365], dir = +b.dataset.dir!;
+        if (b.dataset.bkStep === "last") bkKeep.last = Math.max(1, Math.min(50, bkKeep.last + dir));
+        else bkKeep.days = DAYS[Math.max(0, Math.min(DAYS.length - 1, DAYS.indexOf(bkKeep.days) + dir))];
+        $("[data-bk-value='last']")!.textContent = String(bkKeep.last);
+        $("[data-bk-value='days']")!.textContent = `${bkKeep.days} days`;
+        const n = bkKeep.last, d = bkKeep.days;
+        $("[data-bk-line]")!.textContent = `${n === 1 ? "The last backup" : `The last ${n}`} of each profile` + (d ? `, and any under ${d} days.` : ".");
+        return;
+      }
+      if ((b = pick("[data-bk-demo]"))) { showWhatNow(b.dataset.bkDemo!, "", b.dataset.bkDemo === "Change…" ? "A folder picker opens; backups already made stay where they were. This is a demo, so nothing changes." : "cl_audit's backups folder opens in Finder. This is a demo, so nothing opens."); return; }
       // Sessions: Back up now, a backup's Restore… and ⋯, Export…, Import…, and the keys on their pages
       if (pick("[data-bk-now]")) {
         const d = new Date(), name = `Manual · ${d.getDate()} ${d.toLocaleString("en-GB", { month: "short" })} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
