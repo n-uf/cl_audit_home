@@ -18,7 +18,7 @@ faq:
   - q: "Where does Claude Code store sessions?"
     a: "As JSONL files at ~/.claude/projects/<project>/<session-id>.jsonl, where <project> is the working directory's path with every non-alphanumeric character replaced by a dash. If you set CLAUDE_CONFIG_DIR, everything lives under that folder instead. Anthropic's docs say the entry format is internal and changes between versions."
   - q: "How long does Claude Code keep session history?"
-    a: "30 days by default. Anthropic's settings reference says cleanupPeriodDays takes a whole number of days with a minimum of 1, and that Claude Code deletes older transcripts in a background sweep after a session starts. From Claude Code v2.1.248, transcripts of sessions started or most recently continued in Claude Desktop or Cowork are kept at any age, unless desktopSessionCleanupPeriodDays or a managed cleanupPeriodDays applies."
+    a: "30 days by default. Anthropic's settings reference says cleanupPeriodDays takes a whole number of days with a minimum of 1, and that Claude Code deletes older transcripts in a background sweep after a session starts. From Claude Code v2.1.248, transcripts of sessions started or most recently continued in Claude Desktop or Cowork are kept at any age, unless desktopSessionCleanupPeriodDays or a managed cleanupPeriodDays applies, or the HIPAA configuration applies to your sessions."
   - q: "Can I stop Claude Code deleting old sessions?"
     a: "Not with an off switch: Anthropic's page says setting cleanupPeriodDays to 0 fails validation and suggests a large value such as 3650 for long retention. An organisation's managed settings can set the value too, and then yours doesn't apply. Run /status to see which settings sources are active."
   - q: "Does copying ~/.claude/projects bring back my Code tab list?"
@@ -33,13 +33,13 @@ sources:
     quote: "Claude Code runs the deletion as a background sweep after a session starts"
   - title: "Claude Code docs: Explore the .claude directory (cleaned up automatically)"
     url: "https://code.claude.com/docs/en/claude-directory#cleaned-up-automatically"
-    checked: 2026-11-07
-    supports: "The paths under ~/.claude the sweep deletes (projects/ transcripts, subagents, tool-results, file-history, plans, tasks and others); that sessions/ and auto memory are not swept; the exemption for Claude Desktop and Cowork transcripts (v2.1.248 or later) and when cleanupPeriodDays applies to them anyway; the cases where the sweep is skipped or paused."
+    checked: 2026-11-09
+    supports: "The paths under ~/.claude the sweep deletes (projects/ transcripts, subagents, tool-results, file-history, plans, tasks and others); that sessions/ and auto memory are not swept; the exemption for Claude Desktop and Cowork transcripts (v2.1.248 or later), and the two cases where Claude Code deletes them after cleanupPeriodDays instead: managed settings set cleanupPeriodDays, or the HIPAA configuration applies to your sessions; the cases where the sweep is skipped or paused."
     quote: "The default is 30 days and the minimum is 1"
   - title: "Claude Code docs: Explore the .claude directory (kept until you delete them)"
     url: "https://code.claude.com/docs/en/claude-directory#kept-until-you-delete-them"
-    checked: 2026-11-07
-    supports: "history.jsonl (prompts you typed) is not removed by the sweep; .credentials.json holds login credentials."
+    checked: 2026-11-09
+    supports: "history.jsonl (prompts you typed) is not removed by the sweep, except that each sweep removes its entries older than cleanupPeriodDays when the HIPAA configuration applies to your sessions; .credentials.json holds login credentials."
     quote: "Prompts you've typed, with timestamp and project path."
   - title: "Claude Code docs: Explore the .claude directory (plaintext storage)"
     url: "https://code.claude.com/docs/en/claude-directory#plaintext-storage"
@@ -66,6 +66,26 @@ sources:
     checked: 2026-11-07
     supports: "Local transcripts are kept in plaintext for 30 days by default and cleanupPeriodDays adjusts it; Claude Desktop and Cowork transcripts are exempt by default."
     quote: "store session transcripts locally in plaintext under `~/.claude/projects/` for 30 days by default"
+  - title: "Claude Code docs: Set up Claude Code (local mode) for a HIPAA-ready organization"
+    url: "https://code.claude.com/docs/en/hipaa-setup"
+    checked: 2026-11-09
+    supports: "The HIPAA configuration is an organization setting on Claude Enterprise plans; it takes effect only in sessions signed in with a Claude Enterprise account and connected directly to the Claude API."
+    quote: "The HIPAA configuration is an organization setting on Claude Enterprise plans"
+  - title: "Claude Code docs: Advanced setup (uninstall, remove configuration files)"
+    url: "https://code.claude.com/docs/en/setup#remove-configuration-files"
+    checked: 2026-11-09
+    supports: "Uninstalling the program (native, Homebrew, WinGet, apt, dnf, apk, npm) and removing configuration files (~/.claude, ~/.claude.json, and in a project .claude and .mcp.json) are separate sections; the second warns that it deletes settings, allowed tools, MCP server configurations and session history."
+    quote: "will delete all your settings, allowed tools, MCP server configurations, and session history"
+  - title: "Claude Code docs: Explore the .claude directory (personal configuration)"
+    url: "https://code.claude.com/docs/en/claude-directory"
+    checked: 2026-11-09
+    supports: "Files in ~/.claude are personal configuration that applies across all projects: CLAUDE.md, settings.json, skills/, agents/, commands/, output-styles/ and keybindings.json; settings.json env sets environment variables; installed plugins sit in ~/.claude/plugins, managed by claude plugin commands; ~/.claude.json holds app state, account details and personal MCP servers; .credentials.json holds login credentials."
+    quote: "files in `~/.claude` are personal configuration that applies across all your projects"
+  - title: "Claude Code docs: MCP (installation scopes)"
+    url: "https://code.claude.com/docs/en/mcp#mcp-installation-scopes"
+    checked: 2026-11-09
+    supports: "Local-scope servers are stored in ~/.claude.json under the project's path; user-scope servers are stored in ~/.claude.json; project-scope servers are in .mcp.json at the project root, which belongs in version control; claude mcp list lists the servers with a health status; claude mcp add adds one."
+    quote: "User-scoped servers are stored in `~/.claude.json`"
   - title: "Claude-Session-Backup README (DazzleML)"
     url: "https://github.com/DazzleML/Claude-Session-Backup"
     checked: 2026-11-07
@@ -101,6 +121,16 @@ sources:
     checked: 2026-11-09
     supports: "26.11.9 (9 November 2026): backups keep each scheduled task's prompt; backups no longer keep settings.json's env values or the window's MCP settings, which travel only in the encrypted export, and a backup's settings.json keeps the names under env with blank values; a backup that holds a scheduled task's prompt can't be opened by 26.11.8 or older."
     quote: "The Claude window's MCP settings and scheduled tasks travel too."
+  - title: "cl_audit README at tag v26.11.10"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
+    checked: 2026-11-09
+    supports: "Moving to another Mac: a Move to another Mac key on the Export page sets All profiles, the encrypted disk image, Claude Code's setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings; sign-ins don't travel; what never moves is sign-ins, the Keychain and settings.local.json; export the profiles as they are now, not from a backup, since backups keep neither the MCP settings nor settings.json's env values."
+    quote: "Sign-ins don't travel. On the new Mac you sign in again to each account"
+  - title: "cl_audit CHANGELOG, 26.11.10"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/CHANGELOG.md"
+    checked: 2026-11-09
+    supports: "26.11.10 (9 November 2026): the Move to another Mac key; a move is only ever the password-protected disk image, never a zip; cl_audit's own profiles and settings travel in the image only; sign-ins don't travel."
+    quote: "a move is only ever the password-protected disk image, never a zip"
   - title: "cl_audit 26.11.1 release notes"
     url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.1"
     checked: 2026-11-07
@@ -137,13 +167,14 @@ The exceptions:
 - **Sessions from the Claude app.** The same page says Claude Code keeps the transcript of a session you started or most recently continued in Claude Desktop (the Claude app) or Cowork at any age, from Claude Code v2.1.248. A separate key, `desktopSessionCleanupPeriodDays`, gives them a limit; each goes once it's older than both keys. A session that only ever ran in Terminal is swept on the normal schedule.
 - **Deleted or archived in the Claude app.** cl_audit's README adds that a Claude app session you deleted or archived there goes on the normal schedule, an archived one after a grace period.
 - **Managed settings.** If your organisation sets `cleanupPeriodDays`, that value applies, to Claude app sessions too. `/status` lists your active settings sources.
+- **The HIPAA configuration.** Where it applies to your sessions (it's an organisation setting on Claude Enterprise plans), `cleanupPeriodDays` applies to Claude app sessions too, and each sweep also removes `history.jsonl` entries older than that.
 - **Skipped or paused sweeps.** It doesn't run in `claude -p --bare`, and it pauses if Claude Code can't safely work out the retention period, for example when a settings file can't be parsed.
 
 ## Where Claude Code sessions are stored
 
 Anthropic's sessions page puts the transcripts at `~/.claude/projects/<project>/<session-id>.jsonl`. The `<project>` part is the working directory's path with every character that isn't a letter or digit replaced by `-`. Anthropic warns that the entry format inside is internal and changes between versions, so copy the files; don't build on their contents.
 
-If you set `CLAUDE_CONFIG_DIR`, all of this lives under that folder instead. A cl_audit profile's Claude Code folder is one, for example `~/.claude-work`. Everything below applies to whichever folder you use.
+If you set `CLAUDE_CONFIG_DIR`, all of this lives under that folder instead, for example `~/.claude-work` (each cl_audit profile after the first has one). What follows applies to whichever folder you use.
 
 | Under `~/.claude/` | What it holds | Swept after `cleanupPeriodDays`? |
 |---|---|---|
@@ -151,7 +182,7 @@ If you set `CLAUDE_CONFIG_DIR`, all of this lives under that folder instead. A c
 | `projects/<project>/<session-id>/` | Subagent transcripts, large tool results | Yes, with the transcript |
 | `projects/<project>/memory/` | Auto memory | No |
 | `file-history/` | Snapshots for checkpoint restore | Yes |
-| `history.jsonl` | Prompts you typed | No |
+| `history.jsonl` | Prompts you typed | No, except under the HIPAA configuration |
 | `settings.json` | Your settings, including `cleanupPeriodDays` | No |
 
 `~/.claude.json` is a separate file with your account details, MCP servers and per-project state, not sessions.
@@ -205,6 +236,17 @@ To put a session back by hand:
 - **Chats and Projects on claude.ai,** and cloud sessions. They aren't files on your Mac.
 - **A sign-in.** It belongs in neither a copy nor a backup.
 
+## Before you reinstall Claude Code
+
+Anthropic's uninstall steps remove the program. Removing the configuration files is a separate step, which the page warns will "delete all your settings, allowed tools, MCP server configurations, and session history". Before a fresh start without `~/.claude`, or on a new user account, copy what you'd miss:
+
+- **Setup.** In `~/.claude`, which Anthropic's page calls personal configuration: `CLAUDE.md`, `settings.json`, the `skills/`, `agents/`, `commands/` and `output-styles/` folders, `keybindings.json`, and any script your hooks run. If a value under `env` in `settings.json` is a token, treat the copy like the sessions.
+- **Plugins.** Note your plugins and marketplaces and install them again; `claude plugin` commands manage `~/.claude/plugins`.
+- **MCP servers.** Local and user ones live in `~/.claude.json` with your account details, so don't copy it whole. Run `claude mcp list`, note each server, and add it again with `claude mcp add`. A project's `.mcp.json` sits in the project folder, not in `~/.claude`.
+- **Sessions, not the sign-in.** Copy `projects/` [by hand, as above](#back-up-claude-code-sessions-by-hand). Leave out `.credentials.json` and the Keychain entry, and sign in again.
+
+{{live:/blog/move-claude-code-to-new-computer/}}For a new Mac, see [how to move Claude Code to a new computer](/blog/move-claude-code-to-new-computer/).{{/live}}
+
 ![The Sessions card of a profile with its backups](/img/guides/sessions-card.webp "cl_audit's site demo: a profile's Sessions card, with Keep for and its backups. Sample data.")
 
 ## Do you mean resume, not restore?
@@ -214,7 +256,6 @@ To put a session back by hand:
 - `claude --continue` loads the most recent conversation in the current directory.
 - `claude --resume` opens the session picker; give it a name, or the absolute path to a `.jsonl` file, to go straight to one.
 - `claude --resume <session-id>` works from any directory: Claude Code looks in the current project and its worktrees, then in every other project on the machine.
-- Inside a session, `/resume` switches to another one.
 
 The picker shows the current worktree's sessions by default; `Ctrl+A` widens it to every project. If a session is missing, compare its age with `cleanupPeriodDays`. If it was swept, you need a copy.
 
@@ -222,13 +263,13 @@ The picker shows the current worktree's sessions by default; `Ctrl+A` widens it 
 
 Since 26.11.1 a cl_audit profile's settings have a **Sessions** card after the Claude Code card. The app is free and needs a Mac with Apple silicon and macOS 13 or later; the [install steps](/install/) are short.
 
-**Keep for.** A pop-up with 30 days (Claude Code's default), 90 days or a year. It writes `cleanupPeriodDays` into that profile's Claude Code folder, in `settings.json`, changing only that number. If the file isn't one it can safely edit (not a JSON object, or the key twice), it refuses and says to set the key by hand. It matters most for Terminal sessions: Claude Code already keeps Claude app ones, bar the exceptions above. If your organisation's managed settings set the number, Keep for shows theirs with a note that changing it here changes nothing; cl_audit reads those settings and never changes them. The "Kept here" line counts what the profile has: sessions in Claude Code, entries in the Claude window, size, and since when. It ends by saying which sessions Claude Code deletes and when.
+**Keep for.** A pop-up with 30 days (Claude Code's default), 90 days or a year. It writes `cleanupPeriodDays` into that profile's Claude Code folder, in `settings.json`, changing only that number. If it can't safely edit the file, it refuses and says to set the key by hand. It matters most for Terminal sessions: Claude Code already keeps Claude app ones, bar the exceptions above. If your organisation's managed settings set the number, Keep for shows theirs and says that changing it here changes nothing; cl_audit never changes those settings. The "Kept here" line counts the profile's sessions, their size and since when, and ends by saying which ones Claude Code deletes and when.
 
-**Back up now.** A backup is a copy of a profile's sessions on this Mac. It holds Claude Code's transcripts (on by default), the Claude window's Code-tab list with its scheduled tasks and their prompts, the sidebar records (since 26.11.9, never the app's MCP settings) and cl_audit's own records. Since 26.11.8 it also holds Claude Code's setup: `CLAUDE.md` and the files it includes, skills, agents, commands, output styles, keybindings, `settings.json` with the scripts its hooks run, and the plugin list. Since 26.11.9 a backup's `settings.json` keeps the names under `env` with blank values; the values, like the MCP settings, travel only in an encrypted export. A backup made by 26.11.8 isn't listed by an older cl_audit, and 26.11.8 can't open one that holds a task's prompt. It never holds a sign-in. With the Claude window open, **Back up now** leaves out the Code-tab list and sidebar records, because the window rewrites them from memory, and says to close it first.
+**Back up now.** A backup is a copy of a profile's sessions on this Mac. It holds Claude Code's transcripts (on by default), the Claude window's Code-tab list with its scheduled tasks and their prompts, the sidebar records (since 26.11.9, never the app's MCP settings) and cl_audit's own records. Since 26.11.8 it also holds Claude Code's setup: `CLAUDE.md` and the files it includes, skills, agents, commands, output styles, keybindings, `settings.json` with the scripts its hooks run, and the plugin list. Since 26.11.9 a backup's `settings.json` keeps the names under `env` with blank values; the values, like the MCP settings, travel only in an encrypted export, so before a reinstall a backup keeps your setup but not those. A backup made by 26.11.8 isn't listed by an older cl_audit, and 26.11.8 can't open one that holds a task's prompt. It never holds a sign-in. With the Claude window open, **Back up now** leaves out the Code-tab list and sidebar records and says to close the window first.
 
 Backups are APFS clones, so they take seconds and share space with the originals. On the same disk that protects you from the sweep and from mistakes, not from a dead disk. **General ▸ Backups** sets where they go (**Change…** picks a folder) and how many are kept: by default the last 3 of each profile, plus any made in the last 30 days. On another volume it's a full copy, and the list says so.
 
-**A backup before every switch that moves sessions.** A profile can switch to another of your own accounts, and you start every switch yourself; each account's limits stay its own. If you choose to move the Claude window's sessions with it, cl_audit closes that profile's window, makes a backup, and only then moves anything. If the backup can't be made, nothing moves. The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers the switch, and [Claude Code sessions lost after switching accounts](/blog/claude-sessions-lost-switching-accounts/) covers signing in to another account by hand. Whether you may hold more than one Claude account is up to Anthropic's terms.
+**A backup before every switch that moves sessions.** When you switch a profile to another of your own accounts and choose to move the Claude window's sessions with it, cl_audit closes that window and makes a backup first; if it can't, nothing moves. The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers the switch, and [Claude Code sessions lost after switching accounts](/blog/claude-sessions-lost-switching-accounts/) covers signing in to another account by hand. Whether you may hold more than one Claude account is up to Anthropic's terms.
 
 **Restore…, with a preview.** **Restore…** on a backup opens a page that says "Preview · nothing written yet · nothing is ever overwritten". It counts what would happen, by session ID for the Code-tab list and by path for transcripts:
 
@@ -237,16 +278,16 @@ Backups are APFS clones, so they take seconds and share space with the originals
 - made after the backup, which stays;
 - changed since, which stays as it is now, with the backup's copy only listed;
 - in use, meaning a transcript a running Claude Code session holds, left alone;
-- would be deleted, counting only the transcripts Claude Code's clean-up would delete again: Terminal sessions older than the profile's Keep for time, and Claude app ones only when a limit applies to them or you deleted or archived them there. A **Keep for 90 days** button shows when that would save some of them;
+- would be deleted, counting only the transcripts Claude Code's clean-up would delete again (by the exceptions above), with a **Keep for 90 days** button when that would save some;
 - Claude Code's setup, which stays out until you pick **Add them**; then only what's missing is added, and nothing is replaced.
 
-Then **Close and restore N** closes only that profile's Claude window and writes what is missing, keeping a receipt as it goes. **Stop, keep what's back** halts it. If restored sessions sat in groups or were pinned, one Return in a session called "cl_audit · arrange sidebar" arranges the sidebar, as after a switch.
+Then **Close and restore N** closes only that profile's Claude window and writes what is missing, keeping a receipt as it goes. **Stop, keep what's back** halts it.
 
-**Merge-only.** Files are only created, never written over a name that already exists and never through a link. Entries go into the folder of the account the profile works on now, not one it has left. A backup that holds anything other than plain files, or anything named like a sign-in, is refused whole.
+**Merge-only.** Files are only created, never written over a name that already exists and never through a link. A backup that holds anything other than plain files, or anything named like a sign-in, is refused whole.
 
-**Undo this restore** takes back exactly what the restore put back, and only files unchanged since. A restored transcript that Claude Code has written to since stays, and the page says so. **Undo this switch…** on the Switch page is the switch back followed by a restore from the backup the switch made.
+**Undo this restore** takes back exactly what the restore put back, and only files unchanged since.
 
-To keep a copy somewhere other than this Mac, **Export…** writes a profile's sessions as one file, saved where you choose: a zip, or an encrypted disk image with a password. Sessions that hold keys stay out unless you keep them, which needs the password. **Import…** adds such a file back after a preview and never overwrites anything; **Undo last import** takes back what it added.
+To keep a copy somewhere other than this Mac, **Export…** writes a profile's sessions as one file, saved where you choose: a zip, or an encrypted disk image with a password. Sessions that hold keys stay out unless you keep them, which needs the password. **Import…** adds such a file back after a preview and never overwrites anything; **Undo last import** takes back what it added. For a new Mac, 26.11.10 adds **Move to another Mac**, a key on the Export page that also takes cl_audit's own profiles and settings, always in a password-protected disk image. Sign-ins don't travel, and neither do your project folders or rewind checkpoints, so put the folders on the new Mac at the same paths first.
 
 cl_audit relies on how Claude Code lays out its folder, and the release notes say 26.11.1 was checked with Claude Code 2.1.318. If a newer Claude Code stops a backup or restore working, update cl_audit.
 
