@@ -64,6 +64,11 @@ sources:
     checked: 2026-11-07
     supports: "Accounts boxes (IN USE, STANDBY), Add account, the Switch page and its steps, Cancel switch, Undo this switch…"
     quote: "A profile works on one at a time, marked IN USE"
+  - title: "cl_audit README at tag v26.11.10 (First run, The default profile)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
+    checked: 2026-11-09
+    supports: "The first profile is the default profile, on ~/.claude; first run offers Use or Sign in… into ~/.claude; a separate folder and its own window come only with profiles added after the first."
+    quote: "The default profile is the one on `~/.claude` with the usual Claude app"
   - title: "cl_audit 26.11.1 release notes (n-uf/cl_audit)"
     url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.1"
     checked: 2026-11-07
@@ -144,7 +149,7 @@ A cl_audit profile is one Claude setup: a Claude Code folder with its own sign-i
 
 ![The cl_audit launcher listing each profile with its limits](/img/guides/launcher-profiles.webp "The launcher: ⌘↩ opens Terminal with Claude Code set to that profile's folder. Sample data.")
 
-When you add a profile with **New profile**, Terminal runs `claude auth login` for its folder. That's Claude's own sign-in, so cl_audit never sees your password. After that, ⌘↩ on a profile in the launcher opens Terminal with its folder, and its 5-hour and weekly limits show in the Dock, read with that profile's Claude Code sign-in.
+On first run, **Sign in…** signs Claude Code in to `~/.claude`, the folder of the default profile. When you add a profile with **New profile**, Terminal runs `claude auth login` for its own folder. That's Claude's own sign-in, so cl_audit never sees your password. After that, ⌘↩ on a profile in the launcher opens Terminal with its folder, and its 5-hour and weekly limits show in the Dock, read with that profile's Claude Code sign-in.
 
 To give a profile another account, open **Settings ▸ the profile ▸ Claude Code ▸ Accounts**. Each account has a box: the one Claude Code in the profile's folder is signed in to is **IN USE**, the others are **STANDBY**. **Add account** is a pop-up, macOS's own menu of the accounts cl_audit finds on this Mac, and one click adds one. Its last item, **Sign in to another account…**, is for an account that isn't on this Mac yet: cl_audit makes a folder for it (say `~/.claude-ultra-2`) and opens Claude Code's own sign-in in Terminal with the address filled in. A standby account's limits keep showing, from the sign-in kept in that small folder, renewed by itself. No sign-in is ever copied between folders, and an account another profile already has is greyed out.
 
