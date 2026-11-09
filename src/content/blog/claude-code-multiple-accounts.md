@@ -5,7 +5,7 @@ h1: "Claude Code multiple accounts with CLAUDE_CONFIG_DIR"
 mainKeyword: "claude code multiple accounts"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-05
+updated: 2026-11-09
 author: n-uf
 takeaways:
   - "Anthropic's docs give one way to stay signed in to several Claude Code accounts: a separate configuration directory per account, chosen with CLAUDE_CONFIG_DIR."
@@ -56,8 +56,9 @@ sources:
     url: "https://github.com/anthropics/claude-code/issues/18435"
     checked: 2026-11-02
   - title: "cl_audit README (n-uf/cl_audit): Adding a profile, How it works"
-    url: "https://github.com/n-uf/cl_audit"
-    checked: 2026-11-02
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
+    checked: 2026-11-09
+    quote: "The default profile is the one on `~/.claude` with the usual Claude app"
 related:
   - /use-cases/multiple-claude-accounts/
   - /use-cases/claude-code-usage-history/
@@ -149,7 +150,7 @@ A profile in cl_audit is one Claude setup: a Claude Code folder with its sign-in
 
 ![cl_audit launcher with three Claude profiles and limits](/img/guides/launcher-profiles.webp "The launcher: ⌘↩ opens Terminal with Claude Code set to that profile's folder. Sample data.")
 
-**New profile** takes you through the setup on one page:
+On a Mac with no profile, cl_audit first opens **Set up cl_audit** and makes the default profile on `~/.claude`. **New profile** takes you through each profile after it, on one page:
 
 1. The account. The **Account** pop-up in the Claude Code card lists accounts already signed in to a Claude Code folder no profile uses yet, such as `~/.claude` or the `~/.claude-work` you made by hand. Picking one connects that folder as it is: its sign-in, settings and history stay. Other profiles' accounts are dimmed. For a new account, choose **Sign in to another account…**: cl_audit makes the folder and opens Claude Code's own sign-in in Terminal with the address filled in. The address only fills in the sign-in; the account your browser is signed in to at claude.ai decides, so switch it there first.
 2. The two switches. **Claude window** gives the profile a Claude app window signed in to the same account (quit the Claude app first; this step is only for profiles with a Claude window). **Usage in the Dock** gives it a Dock icon with its usage. With both off, the profile is usage only: its limits show on the dashboard and in alerts, with nothing in the Dock.
