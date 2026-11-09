@@ -1,15 +1,15 @@
 ---
 title: "Multiple Claude accounts on one Mac, side by side | cl_audit"
-description: "Run multiple Claude accounts on one Mac at once, such as work and personal, each with its own Claude window, Claude Code folder and Dock icon."
+description: "Run multiple Claude accounts on one Mac at once, such as work and personal, each with its own sign-in, Claude Code folder and Dock icon."
 h1: "Multiple Claude accounts on one Mac"
 mainKeyword: "multiple claude accounts"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-08
+updated: 2026-11-09
 author: n-uf
 order: 1
 takeaways:
-  - "You can run multiple Claude accounts on one Mac at the same time: cl_audit gives each its own Claude window, Claude Code folder and Dock icon."
+  - "You can run multiple Claude accounts on one Mac at the same time. The first profile is the default one, on ~/.claude with the usual Claude app; each profile you add gets its own Claude window and Claude Code folder."
   - "An account belongs to one profile (checked by account and organisation), so a personal plan and a Team seat on the same email can be two profiles."
   - "Each profile's 5-hour and weekly limits are read separately; cl_audit doesn't pool them. A profile can switch to another of your own accounts, Code sessions included if you choose."
   - "Whether one person may hold more than one Claude account is set by Anthropic's terms, not by cl_audit."
@@ -83,7 +83,7 @@ In cl_audit the unit is a profile: one Claude setup. A profile has a Claude Code
 
 ![cl_audit launcher with three Claude profiles and limits](/img/guides/launcher-profiles.webp "The launcher: every profile with both limits. ⌘1–9 opens its Claude window, ⌘↩ its Terminal. Sample data.")
 
-- **Claude Code folder.** Claude Code keeps its settings and session history in one folder, `~/.claude` by default. Anthropic's docs say that if you set `CLAUDE_CONFIG_DIR`, Claude Code stores them in that folder instead. Each profile has its own folder and its own sign-in.
+- **Claude Code folder.** Claude Code keeps its settings and session history in one folder, `~/.claude` by default. Anthropic's docs say that if you set `CLAUDE_CONFIG_DIR`, Claude Code stores them in that folder instead. Each profile has its own sign-in. The first profile uses `~/.claude`, and each one you add gets a folder of its own, such as `~/.claude-work`.
 - **Claude window.** The profile that uses `~/.claude` opens the usual Claude app. Every other profile gets its own Claude window, with its own sign-in, chats and settings. Each of those windows runs with its own `--user-data-dir`, and that's how cl_audit tells them apart.
 - **Dock icon.** A small app named `cl_audit <profile name>` that shows the profile's 5-hour and weekly usage. By default a click shows the usage for 3 seconds while the profile's Claude window opens.
 
@@ -119,6 +119,8 @@ When the work ends, use **Remove profile…**. It keeps the profile's Claude Cod
 
 You need a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. The Claude app is only needed for Claude windows.
 
+On a Mac with no profile, cl_audit opens **Set up cl_audit** first. It takes a signed-in `~/.claude` (**Use**), or signs Claude Code in to it with **Sign in…**. That first profile is the default profile, on the usual Claude app. The steps below are for each account after it.
+
 1. **Install cl_audit.** Download the disk image, drag cl_audit onto Applications, then open cl_audit. cl_audit isn't signed with an Apple Developer ID yet, so macOS asks once: allow it in System Settings ▸ Privacy & Security with **Open Anyway**. The [install page](/install/) has the steps, and how to build it from source instead.
 2. **Add a profile, starting with the account.** Open Settings ▸ **＋ (New profile)**. The **Account** pop-up in its Claude Code card lists accounts already signed in to an unused Claude Code folder on this Mac. Picking one connects that folder as it is: its sign-in, settings and history stay. Other profiles' accounts are dimmed. For another account, choose **Sign in to another account…**. cl_audit makes a new folder, `~/.claude-<name>`, which can share instructions, agents, skills, commands or memory from another folder, and opens Claude Code's own sign-in in Terminal with the address filled in. The address only fills in the sign-in; the account your browser is signed in to at claude.ai decides, so switch it there first.
 3. **Choose what it includes.** Turn Claude window and Usage in the Dock on or off. If it gets a Claude window, quit the Claude app first, because while it's open it writes its own sign-in and settings. The page lists any open Claude windows and checks again every 2 seconds.
@@ -130,7 +132,7 @@ Repeat for the second account. The dashboard then shows a card for each profile,
 
 ## Claude Code in Terminal for each account
 
-Claude Code in Terminal follows the profile too. Each profile's folder is a `CLAUDE_CONFIG_DIR` folder, and Claude Code saves each folder's login separately in the macOS Keychain. A Claude Code session started for "work" uses the work seat; one started for "home" uses the personal plan.
+Claude Code in Terminal follows the profile too. Each profile after the first runs from its own `CLAUDE_CONFIG_DIR` folder, and Claude Code saves each folder's login separately in the macOS Keychain. The default profile uses plain `~/.claude`, with `CLAUDE_CONFIG_DIR` unset. A Claude Code session started for "work" uses the work seat; one started for "home" uses the personal plan.
 
 On the dashboard, each card has a **Terminal** key. In the launcher, ⌘↩ does the same for the selected profile.
 
