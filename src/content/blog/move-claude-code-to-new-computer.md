@@ -180,7 +180,7 @@ related:
 
 To move Claude Code to a new computer, install it there, sign in again, and then copy the files you wrote: `CLAUDE.md`, `settings.json` with the scripts it runs, and the `skills`, `agents`, `commands` and `output-styles` folders from `~/.claude`, plus `keybindings.json`. Plugins reinstall from their marketplaces, MCP servers you added for yourself are added again, and a project's own `.claude` folder, `CLAUDE.md` and `.mcp.json` arrive with the repository. Your sessions are a separate copy, and your sign-in never goes with any of it.
 
-Anthropic's docs describe each of these files, but not how to migrate Claude Code to a new computer, and we haven't run this copy ourselves. Each step below is what the docs say. The old Mac stays untouched as your fallback until the new one has done real work.
+Anthropic's docs describe each of these files, though none walks through a migration to a new computer, and we haven't run this copy ourselves. Each step below is what the docs say. The old Mac stays untouched as your fallback until the new one has done real work.
 
 ## What to copy when you move Claude Code to a new computer
 
@@ -203,7 +203,7 @@ If you set `CLAUDE_CONFIG_DIR` for a second account, such as `~/.claude-work`, r
 
 ## Before you copy anything
 
-However you transfer Claude Code to another computer, copy; don't cut. Nothing below deletes a file on the old Mac, and none of it needs the old Mac to be signed out.
+Copy; don't cut. Nothing below deletes a file on the old Mac, and none of it needs the old Mac to be signed out.
 
 `settings.json` can hold an `env` block with tokens in it, so decide how the files travel: an external disk or AirDrop is fine, a public repository is not. And `~/.claude` also holds transcripts, caches and logs; the docs say those files are plaintext and that anything a tool read, such as a `.env` file, ends up in them. That is the main reason to copy named files instead of the whole folder.
 
@@ -221,11 +221,11 @@ In Terminal on the old Mac, this lists the folder and changes nothing:
 ls -1 ~/.claude
 ```
 
-Then copy the names you recognise to a disk; here it's called `Transfer`, so put your disk's name in its place. `cp` complains about any name you don't have, which is fine:
+Then copy the names you recognise to a disk you can transfer to the other computer; here it's called `Transfer`, so put your disk's name in its place. `cp` complains about any name you don't have, which is fine:
 
 ```bash
 mkdir -p /Volumes/Transfer/claude-setup
-cd ~/.claude && cp -R CLAUDE.md rules settings.json skills agents commands output-styles keybindings.json /Volumes/Transfer/claude-setup/
+cd ~/.claude && cp -Rn CLAUDE.md rules settings.json skills agents commands output-styles keybindings.json /Volumes/Transfer/claude-setup/
 ```
 
 `skills/synced/` isn't yours to carry: after you sign in with a claude.ai account, Claude Code downloads that account's skills into it. If it comes along, leave it be.
