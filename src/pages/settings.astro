@@ -68,6 +68,8 @@ const jsonLd = [
       pages.querySelectorAll<HTMLElement>("[data-rs]").forEach((s) => (s.hidden = s.dataset.rs !== rs));
       pages.querySelectorAll<HTMLElement>("[data-mv]").forEach((s) => (s.hidden = s.dataset.mv !== mv));
       pages.querySelectorAll<HTMLButtonElement>("[data-mv-go]").forEach((b) => (b.disabled = mv !== "done"));
+      // Into lists the profiles on this Mac: home alone, then work and side once they're made
+      pages.querySelectorAll<HTMLSelectElement>("[data-mv-into]").forEach((s) => (s.innerHTML = (mv === "done" ? ["home", "work", "side"] : ["home"]).map((n) => `<option>${n}</option>`).join("")));
       pages.querySelectorAll<HTMLSelectElement>("[data-sess-file]").forEach((s) => (s.value = s.closest("[data-sp]")?.getAttribute("data-sp") ?? "import"));
       const n = prefs[acc].name.trim() || "this profile";
       root.querySelectorAll<HTMLElement>("[data-pn]").forEach((e) => (e.textContent = n));
