@@ -76,10 +76,10 @@ sources:
     checked: 2026-11-07
     supports: "One line: a Windows PowerShell tool with a backup and restore script, and a script that rebuilds the Code tab's per-account session list."
     quote: "A safe, reversible Windows PowerShell tool"
-  - title: "cl_audit README at tag v26.11.1"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/README.md"
-    checked: 2026-11-07
-    supports: "The Sessions card (Kept here, Keep for and how it writes cleanupPeriodDays, Back up now, backups list), General > Backups, what a backup holds and never holds, APFS clones, the Restore preview, merge-only rules, the receipt, Undo this restore, Undo this switch. README.md:477 (Restore… off) is stale; the code at the tag (Sources/RestorePage.swift, RestoreRunner.swift) has the working Restore page, and its 'Older than' row reads the profile's own cleanupPeriodDays."
+  - title: "cl_audit README at tag v26.11.4"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.4/README.md"
+    checked: 2026-11-09
+    supports: "The Sessions card (Kept here, Keep for and how it writes cleanupPeriodDays, Back up now, backups list, Export… and Import… with Undo last import), General > Backups, what a backup holds and never holds, APFS clones, the Restore preview, merge-only rules, the receipt, Undo this restore, Undo this switch. Export…: a profile's sessions as one file, for another Mac or for keeping, saved where the Save panel says; None: a zip, or an AES-256 encrypted disk image with a password; sessions that hold keys are left out unless you choose Keep them: needs a password. Import…: a preview first, nothing is ever overwritten; Undo last import takes back what it added."
     quote: "Keep for: how long Claude Code keeps its own transcripts"
   - title: "cl_audit CHANGELOG, 26.11.1"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
@@ -229,7 +229,7 @@ Then **Close and restore N** closes only that profile's Claude window and writes
 
 **Undo this restore** takes back exactly what the restore put back, and only files unchanged since. A restored transcript that Claude Code has written to since stays, and the page says so. **Undo this switch…** on the Switch page is the switch back followed by a restore from the backup the switch made.
 
-Sessions also has Export… and Import…; this page doesn't cover them.
+Backups are copies on this Mac, in the folder General ▸ Backups points at. To keep a copy somewhere else, **Export…** writes a profile's sessions as one file, saved where you choose: a zip, or an encrypted disk image with a password if you keep sessions that hold keys (otherwise they stay out). **Import…** adds such a file back after a preview and never overwrites anything; **Undo last import** takes back what it added. {{live:/blog/export-claude-code-sessions/}}Moving sessions to another Mac, by hand or with cl_audit, is covered in [how to export Claude Code sessions](/blog/export-claude-code-sessions/).{{/live}}
 
 cl_audit relies on how Claude Code lays out its folder, and the release notes say 26.11.1 was checked with Claude Code 2.1.318. If a newer Claude Code stops a backup or restore working, update cl_audit.
 
