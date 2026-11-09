@@ -48,6 +48,7 @@ const jsonLd = [
     // page: "" (the settings), "restore", "export", "import" (and "switch", the Switch page). Restore runs preview →
     // run → done, or "refused" while a switch of the profile is unfinished. Sample figures; nothing on this Mac changes.
     let page = "", rs: "preview" | "run" | "done" | "refused" = "preview", bkName = "", rsTimer = 0;
+    let mv: "plan" | "done" = "plan";   // the import of a move: before or after Make 2 profiles
     const madeNow: Record<string, string[]> = {};
     const bkKeep = { last: 3, days: 30 };   // General ▸ Backups
     const backupsOf = (id: AccountId) => [
@@ -61,10 +62,13 @@ const jsonLd = [
       root.querySelector<HTMLElement>("[data-sw-page]")!.hidden = !swOpen;
       if (!swOpen) swi.hideDisplay();
       const pages = root.querySelector<HTMLElement>("[data-sess-pages]")!;
-      const sess = ["restore", "export", "import"].includes(page);
+      const sess = ["restore", "export", "import", "move", "import-move"].includes(page);
       pages.hidden = general || !sess;
       pages.querySelectorAll<HTMLElement>("[data-sp]").forEach((s) => (s.hidden = s.dataset.sp !== page));
       pages.querySelectorAll<HTMLElement>("[data-rs]").forEach((s) => (s.hidden = s.dataset.rs !== rs));
+      pages.querySelectorAll<HTMLElement>("[data-mv]").forEach((s) => (s.hidden = s.dataset.mv !== mv));
+      pages.querySelectorAll<HTMLButtonElement>("[data-mv-go]").forEach((b) => (b.disabled = mv !== "done"));
+      pages.querySelectorAll<HTMLSelectElement>("[data-sess-file]").forEach((s) => (s.value = s.closest("[data-sp]")?.getAttribute("data-sp") ?? "import"));
       const n = prefs[acc].name.trim() || "this profile";
       root.querySelectorAll<HTMLElement>("[data-pn]").forEach((e) => (e.textContent = n));
       root.querySelectorAll<HTMLElement>("[data-bk-name]").forEach((e) => (e.textContent = bkName));
@@ -637,6 +641,13 @@ const jsonLd = [
       }
       if (pick("[data-bk-more]")) { showWhatNow("⋯", "", "Show in Finder, and Delete. This is a demo, so nothing is deleted."); return; }
       if ((b = pick("[data-sess-go]"))) { openPage(b.dataset.sessGo!); return; }
+      if (pick("[data-mv-make]")) { mv = "done"; show(); return; }
+      if (pick("[data-mv-undo]")) {
+        mv = "plan"; show();
+        showWhatNow("Take back the profiles it made", "", "It removes the profiles the import made (those unchanged since), their empty folders and the settings it took. Undo this import comes first if the sessions went in. This is a demo, so nothing changed.");
+        return;
+      }
+      if ((b = pick("[data-mv-dock]"))) { showWhatNow(`Put ${b.dataset.mvDock} in the Dock`, "", "cl_audit builds the profile's Dock icon and adds it to the Dock. This is a demo, so the Dock stays as it is."); return; }
       if (pick("[data-sess-back]")) { openPage(""); return; }
       if (pick("[data-sess-keep]")) {
         const sel = root.querySelector<HTMLSelectElement>('.c-s select[aria-label="Keep for"]'); if (sel) sel.selectedIndex = 1;
@@ -668,7 +679,10 @@ const jsonLd = [
       if ((b = pick("[data-sess-demo]"))) {
         const what = b.dataset.sessDemo!;
         openPage("");
-        showWhatNow(what, "", what === "Export" ? "cl_audit writes one file of this profile's sessions. This is a demo, so nothing is written." : "cl_audit unpacks the file as a backup of this profile, then restores from it. This is a demo, so nothing changed.");
+        showWhatNow(what, "", what === "Export" ? "cl_audit writes one file of this profile's sessions. This is a demo, so nothing is written."
+          : what === "Move" ? "cl_audit writes one encrypted disk image with every profile, its setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings. This is a demo, so nothing is written."
+          : what === "Import a move" ? "home's sessions go in, each Code-tab entry and task under its own account. Then import work's and side's parts from their own Sessions. This is a demo, so nothing changed."
+          : "cl_audit unpacks the file as a backup of this profile, then restores from it. This is a demo, so nothing changed.");
         return;
       }
       if (pick("[data-sb-terminal]")) { showWhatNow("Show Terminal", "", "Terminal comes forward with Claude Code's own sign-in for the new account. This is a demo, so nothing opens."); return; }
@@ -726,6 +740,8 @@ const jsonLd = [
     });
     root.addEventListener("change", (e) => {
       const t = e.target as HTMLSelectElement | HTMLInputElement;
+      // Import's File: an ordinary export, or a move from another Mac (its own page, profiles first)
+      if (t.matches("[data-sess-file]")) { mv = "plan"; openPage(t.value); return; }
       const f = t.dataset.field as keyof Prefs | undefined;
       // Dock icon ▸ Click: with the usage-only choices, Usage panel brings back "Usage, then Claude" (shown as the
       // usage panel until a Claude window may open again), unless a Claude choice is stored that already shows it
