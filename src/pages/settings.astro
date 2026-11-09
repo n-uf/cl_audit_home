@@ -93,6 +93,10 @@ const jsonLd = [
       const want = sessionStorage.getItem("cl_audit.settingsProfile");
       if (want) { sessionStorage.removeItem("cl_audit.settingsProfile"); if (accounts.some((x) => x.id === want)) acc = want as AccountId; }
     } catch {}
+    // links into the move (26.11.10): #move-to-another-mac opens Export ▸ Move to another Mac, #import-a-move the
+    // import of a move on the new Mac; both from home, the profile the new Mac's first run sets up
+    const linked = ({ "#move-to-another-mac": "move", "#import-a-move": "import-move" } as Record<string, string>)[location.hash];
+    if (linked) { general = false; acc = "home" as AccountId; page = linked; }
     const p = () => prefs[acc];
     const who = () => p().name.trim() || "this profile";
     const commit = () => { savePrefs(prefs); applyPrefs(prefs); };
