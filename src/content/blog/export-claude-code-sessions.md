@@ -108,12 +108,12 @@ sources:
     quote: "Move local Codex and Claude Code sessions between machines."
   - title: "cl_audit README at tag v26.11.4"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.4/README.md"
-    checked: 2026-11-09
+    checked: 2026-11-08
     supports: "Settings ▸ the profile ▸ Sessions has Export… and Import…. Export makes the profile's sessions one file, for another Mac or for keeping, in a backup's format (export.json plus backup.json, the window's records, sidebar records, cl_audit's records, transcripts), so settings and skills aren't in it. Export: a preview first (Preview · nothing written yet); from the profile as it is now, one of its backups, or all profiles; sessions that hold keys counted by kind, Leave them out by default or Keep them: needs a password, which forces an AES-256 encrypted disk image; None: a zip, which Finder opens; never in it a sign-in, settings.json or the window's MCP settings; the accounts and addresses cl_audit knows appear as fingerprints, while any other id or address is content, copied as it is. Import: Choose… a .zip or .dmg (an image asks for its password), Into a profile, a preview of New, Already here and Grown on both sides; nothing is ever overwritten; Older than 30 days offers Keep for 90 days; sessions a scheduled task ran are left out and the tasks themselves aren't imported; Undo last import opens Undo this import, which takes back what it added, only files unchanged since; Import restores by the same rules as Restore."
     quote: "makes the profile's sessions one file, for another Mac or for keeping"
   - title: "cl_audit CHANGELOG, 26.11.4"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.4/CHANGELOG.md"
-    checked: 2026-11-09
+    checked: 2026-11-08
     supports: "26.11.4 (8 November 2026): Export works on real data again; it had stopped on any id or address it couldn't explain."
     quote: "Export works on real data again."
 related:
@@ -125,7 +125,7 @@ related:
 
 To export Claude Code sessions, first decide which copy you need. Inside a session, `/export` writes the conversation as plain text, to your clipboard or a file: a copy to read or share, which `claude --resume` can't open. To carry a session on to another Mac, copy its transcript files from `~/.claude/projects` into the same place there, with the project at the same path, after raising `cleanupPeriodDays` on both Macs. Then run `claude --resume`. Your sign-in doesn't travel with the files, and neither does the Claude app's Code-tab list.
 
-Each piece below comes from Anthropic's docs, which don't describe a move between computers. We haven't run this copy between two Macs ourselves, so try it with one project first.
+The `/export` and copy steps below come from Anthropic's docs, which don't describe a move between computers. We haven't run this copy between two Macs ourselves, so try it with one project first.
 
 ## Which copy do you need?
 
@@ -234,13 +234,13 @@ Users have asked Anthropic for a built-in transfer on Claude Code's issue tracke
 
 ## Export… and Import… in cl_audit
 
-With cl_audit on both Macs, a profile's sessions can also travel as one file. It carries sessions, not the rest of the profile's setup. Use 26.11.4 or later: earlier versions' Export stopped on real data.
+With cl_audit on both Macs, a profile's sessions can also travel as one file. It carries sessions, not the rest of the profile's setup. Use 26.11.4 or later: Export in earlier versions stopped on real data.
 
 In Settings ▸ the profile ▸ Sessions, **Export…** opens a page that starts as a preview ("Preview · nothing written yet"). You choose the profile as it is now, one of its backups, or all profiles. Sessions that hold keys (tokens, private keys) are counted by kind and left out by default. **Keep them: needs a password** keeps them, and the file becomes an AES-256 encrypted disk image. Without a password it's a zip, which Finder opens.
 
 **Import…** on the other Mac takes the `.zip` or `.dmg` (an image asks for its password) and the profile to put it into. Its preview says what's new, what's already there and what has grown on both sides. Import only adds; nothing is overwritten. Sessions older than 30 days, which Claude Code's clean-up could delete again, come with a **Keep for 90 days** button. **Undo last import** takes back what it added, leaving any file changed since.
 
-Not in an export: a sign-in, `settings.json`, the Claude window's MCP settings or your skills. Accounts cl_audit knows appear as fingerprints, not addresses or ids; an address typed into a conversation stays as written. Scheduled tasks don't come across: Import leaves out the sessions they ran and doesn't import the tasks themselves. An export is a backup in a file, and Import follows the same rules as the Restore… described in [how to back up Claude Code sessions](/blog/back-up-claude-code-sessions/).
+Not in an export: a sign-in, `settings.json`, the Claude window's MCP settings or your skills. Accounts cl_audit knows appear as fingerprints, not addresses or ids; an address typed into a conversation stays as written. Scheduled tasks are in the file, but Import leaves out the sessions they ran and doesn't import the tasks themselves. A zip also leaves out each Code-tab entry's connection settings; an encrypted disk image keeps them, so keep the image to yourself. An export is a backup in a file, and Import follows the same rules as the Restore… described in [how to back up Claude Code sessions](/blog/back-up-claude-code-sessions/).
 
 ## About cl_audit
 
