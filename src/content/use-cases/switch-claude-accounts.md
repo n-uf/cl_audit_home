@@ -25,13 +25,18 @@ faq:
   - q: "Can I undo a switch?"
     a: "Yes. Cancel switch works while the window closes and until Claude Code has signed in, and puts everything back. Once the profile is on the new account, Undo this switch… switches it back and, if the sessions moved, restores them from the backup the switch made."
   - q: "How is this different from running two accounts side by side?"
-    a: "Side by side means two profiles, each with its own Claude window and Claude Code folder. A switch is one profile changing from one of your accounts to another. Use separate profiles when you need both accounts open at once."
+    a: "Side by side means two profiles. The first uses `~/.claude` and the usual Claude app; the second gets its own Claude window and Claude Code folder. A switch is one profile changing from one of your accounts to another. Use separate profiles when you need both accounts open at once."
 sources:
   - title: "cl_audit README at v26.11.1 (n-uf)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/README.md"
     checked: 2026-11-07
     supports: "Accounts boxes (IN USE, STANDBY), Add account, Sign in to another account…, unlit trays, the Switch page (NOW, TO, Move them?, Backup card), the five steps, Cancel switch, Undo this switch…, alerts and menus, what stays, and that no sign-in is copied."
     quote: "cl_audit never copies or moves a stored sign-in."
+  - title: "cl_audit README at v26.11.10 (n-uf): The default profile, Backups"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
+    checked: 2026-11-09
+    supports: "The first profile is the default profile, on ~/.claude with the usual Claude app, run with CLAUDE_CONFIG_DIR unset; a backup also holds Claude Code's setup and each task's prompt, with settings.json's env values blank."
+    quote: "The default profile is the one on `~/.claude` with the usual Claude app"
   - title: "cl_audit CHANGELOG, 26.11.1"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
     checked: 2026-11-07
@@ -60,7 +65,7 @@ sources:
   - title: "Claude Code docs: Settings"
     url: "https://code.claude.com/docs/en/settings"
     checked: 2026-11-07
-    supports: "CLAUDE_CONFIG_DIR makes Claude Code keep its settings, session history and plugins in another folder, which is what a cl_audit profile's own Claude Code folder is."
+    supports: "CLAUDE_CONFIG_DIR makes Claude Code keep its settings, session history and plugins in another folder, which is what the own Claude Code folder of a cl_audit profile after the first is."
     quote: "Claude Code then stores your settings, session history, and plugins there instead."
   - title: "Claude Code docs: CLI reference"
     url: "https://code.claude.com/docs/en/cli-reference"
@@ -140,7 +145,7 @@ The question **Move them?** is asked every time, and nothing is chosen for you. 
 
 Leave keeps the sessions with the account they belong to. The window shows ultra-2's own, and switching back shows them again. Move takes the window's Code sessions, their scheduled tasks and the sidebar's sections, groups and pins. The sessions keep their ids. cl_audit never overwrites one, and the originals are parked in its own folder, not deleted.
 
-The backup comes first, after the window is known closed and before anything moves. It is an APFS clone, so it takes seconds. It holds the Code-tab list with its scheduled tasks, the sidebar records, cl_audit's own records and, on by default, Claude Code's transcripts. It never holds a sign-in. If it can't be made, the switch stops and nothing moves.
+The backup comes first, after the window is known closed and before anything moves. It is an APFS clone, so it takes seconds. It holds the Code-tab list with its scheduled tasks and their prompts, the sidebar records, cl_audit's own records and, on by default, Claude Code's transcripts. Since 26.11.8 it also holds Claude Code's setup: `CLAUDE.md`, skills, agents, commands, `settings.json` with blank env values, and the plugin list. It never holds a sign-in. If it can't be made, the switch stops and nothing moves.
 
 Groups and pins live on claude.ai, per account. So cl_audit notes which group each session sat in, and the "arrange sidebar" session puts them back with the Claude app's own sidebar tools. Chats and Projects on claude.ai don't move. They belong to each account.
 
@@ -156,7 +161,7 @@ If the account you left is full and its limit resets, one alert says "the other 
 
 A switch changes the account, not the profile. Its name, Dock icon and look stay, and so does its Claude Code folder, with projects, settings, MCP and `CLAUDE.md`.
 
-To switch a Claude Code account and keep its history, that folder is the part that matters. Anthropic's settings page says that with `CLAUDE_CONFIG_DIR` set, Claude Code keeps its settings, session history and plugins in that folder, and a cl_audit profile's own folder works that way. Claude Code stores sessions per project directory, and `claude --continue` and `claude --resume` read them from there. Anthropic's sessions page also says the desktop app keeps its own session list. So the Code tab's sessions are a separate question, and the Switch page asks it.
+To switch a Claude Code account and keep its history, that folder is the part that matters. Anthropic's settings page says that with `CLAUDE_CONFIG_DIR` set, Claude Code keeps its settings, session history and plugins in that folder, and the own folder of every cl_audit profile after the first works that way. The default profile uses `~/.claude`, with the variable unset. Claude Code stores sessions per project directory, and `claude --continue` and `claude --resume` read them from there. Anthropic's sessions page also says the desktop app keeps its own session list. So the Code tab's sessions are a separate question, and the Switch page asks it.
 
 ## Limits stay per account
 
