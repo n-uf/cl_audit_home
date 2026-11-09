@@ -24,7 +24,7 @@ faq:
   - q: "Can I export the history?"
     a: "Yes. The CSV key next to the period saves one row per day, profile and model, with each kind of token and the cost estimate, and it can split rows by project."
   - q: "Is anything uploaded?"
-    a: "No. The history is read from files on your Mac. cl_audit has no server and no analytics. It asks Anthropic for each profile's limits and which account it is signed in to, and what you type in its optional Quick chat goes to Anthropic through Claude Code."
+    a: "Not the history: it is read from files on your Mac. cl_audit has no server and no analytics. It asks Anthropic for each profile's limits and which account it is signed in to, and what you type in its optional Quick chat goes to Anthropic through Claude Code."
 sources:
   - title: "Claude Code docs: Explore the .claude directory (Cleaned up automatically)"
     url: "https://code.claude.com/docs/en/claude-directory"
@@ -57,7 +57,7 @@ related:
   - /use-cases/claude-usage-limit-alerts/
 ---
 
-cl_audit shows your Claude Code usage history from the session files Claude Code already writes on your Mac: when you use Claude, tokens per day, and where they go by project, model and surface (Terminal, the desktop Code tab, VS Code, SDK apps). Nothing is uploaded. cl_audit is an independent tool, not affiliated with Anthropic.
+cl_audit shows your Claude Code usage history from the session files Claude Code already writes on your Mac: when you use Claude, tokens per day, and where they go by project, model and surface (Terminal, the desktop Code tab, VS Code, SDK apps). Your usage history isn't uploaded. cl_audit is an independent tool, not affiliated with Anthropic.
 
 Pick 24 h, 7 d or 30 d and the charts redraw. It's free, and it runs on a Mac with Apple silicon and macOS 13 or later.
 
@@ -141,7 +141,7 @@ Nothing stops you using two of them, or all three.
 
 ## What stays on your Mac
 
-The history is read on your Mac and stays there. cl_audit has no server, no analytics and no sign-up. It makes two kinds of request, both to Anthropic's own server: each profile's usage limits, and which account the profile is signed in to. Besides those, what you type in its optional Quick chat goes to Anthropic too, sent by Claude Code as any Claude Code prompt is. Session files aren't sent anywhere.
+The history is read on your Mac and stays there. cl_audit has no server, no analytics and no sign-up. It makes two kinds of request, both to Anthropic's own server: each profile's usage limits, and which account the profile is signed in to. Besides those, what you type in its optional Quick chat goes to Anthropic through Claude Code, like any Claude Code prompt. Session files aren't sent anywhere.
 
 Those files are plain text and hold whatever passed through a session, so Anthropic's docs suggest lowering `cleanupPeriodDays` if you want them kept for less time. cl_audit reads only the five fields above. It saves the resulting usage figures per profile, and **Remove profile…** deletes them with the profile.
 
