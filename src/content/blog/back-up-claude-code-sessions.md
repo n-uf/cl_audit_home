@@ -91,6 +91,11 @@ sources:
     checked: 2026-11-07
     supports: "Backups before a switch that moves sessions, Back up now, Keep for, Restore and Undo this restore; Export and Import exist in Sessions."
     quote: "Backups of a profile's sessions."
+  - title: "cl_audit CHANGELOG, 26.11.8"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.8/CHANGELOG.md"
+    checked: 2026-11-09
+    supports: "26.11.8 (9 November 2026): Export, Import, Backup and Restore carry Claude Code's setup (CLAUDE.md and the files it includes, skills, agents, commands, output styles, keybindings, settings.json with the scripts its hooks run, the list of installed plugins); Import and Restore leave it out until you pick Add them and add only what is missing, replacing nothing; Undo takes it back."
+    quote: "Claude Code's setup travels: Export, Import, Backup and Restore carry it."
   - title: "cl_audit 26.11.1 release notes"
     url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.1"
     checked: 2026-11-07
@@ -214,7 +219,7 @@ Since 26.11.1 a cl_audit profile's settings have a **Sessions** card after the C
 
 **Keep for.** A pop-up with 30 days (Claude Code's default), 90 days or a year. It writes `cleanupPeriodDays` into that profile's Claude Code folder, in `settings.json`, changing only that number. If the file isn't one it can safely edit (not a JSON object, or the key twice), it refuses and says to set the key by hand. It matters most for Terminal sessions: Claude Code already keeps Claude app ones, bar the exceptions above. If your organisation's managed settings set the number, Keep for shows theirs with a note that changing it here changes nothing; cl_audit reads those settings and never changes them. The "Kept here" line counts what the profile has: sessions in Claude Code, entries in the Claude window, size, and since when. It ends by saying which sessions Claude Code deletes and when.
 
-**Back up now.** A backup is a copy of a profile's sessions on this Mac. It holds Claude Code's transcripts (on by default), the Claude window's Code-tab list with its scheduled tasks, the sidebar records (never the app's MCP settings) and cl_audit's own records. It never holds a sign-in. With the Claude window open, **Back up now** leaves out the Code-tab list and sidebar records, because the window rewrites them from memory, and says to close it first.
+**Back up now.** A backup is a copy of a profile's sessions on this Mac. It holds Claude Code's transcripts (on by default), the Claude window's Code-tab list with its scheduled tasks, the sidebar records (never the app's MCP settings) and cl_audit's own records. Since 26.11.8 it also holds Claude Code's setup: `CLAUDE.md` and the files it includes, skills, agents, commands, output styles, keybindings, `settings.json` with the scripts its hooks run, and the plugin list. It never holds a sign-in. With the Claude window open, **Back up now** leaves out the Code-tab list and sidebar records, because the window rewrites them from memory, and says to close it first.
 
 Backups are APFS clones, so they take seconds and share space with the originals. On the same disk that protects you from the sweep and from mistakes, not from a dead disk. **General ▸ Backups** sets where they go (**Change…** picks a folder) and how many are kept: by default the last 3 of each profile, plus any made in the last 30 days. On another volume it's a full copy, and the list says so.
 
@@ -227,7 +232,8 @@ Backups are APFS clones, so they take seconds and share space with the originals
 - made after the backup, which stays;
 - changed since, which stays as it is now, with the backup's copy only listed;
 - in use, meaning a transcript a running Claude Code session holds, left alone;
-- would be deleted, counting only the transcripts Claude Code's clean-up would delete again: Terminal sessions older than the profile's Keep for time, and Claude app ones only when a limit applies to them or you deleted or archived them there. A **Keep for 90 days** button shows when that would save some of them.
+- would be deleted, counting only the transcripts Claude Code's clean-up would delete again: Terminal sessions older than the profile's Keep for time, and Claude app ones only when a limit applies to them or you deleted or archived them there. A **Keep for 90 days** button shows when that would save some of them;
+- Claude Code's setup, which stays out until you pick **Add them**; then only what's missing is added, and nothing is replaced.
 
 Then **Close and restore N** closes only that profile's Claude window and writes what is missing, keeping a receipt as it goes. **Stop, keep what's back** halts it. If restored sessions sat in groups or were pinned, one Return in a session called "cl_audit · arrange sidebar" arranges the sidebar, as after a switch.
 
