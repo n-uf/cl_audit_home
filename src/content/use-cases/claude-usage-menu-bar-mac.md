@@ -11,7 +11,7 @@ order: 5
 takeaways:
   - "cl_audit can give each Claude profile its own icon in the Mac menu bar. It's off by default: you switch it on per profile in profile settings ▸ Menu bar."
   - "Each icon has six styles (two bars, bars + number, ring, ring + number, number, two numbers) and four colour choices: levels, System, Accent or the profile's colour."
-  - "A click opens the profile's own menu: its limits and reset times, Open Claude window, Refresh now, Dashboard, Profile settings… and Hide from the menu bar."
+  - "A click opens the profile's own menu: its limits and reset times, Quick chat, Open Claude window, Refresh now, Dashboard, Profile settings… and Hide from the menu bar."
   - "cl_audit's background agent draws the icons, so they work with or without Dock icons. The Dock icons are still the main way cl_audit shows usage."
 faq:
   - q: "Can I see my Claude usage in the Mac menu bar?"
@@ -41,6 +41,11 @@ sources:
     checked: 2026-11-07
     supports: "crimson from 95 %, a full limit included, in the menu bar icon and its menu"
     quote: "a vivid crimson (#eb445b) from 95 % up, a full limit included"
+  - title: "cl_audit README at v26.11.3 (n-uf): Quick chat in a profile's menu bar and Dock icon menus"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.3/README.md#quick-chat"
+    checked: 2026-11-08
+    supports: "Quick chat in the menu bar icon's menu, first among its actions (Sources/MenuBar.swift at v26.11.3)"
+    quote: "Quick chat in a profile's menu bar or Dock icon menu, which chats on that profile."
   - title: "Anthropic Help Center: How do usage and length limits work?"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
     checked: 2026-11-05
@@ -135,6 +140,7 @@ A click opens that profile's own menu:
 - its limits and when each resets, Fable's weekly limit included when the plan has one;
 - usage credits, while the profile is spending them;
 - when the figures were read;
+- **Quick chat**, a floating chat over any app that Claude Code answers on that profile's account in use (the [FAQ](/faq/) says more);
 - **Open Claude window**, **Refresh now**, **Dashboard** and **Profile settings…**;
 - **Hide from the menu bar**, which takes that profile's icon away.
 
