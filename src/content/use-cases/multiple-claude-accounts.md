@@ -83,7 +83,7 @@ In cl_audit the unit is a profile: one Claude setup. A profile has a Claude Code
 
 ![cl_audit launcher with three Claude profiles and limits](/img/guides/launcher-profiles.webp "The launcher: every profile with both limits. ⌘1–9 opens its Claude window, ⌘↩ its Terminal. Sample data.")
 
-- **Claude Code folder.** Claude Code keeps its settings and session history in one folder, `~/.claude` by default. Anthropic's docs say that if you set `CLAUDE_CONFIG_DIR`, Claude Code stores them in that folder instead. Each profile has its own sign-in. The first profile uses `~/.claude`, and each one you add gets a folder of its own, such as `~/.claude-work`.
+- **Claude Code folder.** Claude Code keeps its settings and session history in one folder, `~/.claude` by default. Anthropic's docs say that if you set `CLAUDE_CONFIG_DIR`, Claude Code stores them in that folder instead. Each profile has its own folder and sign-in: `~/.claude` for the first, and one such as `~/.claude-work` for each you add.
 - **Claude window.** The profile that uses `~/.claude` opens the usual Claude app. Every other profile gets its own Claude window, with its own sign-in, chats and settings. Each of those windows runs with its own `--user-data-dir`, and that's how cl_audit tells them apart.
 - **Dock icon.** A small app named `cl_audit <profile name>` that shows the profile's 5-hour and weekly usage. By default a click shows the usage for 3 seconds while the profile's Claude window opens.
 
@@ -119,20 +119,18 @@ When the work ends, use **Remove profile…**. It keeps the profile's Claude Cod
 
 You need a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. The Claude app is only needed for Claude windows.
 
-On a Mac with no profile, cl_audit opens **Set up cl_audit** first. It takes a signed-in `~/.claude` (**Use**), or signs Claude Code in to it with **Sign in…**. That first profile is the default profile, on the usual Claude app. The steps below are for each account after it.
-
-1. **Install cl_audit.** Download the disk image, drag cl_audit onto Applications, then open cl_audit. cl_audit isn't signed with an Apple Developer ID yet, so macOS asks once: allow it in System Settings ▸ Privacy & Security with **Open Anyway**. The [install page](/install/) has the steps, and how to build it from source instead.
-2. **Add a profile, starting with the account.** Open Settings ▸ **＋ (New profile)**. The **Account** pop-up in its Claude Code card lists accounts already signed in to an unused Claude Code folder on this Mac. Picking one connects that folder as it is: its sign-in, settings and history stay. Other profiles' accounts are dimmed. For another account, choose **Sign in to another account…**. cl_audit makes a new folder, `~/.claude-<name>`, which can share instructions, agents, skills, commands or memory from another folder, and opens Claude Code's own sign-in in Terminal with the address filled in. The address only fills in the sign-in; the account your browser is signed in to at claude.ai decides, so switch it there first.
+1. **Install cl_audit.** Download the disk image, drag cl_audit onto Applications, then open cl_audit. cl_audit isn't signed with an Apple Developer ID yet, so macOS asks once: allow it in System Settings ▸ Privacy & Security with **Open Anyway**. On a Mac with no profile it opens **Set up cl_audit**: **Use** takes a `~/.claude` that's already signed in, or **Sign in…** signs Claude Code in to it. That's your first account, the default profile, on the usual Claude app. The [install page](/install/) has the steps, and how to build it from source instead.
+2. **Add a profile for the next account.** Open Settings ▸ **＋ (New profile)**. The **Account** pop-up in its Claude Code card lists accounts already signed in to an unused Claude Code folder on this Mac. Picking one connects that folder as it is: its sign-in, settings and history stay. Other profiles' accounts are dimmed. For another account, choose **Sign in to another account…**. cl_audit makes a new folder, `~/.claude-<name>`, which can share instructions, agents, skills, commands or memory from another folder, and opens Claude Code's own sign-in in Terminal with the address filled in. The address only fills in the sign-in; the account your browser is signed in to at claude.ai decides, so switch it there first.
 3. **Choose what it includes.** Turn Claude window and Usage in the Dock on or off. If it gets a Claude window, quit the Claude app first, because while it's open it writes its own sign-in and settings. The page lists any open Claude windows and checks again every 2 seconds.
 4. **Sign in, in two parts.** Claude Code first, then, if the profile has a Claude window, sign that window in to the same claude.ai account. Its Code sidebar starts empty. Last, add the Dock icon, or choose Start reading usage.
 
 You sign in on Anthropic's own screens, and cl_audit never sees the password. An account belongs to one profile; cl_audit checks that by account and organisation ids.
 
-Repeat for the second account. The dashboard then shows a card for each profile, with a switch for its Claude window and one for its Dock icon.
+Repeat steps 2 to 4 for each further account. The dashboard then shows a card for each profile, with a switch for its Claude window and one for its Dock icon.
 
 ## Claude Code in Terminal for each account
 
-Claude Code in Terminal follows the profile too. Each profile after the first runs from its own `CLAUDE_CONFIG_DIR` folder, and Claude Code saves each folder's login separately in the macOS Keychain. The default profile uses plain `~/.claude`, with `CLAUDE_CONFIG_DIR` unset. A Claude Code session started for "work" uses the work seat; one started for "home" uses the personal plan.
+Claude Code in Terminal follows the profile too. The default profile runs it on plain `~/.claude`, with `CLAUDE_CONFIG_DIR` unset; every other profile runs it with `CLAUDE_CONFIG_DIR` set to its own folder. Claude Code saves each folder's login separately in the macOS Keychain. A Claude Code session started for "work" uses the work seat; one started for "home" uses the personal plan.
 
 On the dashboard, each card has a **Terminal** key. In the launcher, ⌘↩ does the same for the selected profile.
 
