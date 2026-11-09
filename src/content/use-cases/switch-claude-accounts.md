@@ -99,7 +99,7 @@ In cl_audit a **profile** is one Claude setup: a Claude Code folder with its sig
 
 Each account gets a box with its address, its plan and organisation ("Ultra · Personal"), and every limit its plan has, drawn as bars like the cards on the [dashboard demo](/dashboard/). The account Main works on is marked **IN USE**. The others are **STANDBY**.
 
-![Accounts boxes in a profile's Claude Code card](/img/guides/accounts-card.webp "The site's demo of the Accounts boxes: one account in use, one on standby. Sample data.")
+![Accounts boxes in a profile's Claude Code card](/img/guides/accounts-card.webp "The site's demo of the Accounts boxes: one account in use, two on standby. Sample data.")
 
 A standby account's limits keep showing. cl_audit reads them from a sign-in kept for that account in a small Claude Code folder of its own, say `~/.claude-ultra-2`, and renews it by itself, so you can see which account has room before you switch.
 
