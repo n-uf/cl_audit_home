@@ -116,11 +116,16 @@ sources:
     checked: 2026-11-09
     supports: "Import's (and Restore's) Would be deleted row counts only the transcripts Claude Code's own clean-up would delete again: terminal sessions older than cleanupPeriodDays, Claude window sessions only when a limit applies or they were deleted or archived in the window; Keep for 90 days is shown only when it would save some of them."
     quote: "only the restored transcripts Claude Code's own clean-up would delete again"
-  - title: "cl_audit CHANGELOG, 26.11.4"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.4/CHANGELOG.md"
-    checked: 2026-11-08
-    supports: "26.11.4 (8 November 2026): Export works on real data again; it had stopped on any id or address it couldn't explain."
-    quote: "Export works on real data again."
+  - title: "cl_audit CHANGELOG, 26.11.8"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.8/CHANGELOG.md"
+    checked: 2026-11-09
+    supports: "26.11.8 (9 November 2026): Export, Import, Backup and Restore carry Claude Code's setup (CLAUDE.md and the files it includes, skills, agents, commands, output styles, keybindings, settings.json with the scripts its hooks run, the list of installed plugins); Export includes it by default; settings.json, its scripts and the plugin marketplaces travel only in the encrypted disk image; Import and Restore leave it out until you pick Add them and add only what is missing; Undo takes it back; an older cl_audit can't open an export made by this one."
+    quote: "Claude Code's setup travels: Export, Import, Backup and Restore carry it."
+  - title: "cl_audit README at tag v26.11.8"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.8/README.md"
+    checked: 2026-11-09
+    supports: "Moving to another Mac: what doesn't move yet is sign-ins, settings.local.json, the window's MCP settings, the scheduled tasks themselves, claude.ai chats and Projects, and cl_audit's own profiles and settings."
+    quote: "What doesn't move yet: sign-ins (log in again on the new Mac)"
 related:
   - /blog/back-up-claude-code-sessions/
   - /blog/claude-sessions-lost-switching-accounts/
@@ -239,13 +244,13 @@ Users have asked Anthropic for a built-in transfer on Claude Code's issue tracke
 
 ## Export… and Import… in cl_audit
 
-With cl_audit on both Macs, a profile's sessions can also travel as one file. It carries sessions, not the rest of the profile's setup. Use 26.11.4 or later: Export in earlier versions stopped on real data.
+With cl_audit on both Macs, a profile's sessions can also travel as one file. Since 26.11.8 the file carries Claude Code's setup too: `CLAUDE.md` and the files it includes, skills, agents, commands, output styles, keybindings, `settings.json` with the scripts its hooks run, and the list of installed plugins. Use 26.11.8 or later on both Macs: an older cl_audit can't open an export made by 26.11.8.
 
-In Settings ▸ the profile ▸ Sessions, **Export…** opens a page that starts as a preview ("Preview · nothing written yet"). You choose the profile as it is now, one of its backups, or all profiles. Sessions that hold keys (tokens, private keys) are counted by kind and left out by default. **Keep them: needs a password** keeps them, and the file becomes an AES-256 encrypted disk image. Without a password it's a zip, which Finder opens.
+In Settings ▸ the profile ▸ Sessions, **Export…** opens a page that starts as a preview ("Preview · nothing written yet"). You choose the profile as it is now, one of its backups, or all profiles. Sessions that hold keys (tokens, private keys) are counted by kind and left out by default. **Keep them: needs a password** keeps them, and the file becomes an AES-256 encrypted disk image. Without a password it's a zip, which Finder opens. The setup goes in by default, but `settings.json`, its scripts and the plugin marketplaces travel only in the encrypted disk image; a zip leaves them out.
 
-**Import…** on the other Mac takes the `.zip` or `.dmg` (an image asks for its password) and the profile to put it into. Its preview says what's new, what's already there and what has grown on both sides. Import only adds; nothing is overwritten. **Would be deleted** counts only the sessions Claude Code's clean-up would delete again (Terminal ones past its time, unless a setting says otherwise), and offers **Keep for 90 days** when that would save some. **Undo last import** takes back what it added, leaving any file changed since.
+**Import…** on the other Mac takes the `.zip` or `.dmg` (an image asks for its password) and the profile to put it into. Its preview says what's new, what's already there and what has grown on both sides. Import only adds; nothing is overwritten. The setup stays out until you pick **Add them**, and then only what's missing is added. **Would be deleted** counts only the sessions Claude Code's clean-up would delete again (Terminal ones past its time, unless a setting says otherwise), and offers **Keep for 90 days** when that would save some. **Undo last import** takes back what it added, leaving any file changed since.
 
-Not in an export: a sign-in, `settings.json`, the Claude window's MCP settings or your skills. Accounts cl_audit knows appear as fingerprints, not addresses or ids; an address typed into a conversation stays as written. Scheduled tasks are in the file, but Import leaves out the sessions they ran and doesn't import the tasks themselves. A zip also leaves out each Code-tab entry's connection settings; an encrypted disk image keeps them, so keep the image to yourself. An export is a backup in a file, and Import follows the same rules as the Restore… described in [how to back up Claude Code sessions](/blog/back-up-claude-code-sessions/).
+Not in an export: a sign-in, `settings.local.json` or the Claude window's MCP settings. Accounts cl_audit knows appear as fingerprints, not addresses or ids; an address typed into a conversation stays as written. Scheduled tasks are in the file, but Import leaves out the sessions they ran and doesn't import the tasks themselves. A zip also leaves out each Code-tab entry's connection settings; an encrypted disk image keeps them, so keep the image to yourself. An export is a backup in a file, and Import follows the same rules as the Restore… described in [how to back up Claude Code sessions](/blog/back-up-claude-code-sessions/).
 
 ## About cl_audit
 
