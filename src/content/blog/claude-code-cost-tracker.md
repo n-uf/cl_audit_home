@@ -163,6 +163,6 @@ For Claude Code cost tracking, match the tool to the question. "What has this se
 
 Whether you need a bigger plan isn't something a cost estimate answers. How often you reach the 5-hour limit, and how close the weekly one gets, does. `/usage` shows both for the account you're signed in to, and cl_audit shows them for every profile, with [an alert at a level you set](/use-cases/claude-usage-limit-alerts/).
 
-One last thing: the files don't last forever. Anthropic's page on the `.claude` directory says Claude Code deletes session transcripts older than `cleanupPeriodDays`, 30 days by default; since v2.1.248 it keeps the ones from the Claude app unless a setting says otherwise. To keep a month on record, save a CSV from cl_audit or a ccusage `--json` report while the files are still there.
+One last thing: the files don't last forever. Anthropic's page on the `.claude` directory says Claude Code deletes session transcripts older than `cleanupPeriodDays`, 30 days by default; since v2.1.248 it keeps the ones from the Claude app, with a few exceptions. To keep a month on record, save a CSV from cl_audit or a ccusage `--json` report while the files are still there.
 
 To try the estimate on your own sessions, [download cl_audit](/install/), or look over the [demo dashboard](/dashboard/) first.
