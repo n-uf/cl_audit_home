@@ -346,7 +346,7 @@ const jsonLd = [orgNode, {
           <div class="sg-k1 key-note">
             <a class="pill dl dim" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
             <span class="divider" aria-hidden="true"></span>
-            <span class="note">cl_audit {version} · {requires} · needs Claude Code</span>
+            <span class="note">cl_audit {version} · {requires} · needs Claude Code (the Claude app's copy works as a fallback)</span>
           </div>
           <div class="sg-k2 key-note">
             <a class="key" href={repo}>GitHub</a>
@@ -356,6 +356,7 @@ const jsonLd = [orgNode, {
           <div class="sg-b1 start-box">
             <div><span class="sb-n">01</span><span>Unzip, move to Applications, open</span></div>
             <div><span class="sb-n">02</span><span>First launch: System Settings ▸ Privacy &amp; Security ▸ <b>Open Anyway</b></span></div>
+            <div><span class="sb-n">03</span><span><b>Set up cl_audit</b>: Claude Code, the account, a name</span></div>
           </div>
           <pre class="sg-b2 code"><code>git clone {repo}.git
 cd cl_audit && ./build.sh</code></pre>
