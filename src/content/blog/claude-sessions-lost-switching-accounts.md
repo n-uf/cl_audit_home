@@ -16,7 +16,7 @@ takeaways:
   - "cl_audit 26.11.1 can move a profile's Code sessions, scheduled tasks and sidebar to another of your accounts. It asks every time, backs up first, and has Cancel switch and Undo this switch…."
 faq:
   - q: "Are my Claude Code sessions deleted when I sign in to another account?"
-    a: "Not by signing in, as far as Anthropic's docs go: they say Claude Code stores transcripts as files under ~/.claude/projects, and nothing there says a sign-in removes them. Claude Code does delete transcripts older than cleanupPeriodDays (30 days by default). From v2.1.248 it keeps sessions you started or last continued in Claude Desktop at any age, unless you set desktopSessionCleanupPeriodDays or managed settings set cleanupPeriodDays."
+    a: "Not by signing in, as far as Anthropic's docs go: they say Claude Code stores transcripts as files under ~/.claude/projects, and nothing there says a sign-in removes them. Claude Code does delete transcripts older than cleanupPeriodDays (30 days by default). From v2.1.248 it keeps sessions you started or last continued in Claude Desktop at any age, unless you set desktopSessionCleanupPeriodDays, managed settings set cleanupPeriodDays, or the HIPAA configuration applies."
   - q: "How do I resume a Claude Code session after switching account?"
     a: "Open Terminal, cd into the project folder and run claude --resume to pick from the list. Press Ctrl+A in the picker to see sessions from every project on the Mac, or run claude --resume with a session ID from any directory. If the sessions lived in a Claude Code folder other than ~/.claude, set CLAUDE_CONFIG_DIR to that folder first."
   - q: "Can I move Claude Code sessions to another account's sidebar?"
@@ -96,10 +96,10 @@ sources:
     checked: 2026-11-07
     supports: "Profiles with several accounts (IN USE, STANDBY), Add account, Sign in to another account…; the Switch page, Move them? asked every time, Close and switch, Cancel switch, Undo this switch…; the order of a switch (only that window closes, backup first, same ids, originals parked, Claude Code sign-in checked, log out and sign in in the window, the 'cl_audit · arrange sidebar' session); what a backup holds and never holds; Restore… with a preview; the claude-code-sessions/<account>/<org> folders; the manual-move advice to quit every Claude window and back up ~/.claude and ~/Library/Application Support/Claude; requirements."
     quote: "cl_audit never copies or moves a stored sign-in."
-  - title: "cl_audit README at tag v26.11.10 (The default profile, Backups)"
+  - title: "cl_audit README at tag v26.11.10 (The default profile, How cl_audit tells what Claude Code deletes, Backups)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
     checked: 2026-11-09
-    supports: "The first profile is the default profile, on ~/.claude; a Claude app session you deleted or archived is cleaned up like the others; a backup also holds each task's prompt and Claude Code's setup, with settings.json's env values blank."
+    supports: "The first profile is the default profile, on ~/.claude; a Claude app session you deleted goes on the normal schedule, an archived one after a grace period; a backup also holds each task's prompt and Claude Code's setup, with settings.json's env values blank; never a sign-in or the window's MCP settings."
     quote: "The default profile is the one on `~/.claude` with the usual Claude app"
   - title: "cl_audit CHANGELOG, 26.11.1 (2026-11-07)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
@@ -133,7 +133,7 @@ The first lists one folder per project. Anthropic's docs say a transcript is sto
 
 The second command lists the Claude app's own Code-tab records. Anthropic doesn't document this folder. A user report (#94507) describes it as `claude-code-sessions/<account id>/<organization id>/local_<session id>.json`, one folder for each account and organization you've used, and cl_audit's README describes the same layout. These files are what the sidebar is built from, not the conversations.
 
-A session can really be gone in two ways. Claude Code deletes transcripts older than `cleanupPeriodDays`, 30 days by default (the minimum is 1). Since Claude Code v2.1.248 it keeps a session you started or last continued in Claude Desktop at any age, unless you set `desktopSessionCleanupPeriodDays`, managed settings set `cleanupPeriodDays`, or the HIPAA configuration applies to your sessions. One you deleted or archived in the Claude app is cleaned up like the rest. The other way is a folder that you or a clean-up tool deleted. If `projects` is empty, a Time Machine backup is the next place to look.
+A session can really be gone in two ways. Claude Code deletes transcripts older than `cleanupPeriodDays`, 30 days by default (the minimum is 1). Since Claude Code v2.1.248 it keeps a session you started or last continued in Claude Desktop at any age, unless you set `desktopSessionCleanupPeriodDays`, managed settings set `cleanupPeriodDays`, or the HIPAA configuration applies to your sessions. cl_audit's README adds that one you delete in the Claude app goes on the normal schedule, and one you archive goes after a grace period. The other way is a folder that you or a clean-up tool deleted. If `projects` is empty, a Time Machine backup is the next place to look.
 
 ## Why Claude Code sessions look lost after switching accounts
 
@@ -185,7 +185,7 @@ Here is what happens when you switch Work from `ultra-1@example.com` to `ultra-2
 
 1. **Add the other account.** In Settings ▸ the profile ▸ Claude Code ▸ **Accounts**, the account in use is marked IN USE and the others STANDBY. **Add account** opens macOS's own menu of accounts found on this Mac; **Sign in to another account…** makes a folder for a new one and opens Claude Code's own sign-in in Terminal.
 2. **Open the Switch page** with the standby account's **Switch account** key. It shows the account in use and the others with their limits, what stays (the profile's name, Dock icon, folder and Claude Code's history) and **Move them?** for the Code sessions, sidebar sections and groups, pins and scheduled tasks. It asks every time and chooses nothing for you: **Move to ultra-2** or **Leave with ultra-1**.
-3. **Close and switch.** Only that profile's Claude window closes. With a move chosen, cl_audit makes a backup first. It's an APFS clone, so it takes seconds, and it holds the Code-tab list with its scheduled tasks and their prompts, the sidebar records, cl_audit's own records and, by default, Claude Code's transcripts. Since 26.11.8 it also holds Claude Code's setup (`CLAUDE.md`, skills, agents, commands, `settings.json` with blank env values, the plugin list). It never holds a sign-in. If the backup can't be made, nothing moves.
+3. **Close and switch.** Only that profile's Claude window closes. With a move chosen, cl_audit makes a backup first. It's an APFS clone, so it takes seconds, and it holds the Code-tab list with its scheduled tasks and their prompts, the sidebar records, cl_audit's own records and, by default, Claude Code's transcripts. It also holds Claude Code's setup (`CLAUDE.md`, skills, agents, commands, `settings.json` with blank env values, the plugin list). It never holds a sign-in or the Claude window's MCP settings. If the backup can't be made, nothing moves.
 4. **The sessions move** with the same ids, written without overwriting anything, and the originals are parked in cl_audit's folder rather than deleted. Claude Code's sign-in then opens in Terminal with the address filled in. You finish it in the browser, and cl_audit checks it's the account you picked. It never copies a sign-in.
 5. **The window opens again.** Log out there and sign in as ultra-2. A session called "cl_audit · arrange sidebar" then opens in it: press Return, and it puts the moved sessions back in their groups and pins them again.
 
