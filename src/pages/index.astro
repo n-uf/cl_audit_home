@@ -56,7 +56,7 @@ const trustFacts: { tab: string; title: string; text: string }[] = [
   { tab: "Read-only, in memory", title: "The saved login is read-only, in memory",
     text: "Claude Code saves its login in the Mac's Keychain. cl_audit reads it the way Claude Code does, with Apple's <code>security</code> tool, so macOS asks nothing. It keeps only the short-lived part, in memory, and never writes, renews or logs it. Any app running as the same user could read it the same way; cl_audit doesn't change that." },
   { tab: "Sent only to Anthropic", title: "It is sent only to Anthropic",
-    text: "The login is used for two requests to Anthropic's own server, <code>api.anthropic.com</code>: the 5-hour and weekly usage, and which account a profile is signed in to. Nothing else leaves the Mac." },
+    text: "The login is used for two requests to Anthropic's own server, <code>api.anthropic.com</code>: the 5-hour and weekly usage, and which account a profile is signed in to. Nothing else leaves the Mac. The one exception is what you type in Quick chat, which Claude Code sends to Anthropic." },
   { tab: "History stays local", title: "Usage history stays on the Mac",
     text: "The charts come from the session files Claude Code already writes on the Mac: only time, model, token counts, project folder and where Claude was used. Nothing is uploaded." },
   { tab: "No server or analytics", title: "No server, analytics or sign-up",
@@ -122,6 +122,7 @@ const jsonLd = [orgNode, {
     "A Dock icon per profile with its 5-hour and weekly usage limits, counting down to the reset when a limit is full",
     "Notifications at a set level, when a limit is full and when it resets",
     "A dashboard with a card per profile: switches for its Claude window and Dock icon, limits read from Anthropic, Claude Code usage history",
+    "Quick chat: a floating Claude chat over any app, answered by Claude Code on the profile's account in use, with no API key",
   ],
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   isAccessibleForFree: true,
@@ -256,11 +257,12 @@ const jsonLd = [orgNode, {
 
     <div class="cols2">
       <div class="card">
-        <h4>Launcher</h4>
+        <h4>Launcher and quick chat</h4>
         <div class="list">
           <div><b>cl_audit icon</b><span>Lists every profile with both limits. Click or ⌘1–9 opens that profile's Claude window.</span></div>
           <div><b>⌘↩</b><span>Opens Terminal with Claude Code set to that profile's folder.</span></div>
           <div><b>Shared files</b><span>A new profile can share CLAUDE.md, agents, skills, commands or memory with another Claude Code folder. Sign-ins and usage stay separate.</span></div>
+          <div><b>Quick chat</b><span>A floating chat over any app: a bar first, then a window that stays floating until Esc hides it. Claude Code answers on the account the profile has in use, so there's no API key. Open it from a shortcut (off until you turn it on) or a profile's menu.</span></div>
         </div>
       </div>
       <div class="card">
