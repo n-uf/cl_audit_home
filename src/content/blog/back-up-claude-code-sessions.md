@@ -236,6 +236,8 @@ To put a session back by hand:
 - **Chats and Projects on claude.ai,** and cloud sessions. They aren't files on your Mac.
 - **A sign-in.** It belongs in neither a copy nor a backup.
 
+![The Sessions card of a profile with its backups](/img/guides/sessions-card.webp "cl_audit's site demo: a profile's Sessions card, with Keep for and its backups. Sample data.")
+
 ## Before you reinstall Claude Code
 
 Anthropic's uninstall steps remove the program. Removing the configuration files is a separate step, which the page warns will "delete all your settings, allowed tools, MCP server configurations, and session history". Before a fresh start without `~/.claude`, or on a new user account, copy what you'd miss:
@@ -246,8 +248,6 @@ Anthropic's uninstall steps remove the program. Removing the configuration files
 - **Sessions, not the sign-in.** Copy `projects/` [by hand, as above](#back-up-claude-code-sessions-by-hand). Leave out `.credentials.json` and the Keychain entry, and sign in again.
 
 {{live:/blog/move-claude-code-to-new-computer/}}For a new Mac, see [how to move Claude Code to a new computer](/blog/move-claude-code-to-new-computer/).{{/live}}
-
-![The Sessions card of a profile with its backups](/img/guides/sessions-card.webp "cl_audit's site demo: a profile's Sessions card, with Keep for and its backups. Sample data.")
 
 ## Do you mean resume, not restore?
 
