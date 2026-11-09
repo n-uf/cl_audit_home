@@ -686,7 +686,7 @@ const jsonLd = [
         const what = b.dataset.sessDemo!;
         openPage("");
         showWhatNow(what, "", what === "Export" ? "cl_audit writes one file of this profile's sessions. This is a demo, so nothing is written."
-          : what === "Move" ? "cl_audit writes one encrypted disk image with every profile, its setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings. This is a demo, so nothing is written."
+          : what === "Move" ? "cl_audit writes one encrypted disk image with every profile, its setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings. Project folders and rewind checkpoints don't travel. This is a demo, so nothing is written."
           : what === "Import a move" ? "home's sessions go in, each Code-tab entry and task under its own account. Then import work's and side's parts from their own Sessions. This is a demo, so nothing changed."
           : "cl_audit unpacks the file as a backup of this profile, then restores from it. This is a demo, so nothing changed.");
         return;
