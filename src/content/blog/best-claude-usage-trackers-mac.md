@@ -5,7 +5,7 @@ h1: "Best Claude usage trackers for Mac (2026)"
 mainKeyword: "best claude usage tracker"
 kind: best-tools
 published: 2026-11-02
-updated: 2026-11-05
+updated: 2026-11-08
 author: n-uf
 takeaways:
   - "Which Claude usage tracker suits you depends on where you want to see your usage: the menu bar, the Dock, the terminal or the browser."
@@ -27,7 +27,8 @@ faq:
 sources:
   - title: "cl_audit README (n-uf)"
     url: "https://github.com/n-uf/cl_audit"
-    checked: 2026-11-02
+    checked: 2026-11-08
+    supports: "no cl_audit server; nothing else goes over the network except what you type in Quick chat (26.11.3), which Claude Code sends to Anthropic"
   - title: "cl_audit home page"
     url: "https://cl-audit.n-uf.com/"
     checked: 2026-11-02
@@ -104,7 +105,7 @@ cl_audit is a free, source-available Mac app. Each profile is one Claude setup: 
 
 ![Dock icons showing three Claude profiles' usage limits](/img/guides/dock-profiles.webp "cl_audit's Dock icons: home at 34% of its 5-hour limit, work full and counting down, side at 12%. Sample data.")
 
-The limits are read from Anthropic for each profile, with that profile's Claude Code sign-in. Usage history comes from Claude Code's session files on your Mac, so it covers the Terminal, the desktop Code tab, VS Code and SDK apps: tokens per day, by project, model and surface. The README says there is no cl_audit server and nothing else goes over the network. You can [try the dashboard demo](/dashboard/) without installing.
+The limits are read from Anthropic for each profile, with that profile's Claude Code sign-in. Usage history comes from Claude Code's session files on your Mac, so it covers the Terminal, the desktop Code tab, VS Code and SDK apps: tokens per day, by project, model and surface. The README says there is no cl_audit server and nothing else goes over the network, apart from what you type into its optional Quick chat, which Claude Code sends to Anthropic. You can [try the dashboard demo](/dashboard/) without installing.
 
 Where it isn't the pick:
 
