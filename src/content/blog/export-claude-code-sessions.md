@@ -137,7 +137,7 @@ Run `/export` in the session. Anthropic's docs say it opens a menu where you cop
 
 It exports the conversation you're in. For an older one, open it with `claude --resume` first.
 
-If you wanted to export a session to Markdown: the docs only say plain text. Open the file and look before you build anything on its layout.
+Looking for Markdown? The docs only say plain text, so open the file and check its layout before you build anything on it.
 
 The result is a transcript rendered for a person to read, not the `.jsonl` file that `claude --resume` loads, so you can't resume from it. Read it before you send it on. Tool outputs are in there, and the docs say a `.env` file that a tool read, or a credential that a command printed, ends up in the transcript.
 

@@ -13,7 +13,7 @@ takeaways:
   - "cl_audit's Quick chat is a bar, then a chat window, floating over any app. Your installed Claude Code answers it on the account the profile has in use."
   - "The shortcut is off until you turn it on in Settings ▸ General ▸ Quick chat. It offers five choices and checks each against macOS's own Space shortcuts and Claude's Quick Entry."
   - "It runs with no tools, no MCP servers, no settings files and no slash commands, so it can't read your files, run commands or see your screen."
-  - "Questions count against that account's limits like any Claude Code use. When a limit is full it offers Switch account… to another account of your own, and you start the switch."
+  - "Questions count against that account's limits like any Claude Code use. cl_audit doesn't pool accounts, and Quick chat doesn't get you past a limit."
   - "Claude's own Quick Entry is the better pick for screenshots, windows, voice and any Claude plan."
 faq:
   - q: "How do I open Quick chat from any app?"
@@ -91,7 +91,7 @@ related:
 
 cl_audit's Quick chat is a Claude Code floating window for the Mac. Press a shortcut and a bar opens over whatever app you're in. Type a question, press Return, and your own installed Claude Code answers it on the account the profile has in use. It is a chat, not an agent: it has no tools, so it can't read your files, run commands or see your screen. Quick chat came with cl_audit 26.11.3, and cl_audit is an independent tool, not affiliated with Anthropic.
 
-It suits a Claude Code quick question, the kind you'd otherwise open Terminal or the Claude window for, like "how do I find which process is using port 3000?" It works the way Spotlight does for files: one key, one question, an answer, and the window out of the way again.
+It suits a quick question, the kind you'd otherwise open Terminal or the Claude window for, like "how do I find which process is using port 3000?" It works the way Spotlight does for files: one key, one question, an answer, and the window out of the way again.
 
 ## Opening the Claude Code floating window
 

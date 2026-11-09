@@ -12,7 +12,7 @@ takeaways:
   - "Claude Quick Entry is part of the Claude app on Mac. By default a double-tap of Option opens a text box over whatever app you're in; Option + Space or a custom shortcut works too."
   - "It can attach a screenshot or an app window to your message, and Caps Lock can start voice dictation, which is off until you turn it on."
   - "It needs the Claude app running (it can stay in the background) and the Accessibility permission. Anthropic lists macOS 12 for Quick Entry but macOS 13 for the app itself, and voice needs macOS 14."
-  - "Option + Space is also the default for ChatGPT's Mac app, and Command-Space opens Spotlight. If two apps want one shortcut, change one of them in its own settings."
+  - "Command-Space opens Spotlight, and other apps may want Option + Space too. If two apps want one shortcut, change one of them in its own settings."
   - "If you work in Claude Code, cl_audit's Quick chat is a separate floating chat that runs Claude Code. Its shortcut is off until you turn it on."
 faq:
   - q: "How do I open Claude Quick Entry on a Mac?"
@@ -80,8 +80,7 @@ related:
 
 Claude Quick Entry is a small box that opens over any Mac app, so you can ask Claude something without switching to its window. By default you open it with a double-tap of the Option key; Option + Space or a shortcut of your own also works. It belongs to the Claude app on Mac (Claude Desktop), it's on every plan, and the app has to be running, though not in front. Below: turning it on, attaching a screenshot or a window, voice, changing or switching off the shortcut, clashes with ChatGPT and Spotlight, and what to check when it won't open.
 
-The facts about Quick Entry here come from [Anthropic's Quick Entry help page](https://support.claude.com/en/articles/12626668-use-quick-entry-with-claude-desktop-on-mac), marked "Updated this week" when we read it on 8 November 2026, and from its install page. That page writes "quick entry" in lower case; the install page capitalises it, and so do we.
-
+The facts about Quick Entry here come from [Anthropic's Quick Entry help page](https://support.claude.com/en/articles/12626668-use-quick-entry-with-claude-desktop-on-mac), marked "Updated this week" when we read it on 8 November 2026, and from its install page.
 ## What Claude Quick Entry does
 
 Anthropic's page lists three things. Instant access: double-tap Option in any app. Visual context: attach a screenshot, or click an application window to attach what it shows. Voice input: press Caps Lock and dictate, with live transcription.
@@ -116,7 +115,7 @@ After that, you manage it in **Settings ▸ Desktop app** (**Settings ▸ System
 
 Then double-tap Option in any app, type, and send. The permissions in the table are in System Settings ▸ Privacy & Security, where Anthropic's page says you can review or change them.
 
-## Claude Quick Entry screenshot and window sharing
+## Attach a screenshot or a window
 
 Both start from the same double-tap.
 
@@ -135,7 +134,7 @@ The voice shortcut is off by default because it takes over your Caps Lock key. T
 
 Voice needs macOS 14 or later and the Speech recognition permission. Anthropic's page says your speech is turned into text, and that text goes to Claude as part of your message, like anything you type.
 
-## Claude Quick Entry shortcut: change it or turn it off
+## Change the shortcut or turn it off
 
 It's one settings page:
 
