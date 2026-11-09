@@ -1,8 +1,8 @@
 ---
-title: "Move Claude Code to a new Mac, with every profile"
-description: "Move Claude Code to a new Mac with cl_audit: sessions, setup, MCP settings, scheduled tasks and profiles in one encrypted file. Sign-ins stay behind."
-h1: "Move Claude Code to a new Mac: sessions, setup and profiles"
-mainKeyword: "move claude code to new mac"
+title: "cl_audit: Move to another Mac, with every profile"
+description: "cl_audit's Move to another Mac puts every profile, its sessions, Claude Code's setup, MCP settings and scheduled tasks in one encrypted file."
+h1: "Move to another Mac: every cl_audit profile in one file"
+mainKeyword: "cl_audit move to another mac"
 kind: use-case
 published: 2026-11-09
 updated: 2026-11-09
@@ -15,7 +15,7 @@ takeaways:
   - "The import only adds what is missing. A profile, a settings.json, MCP settings or a task file that is already on the new Mac stays as it is, and Undo takes the import back in two steps."
   - "Both Macs need cl_audit 26.11.10 or later: 26.11.9 and older can't open a move file."
 faq:
-  - q: "Can I move Claude Code to a new Mac without signing in again?"
+  - q: "Does Move to another Mac carry my sign-ins?"
     a: "No. Sign-ins never travel, neither Claude Code's nor the Claude window's, and cl_audit never reads the Keychain. After the import, sign in to each account with Settings ▸ the profile ▸ Claude Code ▸ Accounts ▸ Add account."
   - q: "Will my scheduled tasks run twice after the move?"
     a: "No. They come with their prompts but arrive paused, so nothing runs on both Macs. Turn each one on in the profile's Claude window, under Scheduled tasks, once that profile is signed in."
@@ -52,7 +52,7 @@ related:
   - /install/
 ---
 
-To move Claude Code to a new Mac with everything around it, export from cl_audit on the old Mac with **Move to another Mac**, copy the one file across, and import it on the new Mac. The file is a password-protected disk image with every profile's sessions, Claude Code's setup, the Claude window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings. Sign-ins stay behind: you sign in to each account again on the new Mac. cl_audit, a free [Claude usage tracker for Mac](/), is an independent tool, not affiliated with Anthropic.
+**Move to another Mac** is how cl_audit takes everything to a new Mac: export with it on the old Mac, copy the one file across, and import it on the new Mac. The file is a password-protected disk image with every profile's sessions, Claude Code's setup, the Claude window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings. Sign-ins stay behind: you sign in to each account again on the new Mac. cl_audit, a free [Claude usage tracker for Mac](/), is an independent tool, not affiliated with Anthropic.
 
 The examples below use the site's sample profiles: **home** on `~/.claude`, **work** with three Team accounts, and **side**. The names and addresses are made up.
 
@@ -94,7 +94,7 @@ Export the profiles as they are now, not from a backup. Backups keep neither the
 
 ![The import of a move after Make 2 profiles](/img/guides/move-import.webp "The site's demo of the import on the new Mac: work and side made, with the next steps for each. Sample data.")
 
-The [settings demo](/settings/) has both pages to click through: Export… then Move to another Mac, and Import… with "a move from another Mac" as the file. Nothing on your Mac changes there.
+The [settings demo](/settings/#move-to-another-mac) opens on the first page; to click through both, it's Export… then Move to another Mac, and Import… with "a move from another Mac" as the file. Nothing on your Mac changes there.
 
 ## After the import: sign in, the Dock, scheduled tasks
 
@@ -116,7 +116,7 @@ Undo is two steps. **Undo this import** on the done page takes back the sessions
 
 A move file, or any export with cl_audit's profiles in it, can't be opened by 26.11.9 or older. Those versions say the file is from a newer cl_audit. Every other export still opens there.
 
-## Moving Claude Code without cl_audit
+## Without cl_audit
 
 Claude Code keeps its transcripts as files, so you can copy them to another Mac yourself, with the projects at the same paths. A plain copy doesn't bring the Claude window's Code-tab list, its scheduled tasks or the way it files them by account. {{live:/blog/export-claude-code-sessions/}}[How to export Claude Code sessions](/blog/export-claude-code-sessions/) walks through the manual copy and `/export`.{{/live}}
 
