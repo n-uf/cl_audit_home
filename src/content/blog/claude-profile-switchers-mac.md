@@ -17,7 +17,7 @@ faq:
   - q: "How do I switch accounts in the Claude desktop app?"
     a: "If your accounts share an email, click your initials in the bottom left corner and pick the other account, as Anthropic's login help page describes. For accounts on different emails the app has no built-in switcher. People sign out and in, use a browser profile or run a second copy of the app with a tool."
   - q: "Is there a Claude Code profile switcher?"
-    a: "Yes, but they work differently from the Claude app ones. claude-multiprofile gives each profile its own Claude Code folder through the CLAUDE_CONFIG_DIR variable, and so does cl_audit for every profile after the first, which uses `~/.claude`. Parall describes a shortcut with a separate HOME folder. The pages for claude-fix and Multi-Claude describe the Claude app only."
+    a: "Yes, but they work differently from the Claude app ones. claude-multiprofile gives each profile its own Claude Code folder through the CLAUDE_CONFIG_DIR variable, and so does cl_audit for every profile after the first, which uses ~/.claude. Parall describes a shortcut with a separate HOME folder. The pages for claude-fix and Multi-Claude describe the Claude app only."
   - q: "Do I need a tool to run two Claude accounts on one Mac?"
     a: "No. You can use a browser profile for the second account or launch a second copy of the Claude app with its own data folder by hand. A tool saves you the setup and adds a Dock icon or a launcher for each profile."
   - q: "Will Anthropic add account switching to the Claude app?"
