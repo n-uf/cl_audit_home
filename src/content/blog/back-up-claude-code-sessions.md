@@ -158,7 +158,7 @@ Two cautions. A longer period only helps sessions that haven't been swept yet; r
 
 ## Back up Claude Code sessions by hand
 
-A longer period leaves the sessions in one place; a copy puts them in two. Copy them before they age out, and again from time to time.
+A longer period leaves the sessions in one place; a copy puts them in two. Copy them before they age out, and again from time to time. {{live:/blog/export-claude-code-sessions/}}Moving them to another Mac is a different job, covered in [how to export Claude Code sessions](/blog/export-claude-code-sessions/).{{/live}}
 
 **Finder.** Choose Go ▸ Go to Folder (⇧⌘G) and type `~/.claude`. Select `projects`, choose Edit ▸ Copy (⌘C), then paste (⌘V) in your backup folder. Don't drag it to a folder on the same disk: that moves it out of Claude Code's reach. A synced folder works, but then the plaintext transcripts sit with that service too.
 
