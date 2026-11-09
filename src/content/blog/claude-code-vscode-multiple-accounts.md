@@ -5,7 +5,7 @@ h1: "Claude Code in VS Code with multiple accounts"
 mainKeyword: "claude code vscode multiple accounts"
 kind: how-to
 published: 2026-11-03
-updated: 2026-11-05
+updated: 2026-11-09
 author: n-uf
 takeaways:
   - "Out of the box, changing account in the Claude Code panel means signing out (Sign out, or /logout) and signing in again."
@@ -68,8 +68,9 @@ sources:
     url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
     checked: 2026-11-02
   - title: "cl_audit README (n-uf/cl_audit): profiles, Claude Code folder, usage history"
-    url: "https://github.com/n-uf/cl_audit"
-    checked: 2026-11-02
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
+    checked: 2026-11-09
+    quote: "The default profile is the one on `~/.claude` with the usual Claude app"
 related:
   - /blog/claude-code-multiple-accounts/
   - /use-cases/multiple-claude-accounts/
@@ -174,7 +175,7 @@ Whether a key from your shell reaches the panel depends on how VS Code started. 
 
 ## Where cl_audit fits
 
-A cl_audit profile is a Claude Code folder with its own sign-in: a `CLAUDE_CONFIG_DIR` folder such as `~/.claude-work`, signed in through Terminal. That's the folder you point VS Code at.
+A cl_audit profile is a Claude Code folder with its own sign-in. The first profile is the default one, on `~/.claude`. Each profile you add after it gets a `CLAUDE_CONFIG_DIR` folder such as `~/.claude-work`, signed in through Terminal. That's the folder you point VS Code at.
 
 cl_audit doesn't change VS Code settings and has no VS Code button. You paste the folder path into the VS Code profile's settings yourself, as in the steps above.
 
