@@ -5,7 +5,7 @@ h1: "Claude desktop profile switchers for Mac, compared"
 mainKeyword: "claude desktop profile switcher"
 kind: comparison
 published: 2026-11-02
-updated: 2026-11-05
+updated: 2026-11-09
 author: n-uf
 takeaways:
   - "The Claude app signs in to one account at a time. Anthropic's help page describes switching only for accounts on the same email."
@@ -17,7 +17,7 @@ faq:
   - q: "How do I switch accounts in the Claude desktop app?"
     a: "If your accounts share an email, click your initials in the bottom left corner and pick the other account, as Anthropic's login help page describes. For accounts on different emails the app has no built-in switcher. People sign out and in, use a browser profile or run a second copy of the app with a tool."
   - q: "Is there a Claude Code profile switcher?"
-    a: "Yes, but they work differently from the Claude app ones. claude-multiprofile and cl_audit give each profile its own Claude Code folder through the CLAUDE_CONFIG_DIR variable, and Parall describes a shortcut with a separate HOME folder. The pages for claude-fix and Multi-Claude describe the Claude app only."
+    a: "Yes, but they work differently from the Claude app ones. claude-multiprofile gives each profile its own Claude Code folder through the CLAUDE_CONFIG_DIR variable, and so does cl_audit for every profile after the first, which uses `~/.claude`. Parall describes a shortcut with a separate HOME folder. The pages for claude-fix and Multi-Claude describe the Claude app only."
   - q: "Do I need a tool to run two Claude accounts on one Mac?"
     a: "No. You can use a browser profile for the second account or launch a second copy of the Claude app with its own data folder by hand. A tool saves you the setup and adds a Dock icon or a launcher for each profile."
   - q: "Will Anthropic add account switching to the Claude app?"
@@ -149,7 +149,7 @@ claude-multiprofile's README has its own comparison table with five more project
 | claude-fix | Launcher apps, each with its own `--user-data-dir` | Not covered in its README | Not described | Free; MIT | macOS and the Claude app |
 | claude-multiprofile | Launcher apps for the Claude app; `CLAUDE_CONFIG_DIR` aliases for Claude Code | Yes | Not described | Free; MIT | macOS for the Claude app; Node 18 or newer |
 | Multi-Claude | A Mac app that makes one real app per profile | Not described | Not described | $20 one-time | macOS 12 or later |
-| cl_audit | A Claude window per profile, plus a Claude Code folder per profile | Yes, one folder and sign-in per profile | Yes: 5-hour and weekly limits, in the Dock and on a dashboard | Free; PolyForm Perimeter 1.0.1 (source-available) | Apple silicon, macOS 13 or later, Claude Code signed in per profile |
+| cl_audit | A Claude window per profile (the first uses the usual Claude app), plus a Claude Code folder per profile | Yes, one sign-in per profile; the first profile uses `~/.claude` | Yes: 5-hour and weekly limits, in the Dock and on a dashboard | Free; PolyForm Perimeter 1.0.1 (source-available) | Apple silicon, macOS 13 or later, Claude Code signed in per profile |
 
 *Sources: each project's own README or home page, and Chrome's help page, read on 2 November 2026. "Not described" means the page doesn't say, not that the tool can't.*
 
