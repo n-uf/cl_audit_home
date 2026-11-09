@@ -176,8 +176,6 @@ Two user reports on Claude Code's issue tracker describe Quick Entry problems on
 
 Quick Entry is a chat with Claude in the Claude app. If most of your day is in Claude Code, our tool has a separate feature: cl_audit's Quick chat, a floating chat that runs Claude Code. cl_audit is a free, source-available Mac app that shows each Claude profile's 5-hour and weekly limits. It's an independent tool, not affiliated with Anthropic.
 
-![cl_audit's Quick chat bar with a question typed](/img/guides/quick-chat-bar.webp "cl_audit's Quick chat bar, drawn by cl_audit from sample data: a question typed, Haiku 5.5, Thinking off, and the profile Main with its week at 62%. Sample data.")
-
 How it works:
 
 - It's a bar first. The first message opens a chat window that stays floating on every Space until Esc hides it.
