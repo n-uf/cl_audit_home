@@ -4,11 +4,11 @@ export const site = "https://cl-audit.n-uf.com";
 
 // The current cl_audit release. Update on each cl_audit release (version from the app's VERSION file,
 // date from its CHANGELOG.md); the footer, the Install page and the structured data read these.
-export const version = "26.11.2";
+export const version = "26.11.3";
 export const released = "2026-11-08";
-export const build = "338";   // the release's build number (About shows "26.11.2 · build 338")
+export const build = "363";   // the release's build number (About shows "26.11.3 · build 363")
 /** SHA-256 of this release's cl_audit.zip (GitHub's asset digest; the hub's release note gives the same). */
-export const sha256 = "16f3326ef3517836f31d383ef00e3fd967e0e585bf8d285b53aecc4c4983f13a";
+export const sha256 = "2e8844646d41abe658e0ee7a8ff3bda868ccb2e0487daede0321c804bef2d92f";
 export const changelog = `${repo}/blob/main/CHANGELOG.md`;
 /** The release stage the site shows next to the version (Overview display and At a glance, Install). Set to ""
  *  when cl_audit leaves alpha and every label goes. GitHub releases stay normal releases: the Download link
