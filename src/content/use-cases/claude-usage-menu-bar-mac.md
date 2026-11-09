@@ -140,7 +140,7 @@ A click opens that profile's own menu:
 - its limits and when each resets, Fable's weekly limit included when the plan has one;
 - usage credits, while the profile is spending them;
 - when the figures were read;
-- **Quick chat**, a floating chat over any app that Claude Code answers on that profile's account in use (the [FAQ](/faq/) says more);
+- **Quick chat**, a floating chat over any app, answered by Claude Code on that profile's account in use (the [FAQ](/faq/) says more);
 - **Open Claude window**, **Refresh now**, **Dashboard** and **Profile settings…**;
 - **Hide from the menu bar**, which takes that profile's icon away.
 
