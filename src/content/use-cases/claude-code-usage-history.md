@@ -28,8 +28,8 @@ faq:
 sources:
   - title: "Claude Code docs: Explore the .claude directory (Cleaned up automatically)"
     url: "https://code.claude.com/docs/en/claude-directory"
-    checked: 2026-11-07
-    supports: "cleanupPeriodDays defaults to 30 days; Desktop and Cowork transcripts kept from v2.1.248"
+    checked: 2026-11-09
+    supports: "cleanupPeriodDays defaults to 30 days; Desktop and Cowork transcripts kept from v2.1.248 unless desktopSessionCleanupPeriodDays is set, managed settings set cleanupPeriodDays or the HIPAA configuration applies; lower cleanupPeriodDays and set desktopSessionCleanupPeriodDays to reduce plaintext exposure"
     quote: "Requires Claude Code v2.1.248 or later; earlier versions delete them after cleanupPeriodDays."
   - title: "Claude Code docs: All settings (cleanupPeriodDays, desktopSessionCleanupPeriodDays)"
     url: "https://code.claude.com/docs/en/settings-reference"
@@ -53,7 +53,7 @@ sources:
   - title: "cl_audit README at v26.11.10 (n-uf): The default profile, How cl_audit tells what Claude Code deletes"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
     checked: 2026-11-09
-    supports: "The first profile is the default profile, on ~/.claude; a session deleted or archived in the Claude window is cleaned up like the others."
+    supports: "The first profile is the default profile, on ~/.claude; a session deleted in the Claude window goes on the normal schedule, an archived one after a grace period."
     quote: "The default profile is the one on `~/.claude` with the usual Claude app"
 related:
   - /
@@ -105,7 +105,7 @@ That source sets two limits.
 
 It's the history of this Mac only. claude.ai chats, other computers and cloud sessions don't write session files here, so their usage isn't in it.
 
-And Claude Code doesn't keep the files forever. Anthropic's docs say it deletes most of them once they're older than `cleanupPeriodDays`, 30 days by default. Since Claude Code v2.1.248, sessions you started or last continued in Claude Desktop or Cowork are kept at any age, unless `desktopSessionCleanupPeriodDays` or your organisation's managed settings set a limit, or the HIPAA configuration applies. A session you deleted or archived in the Claude app is cleaned up like the rest. cl_audit's longest view is 30 days.
+And Claude Code doesn't keep the files forever. Anthropic's docs say it deletes most of them once they're older than `cleanupPeriodDays`, 30 days by default. Since Claude Code v2.1.248, sessions you started or last continued in Claude Desktop or Cowork are kept at any age, unless `desktopSessionCleanupPeriodDays` or your organisation's managed settings set a limit, or the HIPAA configuration applies. cl_audit's README adds that one you delete in the Claude app goes on the normal schedule, and one you archive goes after a grace period. cl_audit's longest view is 30 days.
 
 The history counts tokens. It doesn't say how close you are to a limit: for that, cl_audit reads each profile's 5-hour and weekly limits from Anthropic and shows them on the cards and in the Dock. [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) covers how those turn into alerts.
 
