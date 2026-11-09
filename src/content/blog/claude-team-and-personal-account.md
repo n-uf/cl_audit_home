@@ -5,13 +5,13 @@ h1: "A Claude Team and personal account on one Mac"
 mainKeyword: "claude team and personal account"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-05
+updated: 2026-11-09
 author: n-uf
 takeaways:
   - "Anthropic's help pages treat a personal account and a Team account as separate accounts, with their own usage limits, billing, chats and projects (checked 2 November 2026)."
   - "Team usage limits are per member. They can't be shared or transferred, and each seat is for one named individual."
   - "A personal plan and a Team seat on the same email are two seats. cl_audit counts them as two accounts, and an account belongs to one profile, so each can get its own."
-  - "The Claude app shows one account at a time. With cl_audit, each profile has its own Claude window and its own Claude Code folder, side by side."
+  - "The Claude app shows one account at a time. With cl_audit, the profile on ~/.claude opens the usual Claude app and every other profile has its own Claude window and Claude Code folder, side by side."
   - "cl_audit is free and independent, not affiliated with Anthropic. It doesn't pool limits; a profile can switch to another of your own accounts, and its Code sessions can go along if you choose."
 faq:
   - q: "Can I have a work and personal Claude account?"
@@ -19,7 +19,7 @@ faq:
   - q: "Do a Claude Team and a personal account share usage limits?"
     a: "No. Each account has its own limits. Anthropic says Team limits are per member and can't be transferred or shared between members, and a Pro plan has its own 5-hour and weekly limit."
   - q: "Can I use both accounts in the Claude app at the same time?"
-    a: "Not with the account menu alone: Anthropic's switcher makes one account active at a time. With cl_audit, each profile gets its own Claude window with its own sign-in, so both can be open side by side."
+    a: "Not with the account menu alone: Anthropic's switcher makes one account active at a time. With cl_audit, the profile on `~/.claude` opens the usual Claude app and every other profile gets its own Claude window with its own sign-in, so both can be open side by side."
   - q: "Is my Team account's data separate from my personal account?"
     a: "Yes. Anthropic says data isn't shared between separate accounts. On the Team side, Anthropic's help page says the Primary Owner manages the account and its data and can request data exports, which may contain conversations, uploaded files and usage patterns."
   - q: "Do I need two email addresses?"
@@ -122,7 +122,7 @@ If you only need the second account in a browser, a second browser profile with 
 
 **With cl_audit:**
 
-1. Open cl_audit, go to Settings and choose **＋ (New profile)**. Name it (for example "work").
+1. Open cl_audit. On a Mac with no profile it opens **Set up cl_audit**, which makes your first profile on `~/.claude`. For the other account, go to Settings and choose **＋ (New profile)**. Name it (for example "work").
 2. Start with the account, in the **Account** pop-up of the Claude Code card. It lists accounts already signed in to a Claude Code folder no profile uses yet. Picking one connects that folder as it is: its sign-in, settings and history stay. Accounts other profiles have are dimmed. For an account that isn't listed, choose **Sign in to another account…**. cl_audit makes a new folder such as `~/.claude-work` (it can share instructions, agents, skills, commands or memory from another folder) and opens Claude Code's own sign-in in Terminal with the address filled in. The address only fills in the sign-in form; the account the browser is signed in to at claude.ai decides, so switch it there first.
 3. Choose what it includes with two switches, **Claude window** and **Usage in the Dock**. The profile on `~/.claude` opens the usual Claude app. Any other folder gets its own Claude window, with its own sign-in, chats and settings.
 4. Quit the Claude app before you create or connect the folder. While it's open, it writes its own sign-in and settings. This step only applies to profiles with a Claude window.
@@ -144,7 +144,7 @@ Commenters give their reasons. One wants a hard wall between work and personal f
 Some habits that help, whatever tool you use:
 
 - **Name and colour each profile differently.** In cl_audit a profile has a name, an icon label of up to six letters and its own colour, so you can tell the windows apart. Turning **Show emails** off (Settings ▸ General ▸ Privacy) hides email addresses in cl_audit's own screens, which helps when you share your screen.
-- **Separate Claude Code folders.** Give each profile its own folder, so each keeps its own sign-in. cl_audit can share items such as `CLAUDE.md`, agents, skills, commands or memory from one folder with a new profile; sign-ins and usage stay separate. Share only what belongs on both sides (the [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) guide shows how the folders work). A personal notes file doesn't belong in a work folder.
+- **Separate Claude Code folders.** Give each profile after the first its own folder, so each keeps its own sign-in (the first one sits on `~/.claude`). cl_audit can share items such as `CLAUDE.md`, agents, skills, commands or memory from one folder with a new profile; sign-ins and usage stay separate. Share only what belongs on both sides (the [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) guide shows how the folders work). A personal notes file doesn't belong in a work folder.
 - **Check for an API key.** Anthropic's help page for Claude Code says that if an `ANTHROPIC_API_KEY` environment variable is set, Claude Code uses the key instead of your subscription, and you get API charges rather than the plan's included usage. A profile that uses an API key has no usage limits for cl_audit to show.
 - **Keep personal work out of the Team seat.** The Primary Owner can request data exports, and your organization may have its own policies. Ask your Primary Owner what applies to you.
 - **Watch each seat's limits separately.** Each profile has its own [limit alerts](/use-cases/claude-usage-limit-alerts/): one at a level you set and, with **Notify when back** (on by default), one when a full limit resets. The home page of this [Mac app for Claude usage limits](/) has the rest.
