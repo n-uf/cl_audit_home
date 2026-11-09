@@ -175,7 +175,7 @@ Whether a key from your shell reaches the panel depends on how VS Code started. 
 
 ## Where cl_audit fits
 
-A cl_audit profile is a Claude Code folder with its own sign-in. The first profile is the default one, on `~/.claude`. Each profile you add after it gets a `CLAUDE_CONFIG_DIR` folder such as `~/.claude-work`, signed in through Terminal. That's the folder you point VS Code at.
+A cl_audit profile is a Claude Code folder with its own sign-in. The first, default profile is on `~/.claude`, so its VS Code profile needs no `CLAUDE_CONFIG_DIR` at all. Each profile you add gets a folder such as `~/.claude-work`, signed in through Terminal, and that's the folder you point VS Code at.
 
 cl_audit doesn't change VS Code settings and has no VS Code button. You paste the folder path into the VS Code profile's settings yourself, as in the steps above.
 
