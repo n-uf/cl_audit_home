@@ -19,7 +19,7 @@ faq:
   - q: "Do a Claude Team and a personal account share usage limits?"
     a: "No. Each account has its own limits. Anthropic says Team limits are per member and can't be transferred or shared between members, and a Pro plan has its own 5-hour and weekly limit."
   - q: "Can I use both accounts in the Claude app at the same time?"
-    a: "Not with the account menu alone: Anthropic's switcher makes one account active at a time. With cl_audit, the profile on `~/.claude` opens the usual Claude app and every other profile gets its own Claude window with its own sign-in, so both can be open side by side."
+    a: "Not with the account menu alone: Anthropic's switcher makes one account active at a time. With cl_audit, the profile on ~/.claude opens the usual Claude app and every other profile gets its own Claude window with its own sign-in, so both can be open side by side."
   - q: "Is my Team account's data separate from my personal account?"
     a: "Yes. Anthropic says data isn't shared between separate accounts. On the Team side, Anthropic's help page says the Primary Owner manages the account and its data and can request data exports, which may contain conversations, uploaded files and usage patterns."
   - q: "Do I need two email addresses?"
@@ -144,7 +144,7 @@ Commenters give their reasons. One wants a hard wall between work and personal f
 Some habits that help, whatever tool you use:
 
 - **Name and colour each profile differently.** In cl_audit a profile has a name, an icon label of up to six letters and its own colour, so you can tell the windows apart. Turning **Show emails** off (Settings ▸ General ▸ Privacy) hides email addresses in cl_audit's own screens, which helps when you share your screen.
-- **Separate Claude Code folders.** Give each profile after the first its own folder, so each keeps its own sign-in (the first one sits on `~/.claude`). cl_audit can share items such as `CLAUDE.md`, agents, skills, commands or memory from one folder with a new profile; sign-ins and usage stay separate. Share only what belongs on both sides (the [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) guide shows how the folders work). A personal notes file doesn't belong in a work folder.
+- **Separate Claude Code folders.** Give each profile its own folder, so each keeps its own sign-in. cl_audit can share items such as `CLAUDE.md`, agents, skills, commands or memory from one folder with a new profile; sign-ins and usage stay separate. Share only what belongs on both sides (the [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) guide shows how the folders work). A personal notes file doesn't belong in a work folder.
 - **Check for an API key.** Anthropic's help page for Claude Code says that if an `ANTHROPIC_API_KEY` environment variable is set, Claude Code uses the key instead of your subscription, and you get API charges rather than the plan's included usage. A profile that uses an API key has no usage limits for cl_audit to show.
 - **Keep personal work out of the Team seat.** The Primary Owner can request data exports, and your organization may have its own policies. Ask your Primary Owner what applies to you.
 - **Watch each seat's limits separately.** Each profile has its own [limit alerts](/use-cases/claude-usage-limit-alerts/): one at a level you set and, with **Notify when back** (on by default), one when a full limit resets. The home page of this [Mac app for Claude usage limits](/) has the rest.
