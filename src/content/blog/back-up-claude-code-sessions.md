@@ -206,7 +206,7 @@ The picker shows the current worktree's sessions by default; `Ctrl+A` widens it 
 
 Since 26.11.1 a cl_audit profile's settings have a **Sessions** card after the Claude Code card. The app is free and needs a Mac with Apple silicon and macOS 13 or later; the [install steps](/install/) are short.
 
-**Keep for.** A pop-up with 30 days (Claude Code's default), 90 days or a year. It writes `cleanupPeriodDays` into that profile's Claude Code folder, in `settings.json`, changing only that number. If the file isn't one it can safely edit (not a JSON object, or the key twice), it refuses and says to set the key by hand. It matters most for Terminal sessions: Claude Code already keeps Claude app ones, bar the exceptions above. The "Kept here" line counts what the profile has: sessions in Claude Code, entries in the Claude window, size, and since when.
+**Keep for.** A pop-up with 30 days (Claude Code's default), 90 days or a year. It writes `cleanupPeriodDays` into that profile's Claude Code folder, in `settings.json`, changing only that number. If the file isn't one it can safely edit (not a JSON object, or the key twice), it refuses and says to set the key by hand. It matters most for Terminal sessions: Claude Code already keeps Claude app ones, bar the exceptions above. If your organisation's managed settings set the number, the row shows theirs; cl_audit reads those settings and never changes them. The "Kept here" line counts what the profile has: sessions in Claude Code, entries in the Claude window, size, and since when. It ends by saying which sessions Claude Code deletes and when.
 
 **Back up now.** A backup is a copy of a profile's sessions on this Mac. It holds Claude Code's transcripts (on by default), the Claude window's Code-tab list with its scheduled tasks, the sidebar records (never the app's MCP settings) and cl_audit's own records. It never holds a sign-in. With the Claude window open, **Back up now** leaves out the Code-tab list and sidebar records, because the window rewrites them from memory, and says to close it first.
 
@@ -221,7 +221,7 @@ Backups are APFS clones, so they take seconds and share space with the originals
 - made after the backup, which stays;
 - changed since, which stays as it is now, with the backup's copy only listed;
 - in use, meaning a transcript a running Claude Code session holds, left alone;
-- older than the profile's Keep for time ("Older than 30 days" at the default), which Claude Code's clean-up may delete again, with a **Keep for 90 days** button while it's set shorter.
+- would be deleted, counting only the transcripts Claude Code's clean-up would delete again: Terminal sessions older than the profile's Keep for time, and Claude app ones only under the exceptions above. A **Keep for 90 days** button shows when that would save some of them.
 
 Then **Close and restore N** closes only that profile's Claude window and writes what is missing, keeping a receipt as it goes. **Stop, keep what's back** halts it. If restored sessions sat in groups or were pinned, one Return in a session called "cl_audit · arrange sidebar" arranges the sidebar, as after a switch.
 
