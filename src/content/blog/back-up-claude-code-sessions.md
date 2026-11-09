@@ -81,6 +81,11 @@ sources:
     checked: 2026-11-08
     supports: "The Sessions card (Kept here, Keep for and how it writes cleanupPeriodDays, Back up now, backups list, Export… and Import… with Undo last import), General > Backups, what a backup holds and never holds, APFS clones, the Restore preview, merge-only rules, the receipt, Undo this restore, Undo this switch. Export…: a profile's sessions as one file, for another Mac or for keeping, saved where the Save panel says; None: a zip, or an AES-256 encrypted disk image with a password; sessions that hold keys are left out unless you choose Keep them: needs a password. Import…: a preview first, nothing is ever overwritten; Undo last import takes back what it added."
     quote: "Keep for: how long Claude Code keeps its own transcripts"
+  - title: "cl_audit README at tag v26.11.6"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.6/README.md"
+    checked: 2026-11-09
+    supports: "Kept here ends with when Claude Code deletes the profile's sessions; Keep for shows the number your organisation's managed settings set, which cl_audit reads and never changes; a Claude window session you deleted or archived there is cleaned up like the others (an archived one after a grace period); Restore's Would be deleted row counts only the transcripts Claude Code's own clean-up would delete again, and Keep for 90 days is shown only when it would save some of them."
+    quote: "only the restored transcripts Claude Code's own clean-up would delete again"
   - title: "cl_audit CHANGELOG, 26.11.1"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
     checked: 2026-11-07
@@ -120,6 +125,7 @@ The sweep takes more than transcripts. Anthropic's ".claude directory" page list
 The exceptions:
 
 - **Sessions from the Claude app.** The same page says Claude Code keeps the transcript of a session you started or most recently continued in Claude Desktop (the Claude app) or Cowork at any age, from Claude Code v2.1.248. A separate key, `desktopSessionCleanupPeriodDays`, gives them a limit; each goes once it's older than both keys. A session that only ever ran in Terminal is swept on the normal schedule.
+- **Deleted or archived in the Claude app.** cl_audit's README adds that a Claude app session you deleted or archived there goes on the normal schedule, an archived one after a grace period.
 - **Managed settings.** If your organisation sets `cleanupPeriodDays`, that value applies, to Claude app sessions too. `/status` lists your active settings sources.
 - **Skipped or paused sweeps.** It doesn't run in `claude -p --bare`, and it pauses if Claude Code can't safely work out the retention period, for example when a settings file can't be parsed.
 
@@ -206,7 +212,7 @@ The picker shows the current worktree's sessions by default; `Ctrl+A` widens it 
 
 Since 26.11.1 a cl_audit profile's settings have a **Sessions** card after the Claude Code card. The app is free and needs a Mac with Apple silicon and macOS 13 or later; the [install steps](/install/) are short.
 
-**Keep for.** A pop-up with 30 days (Claude Code's default), 90 days or a year. It writes `cleanupPeriodDays` into that profile's Claude Code folder, in `settings.json`, changing only that number. If the file isn't one it can safely edit (not a JSON object, or the key twice), it refuses and says to set the key by hand. It matters most for Terminal sessions: Claude Code already keeps Claude app ones, bar the exceptions above. If your organisation's managed settings set the number, the row shows theirs; cl_audit reads those settings and never changes them. The "Kept here" line counts what the profile has: sessions in Claude Code, entries in the Claude window, size, and since when. It ends by saying which sessions Claude Code deletes and when.
+**Keep for.** A pop-up with 30 days (Claude Code's default), 90 days or a year. It writes `cleanupPeriodDays` into that profile's Claude Code folder, in `settings.json`, changing only that number. If the file isn't one it can safely edit (not a JSON object, or the key twice), it refuses and says to set the key by hand. It matters most for Terminal sessions: Claude Code already keeps Claude app ones, bar the exceptions above. If your organisation's managed settings set the number, Keep for shows theirs with a note that changing it here wouldn't change it; cl_audit reads those settings and never changes them. The "Kept here" line counts what the profile has: sessions in Claude Code, entries in the Claude window, size, and since when. It ends by saying which sessions Claude Code deletes and when.
 
 **Back up now.** A backup is a copy of a profile's sessions on this Mac. It holds Claude Code's transcripts (on by default), the Claude window's Code-tab list with its scheduled tasks, the sidebar records (never the app's MCP settings) and cl_audit's own records. It never holds a sign-in. With the Claude window open, **Back up now** leaves out the Code-tab list and sidebar records, because the window rewrites them from memory, and says to close it first.
 
@@ -221,7 +227,7 @@ Backups are APFS clones, so they take seconds and share space with the originals
 - made after the backup, which stays;
 - changed since, which stays as it is now, with the backup's copy only listed;
 - in use, meaning a transcript a running Claude Code session holds, left alone;
-- would be deleted, counting only the transcripts Claude Code's clean-up would delete again: Terminal sessions older than the profile's Keep for time, and Claude app ones only under the exceptions above. A **Keep for 90 days** button shows when that would save some of them.
+- would be deleted, counting only the transcripts Claude Code's clean-up would delete again: Terminal sessions older than the profile's Keep for time, and Claude app ones only when a limit applies to them or you deleted or archived them there. A **Keep for 90 days** button shows when that would save some of them.
 
 Then **Close and restore N** closes only that profile's Claude window and writes what is missing, keeping a receipt as it goes. **Stop, keep what's back** halts it. If restored sessions sat in groups or were pinned, one Return in a session called "cl_audit · arrange sidebar" arranges the sidebar, as after a switch.
 
