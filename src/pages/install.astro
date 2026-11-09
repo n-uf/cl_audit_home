@@ -1,6 +1,6 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
-import { repo, version, releasedText, changelog, download, requires, checkedWith, driftNote, stage } from "../data/site";
+import { repo, version, releasedText, changelog, download, requires, checkedWith, driftNote, stage, sha256 } from "../data/site";
 import { orgNode, webPage, breadcrumbs } from "../data/schema";
 
 const title = "Install cl_audit, a free Claude usage app for Mac";
@@ -37,11 +37,21 @@ const jsonLd = [
             <div class="gk-title">Privacy &amp; Security</div>
             <div class="gk-row"><span>“cl_audit” was blocked to protect your Mac.</span><span class="gk-btn">Open Anyway</span></div>
           </div>
+          <p class="t sha">To check the download, run <code>shasum -a 256 ~/Downloads/cl_audit.zip</code>. For cl_audit {version} it prints <code class="sha-v">{sha256}</code>.</p>
+        </div>
+        <div class="card i-1">
+          <h4>First run: Set up cl_audit</h4>
+          <p class="t">With no profile yet, cl_audit opens <b>Set up cl_audit</b>, three steps that each say what they need:</p>
+          <div class="steps">
+            <div><div><b>1 · Claude Code</b><span>Found, with its version and where it is. If it isn't on this Mac, the page shows the official install command with a <b>Copy</b> key, a link to the install page and <b>Check again</b>; it also looks again by itself, so installing Claude Code needs no restart. With only the Claude app, cl_audit can fall back on the copy of Claude Code the app keeps for itself; a real install is preferred.</span></div></div>
+            <div><div><b>2 · The account</b><span>The Claude Code folders on this Mac that are signed in are listed with their address: one click takes one. Or <b>Sign in…</b> opens Claude Code's own browser sign-in in Terminal, and the page goes on by itself once the account shows up.</span></div></div>
+            <div><div><b>3 · Name and colour</b><span>Filled in from the account: a team's name, or the first part of the address. <b>Done</b> adds the profile and opens its settings.</span></div></div>
+          </div>
         </div>
         <div class="card i-4">
-          <h4>Add a profile for each Claude account</h4>
+          <h4>Add a profile for another Claude account</h4>
           <div class="steps">
-            <div><div><b>Settings ▸ ＋ (New profile)</b><span>A page opens with the profile's Claude window and Dock icon switches, the Claude Code card, and the numbered steps.</span></div></div>
+            <div><div><b>Settings ▸ ＋ (New profile)</b><span>After the first profile, you add more here. A page opens with the profile's Claude window and Dock icon switches, the Claude Code card, and the numbered steps.</span></div></div>
             <div><div><b>Pick its account</b><span>Claude Code ▸ <b>Account</b> lists the accounts already signed in to a Claude Code folder on this Mac that no profile uses. Picking one connects that folder as it is: its sign-in, settings and history stay. For any other account, pick <b>Sign in to another account…</b>, type its address and press <b>Sign in</b>: cl_audit makes a new folder, <code>~/.claude-&lt;name&gt;</code>, which can share instructions, agents, skills, commands or memory from another folder.</span></div></div>
             <div><div><b>Choose what it includes</b><span>Two switches: <b>Claude window</b> (with <code>~/.claude</code>, the usual Claude app; with any other folder, its own Claude window, with its own sign-in, chats and settings) and <b>Usage in the Dock</b> (a Dock icon that shows its usage). With both off the profile is usage only: its usage shows on the dashboard, in the launcher and in alerts.</span></div></div>
             <div><div><b>Quit the Claude app until the folder is set up</b><span>Only for a profile with a Claude window: while the Claude app is open, it writes its own sign-in and settings. The page says what's open and checks every 2 seconds. Claude Code in Terminal doesn't get in the way. With no Claude window, the step isn't there.</span></div></div>
@@ -70,6 +80,7 @@ git checkout v{version}   # optional: exactly this release
           <div class="srow"><span>Checked with</span><span class="v">Claude Code {checkedWith.claudeCode} · Claude app {checkedWith.claudeApp}</span></div>
           <div class="srow"><span>Mac</span><span class="v">Apple silicon</span></div>
           <div class="srow"><span>macOS</span><span class="v">13 Ventura or later (the widget: 14 Sonoma)</span></div>
+          <div class="srow"><span>Claude Code</span><span class="v">installed (if only the Claude app is there, cl_audit can use its copy)</span></div>
           <div class="srow"><span>Per profile</span><span class="v">Claude Code, signed in</span></div>
           <div class="srow"><span>Optional</span><span class="v">the Claude app, for Claude windows</span></div>
           <div class="srow"><span>Plans</span><span class="v">Pro, Max, Ultra or Team (plans with usage limits)</span></div>
@@ -101,6 +112,8 @@ git checkout v{version}   # optional: exactly this release
   .card .t + .key-note { margin-top: 12px; }   /* the GitHub key a little apart from the text above it */
   .drift { margin: 10px 0 0; font-size: 12.5px; }
   .dl-row { margin: 2px 0 14px; }
+  .sha { margin: 12px 0 0; font-size: 12.5px; }
+  .sha .sha-v { word-break: break-all; }   /* the 64-character digest wraps on a phone instead of widening the page */
   /* the macOS Privacy & Security row, as macOS draws it */
   .gk { margin: 2px 0 0 46px; border-radius: 9px; background: #2b2b2e; box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 6px 16px rgba(0,0,0,.3); padding: 10px 12px; font-size: 13px; }
   .gk-title { font-weight: 700; margin-bottom: 6px; }
