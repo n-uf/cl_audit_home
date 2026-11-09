@@ -24,7 +24,7 @@ faq:
   - q: "Why doesn't claude --resume show the sessions I copied?"
     a: "Most often the folder name doesn't match: the picker starts with the sessions of the directory you're in, and a different project path gives a different folder name. Check ls ~/.claude/projects, press Ctrl+A in the picker to list every project on the Mac, or resume by session ID from any directory."
   - q: "Does Claude Code have a built-in export and import for sessions?"
-    a: "Anthropic's docs describe /export, which writes plain text, and the session files under ~/.claude/projects, but no built-in way to move sessions between computers. Users have asked for one on Claude Code's issue tracker: #73639 was still open on 8 November 2026, and #18645 was closed as a duplicate."
+    a: "Anthropic's docs describe /export, which writes plain text, and the session files under ~/.claude/projects, but no built-in way to move sessions between computers. Users have asked for one on Claude Code's issue tracker: #73639 was still open on 8 November 2026, and #18645 was closed as a duplicate. cl_audit, an independent Mac app, has its own Export… and Import… for a profile's sessions, described in this article."
 sources:
   - title: "Claude Code docs: Manage sessions (export and locate session data)"
     url: "https://code.claude.com/docs/en/sessions#export-and-locate-session-data"
@@ -106,11 +106,16 @@ sources:
     checked: 2026-11-08
     supports: "What the tool says it is: an unofficial tool (command cct) that moves local Codex and Claude Code sessions between machines as a .codexbundle file; not affiliated with OpenAI or Anthropic; says bundles can contain prompts, code, command output, paths and secrets."
     quote: "Move local Codex and Claude Code sessions between machines."
-  - title: "cl_audit README at tag v26.11.3"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.3/README.md"
-    checked: 2026-11-08
-    supports: "A profile's Sessions card in Settings has Export… and Import… (the one neutral sentence); nothing else about them is used."
-    quote: "Export… opens the Export page"
+  - title: "cl_audit README at tag v26.11.4"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.4/README.md"
+    checked: 2026-11-09
+    supports: "Settings ▸ the profile ▸ Sessions has Export… and Import…. Export makes the profile's sessions one file, for another Mac or for keeping, in a backup's format (export.json plus backup.json, the window's records, sidebar records, cl_audit's records, transcripts), so settings and skills aren't in it. Export: a preview first (Preview · nothing written yet); from the profile as it is now, one of its backups, or all profiles; sessions that hold keys counted by kind, Leave them out by default or Keep them: needs a password, which forces an AES-256 encrypted disk image; None: a zip, which Finder opens; never in it a sign-in, settings.json or the window's MCP settings; the accounts and addresses cl_audit knows appear as fingerprints, while any other id or address is content, copied as it is. Import: Choose… a .zip or .dmg (an image asks for its password), Into a profile, a preview of New, Already here and Grown on both sides; nothing is ever overwritten; Older than 30 days offers Keep for 90 days; sessions a scheduled task ran are left out and the tasks themselves aren't imported; Undo last import opens Undo this import, which takes back what it added, only files unchanged since; Import restores by the same rules as Restore."
+    quote: "makes the profile's sessions one file, for another Mac or for keeping"
+  - title: "cl_audit CHANGELOG, 26.11.4"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.4/CHANGELOG.md"
+    checked: 2026-11-09
+    supports: "26.11.4 (8 November 2026): Export works on real data again; it had stopped on any id or address it couldn't explain."
+    quote: "Export works on real data again."
 related:
   - /blog/back-up-claude-code-sessions/
   - /blog/claude-sessions-lost-switching-accounts/
@@ -120,7 +125,7 @@ related:
 
 To export Claude Code sessions, first decide which copy you need. Inside a session, `/export` writes the conversation as plain text, to your clipboard or a file: a copy to read or share, which `claude --resume` can't open. To carry a session on to another Mac, copy its transcript files from `~/.claude/projects` into the same place there, with the project at the same path, after raising `cleanupPeriodDays` on both Macs. Then run `claude --resume`. Your sign-in doesn't travel with the files, and neither does the Claude app's Code-tab list.
 
-Each piece below comes from Anthropic's docs: `/export`, where the files live, how long they're kept and how resuming finds them. The docs don't describe a move between computers, and we haven't run this copy between two Macs ourselves. Try it with one project first.
+Each piece below comes from Anthropic's docs, which don't describe a move between computers. We haven't run this copy between two Macs ourselves, so try it with one project first.
 
 ## Which copy do you need?
 
@@ -130,6 +135,7 @@ Each piece below comes from Anthropic's docs: `/export`, where the files live, h
 | Carry on a session on another Mac | A copy of its transcript files | The same session, which `claude --resume` opens |
 | Feed sessions to a script | `claude -p --output-format json`, or the `transcript_path` a hook receives | Structured data, per Anthropic's docs |
 | Keep sessions on this Mac past the clean-up | A longer `cleanupPeriodDays` and a backup copy | Covered in a separate article, linked below |
+| Move a profile's sessions as one file | cl_audit's Export… and Import…, near the end | A zip or an encrypted disk image; Import only adds |
 
 ## Export Claude Code sessions one at a time with /export
 
@@ -137,9 +143,9 @@ Run `/export` in the session. Anthropic's docs say it opens a menu where you cop
 
 It exports the conversation you're in. For an older one, open it with `claude --resume` first.
 
-Looking for Markdown? The docs only say plain text, so open the file and check its layout before you build anything on it.
+The docs say plain text, not Markdown, so check the layout before you build on it.
 
-The result is a transcript rendered for a person to read, not the `.jsonl` file that `claude --resume` loads, so you can't resume from it. Read it before you send it on. Tool outputs are in there, and the docs say a `.env` file that a tool read, or a credential that a command printed, ends up in the transcript.
+You can't resume from it: it's rendered for a person to read, not the `.jsonl` file that `claude --resume` loads. Read it before you send it on. Tool outputs are in there, and the docs say a `.env` file that a tool read, or a credential that a command printed, ends up in the transcript.
 
 ## Where Claude Code keeps sessions
 
@@ -160,7 +166,7 @@ If you set `CLAUDE_CONFIG_DIR`, the docs say settings and session history live u
 
 ## First, raise cleanupPeriodDays on both Macs
 
-Claude Code deletes transcripts older than `cleanupPeriodDays`, 30 days by default, in a background sweep that shows no message. On the old Mac, a session can age out while you get ready. On the new Mac, the docs don't say how a copied file's age is judged, so an old session you copy in could go in the next sweep. Set the period before you copy anything, on both Macs.
+Claude Code deletes transcripts older than `cleanupPeriodDays`, 30 days by default, in a background sweep that shows no message. On the old Mac, a session can age out while you get ready. On the new Mac, the docs don't say how a copied file's age is judged, so an old session you copy in could go in the next sweep.
 
 Add the key to `~/.claude/settings.json` (or the one in your `CLAUDE_CONFIG_DIR` folder). If the file already has settings, add this line to them; don't replace the file:
 
@@ -187,7 +193,7 @@ This uses an external disk and Finder: copy and paste, nothing replaced, nothing
 
 The session runs on whichever account Claude Code is signed in to on that Mac; `/status` shows which.
 
-Afterwards, leave the old Mac's copy as it is, and don't copy files back from the new Mac over it. A session you carry on in one place grows there, and an older copy pasted over it would lose the newer part. Don't make a spare copy of a session inside `projects` on either Mac, either: the docs say a hand-copied duplicate makes a resume by ID report not-found. The copy on the disk is plaintext, like the originals, so keep that disk to yourself and remove the copy from it when you're done.
+Afterwards, don't copy files back from the new Mac over the old Mac's copy: a session grows where you carry it on, and an older copy pasted over it loses the newer part. Don't make a spare copy of a session inside `projects` on either Mac, either: the docs say a hand-copied duplicate makes a resume by ID report not-found. The copy on the disk is plaintext, like the originals, so keep that disk to yourself and remove the copy from it when you're done.
 
 If the picker is empty, check these:
 
@@ -224,10 +230,20 @@ If you only want to carry on from a phone or a browser while the Mac stays on, t
 
 Two tools script this, and we haven't tested either. claude-code-migrate, by its README, migrates Claude Code state between machines or rebinds a project's history to another path; it was tested on macOS Tahoe, and its steps copy `~/.claude.json` across before you log in again, which this page doesn't advise. codex-claude-transfer is an unofficial tool whose README describes moving local Codex and Claude Code sessions between machines as one `.codexbundle` file, and warns that a bundle can contain prompts, code, paths and secrets.
 
-Users have asked Anthropic for a built-in transfer: #73639 ("[FEATURE] Transfer session to another claude code instance") was still open on 8 November 2026, and #18645 ("[Feature Request] Session Export/Import for Cross-Machine Portability") was closed as a duplicate on 20 January 2026. Both are user requests, not Anthropic statements.
+Users have asked Anthropic for a built-in transfer on Claude Code's issue tracker: #73639 was still open on 8 November 2026, and #18645 was closed as a duplicate on 20 January 2026. Neither is an Anthropic statement.
+
+## Export… and Import… in cl_audit
+
+With cl_audit on both Macs, a profile's sessions can also travel as one file. It carries sessions, not the rest of the profile's setup. Use 26.11.4 or later: earlier versions' Export stopped on real data.
+
+In Settings ▸ the profile ▸ Sessions, **Export…** opens a page that starts as a preview ("Preview · nothing written yet"). You choose the profile as it is now, one of its backups, or all profiles. Sessions that hold keys (tokens, private keys) are counted by kind and left out by default. **Keep them: needs a password** keeps them, and the file becomes an AES-256 encrypted disk image. Without a password it's a zip, which Finder opens.
+
+**Import…** on the other Mac takes the `.zip` or `.dmg` (an image asks for its password) and the profile to put it into. Its preview says what's new, what's already there and what has grown on both sides. Import only adds; nothing is overwritten. Sessions older than 30 days, which Claude Code's clean-up could delete again, come with a **Keep for 90 days** button. **Undo last import** takes back what it added, leaving any file changed since.
+
+Not in an export: a sign-in, `settings.json`, the Claude window's MCP settings or your skills. Accounts cl_audit knows appear as fingerprints, not addresses or ids; an address typed into a conversation stays as written. Scheduled tasks don't come across: Import leaves out the sessions they ran and doesn't import the tasks themselves. An export is a backup in a file, and Import follows the same rules as the Restore… described in [how to back up Claude Code sessions](/blog/back-up-claude-code-sessions/).
 
 ## About cl_audit
 
 We make cl_audit, a free [Claude usage tracker for Mac](/) that shows each profile's 5-hour and weekly limits, and the [install steps](/install/) are short. It's an independent tool, not affiliated with Anthropic.
 
-Questions about the app are in [the FAQ](/faq/). A profile's Sessions card in cl_audit also has Export… and Import…; this article doesn't cover them.
+Questions about the app are in [the FAQ](/faq/).
