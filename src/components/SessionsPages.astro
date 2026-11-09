@@ -22,10 +22,12 @@
           <div class="srow"><span>In use</span><span class="v-soft"><b>1</b> transcript a running Claude Code session holds: left alone, listed</span></div>
           <div class="srow"><span>Would be deleted <i class="idot" title="Claude Code deletes the transcript of a session once it is older than cleanupPeriodDays (~/.claude/settings.json, 30 by default). A transcript comes back with its real age, so one older than that would be deleted again. Sessions started or last continued in the Claude window aren't counted: Claude Code keeps them at any age (2.1.248 and later), unless you deleted or archived the session in the Claude window (an archived one goes after a grace period). Your organisation's managed settings (or an error in them), HIPAA and zero data retention make the period apply to all of them; cl_audit can't see HIPAA or zero data retention. A project's own .claude/settings.json can also set a shorter period, which cl_audit can't see.">i</i></span><span class="v-soft"><b>9</b>: Claude Code would delete them again. Keep for 90 days would save all of them. <button type="button" class="key k" data-sess-keep>Keep for 90 days</button></span></div>
         </div>
-        <div class="card"><h4>Stays as it is <i class="idot" title="A restore brings back sessions only. It leaves the account, sign-ins, MCP settings and claude.ai alone.">i</i></h4>
+        <div class="card"><h4>Stays as it is <i class="idot" title="Restore only adds what is missing. The account, the sign-ins and claude.ai are not part of it; a file that is here (MCP settings, settings.json, a task file) is never replaced or merged into.">i</i></h4>
           <div class="srow"><span>Account</span><span class="v-soft">The profile stays on the account it's on: a switch changes that</span></div>
-          <div class="srow"><span>Sign-ins</span><span class="v-soft">Never in a backup</span></div>
-          <div class="srow"><span>MCP</span><span class="v-soft">The window's MCP settings: never touched</span></div>
+          <div class="srow"><span>Sign-ins</span><span class="v-soft">Never in a backup, never written</span></div>
+          <div class="srow"><span>MCP</span><span class="v-soft">Not in this Mac's backups: the window's MCP settings travel only in the encrypted export. Yours stay as they are</span></div>
+          <div class="srow"><span>settings.json</span><span class="v-soft">Yours stay; one is added only if none is here and you pick Add them</span></div>
+          <div class="srow"><span>Scheduled tasks</span><span class="v-soft">A task file that is there stays as it is; only a missing one comes back</span></div>
           <div class="srow"><span>claude.ai</span><span class="v-soft">Chats and Projects</span></div>
         </div>
       </div>
