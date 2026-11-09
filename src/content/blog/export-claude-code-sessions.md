@@ -24,7 +24,7 @@ faq:
   - q: "Why doesn't claude --resume show the sessions I copied?"
     a: "Most often the folder name doesn't match: the picker starts with the sessions of the directory you're in, and a different project path gives a different folder name. Check ls ~/.claude/projects, press Ctrl+A in the picker to list every project on the Mac, or resume by session ID from any directory."
   - q: "Does Claude Code have a built-in export and import for sessions?"
-    a: "Anthropic's docs describe /export, which writes plain text, and the session files under ~/.claude/projects, but no built-in way to move sessions between computers. Users have asked for one on Claude Code's issue tracker: #73639 was still open on 8 November 2026, and #18645 was closed as a duplicate. cl_audit, an independent Mac app, has its own Export… and Import… for a profile's sessions, described in this article."
+    a: "Anthropic's docs describe /export, which writes plain text, and the session files under ~/.claude/projects, but no built-in way to move sessions between computers. Users have asked for one on Claude Code's issue tracker: #73639 was still open on 8 November 2026, and #18645 was closed as a duplicate. cl_audit, an independent Mac app, has its own Export… and Import… for a profile's sessions, and a Move to another Mac that takes Claude Code's setup along, described in this article."
 sources:
   - title: "Claude Code docs: Manage sessions (export and locate session data)"
     url: "https://code.claude.com/docs/en/sessions#export-and-locate-session-data"
@@ -58,9 +58,14 @@ sources:
     quote: "Setting `0` fails validation, so pick a large value such as `3650` for long retention."
   - title: "Claude Code docs: Explore the .claude directory (cleaned up automatically, plaintext storage)"
     url: "https://code.claude.com/docs/en/claude-directory#cleaned-up-automatically"
-    checked: 2026-11-08
-    supports: "Transcripts, their subagent and tool-result folders, and file-history/ are deleted once older than cleanupPeriodDays (default 30, minimum 1); auto memory under projects/<project>/memory/ isn't swept; Claude Desktop and Cowork transcripts are kept at any age from v2.1.248 unless desktopSessionCleanupPeriodDays or managed settings apply; the page doesn't say how a file's age is judged. Transcripts are plaintext, and a .env file a tool read or a credential a command printed is written into them; .credentials.json holds login credentials; ~/.claude.json holds account details; file-history/ holds pre-edit snapshots for checkpoint restore."
+    checked: 2026-11-09
+    supports: "Transcripts, their subagent and tool-result folders, and file-history/ are deleted once older than cleanupPeriodDays (default 30, minimum 1); auto memory under projects/<project>/memory/ isn't swept; Claude Desktop and Cowork transcripts are kept at any age from v2.1.248 unless desktopSessionCleanupPeriodDays applies, managed settings set cleanupPeriodDays or the HIPAA configuration applies to your sessions; the page doesn't say how a file's age is judged. Transcripts are plaintext, and a .env file a tool read or a credential a command printed is written into them; .credentials.json holds login credentials; ~/.claude.json holds account details; file-history/ holds pre-edit snapshots for checkpoint restore."
     quote: "Transcripts and history are not encrypted at rest."
+  - title: "Claude Code docs: Explore the .claude directory (personal configuration)"
+    url: "https://code.claude.com/docs/en/claude-directory"
+    checked: 2026-11-09
+    supports: "Files in ~/.claude are personal configuration that applies across all projects: CLAUDE.md, settings.json, skills/, agents/, commands/, output-styles/ and keybindings.json; installed plugins sit in ~/.claude/plugins, managed by claude plugin commands; ~/.claude.json holds app state, account details and personal MCP servers."
+    quote: "files in `~/.claude` are personal configuration that applies across all your projects"
   - title: "Claude Code docs: Environment variables (CLAUDE_CONFIG_DIR)"
     url: "https://code.claude.com/docs/en/env-vars"
     checked: 2026-11-08
@@ -91,11 +96,6 @@ sources:
     checked: 2026-11-08
     supports: "A user's request, not an Anthropic statement: it says there is no official way to export or import sessions between machines. Closed as a duplicate on 20 Jan 2026."
     quote: "There's no official way to export/import Claude Code sessions between machines."
-  - title: "User request on Claude Code's issue tracker: #101522, \"Feature request: path-independent project identity + memory sync across machines\" (open; opened 12 Oct 2026)"
-    url: "https://github.com/anthropics/claude-code/issues/101522"
-    checked: 2026-11-08
-    supports: "A user's request, not an Anthropic statement: the reporter says Claude Code identifies a project by its filesystem path, and asks for a path-independent project identity. Open on the day read."
-    quote: "Claude Code identifies a project by its filesystem path"
   - title: "claude-code-migrate README (emreonal11)"
     url: "https://github.com/emreonal11/claude-code-migrate"
     checked: 2026-11-08
@@ -126,11 +126,16 @@ sources:
     checked: 2026-11-09
     supports: "26.11.9 (9 November 2026): Export carries the Claude window's MCP settings (claude_desktop_config.json) in the encrypted disk image only, and a zip leaves them out; each scheduled task's prompt travels with its task; Import adds the MCP settings only when the profile has none yet, after Add them; imported scheduled tasks come back paused, with the sessions they ran; an export that holds MCP settings or a task's prompt can't be opened by 26.11.8 or older."
     quote: "The Claude window's MCP settings and scheduled tasks travel too."
-  - title: "cl_audit README at tag v26.11.9"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.9/README.md"
+  - title: "cl_audit README at tag v26.11.10"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
     checked: 2026-11-09
-    supports: "Moving to another Mac: what doesn't move yet is sign-ins, settings.local.json, claude.ai chats and Projects, and cl_audit's own profiles and settings; export the profile as it is now, not from a backup, since backups keep neither the MCP settings nor settings.json's env values."
-    quote: "What doesn't move yet: sign-ins (log in again on the new Mac),"
+    supports: "Moving to another Mac: a Move to another Mac key at the top of the Export page sets All profiles, the encrypted disk image, Claude Code's setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings; a move keeps the real account and organisation ids and addresses (no fingerprints) because the Claude window files its Code-tab list and tasks by account folder, which is safe only in the encrypted image, so cl_audit refuses a move as a zip and every other export keeps its fingerprints; sign-ins don't travel (Add account on the new Mac). On the new Mac, Import: project folders at the same paths, or those sessions are added but wait; the cl_audit's profiles card lists the profiles it makes, those already here and the settings that differ (this Mac's kept by default, or Take the file's); Make 2 profiles makes them in folders of their own, not signed in, before Close and import; setup and MCP settings only after Add them; scheduled tasks arrive paused; Undo is two steps, Undo this import then Take back the profiles it made (those unchanged since). Never moves: sign-ins, the Keychain, settings.local.json; claude.ai chats and Projects follow the account. The What moves list names neither project folders nor rewind checkpoints (file-history). Export the profiles as they are now, not from a backup."
+    quote: "Sign-ins don't travel. On the new Mac you sign in again to each account"
+  - title: "cl_audit CHANGELOG, 26.11.10"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/CHANGELOG.md"
+    checked: 2026-11-09
+    supports: "26.11.10 (9 November 2026): the Move to another Mac key; cl_audit's own profiles and settings travel in the encrypted disk image only; Import makes the profiles that aren't on the new Mac, not signed in, and never changes one that is; Undo is two steps; a file with cl_audit's profiles, or a move, can't be opened by 26.11.9 or older, while every other export still opens there."
+    quote: "a move is only ever the password-protected disk image, never a zip"
 related:
   - /blog/back-up-claude-code-sessions/
   - /blog/claude-sessions-lost-switching-accounts/
@@ -150,7 +155,7 @@ The `/export` and copy steps below come from Anthropic's docs, which don't descr
 | Carry on a session on another Mac | A copy of its transcript files | The same session, which `claude --resume` opens |
 | Feed sessions to a script | `claude -p --output-format json`, or the `transcript_path` a hook receives | Structured data, per Anthropic's docs |
 | Keep sessions on this Mac past the clean-up | A longer `cleanupPeriodDays` and a backup copy | Covered in a separate article, linked below |
-| Move a profile's sessions as one file | cl_audit's Export… and Import…, near the end | A zip or an encrypted disk image; Import only adds |
+| Move a profile's sessions as one file | cl_audit's Export… and Import…, or its Move to another Mac, near the end | A zip or an encrypted disk image (a move is only the image); Import only adds |
 
 ## Export Claude Code sessions one at a time with /export
 
@@ -158,9 +163,7 @@ Run `/export` in the session. Anthropic's docs say it opens a menu where you cop
 
 It exports the conversation you're in. For an older one, open it with `claude --resume` first.
 
-The docs say plain text, not Markdown, so check the layout before you build on it.
-
-You can't resume from it: it's rendered for a person to read, not the `.jsonl` file that `claude --resume` loads. Read it before you send it on. Tool outputs are in there, and the docs say a `.env` file that a tool read, or a credential that a command printed, ends up in the transcript.
+You can't resume from it: it's rendered for a person to read, not the `.jsonl` file that `claude --resume` loads. Tool outputs are in there, and the docs say a `.env` file that a tool read, or a credential that a command printed, ends up in the transcript.
 
 ## Where Claude Code keeps sessions
 
@@ -191,7 +194,7 @@ Add the key to `~/.claude/settings.json` (or the one in your `CLAUDE_CONFIG_DIR`
 }
 ```
 
-Settings files are strict JSON, so a comment or a trailing comma is an error; `/status` shows which settings files loaded. A longer period can't bring back a session that's already gone. Claude Code 2.1.248 and later keep sessions you started or last continued in the Claude app at any age, unless `desktopSessionCleanupPeriodDays` or managed settings say otherwise. What the sweep takes and how to keep a copy on one Mac is in [how to back up Claude Code sessions](/blog/back-up-claude-code-sessions/).
+Settings files are strict JSON, so a comment or a trailing comma is an error; `/status` shows which settings files loaded. A longer period can't bring back a session that's already gone. Claude Code 2.1.248 and later keep sessions you started or last continued in the Claude app at any age, unless `desktopSessionCleanupPeriodDays` or your organisation's settings say otherwise. What the sweep takes and how to keep a copy on one Mac is in [how to back up Claude Code sessions](/blog/back-up-claude-code-sessions/).
 
 ## Transfer Claude Code sessions to another Mac, step by step
 
@@ -203,7 +206,7 @@ This uses an external disk and Finder: copy and paste, nothing replaced, nothing
 4. **Copy from the old Mac to the disk.** In Finder, choose Go ▸ Go to Folder (⇧⌘G) and type `~/.claude/projects`. Select the folder named after your project, choose Edit ▸ Copy (⌘C), open the disk, and paste (⌘V). The old Mac keeps its own files, untouched; they're your fallback.
 5. **Paste into the new Mac.** Go to `~/.claude/projects` the same way. If Finder can't find it, open `~/.claude` and make a new folder there called `projects`.
    - No folder with that name yet: paste the project's folder from the disk.
-   - A folder with that name already exists (you've used Claude Code in this project here): don't paste the folder over it. Open both, copy everything inside the disk's copy, and paste into the existing folder. If Finder says an item already exists, choose **Skip** or **Stop**. Never **Replace**, which throws away the new Mac's version, and not **Keep Both**, which leaves two copies of one session.
+   - A folder with that name already exists (you've used Claude Code in this project here): don't paste the folder over it. Open both, copy all the files inside the disk's copy, and paste into the existing folder. If Finder says an item already exists, choose **Skip** or **Stop**. Never **Replace**, which throws away the new Mac's version, and not **Keep Both**, which leaves two copies of one session.
 6. **Resume.** `cd` into the project and run `claude --resume`. Type to search, press Space to preview a session and Enter to resume it. `claude --continue` reopens the most recent session in that directory, and `claude --resume <session-id>` skips the picker; the ID is the file name without `.jsonl`.
 
 The session runs on whichever account Claude Code is signed in to on that Mac; `/status` shows which.
@@ -219,7 +222,7 @@ If the picker is empty, check these:
 
 ## If the path or user name is different
 
-Giving the project the same path on both Macs is the simplest fix. When the user names differ, that isn't always possible, and the copied folder carries the old path's name.
+When the user names differ, the same path isn't always possible, and the copied folder carries the old path's name.
 
 What Anthropic's docs describe, for sessions in general:
 
@@ -228,7 +231,7 @@ What Anthropic's docs describe, for sessions in general:
 - In the picker, after `Ctrl+A`, picking a session from another project whose directory no longer exists resumes it in your current directory.
 - `/cd <path>` moves a session to a new working directory, keeping the conversation, and relocates it to that directory's storage, so it shows in that directory's picker afterwards.
 
-What they don't say is how any of this behaves for a session copied from another Mac, or whether paths recorded inside the transcript still point at the old user's folder. We haven't tried it. Resume one session, check which directory it's working in, and only then let it change files. A user request on Claude Code's issue tracker, #101522 ("Feature request: path-independent project identity + memory sync across machines", open on 8 November 2026), asks for projects to be identified by something other than their path.
+What they don't say is how any of this behaves for a session copied from another Mac, or whether paths recorded inside the transcript still point at the old user's folder. We haven't tried it. Resume one session, check which directory it's working in, and only then let it change files.
 
 ## What doesn't move this way
 
@@ -239,23 +242,23 @@ What they don't say is how any of this behaves for a session copied from another
 - **Cloud sessions.** They aren't files on your Mac; the docs describe `claude --teleport` for resuming one locally.
 - **Anyone else's sessions.** Transcripts hold prompts, file contents and whatever commands printed. Move your own.
 
-If you only want to carry on from a phone or a browser while the Mac stays on, the docs describe Remote Control for that. Nothing moves.
+If you only want to carry on from a phone or a browser while the Mac stays on, the docs describe Remote Control for that. Nothing moves. {{live:/blog/move-claude-code-to-new-computer/}}Your setup isn't in `projects` either: [moving Claude Code to a new computer](/blog/move-claude-code-to-new-computer/) covers copying `CLAUDE.md`, `settings.json`, skills and agents.{{/live}}
 
 ## Third-party tools
 
-Two tools script this, and we haven't tested either. claude-code-migrate, by its README, migrates Claude Code state between machines or rebinds a project's history to another path; it was tested on macOS Tahoe, and its steps copy `~/.claude.json` across before you log in again, which this page doesn't advise. codex-claude-transfer is an unofficial tool whose README describes moving local Codex and Claude Code sessions between machines as one `.codexbundle` file, and warns that a bundle can contain prompts, code, paths and secrets.
+Two tools script this, and we haven't tested either. claude-code-migrate, by its README, migrates Claude Code state between machines or rebinds a project's history to another path; its steps copy `~/.claude.json` across before you log in again, which this page doesn't advise. codex-claude-transfer is an unofficial tool whose README describes moving local Codex and Claude Code sessions between machines as one `.codexbundle` file, and warns that a bundle can contain secrets.
 
-Users have asked Anthropic for a built-in transfer on Claude Code's issue tracker: #73639 was still open on 8 November 2026, and #18645 was closed as a duplicate on 20 January 2026. Neither is an Anthropic statement.
+## Export…, Import… and Move to another Mac in cl_audit
 
-## Export… and Import… in cl_audit
+With cl_audit on both Macs, a profile's sessions can also travel as one file. Since 26.11.8 it carries Claude Code's setup (`CLAUDE.md` and the files it includes, skills, agents, commands, output styles, keybindings, `settings.json` with its hooks' scripts, the plugin list), and since 26.11.9 the Claude window's MCP settings and scheduled tasks with their prompts. To take cl_audit's own profiles and settings along too, 26.11.10 adds **Move to another Mac**; the [settings demo](/settings/#move-to-another-mac) shows its page. Your project folders and rewind checkpoints don't travel, so put the folders on the new Mac at the same paths first, or the moved sessions can't be picked up again.
 
-With cl_audit on both Macs, a profile's sessions can also travel as one file. Since 26.11.8 the file carries Claude Code's setup too: `CLAUDE.md` and the files it includes, skills, agents, commands, output styles, keybindings, `settings.json` with the scripts its hooks run, and the list of installed plugins. Since 26.11.9 it also carries the Claude window's MCP settings (encrypted disk image only) and scheduled tasks with their prompts. Use 26.11.9 on both Macs: 26.11.8 and older can't open an export that holds MCP settings or a task's prompt. To take everything at once, cl_audit's own profiles included, 26.11.10 adds **Move to another Mac**; the [settings demo](/settings/#move-to-another-mac) shows its page.
+The move is a key at the top of the Export page that sets all profiles, the encrypted disk image and each of those parts. It keeps your accounts' real ids, so each Code-tab entry and task goes back under its own account; that's why it is only ever the password-protected disk image, never a zip. Use 26.11.10 on both Macs: 26.11.9 and older can't open a move or a file with cl_audit's profiles, and 26.11.8 and older can't open one with MCP settings or a task's prompt.
 
-In Settings ▸ the profile ▸ Sessions, **Export…** opens a page that starts as a preview ("Preview · nothing written yet"). You choose the profile as it is now, one of its backups, or all profiles. Sessions that hold keys (tokens, private keys) are counted by kind and left out by default. **Keep them: needs a password** keeps them, and the file becomes an AES-256 encrypted disk image. Without a password it's a zip, which Finder opens. The setup goes in by default, but `settings.json`, its scripts, the plugin marketplaces and the window's MCP settings travel only in the encrypted disk image, as does any skill, agent or command that holds a script a hook runs; a zip leaves them out. Export the profile as it is now rather than from a backup: backups keep neither the MCP settings nor the values under `env` in `settings.json`.
+**Export…** (Settings ▸ the profile ▸ Sessions) starts as a preview. Export the profile as it is now, not a backup: backups keep neither the MCP settings nor the values under `env` in `settings.json`. Sessions that hold keys are left out unless you pick **Keep them: needs a password**, which makes the file an AES-256 encrypted disk image. Without a password it's a zip, which Finder opens. `settings.json`, its scripts, the plugin marketplaces, the MCP settings and any skill, agent or command holding a hook's script travel only in the image.
 
-**Import…** on the other Mac takes the `.zip` or `.dmg` (an image asks for its password) and the profile to put it into. Its preview says what's new, what's already there and what has grown on both sides. Import only adds; nothing is overwritten. The setup, the MCP settings and the scheduled tasks each stay out until you pick **Add them**, and then only what's missing is added. MCP settings go in only if the profile has none yet, and tasks come back paused, so nothing runs twice. A task file that's already there stays as it is. Turn each task on in the Claude window's scheduled tasks. **Would be deleted** counts only the sessions Claude Code's clean-up would delete again (Terminal ones past its time, unless a setting says otherwise), and offers **Keep for 90 days** when that would save some. **Undo last import** takes back what it added, leaving any file changed since.
+**Import…** on the other Mac takes the `.zip` or `.dmg` (an image asks for its password) and the profile to put it into. It only adds, after a preview; nothing is overwritten. For a move, a **cl_audit's profiles** card lists the profiles it would make and the settings that differ. **Make 2 profiles** makes them, not signed in, since sign-ins never travel (sign in with **Add account**), and your settings stay unless you pick **Take the file's**. The setup, the MCP settings and the scheduled tasks stay out until you pick **Add them**, and then only what's missing is added: MCP settings only if the profile has none yet, and tasks paused, so nothing runs twice. **Undo last import** takes back what it added, leaving any file changed since; after a move, **Take back the profiles it made** is the second step.
 
-Not in an export: a sign-in or `settings.local.json`. Accounts cl_audit knows appear as fingerprints, not addresses or ids; an address typed into a conversation stays as written. A zip also leaves out each Code-tab entry's connection settings; an encrypted disk image keeps them, so keep the image to yourself. An export is a backup in a file, and Import follows the same rules as the Restore… described in [how to back up Claude Code sessions](/blog/back-up-claude-code-sessions/).
+Not in an export: a sign-in or `settings.local.json`. Except in a move, accounts cl_audit knows appear as fingerprints, not addresses or ids; an address typed into a conversation stays as written. A zip also leaves out each Code-tab entry's connection settings; the image keeps them, so keep it to yourself. Import follows the same rules as the Restore… in [how to back up Claude Code sessions](/blog/back-up-claude-code-sessions/).
 
 ## About cl_audit
 
