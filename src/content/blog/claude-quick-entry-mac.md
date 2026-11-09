@@ -81,6 +81,7 @@ related:
 Claude Quick Entry is a small box that opens over any Mac app, so you can ask Claude something without switching to its window. By default you open it with a double-tap of the Option key; Option + Space or a shortcut of your own also works. It belongs to the Claude app on Mac (Claude Desktop), it's on every plan, and the app has to be running, though not in front. Below: turning it on, attaching a screenshot or a window, voice, changing or switching off the shortcut, clashes with ChatGPT and Spotlight, and what to check when it won't open.
 
 The facts about Quick Entry here come from [Anthropic's Quick Entry help page](https://support.claude.com/en/articles/12626668-use-quick-entry-with-claude-desktop-on-mac), marked "Updated this week" when we read it on 8 November 2026, and from its install page.
+
 ## What Claude Quick Entry does
 
 Anthropic's page lists three things. Instant access: double-tap Option in any app. Visual context: attach a screenshot, or click an application window to attach what it shows. Voice input: press Caps Lock and dictate, with live transcription.
