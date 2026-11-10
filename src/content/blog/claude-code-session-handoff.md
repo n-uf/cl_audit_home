@@ -11,7 +11,7 @@ draft: true
 takeaways:
   - "A Claude Code session handoff has three parts: the old session pushes its branches and writes a note, a fresh session checks every branch head against git, and only then does the new one carry on."
   - "The note lists scope, repos and worktrees with branch and head, work in flight, unpushed work, what waits on you, child sessions, scheduled tasks and services, local-only files, MCP servers and credentials. Files and credentials appear by name, never by value."
-  - "The machine-transfer plugin (source-available, on GitHub) applies the same handoff to many sessions at once, one sidebar section at a time, with a freeze, a branch ledger and a script that prints MATCH, DIFF or MISSING per branch."
+  - "The machine-transfer plugin (open source, MIT, on GitHub) applies the same handoff to many sessions at once, one sidebar section at a time, with a freeze, a branch ledger and a script that prints MATCH, DIFF or MISSING per branch."
   - "Its notes treat a fresh restart as the default and copying session history as a heavier, separate job. Credentials never travel, and the old sessions stay idle as history."
 faq:
   - q: "What is a Claude Code session handoff?"
@@ -28,7 +28,7 @@ sources:
   - title: "claude-machine-transfer README (n-uf)"
     url: "https://github.com/n-uf/claude-machine-transfer/blob/main/README.md"
     checked: 2026-11-10
-    supports: "What the plugin is and the eight steps in outline; that a workspace is more than files; that it came out of a real move; install commands for the plugin and for a copy into ~/.claude/skills/; install on both machines; how to start it, including the plugin-prefixed command; the bash 3.2, git 2.31, gitleaks 8.19 and age requirements; scope (macOS to macOS with the Claude desktop app and Remote Control; fresh restart rather than session-history copy; credentials never travel); the PolyForm Perimeter 1.0.1 licence; the 'Not yet stable' caution at the top (young and still changing; read each script first, try one quiet sidebar section first, check the CHANGELOG before upgrading)."
+    supports: "What the plugin is and the eight steps in outline; that a workspace is more than files; that it came out of a real move; install commands for the plugin and for a copy into ~/.claude/skills/; install on both machines; how to start it, including the plugin-prefixed command; the bash 3.2, git 2.31, gitleaks 8.19 and age requirements; scope (macOS to macOS with the Claude desktop app and Remote Control; fresh restart rather than session-history copy; credentials never travel); the MIT licence (since 26.11.3; earlier releases were PolyForm Perimeter 1.0.1); the 'Not yet stable' caution at the top (young and still changing; read each script first, try one quiet sidebar section first, check the CHANGELOG before upgrading)."
     quote: "Copying the disk moves the files and loses the rest."
   - title: "claude-machine-transfer CHANGELOG (n-uf)"
     url: "https://github.com/n-uf/claude-machine-transfer/blob/main/CHANGELOG.md"
@@ -236,6 +236,6 @@ cp -R claude-machine-transfer/skills/machine-transfer ~/.claude/skills/
 
 Install it on both Macs: the entry session and the successors on the new one use the same scripts. Then, in the session that will coordinate the move, start with `/machine-transfer plan a move of this workspace to my new Mac`. Installed as a plugin, the command is `/machine-transfer:machine-transfer`, and asking Claude to plan a move loads the skill either way.
 
-Requirements, from the README: macOS to macOS, with the Claude desktop app and Remote Control (the restart protocol assumes the desktop app). The scripts are plain bash and run on the stock bash 3.2, with git 2.31 or newer. Sealing needs `gitleaks` 8.19 or newer, and encryption needs `age`. The licence is PolyForm Perimeter 1.0.1, so it is source-available, not open source. Credentials never travel: the README has you make them fresh on the new Mac.
+Requirements, from the README: macOS to macOS, with the Claude desktop app and Remote Control (the restart protocol assumes the desktop app). The scripts are plain bash and run on the stock bash 3.2, with git 2.31 or newer. Sealing needs `gitleaks` 8.19 or newer, and encryption needs `age`. It is open source under the MIT licence. Credentials never travel: the README has you make them fresh on the new Mac.
 
 The code and the full notes are in the [repository on GitHub](https://github.com/n-uf/claude-machine-transfer), and the method itself is in [SKILL.md](https://github.com/n-uf/claude-machine-transfer/blob/main/skills/machine-transfer/SKILL.md). n-uf is not affiliated with Anthropic.
