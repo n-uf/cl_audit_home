@@ -6,7 +6,7 @@ mainKeyword: "claude usage credits"
 kind: what-is
 published: 2026-11-10
 updated: 2026-11-10
-draft: true
+draft: false
 author: n-uf
 takeaways:
   - "Usage credits are a pay-as-you-go balance on a paid Claude plan. Once an included limit is used up, your requests go on at standard API rates, billed apart from the subscription."
