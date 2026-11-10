@@ -13,7 +13,7 @@ takeaways:
   - "Plugins come back by themselves: settings.json names them and their marketplaces, and Claude Code fetches whatever isn't cached yet. MCP servers in a project's .mcp.json travel with the repository; the ones you added for yourself are re-added with claude mcp add."
   - "User and local MCP servers sit in ~/.claude.json, which also holds app state and account details, so it isn't a file to copy. The Claude app's claude_desktop_config.json is a separate file and a separate job."
   - "A sign-in never moves: not the Keychain entry, not .credentials.json. Sign in on the new Mac, and keep the old Mac untouched until the new one has done a day's work."
-  - "Anthropic's docs describe each file but not a move, and we haven't run this copy ourselves. With cl_audit 26.11.10 on both Macs, Move to another Mac carries the setup, the sessions and cl_audit's own profiles in one password-protected disk image. Your project folders and rewind checkpoints don't travel, and neither do sign-ins."
+  - "Anthropic's docs describe each file but not a move, and we haven't run this copy ourselves. With cl_audit 26.11.10 on both Macs, Move to another Mac carries the setup, the sessions and cl_audit's own profiles in one password-protected disk image. Your code and rewind checkpoints don't travel, and neither do sign-ins; since 26.11.12 a move brings a checklist of your repositories to clone."
 faq:
   - q: "How do I move Claude Code to a new computer?"
     a: "Install Claude Code on the new computer and sign in. Then copy your CLAUDE.md, settings.json with the scripts it runs, and the skills, agents, commands and output-styles folders from ~/.claude, and let plugins reinstall from their marketplaces. Re-add MCP servers with claude mcp add, and copy your sessions separately if you want them."
@@ -24,7 +24,7 @@ faq:
   - q: "Is there a built-in way to keep two computers in step?"
     a: "Not for the whole setup, in the Anthropic pages we read; only the skills and plugins tied to your claude.ai account follow you. A user asked Claude Code's issue tracker for one in #36693, which was closed as not planned on 30 April 2026; that's a user report, not an Anthropic statement. A private git repository of the files you wrote is the usual workaround."
   - q: "Does Move to another Mac in cl_audit carry my sign-in?"
-    a: "No. cl_audit's README says sign-ins never travel, and that cl_audit never reads the Keychain. You sign in to each account again on the new Mac with Add account, and scheduled tasks arrive paused. Your project folders don't travel either, so put them on the new Mac at the same paths before you import."
+    a: "No. cl_audit's README says sign-ins never travel, and that cl_audit never reads the Keychain. You sign in to each account again on the new Mac with Add account, and scheduled tasks arrive paused. Your code doesn't travel either: clone it before or after the import, and since 26.11.12 you can pick each moved session's folder on the new Mac."
 sources:
   - title: "Claude Code docs: Explore the .claude directory"
     url: "https://code.claude.com/docs/en/claude-directory"
@@ -176,6 +176,11 @@ sources:
     checked: 2026-11-10
     supports: "26.11.11: before a backup writes Claude Code's setup, cl_audit runs the Export page's key check over settings.json, the scripts its hooks run (with the skills holding them) and the plugin marketplaces file; a hook or permission rule holding a key is left out whole, another value that looks like a key is blanked and its name kept, and a script, a skill whose script holds a key or a marketplaces file holding one is left out; Restore, and Export from a backup, say which; it finds only the Export page's key shapes (GitHub, AWS, sk-, JWTs and the like) and doesn't check CLAUDE.md or skills no hook runs."
     quote: "Backups leave out the keys they find in your Claude Code settings and scripts."
+  - title: "cl_audit CHANGELOG, 26.11.12"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.12/CHANGELOG.md"
+    checked: 2026-11-10
+    supports: "26.11.12: Import lists each session whose folder isn't on this Mac (Folder not here) with Pick its folder on this Mac…, which points the saved chat and its Code-tab entry at the picked folder and drops a worktree that isn't on this Mac; the profile's Claude window closes for a moment; Undo this import takes it back, except for a session resumed since; later, Settings ▸ a profile ▸ Sessions ▸ Folder not here with Pick its folder…; the Export page's Code row reads each project with read-only git, warns about work only on this Mac and repos it couldn't read, never runs a program a repo's settings name, and the list travels in the encrypted disk image only with user names, passwords and tokens taken out of remote addresses; the new Mac's Import page shows per project where to clone from, where it was, the branch and what wasn't pushed or committed, with commands to copy, and cl_audit never runs git there; memory files start as Add them in a move import; a move file with the checklist is format 5, refused by 26.11.11 and older; Claude Code's folder naming, the Code tab running a re-pointed session and the worktree fields were confirmed from the programs' own text, not by running them."
+    quote: "A moved session opens in the right folder."
 related:
   - /blog/export-claude-code-sessions/
   - /blog/back-up-claude-code-sessions/
@@ -342,9 +347,9 @@ Two tools do this for you, and we haven't tried either. By its README, claude-no
 
 ## Move it with cl_audit's Move to another Mac
 
-cl_audit is our free [Claude usage tracker for Mac](/), an independent tool, not affiliated with Anthropic. Since 26.11.10 its **Move to another Mac** puts Claude Code's setup, every profile's sessions with their Code-tab lists, the Claude window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings in one password-protected disk image. Both Macs need 26.11.10 or later, since older versions can't open a move file; the [install page](/install/) says so too.
+cl_audit is our free [Claude usage tracker for Mac](/), an independent tool, not affiliated with Anthropic. Since 26.11.10 its **Move to another Mac** puts Claude Code's setup, every profile's sessions with their Code-tab lists, the Claude window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings in one password-protected disk image. Since 26.11.12 a move also brings a checklist of your code. Use 26.11.12 or later on both Macs: 26.11.11 and older refuse a move file that carries the checklist, saying it's from a newer cl_audit. The [install page](/install/) has the download.
 
-Your project folders don't travel. Put them on the new Mac at the same paths first (clone or copy them), or the moved sessions can't be picked up again. Rewind checkpoints don't travel either.
+Your code doesn't travel, and neither do rewind checkpoints. The checklist is how the code follows: on the old Mac, the Export page's **Code** row reads each project with read-only git and warns about work that exists only there, such as commits not pushed or files not committed, and about any repository it couldn't read. Push and commit before you export. The list goes into the encrypted disk image only, with any user name, password or token taken out of the remote addresses.
 
 On the old Mac, open Settings ▸ any profile ▸ Sessions ▸ **Export…** and press **Move to another Mac** at the top of the page ([the demo shows that page](/settings/#move-to-another-mac)). Type a password twice. cl_audit doesn't store it, so a lost one means a file nobody can open. Close the profiles' Claude windows so their Code-tab lists are included, export, and copy the `.dmg` to the new Mac.
 
@@ -354,6 +359,10 @@ On the new Mac, install cl_audit and go through its first run, which sets up the
 
 ![Importing a move on the new Mac](/img/guides/move-import.webp "cl_audit's site demo: a move's import on the new Mac, with the profiles it made and what to do next for each. Sample data.")
 
-Import only adds what's missing and never replaces anything already there. Claude Code's setup and the MCP settings come in only if you pick **Add them**, because hooks and MCP servers run commands. Scheduled tasks arrive paused, so nothing runs twice; turn on the ones you want in the Claude window. Undo is two steps: **Undo this import**, then **Take back the profiles it made**.
+The import page lists each project from the checklist: where to clone it from, where it was, its branch and what wasn't pushed or committed on the old Mac, with the commands to copy. cl_audit never runs git on the new Mac; you clone, before the import or after it.
+
+A session whose folder isn't on the new Mac shows under **Folder not here**. Clone the project to the path it had and the session needs nothing more. Cloned somewhere else, press **Pick its folder on this Mac…** and cl_audit re-points the session to the folder you pick: its saved chat and its Code-tab entry, and a worktree that isn't on this Mac is dropped, so the session runs in the project folder. That profile's Claude window closes for a moment while the entries change. Sessions you skip are added anyway, and Settings ▸ the profile ▸ Sessions ▸ **Folder not here** lists them with **Pick its folder…** for when the code is there. Two parts of this, cl_audit's release notes say, were confirmed from the programs' own text, not by running them: how Claude Code files a session under its folder, and that the Code tab runs a re-pointed session.
+
+Import only adds what's missing and never replaces anything already there. Claude Code's setup and the MCP settings come in only if you pick **Add them**, because hooks and MCP servers run commands. A move's memory files, the auto memory from each project, start as **Add them**; other imports leave them out unless you add them. Scheduled tasks arrive paused, so nothing runs twice; turn on the ones you want in the Claude window. Undo is two steps: **Undo this import**, then **Take back the profiles it made**. The first also takes back a picked folder, except for a session you've resumed since, which stays where it is.
 
 Sign-ins never travel, and claude.ai chats and Projects already follow your account. Export the profiles as they are now, not from a backup, which lacks the MCP settings, the `env` values and, since 26.11.11, any hook, permission rule or script found to hold a key. The [FAQ](/faq/) has the short version. cl_audit needs a Mac with Apple silicon.
