@@ -146,6 +146,11 @@ sources:
     checked: 2026-11-10
     supports: "26.11.12: a move brings a checklist of your code (the Export page's Code row, read with read-only git, travelling in the encrypted disk image only), and Import lists each session whose folder isn't on this Mac (Folder not here) with Pick its folder on this Mac…, which points the session at the picked folder."
     quote: "A move brings a checklist of your code."
+  - title: "cl_audit CHANGELOG, 26.11.13"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.13/CHANGELOG.md"
+    checked: 2026-11-10
+    supports: "26.11.13: a move brings each session's side files (task list, plan, typed prompts, the project folder's trust and allowed tools) in the encrypted disk image only; Rewind's copies of the files the sessions edited are their own Export row, left out unless included."
+    quote: "A move brings each session's side files."
 related:
   - /use-cases/claude-code-usage-history/
   - /blog/claude-sessions-lost-switching-accounts/
@@ -297,7 +302,7 @@ Then **Close and restore N** closes only that profile's Claude window and writes
 
 **Undo this restore** takes back exactly what the restore put back, and only files unchanged since.
 
-To keep a copy somewhere other than this Mac, **Export…** writes a profile's sessions as one file, saved where you choose: a zip, or an encrypted disk image with a password. Sessions that hold keys stay out unless you keep them, which needs the password. **Import…** adds such a file back after a preview and never overwrites anything; **Undo last import** takes back what it added. For a new Mac, 26.11.10 adds **Move to another Mac**, a key on the Export page that also takes cl_audit's own profiles and settings, always in a password-protected disk image. Sign-ins don't travel, and neither do your code or rewind checkpoints. Since 26.11.12 a move brings a checklist of the projects to clone, and on the new Mac you can pick the folder for any moved session whose folder isn't there.
+To keep a copy somewhere other than this Mac, **Export…** writes a profile's sessions as one file, saved where you choose: a zip, or an encrypted disk image with a password. Sessions that hold keys stay out unless you keep them, which needs the password. **Import…** adds such a file back after a preview and never overwrites anything; **Undo last import** takes back what it added. For a new Mac, 26.11.10 adds **Move to another Mac**, a key on the Export page that also takes cl_audit's own profiles and settings, always in a password-protected disk image. Sign-ins don't travel, and neither does your code. Since 26.11.12 a move brings a checklist of the projects to clone, and on the new Mac you can pick the folder for any moved session whose folder isn't there. Since 26.11.13 it also carries each session's task list, plan, typed prompts and folder trust, and Rewind's copies of the files the sessions edited if you include them.
 
 cl_audit relies on how Claude Code lays out its folder, and the release notes say 26.11.1 was checked with Claude Code 2.1.318. If a newer Claude Code stops a backup or restore working, update cl_audit.
 
