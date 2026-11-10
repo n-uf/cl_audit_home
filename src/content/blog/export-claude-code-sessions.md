@@ -136,6 +136,11 @@ sources:
     checked: 2026-11-09
     supports: "26.11.10 (9 November 2026): the Move to another Mac key; cl_audit's own profiles and settings travel in the encrypted disk image only; Import makes the profiles that aren't on the new Mac, not signed in, and never changes one that is; Undo is two steps; a file with cl_audit's profiles, or a move, can't be opened by 26.11.9 or older, while every other export still opens there."
     quote: "a move is only ever the password-protected disk image, never a zip"
+  - title: "cl_audit CHANGELOG, 26.11.11"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.11/CHANGELOG.md"
+    checked: 2026-11-10
+    supports: "26.11.11: before a backup writes Claude Code's setup, cl_audit runs the Export page's key check over settings.json, the scripts its hooks run (with the skills holding them) and the plugin marketplaces file; a hook or permission rule holding a key is left out whole, another value that looks like a key is blanked and its name kept, and a script, a skill whose script holds a key or a marketplaces file holding one is left out; Restore, and Export from a backup, say which; it finds only the Export page's key shapes (GitHub, AWS, sk-, JWTs and the like) and doesn't check CLAUDE.md or skills no hook runs."
+    quote: "Backups leave out the keys they find in your Claude Code settings and scripts."
 related:
   - /blog/back-up-claude-code-sessions/
   - /blog/claude-sessions-lost-switching-accounts/
@@ -254,7 +259,7 @@ With cl_audit on both Macs, a profile's sessions can also travel as one file. Si
 
 The move is a key at the top of the Export page that sets all profiles, the encrypted disk image and each of those parts. It keeps your accounts' real ids, so each Code-tab entry and task goes back under its own account; that's why it is only ever the password-protected disk image, never a zip. Use 26.11.10 on both Macs: 26.11.9 and older can't open a move or a file with cl_audit's profiles, and 26.11.8 and older can't open one with MCP settings or a task's prompt.
 
-**Export…** (Settings ▸ the profile ▸ Sessions) starts as a preview. Export the profile as it is now, not a backup: backups keep neither the MCP settings nor the values under `env` in `settings.json`. Sessions that hold keys are left out unless you pick **Keep them: needs a password**, which makes the file an AES-256 encrypted disk image. Without a password it's a zip, which Finder opens. `settings.json`, its scripts, the plugin marketplaces, the MCP settings and any skill, agent or command holding a hook's script travel only in the image.
+**Export…** (Settings ▸ the profile ▸ Sessions) starts as a preview. Export the profile as it is now, not a backup: backups keep neither the MCP settings nor the values under `env` in `settings.json`, and since 26.11.11 they leave out any hook, permission rule or script holding a key. Sessions that hold keys are left out unless you pick **Keep them: needs a password**, which makes the file an AES-256 encrypted disk image. Without a password it's a zip, which Finder opens. `settings.json`, its scripts, the plugin marketplaces, the MCP settings and any skill, agent or command holding a hook's script travel only in the image.
 
 **Import…** on the other Mac takes the `.zip` or `.dmg` (an image asks for its password) and the profile to put it into. It only adds, after a preview; nothing is overwritten. For a move, a **cl_audit's profiles** card lists the profiles it would make and the settings that differ. **Make 2 profiles** makes them, not signed in, since sign-ins never travel (sign in with **Add account**), and your settings stay unless you pick **Take the file's**. The setup, the MCP settings and the scheduled tasks stay out until you pick **Add them**, and then only what's missing is added: MCP settings only if the profile has none yet, and tasks paused, so nothing runs twice. **Undo last import** takes back what it added, leaving any file changed since; after a move, **Take back the profiles it made** is the second step.
 
