@@ -185,7 +185,7 @@ related:
 
 To move Claude Code to a new computer, install it there, sign in again, and then copy the files you wrote: `CLAUDE.md`, `settings.json` with the scripts it runs, and the `skills`, `agents`, `commands` and `output-styles` folders from `~/.claude`, plus `keybindings.json`. Plugins reinstall from their marketplaces, MCP servers you added for yourself are added again, and a project's own `.claude` folder, `CLAUDE.md` and `.mcp.json` arrive with the repository. Your sessions are a separate copy, and your sign-in never goes with any of it.
 
-Anthropic's docs describe each of these files, though none walks through a migration to a new computer, and we haven't run this copy ourselves. Each step below is what the docs say. The old Mac stays untouched as your fallback until the new one has done real work.
+Anthropic's docs describe each of these files, though none walks through a migration to a new computer, and we haven't run this copy ourselves. Each step below is what the docs say. The old Mac stays untouched as your fallback until the new one has done real work. {{live:/blog/claude-code-session-handoff/}}This page covers one Mac's setup. For a busy workspace, with many sessions and unpushed branches in flight, see [Claude Code session handoff](/blog/claude-code-session-handoff/).{{/live}}
 
 ## What to copy when you move Claude Code to a new computer
 
