@@ -126,6 +126,11 @@ sources:
     checked: 2026-11-09
     supports: "26.11.9 (9 November 2026): Export carries the window's claude_desktop_config.json (its MCP servers and other settings) in the encrypted disk image only, and Import adds it only when the profile has none yet; backups no longer keep it. 26.11.10 (9 November 2026): Move to another Mac sets all of this in one click, in the password-protected disk image only; sign-ins don't travel."
     quote: "in the encrypted disk image only: a zip leaves it out and says so"
+  - title: "cl_audit CHANGELOG, 26.11.13"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.13/CHANGELOG.md"
+    checked: 2026-11-10
+    supports: "26.11.13: a move brings each session's side files, including its project folder's trust and allowed tools, in the encrypted disk image only; a folder's MCP servers travel in the image but start left out on Import, like the window's MCP settings; cl_audit never keeps a copy of .claude.json."
+    quote: "A folder's MCP servers travel in the image but start left out on Import."
 related:
   - /blog/move-claude-code-to-new-computer/
   - /blog/back-up-claude-code-sessions/
@@ -275,7 +280,7 @@ The rest of a new-Mac setup, such as `CLAUDE.md`, settings and skills, is in [ho
 
 ## If you use cl_audit
 
-cl_audit's **Move to another Mac** and its **Export…** carry the Claude window's MCP settings only in the password-protected disk image, and its backups have left them out since 26.11.9 (see [cl_audit's settings](/settings/)). On the new Mac, **Import…** adds them only if you pick **Add them** and the profile has no `claude_desktop_config.json` yet; `~/.claude.json` is never in an export, so the servers stored there are still yours to add again as above.
+cl_audit's **Move to another Mac** and its **Export…** carry the Claude window's MCP settings only in the password-protected disk image, and its backups have left them out since 26.11.9 (see [cl_audit's settings](/settings/)). On the new Mac, **Import…** adds them only if you pick **Add them** and the profile has no `claude_desktop_config.json` yet. Since 26.11.13 a move also carries the local-scope servers that `~/.claude.json` holds for your sessions' own project folders, in the image only, and they start left out on import. The file itself is still never in an export, so user-scope servers are yours to add again as above.
 
 ## About cl_audit
 
