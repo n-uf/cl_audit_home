@@ -356,4 +356,4 @@ On the new Mac, install cl_audit and go through its first run, which sets up the
 
 Import only adds what's missing and never replaces anything already there. Claude Code's setup and the MCP settings come in only if you pick **Add them**, because hooks and MCP servers run commands. Scheduled tasks arrive paused, so nothing runs twice; turn on the ones you want in the Claude window. Undo is two steps: **Undo this import**, then **Take back the profiles it made**.
 
-Sign-ins never travel, and claude.ai chats and Projects already follow your account. Export the profiles as they are now, not from a backup, which lacks the MCP settings, the `env` values and, since 26.11.11, any hook, rule or script holding a key. The [FAQ](/faq/) has the short version. cl_audit needs a Mac with Apple silicon.
+Sign-ins never travel, and claude.ai chats and Projects already follow your account. Export the profiles as they are now, not from a backup, which lacks the MCP settings, the `env` values and, since 26.11.11, any hook, rule or script found to hold a key. The [FAQ](/faq/) has the short version. cl_audit needs a Mac with Apple silicon.
