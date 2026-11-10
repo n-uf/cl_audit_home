@@ -654,6 +654,9 @@ const jsonLd = [
         return;
       }
       if ((b = pick("[data-mv-dock]"))) { showWhatNow(`Put ${b.dataset.mvDock} in the Dock`, "", "cl_audit builds the profile's Dock icon and adds it to the Dock. This is a demo, so the Dock stays as it is."); return; }
+      // the move import's Folder not here and Code card (26.11.12)
+      if (pick("[data-mv-pick]")) { showWhatNow("Pick its folder on this Mac…", "", "You pick where the session's folder is on this Mac, and the session is pointed there when it's imported: its saved chat and its Code-tab entry get the new folder, and a worktree that isn't here is dropped. Undo this import takes it back. This is a demo, so nothing changed."); return; }
+      if (pick("[data-mv-copy]")) { showWhatNow("Copy", "", "Copies the commands for Terminal; cl_audit never runs them. This is a demo, so nothing is copied."); return; }
       if (pick("[data-sess-back]")) { openPage(""); return; }
       if (pick("[data-sess-keep]")) {
         const sel = root.querySelector<HTMLSelectElement>('.c-s select[aria-label="Keep for"]'); if (sel) sel.selectedIndex = 1;
@@ -686,7 +689,7 @@ const jsonLd = [
         const what = b.dataset.sessDemo!;
         openPage("");
         showWhatNow(what, "", what === "Export" ? "cl_audit writes one file of this profile's sessions. This is a demo, so nothing is written."
-          : what === "Move" ? "cl_audit writes one encrypted disk image with every profile, its setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings. Project folders and rewind checkpoints don't travel. This is a demo, so nothing is written."
+          : what === "Move" ? "cl_audit writes one encrypted disk image with every profile, its setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings. Project folders and rewind checkpoints don't travel; the Code row lists each project to clone on the new Mac. This is a demo, so nothing is written."
           : what === "Import a move" ? "home's sessions go in, each Code-tab entry and task under its own account. Then import work's and side's parts from their own Sessions. This is a demo, so nothing changed."
           : "cl_audit unpacks the file as a backup of this profile, then restores from it. This is a demo, so nothing changed.");
         return;

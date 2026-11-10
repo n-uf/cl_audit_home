@@ -129,7 +129,8 @@
       <div class="sw-col">
         <div class="card"><h4>What <i class="idot" title="Which sessions go in the file.">i</i></h4>
           <div class="srow"><span>From</span><select class="menu" aria-label="From"><option>This profile, as it is now</option><option>One of its backups</option><option selected>All profiles</option></select></div>
-          <div class="srow"><span>Move <i class="idot" title="Move to another Mac: in one encrypted disk image, every profile's sessions, Claude Code's setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings. Project folders and rewind checkpoints don't travel. A move keeps the real account ids and addresses (no fingerprints), because the Claude window files its Code-tab list and scheduled tasks by account: the new Mac puts them back where the window looks once you sign in there. That is why a move is only ever the encrypted image. Sign-ins never travel: you sign in to each account on the new Mac.">i</i></span><span class="v-soft">On: your accounts keep their real identifiers and email addresses, so the new Mac can put each Code-tab entry and scheduled task back under the right account. That is why a move is always a password-protected disk image, never a plain zip.<small class="ap-note">Sign-ins don't travel. On the new Mac you sign in again to each account (Add account).</small></span></div>
+          <div class="srow"><span>Move <i class="idot" title="Move to another Mac: in one encrypted disk image, every profile's sessions, Claude Code's setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings. Project folders don't travel (the Code row lists them, to clone on the new Mac), and neither do rewind checkpoints. A move keeps the real account ids and addresses (no fingerprints), because the Claude window files its Code-tab list and scheduled tasks by account: the new Mac puts them back where the window looks once you sign in there. That is why a move is only ever the encrypted image. Sign-ins never travel: you sign in to each account on the new Mac.">i</i></span><span class="v-soft">On: your accounts keep their real identifiers and email addresses, so the new Mac can put each Code-tab entry and scheduled task back under the right account. That is why a move is always a password-protected disk image, never a plain zip.<small class="ap-note">Sign-ins don't travel. On the new Mac you sign in again to each account (Add account).</small></span></div>
+          <div class="srow"><span>Code <i class="idot" title="A move carries the sessions, not the code they ran in. For each project folder of the sessions, cl_audit reads with read-only git (never a fetch, nothing written): where it can be cloned from (any user name, password or token taken out of the address), the branch, the last commit, and how many commits aren't pushed and files aren't committed. That list goes into the encrypted disk image only, and the new Mac's Import page shows it with the commands to copy. Push and commit first: a clone won't have what is only on this Mac.">i</i></span><span class="v-soft">3 projects, 3 in git: 1 thing to fix first (the list goes in the image)<small class="ap-note">app: 3 commits not pushed: push them before you move</small></span></div>
           <div class="srow"><span>Claude Code</span><span class="v-soft">610 sessions, with their sub-agent files · 9.8 GB</span></div>
           <div class="srow"><span>Claude window</span><span class="v-soft">41 Code-tab entries, 4 scheduled tasks<small class="ap-note">4 scheduled tasks with their prompts. An import adds them only if you pick Add them, and they come paused.</small></span></div>
           <div class="srow"><span>MCP settings</span><span class="v-soft">3 MCP servers (github, postgres, browser) and the window's other settings: in the encrypted disk image</span></div>
@@ -149,7 +150,7 @@
           <div class="srow"><span>work</span><span class="v-soft"><b>240</b> · 3.4 GB</span></div>
           <div class="srow"><span>side</span><span class="v-soft"><b>60</b> · 0.8 GB · <b>5</b> with keys: left out</span></div>
           <p class="g-note sub">Close each profile's Claude window first, or its Code-tab list is left out.</p>
-          <p class="g-note caution">Your project folders don't travel. Put them on the new Mac at the same paths first (clone or copy them), or the moved sessions can't be picked up again. Rewind checkpoints don't travel either.</p>
+          <p class="g-note caution">Your project folders don't travel: push and commit first, and clone them on the new Mac from the Code list. Rewind checkpoints don't travel either.</p>
           <div class="sw-keys"><button type="button" class="key k" data-sess-back>Cancel</button><span></span><button type="button" class="pill small tint t-green" data-sess-demo="Move">Export 605 sessions · ≈ 9.7 GB</button></div>
         </div>
       </div>
@@ -168,7 +169,7 @@
           <div class="srow"><span>Profile in the file</span><select class="menu" aria-label="Profile in the file"><option selected>home</option><option>work</option><option>side</option></select></div>
           <div class="srow"><span>Into</span><select class="menu" aria-label="Into" data-mv-into><option selected>home</option></select></div>
           <p class="g-note sub">On the new Mac, home is the first profile (<code>~/.claude</code>), set up by cl_audit's first run.</p>
-          <p class="g-note caution">Your project folders don't travel. Put them on the new Mac at the same paths first (clone or copy them), or the moved sessions can't be picked up again. Rewind checkpoints don't travel either.</p>
+          <p class="g-note caution">Your project folders don't travel: clone them from the Code list, then point each session at its folder with Pick its folder on this Mac…. Rewind checkpoints don't travel either.</p>
         </div>
         <div class="card"><h4>cl_audit's profiles <i class="idot" title="The file holds cl_audit's own record of its profiles (name, look, Dock place, accounts and the one in use) and its General and backup settings. Import makes the profiles that aren't here and never changes one that is. A made profile works in folders of its own, whatever the file says. It is made with its accounts, looks and settings, but not signed in: after the import, sign in to each account with Add account. No Dock icon yet: you put it in the Dock after the import. Your settings stay unless you take the file's. Take back the profiles it made undoes exactly what was made.">i</i></h4>
           <p class="g-note sub">A move from another Mac: the file keeps the real accounts, so the entries and tasks go back under them.</p>
@@ -183,6 +184,12 @@
             <div class="sw-keys"><span></span><span></span><button type="button" class="key k" data-mv-undo>Take back the profiles it made</button></div>
           </div>
         </div>
+        <div class="card"><h4>Code <i class="idot" title="A move carries the sessions, not the code they ran in. On the old Mac, cl_audit read each project with read-only git: where to clone it from (any user name, password or token taken out of the address), the branch and latest commit, and how many commits weren't pushed and files weren't committed there. It travels only in the encrypted disk image. cl_audit never runs git on this Mac: the commands are here for you to copy. Clone first or after: once a folder is here, point its sessions at it (Pick its folder on this Mac…).">i</i></h4>
+          <div class="srow"><span>app</span><span class="v-soft">Clone https://git.example.com/you/app.git at ~/projects/app, branch main (latest commit 4f2a9c1)<small class="ap-note caution-t">3 commits weren't pushed on the old Mac: a clone won't have them until they are pushed there</small><code class="cmds">git clone -- https://git.example.com/you/app.git ~/projects/app<br>cd ~/projects/app<br>git checkout main</code><small class="ap-note">Clone it into the folder you picked, or pick the folder you cloned it to.</small></span></div>
+          <div class="sw-keys"><span></span><span></span><button type="button" class="key k" data-mv-copy>Copy</button></div>
+          <div class="srow"><span>site</span><span class="v-soft">On this Mac at ~/projects/site, branch main (latest commit 9b1e07d)<code class="cmds">cd ~/projects/site &amp;&amp; git fetch<br>git checkout main</code></span></div>
+          <p class="g-note sub">Read on the old Mac on 9 Nov. cl_audit runs nothing here: copy the commands into Terminal yourself.</p>
+        </div>
       </div>
       <div class="sw-col">
         <div class="card"><h4>What happens</h4>
@@ -190,7 +197,9 @@
           <div class="srow"><span>Code-tab entries</span><span class="v-soft"><b>17</b>: each back in the folder of its own account, shown once you sign in there</span></div>
           <div class="srow"><span>Scheduled tasks</span><span class="v-soft"><b>2</b>: only if you pick Add them, and they come paused</span></div>
           <div class="srow"><span>Setup and MCP settings</span><span class="v-soft">Only if you pick Add them; added only where none is here</span></div>
-          <div class="srow"><span>Folder not here</span><span class="v-soft"><b>30</b>: added, shown once that folder exists</span></div>
+          <div class="srow"><span>Memory files</span><span class="v-soft"><b>4</b>: added with the sessions</span></div>
+          <div class="srow"><span>Folder not here</span><span class="v-soft"><b>30</b> sessions whose folder isn't on this Mac: added anyway. Pick where each one's folder is here, or later under Sessions<small class="ap-note">was in ~/projects/app · worktree fix-login</small></span></div>
+          <div class="sw-keys"><span></span><span></span><button type="button" class="key k" data-mv-pick>Pick its folder on this Mac…</button></div>
           <div class="sw-keys"><button type="button" class="key k" data-sess-back>Cancel</button><span></span><button type="button" class="pill small tint t-green" data-sess-demo="Import a move" data-mv-go>Close and import 310 sessions</button></div>
           <p class="g-note sub" data-mv="plan">Close and import waits until the profiles are made.</p>
         </div>

@@ -1702,6 +1702,10 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* the move pages (Export ▸ Move to another Mac, Import of a move): longer labels, and a note under its value */
 .sw-page:is([data-sp="move"], [data-sp="import-move"]) .srow > span:first-child { flex-basis: 124px; }
 .sw-page .v-soft > .ap-note { display: block; margin-top: 3px; }
+/* the move import's Code card (26.11.12): a project's warning in the caution colour, and the commands to copy */
+.sw-page .v-soft > .ap-note.caution-t { color: #f59e0b; }
+.face-silver .sw-page .v-soft > .ap-note.caution-t { color: #8a4f00; }
+.sw-page .v-soft > .cmds { display: block; margin-top: 4px; font: 10.5px/1.5 var(--mono); color: var(--soft); overflow-wrap: anywhere; }
 .sw-steps { list-style: none; margin: 4px 0 0; padding: 0; display: grid; }
 .sw-steps li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-top: 1px solid rgba(0,0,0,.35); counter-increment: sw; }
 .sw-steps li:first-child { border-top: 0; }
