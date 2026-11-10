@@ -28,8 +28,13 @@ sources:
   - title: "claude-machine-transfer README (n-uf)"
     url: "https://github.com/n-uf/claude-machine-transfer/blob/main/README.md"
     checked: 2026-11-10
-    supports: "What the plugin is and the eight steps in outline; that a workspace is more than files; that it came out of a real move; install commands for the plugin and for a copy into ~/.claude/skills/; install on both machines; how to start it, including the plugin-prefixed command; the bash 3.2, git 2.31, gitleaks 8.19 and age requirements; scope (macOS to macOS with the Claude desktop app and Remote Control; fresh restart rather than session-history copy; credentials never travel); the PolyForm Perimeter 1.0.1 licence."
+    supports: "What the plugin is and the eight steps in outline; that a workspace is more than files; that it came out of a real move; install commands for the plugin and for a copy into ~/.claude/skills/; install on both machines; how to start it, including the plugin-prefixed command; the bash 3.2, git 2.31, gitleaks 8.19 and age requirements; scope (macOS to macOS with the Claude desktop app and Remote Control; fresh restart rather than session-history copy; credentials never travel); the PolyForm Perimeter 1.0.1 licence; the 'Not yet stable' caution at the top (young and still changing; read each script first, try one quiet sidebar section first, check the CHANGELOG before upgrading)."
     quote: "Copying the disk moves the files and loses the rest."
+  - title: "claude-machine-transfer CHANGELOG (n-uf)"
+    url: "https://github.com/n-uf/claude-machine-transfer/blob/main/CHANGELOG.md"
+    checked: 2026-11-10
+    supports: "Versions are dates and any release may change how a move runs; the first public release and the later one adding Remote Control on successors and background services."
+    quote: "Any release may change how a move runs."
   - title: "claude-machine-transfer: SKILL.md (n-uf)"
     url: "https://github.com/n-uf/claude-machine-transfer/blob/main/skills/machine-transfer/SKILL.md"
     checked: 2026-11-10
@@ -230,5 +235,7 @@ cp -R claude-machine-transfer/skills/machine-transfer ~/.claude/skills/
 Install it on both Macs: the entry session and the successors on the new one use the same scripts. Then, in the session that will coordinate the move, start with `/machine-transfer plan a move of this workspace to my new Mac`. Installed as a plugin, the command is `/machine-transfer:machine-transfer`, and asking Claude to plan a move loads the skill either way.
 
 Requirements, from the README: macOS to macOS, with the Claude desktop app and Remote Control (the restart protocol assumes the desktop app). The scripts are plain bash and run on the stock bash 3.2, with git 2.31 or newer. Sealing needs `gitleaks` 8.19 or newer, and encryption needs `age`. The licence is PolyForm Perimeter 1.0.1, so it is source-available, not open source. Credentials never travel: the README has you make them fresh on the new Mac.
+
+The plugin is young, and its README says so at the top: not yet stable, with steps, templates and scripts still changing. So read each script before you run it, try the method on one quiet sidebar section first, and check the [CHANGELOG](https://github.com/n-uf/claude-machine-transfer/blob/main/CHANGELOG.md) before you upgrade, since any release may change how a move runs.
 
 The code and the full notes are in the [repository on GitHub](https://github.com/n-uf/claude-machine-transfer), and the method itself is in [SKILL.md](https://github.com/n-uf/claude-machine-transfer/blob/main/skills/machine-transfer/SKILL.md). n-uf is not affiliated with Anthropic.
