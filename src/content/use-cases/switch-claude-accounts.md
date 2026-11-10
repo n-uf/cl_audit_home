@@ -37,6 +37,11 @@ sources:
     checked: 2026-11-09
     supports: "The first profile is the default profile, on ~/.claude with the usual Claude app, run with CLAUDE_CONFIG_DIR unset; a backup also holds Claude Code's setup and each task's prompt, with settings.json's env values blank; never a sign-in or the window's MCP settings."
     quote: "The default profile is the one on `~/.claude` with the usual Claude app"
+  - title: "cl_audit CHANGELOG, 26.11.11"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.11/CHANGELOG.md"
+    checked: 2026-11-10
+    supports: "26.11.11: before a backup writes Claude Code's setup, cl_audit runs the Export page's key check over settings.json, the scripts its hooks run (with the skills holding them) and the plugin marketplaces file; a hook or permission rule holding a key is left out whole, another value that looks like a key is blanked and its name kept, and a script, a skill whose script holds a key or a marketplaces file holding one is left out; Restore, and Export from a backup, say which; it finds only the Export page's key shapes (GitHub, AWS, sk-, JWTs and the like) and doesn't check CLAUDE.md or skills no hook runs."
+    quote: "Backups leave out the keys they find in your Claude Code settings and scripts."
   - title: "cl_audit CHANGELOG, 26.11.1"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
     checked: 2026-11-07
@@ -145,7 +150,7 @@ The question **Move them?** is asked every time, and nothing is chosen for you. 
 
 Leave keeps the sessions with the account they belong to. The window shows ultra-2's own, and switching back shows them again. Move takes the window's Code sessions, their scheduled tasks and the sidebar's sections, groups and pins. The sessions keep their ids. cl_audit never overwrites one, and the originals are parked in its own folder, not deleted.
 
-The backup comes first, after the window is known closed and before anything moves. It is an APFS clone, so it takes seconds. It holds the Code-tab list with its scheduled tasks and their prompts, the sidebar records, cl_audit's own records and, on by default, Claude Code's transcripts. It also holds Claude Code's setup: `CLAUDE.md`, skills, agents, commands, `settings.json` with its env values left blank, and the plugin list. It never holds a sign-in or the Claude window's MCP settings. If it can't be made, the switch stops and nothing moves.
+The backup comes first, after the window is known closed and before anything moves. It is an APFS clone, so it takes seconds. It holds the Code-tab list with its scheduled tasks and their prompts, the sidebar records, cl_audit's own records and, on by default, Claude Code's transcripts. It also holds Claude Code's setup: `CLAUDE.md`, skills, agents, commands, `settings.json` with its env values left blank, and the plugin list. A hook, permission rule or script that holds a key is left out of it, and Restore says which. It never holds a sign-in or the Claude window's MCP settings. If it can't be made, the switch stops and nothing moves.
 
 Groups and pins live on claude.ai, per account. So cl_audit notes which group each session sat in, and the "arrange sidebar" session puts them back with the Claude app's own sidebar tools. Chats and Projects on claude.ai don't move. They belong to each account.
 
