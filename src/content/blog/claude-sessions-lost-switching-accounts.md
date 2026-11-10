@@ -101,6 +101,11 @@ sources:
     checked: 2026-11-09
     supports: "The first profile is the default profile, on ~/.claude; a Claude app session you deleted goes on the normal schedule, an archived one after a grace period; a backup also holds each task's prompt and Claude Code's setup, with settings.json's env values blank; never a sign-in or the window's MCP settings."
     quote: "The default profile is the one on `~/.claude` with the usual Claude app"
+  - title: "cl_audit CHANGELOG, 26.11.11"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.11/CHANGELOG.md"
+    checked: 2026-11-10
+    supports: "26.11.11: before a backup writes Claude Code's setup, cl_audit runs the Export page's key check over settings.json, the scripts its hooks run (with the skills holding them) and the plugin marketplaces file; a hook or permission rule holding a key is left out whole, another value that looks like a key is blanked and its name kept, and a script, a skill whose script holds a key or a marketplaces file holding one is left out; Restore, and Export from a backup, say which; it finds only the Export page's key shapes (GitHub, AWS, sk-, JWTs and the like) and doesn't check CLAUDE.md or skills no hook runs."
+    quote: "Backups leave out the keys they find in your Claude Code settings and scripts."
   - title: "cl_audit CHANGELOG, 26.11.1 (2026-11-07)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
     checked: 2026-11-07
@@ -185,7 +190,7 @@ Here is what happens when you switch Work from `ultra-1@example.com` to `ultra-2
 
 1. **Add the other account.** In Settings ▸ the profile ▸ Claude Code ▸ **Accounts**, the account in use is marked IN USE and the others STANDBY. **Add account** opens macOS's own menu of accounts found on this Mac; **Sign in to another account…** makes a folder for a new one and opens Claude Code's own sign-in in Terminal.
 2. **Open the Switch page** with the standby account's **Switch account** key. It shows the account in use and the others with their limits, what stays (the profile's name, Dock icon, folder and Claude Code's history) and **Move them?** for the Code sessions, sidebar sections and groups, pins and scheduled tasks. It asks every time and chooses nothing for you: **Move to ultra-2** or **Leave with ultra-1**.
-3. **Close and switch.** Only that profile's Claude window closes. With a move chosen, cl_audit makes a backup first. It's an APFS clone, so it takes seconds, and it holds the Code-tab list with its scheduled tasks and their prompts, the sidebar records, cl_audit's own records and, by default, Claude Code's transcripts. It also holds Claude Code's setup (`CLAUDE.md`, skills, agents, commands, `settings.json` with blank env values, the plugin list). It never holds a sign-in or the Claude window's MCP settings. If the backup can't be made, nothing moves.
+3. **Close and switch.** Only that profile's Claude window closes. With a move chosen, cl_audit makes a backup first. It's an APFS clone, so it takes seconds, and it holds the Code-tab list with its scheduled tasks and their prompts, the sidebar records, cl_audit's own records and, by default, Claude Code's transcripts. It also holds Claude Code's setup (`CLAUDE.md`, skills, agents, commands, `settings.json` with blank env values, the plugin list), minus any hook, rule or script that holds a key. It never holds a sign-in or the Claude window's MCP settings. If the backup can't be made, nothing moves.
 4. **The sessions move** with the same ids, written without overwriting anything, and the originals are parked in cl_audit's folder rather than deleted. Claude Code's sign-in then opens in Terminal with the address filled in. You finish it in the browser, and cl_audit checks it's the account you picked. It never copies a sign-in.
 5. **The window opens again.** Log out there and sign in as ultra-2. A session called "cl_audit · arrange sidebar" then opens in it: press Return, and it puts the moved sessions back in their groups and pins them again.
 
