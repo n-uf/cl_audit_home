@@ -171,6 +171,11 @@ sources:
     checked: 2026-11-09
     supports: "26.11.10 (9 November 2026): Move to another Mac, a move is only ever the password-protected disk image, never a zip; a move keeps accounts' real identifiers; sign-ins don't travel; cl_audit's own profiles and settings travel in the encrypted image; Undo is two steps; 26.11.9 or older can't open a file with cl_audit's profiles or a move. 26.11.8 and 26.11.9 entries: setup, MCP settings and tasks travel; backups drop env values and MCP settings."
     quote: "Sign-ins don't travel: you sign in again on the new Mac."
+  - title: "cl_audit CHANGELOG, 26.11.11"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.11/CHANGELOG.md"
+    checked: 2026-11-10
+    supports: "26.11.11: before a backup writes Claude Code's setup, cl_audit runs the Export page's key check over settings.json, the scripts its hooks run (with the skills holding them) and the plugin marketplaces file; a hook or permission rule holding a key is left out whole, another value that looks like a key is blanked and its name kept, and a script, a skill whose script holds a key or a marketplaces file holding one is left out; Restore, and Export from a backup, say which; it finds only the Export page's key shapes (GitHub, AWS, sk-, JWTs and the like) and doesn't check CLAUDE.md or skills no hook runs."
+    quote: "Backups leave out the keys they find in your Claude Code settings and scripts."
 related:
   - /blog/export-claude-code-sessions/
   - /blog/back-up-claude-code-sessions/
@@ -351,4 +356,4 @@ On the new Mac, install cl_audit and go through its first run, which sets up the
 
 Import only adds what's missing and never replaces anything already there. Claude Code's setup and the MCP settings come in only if you pick **Add them**, because hooks and MCP servers run commands. Scheduled tasks arrive paused, so nothing runs twice; turn on the ones you want in the Claude window. Undo is two steps: **Undo this import**, then **Take back the profiles it made**.
 
-Sign-ins never travel, and claude.ai chats and Projects already follow your account. Export the profiles as they are now, not from a backup, which lacks the MCP settings and the `env` values. The [FAQ](/faq/) has the short version. cl_audit needs a Mac with Apple silicon.
+Sign-ins never travel, and claude.ai chats and Projects already follow your account. Export the profiles as they are now, not from a backup, which lacks the MCP settings, the `env` values and, since 26.11.11, any hook, rule or script holding a key. The [FAQ](/faq/) has the short version. cl_audit needs a Mac with Apple silicon.
