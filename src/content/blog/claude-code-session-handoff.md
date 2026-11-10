@@ -120,6 +120,11 @@ sources:
     checked: 2026-11-10
     supports: "A user's request, not an Anthropic statement: a handoff file written at the end of a session and read at the start of the next. Open, labelled enhancement, has repro and area:core when we looked. A commenter (11 Oct 2026) notes a handoff file can be wrong, since a session out of context may write \"done\" for work it never committed, and suggests citing a commit hash or file path per \"done\" line."
     quote: "Feature Request: Session Handoff / Continuity Support"
+  - title: "cl_audit CHANGELOG, 26.11.12"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.12/CHANGELOG.md"
+    checked: 2026-11-10
+    supports: "26.11.12: a move brings a checklist of your code (per project: where to clone it from, where it was, the branch, what wasn't pushed or committed), read with read-only git and carried in the encrypted disk image only; Import's Pick its folder on this Mac… points a moved session at the picked folder; a move file with the checklist is refused by 26.11.11 and older."
+    quote: "A moved session opens in the right folder."
 related:
   - /settings/
   - /faq/
@@ -212,7 +217,7 @@ The target checklist in the plugin's notes says each of its items failed at leas
 
 A handoff between two sessions on one Mac needs only the by-hand steps above. If you want one Mac's setup and files on a new one, with no sessions in flight, that is a smaller job. {{live:/blog/move-claude-code-to-new-computer/}}The guide to [moving Claude Code to a new computer](/blog/move-claude-code-to-new-computer/) covers which files to copy and what to re-add.{{/live}}
 
-cl_audit, n-uf's free Mac app for Claude usage, has **Move to another Mac** (26.11.10 or later on both Macs), which carries every profile's sessions and Claude Code setup, plus cl_audit's own profiles and settings, in one password-protected disk image. [The demo shows it](/settings/#move-to-another-mac). Project folders and rewind checkpoints don't travel with it, and sign-ins never do.
+cl_audit, n-uf's free Mac app for Claude usage, has **Move to another Mac**, which carries every profile's sessions and Claude Code setup, plus cl_audit's own profiles and settings, in one password-protected disk image. [The demo shows it](/settings/#move-to-another-mac). Your code and rewind checkpoints don't travel with it, and sign-ins never do. Since 26.11.12 a move brings a checklist of each project's repository, branch and unpushed work to clone from, and its import can re-point a session to the folder you pick on the new Mac. Use 26.11.12 or later on both Macs.
 
 {{live:/blog/export-claude-code-sessions/}}Copying transcripts so old sessions resume is the other road above, and the [export article](/blog/export-claude-code-sessions/) is the place for it.{{/live}}
 
