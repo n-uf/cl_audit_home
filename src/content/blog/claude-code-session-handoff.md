@@ -21,7 +21,7 @@ faq:
   - q: "Why does the new session check the note against git?"
     a: "A note can be out of date or wrong, and git is the evidence. The plugin's notes say that when two sides disagree, command output settles it, not either report. If a head does not match, the successor stops and reports the output rather than resetting a branch to force a match."
   - q: "Can I copy the old session's history instead of starting fresh?"
-    a: "Yes, but the plugin's notes call it a different and heavier job. It needs the app quit on both Macs, identical absolute paths and user name, and several folders copied together in one sitting. The notes prefer it only for a few long sessions you need to scroll and resume, with nothing in flight."
+    a: "Yes, but the plugin's notes call it a different and heavier job. It needs the app quit on both Macs, identical absolute paths and user name, and several folders copied together in one sitting. The notes prefer it for a few long sessions you need to scroll and resume, with nothing in flight."
   - q: "Does the plugin move my sign-ins or tokens?"
     a: "No. Its README says credentials never travel; they are made fresh on the new Mac. A handoff note names the credentials a successor needs and who creates them, never their values. Archives the plugin builds get a gitleaks scan that stops on any finding, though a scanner only catches the kinds of secrets it knows."
 sources:
@@ -139,7 +139,7 @@ A handoff is how the rest gets written down. Each session says what it owns and 
 
 ## A Claude Code session handoff by hand
 
-You don't need the plugin for one session. The plugin's templates are the model for this list, cut down to what a single session needs. The cutting down is ours: the repository describes the full method, not this short form.
+You don't need the plugin for one session. The plugin's templates are the model for this list, cut down to what a single session needs. The short form is this page's; the repository describes the full method.
 
 **1. Reach a safe point.** Land or park what's in flight. Commit work in progress on its own branch, or on `wip/<slug>`, so nothing is half-done in a working tree.
 
@@ -192,7 +192,7 @@ Each lead session gets a freeze brief, then writes the three files of the handof
 
 The roles are few. You decide, sign in and type the go. A transfer coordinator on the old Mac runs the move, an entry session on the new one builds folders and starts each successor, lead sessions write their handoffs and retire, and successors check, restore and report.
 
-Repositories come across as fresh clones. For the rest, the notes lean on two bridges, neither of them SSH. A private GitHub repository carries small files without secrets, and a private release carries `age`-encrypted archives, locked to a key generated on the new Mac that only hands out its public half. Syncthing takes bigger or still-changing folders, one way only: the old Mac sends, the new Mac receives at the same absolute path, paired by device ID and kept on the local network. AirDrop or a USB stick is the fallback. SSH stays off by default, because the notes count it as opening your whole macOS user account.
+Repositories come across as fresh clones. For the rest, the notes lean on two bridges, neither of them SSH. A private GitHub repository carries small files without secrets, and a private release carries `age`-encrypted archives, encrypted to a public key the new Mac sends over, while its private key stays put. Syncthing takes bigger or still-changing folders, one way only: the old Mac sends, the new Mac receives at the same absolute path, paired by device ID and kept on the local network. AirDrop or a USB stick is the fallback. SSH stays off by default, because the notes count it as opening your whole macOS user account.
 
 Anything that isn't a git clone travels as a sealed archive. The script behind it runs a `gitleaks` scan, writes a checksum manifest, packs one named file or folder and can encrypt it with `age`. It stops on any finding, and the unpack script refuses absolute paths, `..` and symlinks. Your `settings.json` arrives set aside as `settings.json.from-source`, so its hooks and paths don't act on the new Mac until you've read them.
 
@@ -218,6 +218,8 @@ cl_audit, n-uf's free Mac app for Claude usage, has **Move to another Mac** (26.
 
 ## Install it from GitHub
 
+The plugin is young, and its README says so at the top: not yet stable, with steps, templates and scripts still changing. So read each script before you run it, try the method on one quiet sidebar section first, and check the [CHANGELOG](https://github.com/n-uf/claude-machine-transfer/blob/main/CHANGELOG.md) before you upgrade, since any release may change how a move runs.
+
 As a plugin, from inside Claude Code, these are the README's two commands:
 
 ```
@@ -235,7 +237,5 @@ cp -R claude-machine-transfer/skills/machine-transfer ~/.claude/skills/
 Install it on both Macs: the entry session and the successors on the new one use the same scripts. Then, in the session that will coordinate the move, start with `/machine-transfer plan a move of this workspace to my new Mac`. Installed as a plugin, the command is `/machine-transfer:machine-transfer`, and asking Claude to plan a move loads the skill either way.
 
 Requirements, from the README: macOS to macOS, with the Claude desktop app and Remote Control (the restart protocol assumes the desktop app). The scripts are plain bash and run on the stock bash 3.2, with git 2.31 or newer. Sealing needs `gitleaks` 8.19 or newer, and encryption needs `age`. The licence is PolyForm Perimeter 1.0.1, so it is source-available, not open source. Credentials never travel: the README has you make them fresh on the new Mac.
-
-The plugin is young, and its README says so at the top: not yet stable, with steps, templates and scripts still changing. So read each script before you run it, try the method on one quiet sidebar section first, and check the [CHANGELOG](https://github.com/n-uf/claude-machine-transfer/blob/main/CHANGELOG.md) before you upgrade, since any release may change how a move runs.
 
 The code and the full notes are in the [repository on GitHub](https://github.com/n-uf/claude-machine-transfer), and the method itself is in [SKILL.md](https://github.com/n-uf/claude-machine-transfer/blob/main/skills/machine-transfer/SKILL.md). n-uf is not affiliated with Anthropic.
