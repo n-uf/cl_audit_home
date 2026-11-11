@@ -24,7 +24,7 @@ faq:
   - q: "Is there a built-in way to keep two computers in step?"
     a: "Not for the whole setup, in the Anthropic pages we read; only the skills and plugins tied to your claude.ai account follow you. A user asked Claude Code's issue tracker for one in #36693, which was closed as not planned on 30 April 2026; that's a user report, not an Anthropic statement. A private git repository of the files you wrote is the usual workaround."
   - q: "Does Move to another Mac in cl_audit carry my sign-in?"
-    a: "No. cl_audit's README says sign-ins never travel, and that cl_audit never reads the Keychain. You sign in to each account again on the new Mac with Add account, and scheduled tasks arrive paused. Your code doesn't travel either: clone it before or after the import, and since 26.11.12 you can pick the folder for any moved session whose folder isn't on the new Mac."
+    a: "No. cl_audit's README says sign-ins never travel, and that cl_audit never reads the Keychain. You sign in to each account again on the new Mac with Sign in with another account…, and scheduled tasks arrive paused. Your code doesn't travel either: clone it before or after the import, and since 26.11.12 you can pick the folder for any moved session whose folder isn't on the new Mac."
 sources:
   - title: "Claude Code docs: Explore the .claude directory"
     url: "https://code.claude.com/docs/en/claude-directory"
@@ -186,6 +186,11 @@ sources:
     checked: 2026-11-10
     supports: "26.11.13: a move brings each session's side files (task list, plan, typed prompts with pasted text, the project folder's trust and allowed tools) in the encrypted disk image only; Rewind's copies of edited files are their own Export row with their size, left out unless included; Keys found searches these too; not carried: session environments, the image cache, shell snapshots, debug files, old to-do lists; Import puts them back as rows, on for a move, without overwriting; project MCP servers start left out; prompt history appended to history.jsonl and pointed at each session's folder here; trust written only when the folder has none; both only while Claude Code isn't running for the profile and its window is closed, and only for folders on this Mac; a Pick also points Rewind's saved paths at the new folder; Undo this import takes it all back, leaving and naming anything changed since; side files stay with the imported backup while the import can be undone (30 days), then deleted; a file with side files is format 6, a move without them stays at 5 or 4 so 26.11.12 still opens it; five details confirmed only from Claude Code 2.1.318's program text."
     quote: "A move brings each session's side files."
+  - title: "cl_audit README at tag v26.11.18 (Moving to another Mac; Profile settings, Accounts)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
+    checked: 2026-11-11
+    supports: "There is no Add account since 26.11.18; on the new Mac you sign in again to each account with Accounts ▸ Sign in with another account…."
+    quote: "There is no Add account"
 related:
   - /blog/export-claude-code-sessions/
   - /blog/back-up-claude-code-sessions/
