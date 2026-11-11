@@ -11,7 +11,7 @@ author: n-uf
 order: 6
 takeaways:
   - "A cl_audit profile is one Claude Code folder, signed in to one account at a time: the one in use. Your other accounts wait on standby, signed out, and show no limits."
-  - "A switch is Claude Code's own sign-in again on the same folder. cl_audit checks which account came back, and it never copies or keeps a sign-in."
+  - "A switch is Claude Code's own sign-in again on the same folder. cl_audit checks which account came back. It never copies or moves a sign-in, and a standby account has none kept."
   - "Before the sign-in, the profile's Claude window closes, a backup is made, and the window's Code sessions and scheduled tasks move to the new account, with a receipt and Undo the move."
   - "You sign the Claude app in to the new account yourself. cl_audit doesn't pool limits, and it never switches by itself."
   - "One account needs none of this. Two accounts open at once are two profiles instead."
@@ -139,7 +139,7 @@ The browser's claude.ai account decides which account signs in, so there are thr
 - **Another account:** "Signed in as ultra-3 · not ultra-2". The profile now works on ultra-3, and ultra-1 stands by. Switch the browser's account and sign in as ultra-2 again, or keep ultra-3.
 - **Timed out:** "No sign-in · sessions on ultra-2", with **Try again** and **Undo the move**.
 
-Before the sign-in starts, cl_audit unsets `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN` and the Bedrock, Vertex and Foundry switches for it, so a key in your shell's settings can't sign the folder in another way. cl_audit never sees a password or a token, and never copies, moves or reads a sign-in. If the browser covers the Switch page while the sign-in waits, one alert says the switch is waiting for you, with **Show switch** and **Cancel switch**.
+Before the sign-in starts, cl_audit unsets `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN` and the Bedrock, Vertex and Foundry switches for it, so a key in your shell's settings can't sign the folder in another way. A switch never sees your password, and it never copies or moves a sign-in. If the browser covers the Switch page while the sign-in waits, one alert says the switch is waiting for you, with **Show switch** and **Cancel switch**.
 
 ## Switch Claude accounts without losing sessions
 
@@ -155,7 +155,7 @@ Chats and Projects on claude.ai don't move. They belong to each account, and so 
 
 cl_audit never signs the Claude app in or out. The Switch page tells you to sign the window in to the new account when you open it. Until you do, the account box shows the app's account, and the numbers say they are Claude Code's. For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it.
 
-You can also switch without the Switch page: run `claude auth login` yourself for the profile's folder. Within a second the profile works on the account that signed in, and the one before stands by. That way the window's sessions don't move; only the Switch page moves them. An account that another profile works on is refused.
+You can also switch without the Switch page: run `claude auth login` yourself for the profile's folder. Within a second the profile works on the account that signed in, and the one before stands by. cl_audit moves the window's sessions as part of its own switch, not for a sign-in you run yourself. An account that another profile works on is refused.
 
 ## Cancel it, or undo it
 
@@ -173,11 +173,11 @@ Move to Trash asks first, says what's in the folder and names its Keychain item,
 
 A switch changes the account, not the profile. Its name, Dock icon and look stay, and so does its Claude Code folder, with projects, settings, MCP and `CLAUDE.md`.
 
-To switch a Claude Code account and keep its history, that folder is the part that matters. Anthropic's settings page says Claude Code keeps its settings, session history and plugins in `~/.claude`, or in the `CLAUDE_CONFIG_DIR` folder when that's set: the default profile uses the first, every other profile a folder of its own. Claude Code stores sessions per project directory, and `claude --continue` and `claude --resume` read them from there. Anthropic's sessions page also says the desktop app keeps its own session list. That separate list is the one the switch moves.
+Your Claude Code history lives in that folder, so a switch leaves it alone. Anthropic's settings page says Claude Code keeps its settings, session history and plugins in `~/.claude`, or in the `CLAUDE_CONFIG_DIR` folder when that's set: the default profile uses the first, every other profile a folder of its own. Claude Code stores sessions per project directory, and `claude --continue` and `claude --resume` read them from there. Anthropic's sessions page also says the desktop app keeps its own session list. That separate list is the one the switch moves.
 
 ## Limits stay per account
 
-Anthropic's help page says all activity in Claude and Claude Code counts against the same limits. A profile's Claude window and its Claude Code are meant to be on the same account, so they share that account's limits.
+Anthropic's help page says all activity in Claude and Claude Code counts against the same limits. A profile's Claude window and its Claude Code usually sit on the same account, so they share that account's limits.
 
 cl_audit reads only the account in use and doesn't pool or add limits. A switch changes which account the profile works on. It doesn't change any account's limits, and it doesn't happen unless you start it.
 
@@ -189,7 +189,7 @@ Other switchers do a related job for Claude Code alone. By their READMEs, checke
 
 | Tool | What it swaps | Where it makes more sense |
 |---|---|---|
-| cl_audit | The profile's account. Claude Code signs in again on the same folder, on Anthropic's own screen, and no sign-in is copied or kept. The Claude window's Code sessions and scheduled tasks move too, after a backup | You use the Claude app and Claude Code in one profile and want the sessions to go with the account |
+| cl_audit | The profile's account. Claude Code signs in again on the same folder, on Anthropic's own screen, and no sign-in is copied. The Claude window's Code sessions and scheduled tasks move too, after a backup | You use the Claude app and Claude Code in one profile and want the sessions to go with the account |
 | claude-swap | The account-specific Claude login for Claude Code, in the CLI and the VS Code extension. It has an optional automatic mode and an optional macOS menu bar app | You work in the terminal, on macOS, Linux or Windows, and want a command to swap logins |
 | CCSwitcher | A menu bar app (macOS 14 or later) that keeps a backup of each Claude Code account's credentials and swaps the Keychain entry and `~/.claude.json` | You want a small menu bar switcher for Claude Code alone |
 
