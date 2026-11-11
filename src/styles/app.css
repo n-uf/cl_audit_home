@@ -1666,6 +1666,15 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .abox-why { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 11.5px; color: #f59e0b; }
 .face-silver .abox-why { color: #8a4f00; }
 .abox .login-menu, .add-wrap .login-menu { top: calc(100% + 4px); left: 0; right: auto; }
+/* the account in use (26.11.15): a near-black well with a thin green-tinted edge, a faint green glow inside, and a lit
+   green bar on its left edge; Silver: the display glass with a darker green. Standby boxes keep the plain window. */
+.abox.in-use { position: relative; background: linear-gradient(180deg, #111214, #0e0f11);
+  box-shadow: inset 0 0 0 1px #24372a, inset 0 0 12px rgba(var(--led-on), .09), inset 0 1px 1.5px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.05); }
+.abox.in-use::before { content: ""; position: absolute; left: -1px; top: 10px; bottom: 10px; width: 3px; border-radius: 1.5px;
+  background: rgb(var(--led-on)); box-shadow: 0 0 4px rgba(var(--led-on), .6); }
+.face-silver .appwin .abox.in-use { background: linear-gradient(180deg, #fbfcfc, #eef0f1);
+  box-shadow: inset 0 0 0 1px rgba(17,116,58,.32), inset 0 0 12px rgba(17,116,58,.10), inset 0 2px 4px rgba(0,0,0,.14), 0 1px 0 rgba(255,255,255,.7); }
+.face-silver .appwin .abox.in-use::before { background: #11743a; box-shadow: 0 0 4px rgba(17,116,58,.35); }
 .add-acc { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .add-wrap { position: relative; }
 .add-acc small { font-size: 11px; }
