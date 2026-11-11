@@ -26,8 +26,6 @@ faq:
     a: "The profile's Claude window closes for the move. cl_audit never signs it in or out: when you open it again, you sign it in to the new account yourself. Until then, the account box shows the app's account and says whose the numbers are."
   - q: "Can I undo a switch?"
     a: "Until Claude Code is on the new account, Undo the move puts the sessions back. After that, the way back is a switch the other way. A switch that stopped half way offers Undo it on the profile's Sessions card."
-  - q: "How is this different from running two accounts side by side?"
-    a: "Side by side means two profiles. The first uses ~/.claude and the usual Claude app; the second gets its own Claude window and Claude Code folder. A switch is one profile changing from one of your accounts to another. Use separate profiles when you need both accounts open at once."
 sources:
   - title: "cl_audit CHANGELOG, 26.11.18"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
