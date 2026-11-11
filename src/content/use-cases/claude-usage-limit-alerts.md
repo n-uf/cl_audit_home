@@ -5,7 +5,7 @@ h1: "Claude usage limit notifications"
 mainKeyword: "claude usage limit notification"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-08
+updated: 2026-11-11
 author: n-uf
 order: 2
 takeaways:
@@ -47,11 +47,16 @@ sources:
   - title: "cl_audit README (n-uf/cl_audit): alerts, after a Claude update"
     url: "https://github.com/n-uf/cl_audit"
     checked: 2026-11-05
-  - title: "cl_audit README, release 26.11.1 (n-uf/cl_audit): alerts for a profile with several accounts; crimson for a full limit"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/README.md"
-    checked: 2026-11-07
-    supports: "The other account has 92% of its week left; Switch back… or Stay; the switch is waiting for you; crimson frame"
-    quote: "alerts reach the lock screen, so they never name an account"
+  - title: "cl_audit README at tag v26.11.18 (n-uf/cl_audit): When a limit is full, Another account, A switch waiting for you"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
+    checked: 2026-11-11
+    supports: "Standby accounts are signed out and show no usage; the full-limit alert adds a line about switching to another of the profile's accounts, with Switch account… and Later; the switch is waiting for you alert, with Show switch and Cancel switch, only while the Switch page isn't in front; alerts never name an account; the Dock icon's crimson frame while a limit is full."
+    quote: "so they never name an account by its address or any part of it"
+  - title: "cl_audit CHANGELOG, 26.11.18"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
+    checked: 2026-11-11
+    supports: "Standby accounts show no usage, the alert included; \"the other account is back\" and its Switch back offer are gone."
+    quote: "A profile is one Claude Code folder, and switching signs in again on it."
 related:
   - /
   - /use-cases/multiple-claude-accounts/
@@ -83,13 +88,12 @@ The same agent sends three more kinds of alert.
 
 ## When a profile has more than one account
 
-A profile can hold several accounts of your own and works on one at a time. For such a profile the full-limit alert says a little more, and two alerts are added.
+A profile works on one account at a time and can keep your other accounts on standby, signed out. For such a profile the full-limit alert says a little more, and one alert is added.
 
-- **A limit is full.** If another of the profile's accounts has room, the alert says how much ("The other account has 92% of its week left") and has **Switch account…** next to **Later**. It never names the account, because alerts can show on the lock screen.
-- **The other account is back.** After a switch, when the account you left gets its full limit back, one alert says so ("Claude Main: the other account is back · Its week starts again") with **Switch back…** and **Stay**. It follows the profile's Notify when back.
-- **The switch is waiting for you.** When a switch needs you (Claude Code's sign-in in the browser, the Claude window's sign-in, the Return in the sidebar session) and its page isn't in front, one alert says which step ("Step 3 of 5: finish the sign-in in the browser"), with **Show switch** and, at Claude Code's sign-in, **Cancel switch**.
+- **A limit is full.** The alert adds "You can switch to another of its accounts: Claude Code signs in again on this profile's folder." and has **Switch account…** next to **Later**. Nothing reads a standby account, so the alert doesn't say how much room it has. It never names an account, because alerts can show on the lock screen.
+- **The switch is waiting for you.** While Claude Code's sign-in waits in the browser and the Switch page isn't in front, one alert says so: "Claude Main: the switch is waiting for you · Finish Claude Code's sign-in in Terminal and the browser. cl_audit checks the account when it's done." It has **Show switch** and **Cancel switch**.
 
-Switch account… and Switch back… only open the Switch page. Nothing switches until you press **Close and switch** there, and each account's limits stay its own. {{live:/use-cases/switch-claude-accounts/}}What a switch moves, and how to undo one, is on the [Claude account switcher](/use-cases/switch-claude-accounts/) page.{{/live}}
+Switch account… only opens the Switch page. Nothing switches until you start the switch there, and each account's limits stay its own. {{live:/use-cases/switch-claude-accounts/}}What a switch moves, and how to undo one, is on the [Claude account switcher](/use-cases/switch-claude-accounts/) page.{{/live}}
 
 ## The countdown on the dashboard and in the Dock
 

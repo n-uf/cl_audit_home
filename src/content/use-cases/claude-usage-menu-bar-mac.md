@@ -5,7 +5,7 @@ h1: "A Claude usage menu bar icon for each profile"
 mainKeyword: "claude usage menu bar"
 kind: use-case
 published: 2026-11-05
-updated: 2026-11-08
+updated: 2026-11-11
 author: n-uf
 order: 5
 takeaways:
@@ -31,10 +31,10 @@ sources:
   - title: "cl_audit CHANGELOG, 26.11.0 (2026-11-05)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.0/CHANGELOG.md"
     checked: 2026-11-05
-  - title: "cl_audit README at v26.11.1 (n-uf): the menus, Switch account ›, crimson for a full limit"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/README.md"
-    checked: 2026-11-07
-    supports: "Switch account ›, Switch to … while a limit is full, Switch back to …; When full: crimson only"
+  - title: "cl_audit README at v26.11.18 (n-uf): the menus, Switch account ›, crimson for a full limit"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
+    checked: 2026-11-11
+    supports: "The account in use under the profile's name with a lit green lamp; Switch account › with the account in use ticked and every other account with when it was last in use; Switch to … on the top level while a limit is full; all of them open the Switch page; When full: crimson only"
     quote: "A full limit is crimson, except in System, where its countdown shows it."
   - title: "cl_audit CHANGELOG, 26.11.1 (2026-11-07)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
@@ -146,7 +146,7 @@ A click opens that profile's own menu:
 
 In the menu bar, in the profile's settings, puts it back.
 
-A profile with more than one account shows the account in use under the profile's name ("ultra-1 · in use") and has **Switch account ›**: a submenu with the account in use ticked, then your other accounts, most room first, each with its week ("week 12%", or "no numbers"). While a limit is full, the one with the most room also sits on the top level, first among the actions: "Switch to ultra-3…  week 12%". Once the account you left is back after its reset, **Switch back to ultra-1…** shows above Switch account ›. All of these only open cl_audit's Switch page; nothing switches until you press **Close and switch** there. {{live:/use-cases/switch-claude-accounts/}}The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers what a switch moves and how to undo one.{{/live}}
+A profile with more than one account shows the account in use under the profile's name, with a lit green lamp ("ultra-1 · in use"), and has **Switch account ›**: a submenu with the account in use ticked ("in use · week 94%"), then your other accounts, each with when it was last in use ("3 days ago"). A standby account is signed out, so the menu shows no numbers for it. While a limit is full, the first account not known to be full also sits on the top level, first among the actions: "Switch to ultra-3…". All of these only open cl_audit's Switch page; nothing switches until you start the switch there. {{live:/use-cases/switch-claude-accounts/}}The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers what a switch moves and how to undo one.{{/live}}
 
 ## One icon per profile
 
