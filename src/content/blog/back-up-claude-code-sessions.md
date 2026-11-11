@@ -99,7 +99,7 @@ sources:
   - title: "cl_audit README at tag v26.11.4"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.4/README.md"
     checked: 2026-11-08
-    supports: "The Sessions card (Kept here, Keep for and how it writes cleanupPeriodDays, Back up now, backups list, Export… and Import… with Undo last import), General > Backups, what a backup holds and never holds, APFS clones, the Restore preview, merge-only rules, the receipt, Undo this restore, Undo this switch. Export…: a profile's sessions as one file, for another Mac or for keeping, saved where the Save panel says; None: a zip, or an AES-256 encrypted disk image with a password; sessions that hold keys are left out unless you choose Keep them: needs a password. Import…: a preview first, nothing is ever overwritten; Undo last import takes back what it added."
+    supports: "The Sessions card (Kept here, Keep for and how it writes cleanupPeriodDays, Back up now, backups list, Export… and Import… with Undo last import), General > Backups, what a backup holds and never holds, APFS clones, the Restore preview, merge-only rules, the receipt, Undo this restore. Export…: a profile's sessions as one file, for another Mac or for keeping, saved where the Save panel says; None: a zip, or an AES-256 encrypted disk image with a password; sessions that hold keys are left out unless you choose Keep them: needs a password. Import…: a preview first, nothing is ever overwritten; Undo last import takes back what it added."
     quote: "Keep for: how long Claude Code keeps its own transcripts"
   - title: "cl_audit README at tag v26.11.6"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.6/README.md"
@@ -136,11 +136,16 @@ sources:
     checked: 2026-11-10
     supports: "26.11.11: before a backup writes Claude Code's setup, cl_audit runs the Export page's key check over settings.json, the scripts its hooks run (with the skills holding them) and the plugin marketplaces file; a hook or permission rule holding a key is left out whole, another value that looks like a key is blanked and its name kept, and a script, a skill whose script holds a key or a marketplaces file holding one is left out; Restore, and Export from a backup, say which; it finds only the Export page's key shapes (GitHub, AWS, sk-, JWTs and the like) and doesn't check CLAUDE.md or skills no hook runs."
     quote: "Backups leave out the keys they find in your Claude Code settings and scripts."
-  - title: "cl_audit 26.11.1 release notes"
-    url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.1"
-    checked: 2026-11-07
-    supports: "The 26.11.1 feature list and the Claude Code (2.1.318) and Claude app versions it was checked with."
-    quote: "Restore a backup, and Undo this switch puts back from it."
+  - title: "cl_audit 26.11.18 release notes"
+    url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.18"
+    checked: 2026-11-11
+    supports: "Release 26.11.18 was checked with Claude Code 2.1.318 and the Claude app 5.1231.2; a switch makes a backup before the Claude window's sessions move, and Undo the move puts them back until Claude Code is on the new account; switches' backups stay listed and restorable."
+    quote: "Checked with Claude Code 2.1.318 and the Claude app 5.1231.2."
+  - title: "cl_audit README at tag v26.11.18 (Backups of a profile's sessions)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
+    checked: 2026-11-11
+    supports: "A backup is made by Back up now and by every switch that moves the window's sessions, before anything moves; those stay listed and restorable; Restore… puts back what is missing, merged, and never overwrites anything; if the backup can't be made, a switch stops with nothing moved."
+    quote: "by every switch that moves the window's sessions, before anything moves"
   - title: "cl_audit CHANGELOG, 26.11.12"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.12/CHANGELOG.md"
     checked: 2026-11-10
@@ -309,7 +314,7 @@ Then **Close and restore N** closes only that profile's Claude window and writes
 
 To keep a copy somewhere other than this Mac, **Export…** writes a profile's sessions as one file, saved where you choose: a zip, or an encrypted disk image with a password. Sessions that hold keys stay out unless you keep them, which needs the password. **Import…** adds such a file back after a preview and never overwrites anything; **Undo last import** takes back what it added. For a new Mac, 26.11.10 adds **Move to another Mac**, a key on the Export page that also takes cl_audit's own profiles and settings, always in a password-protected disk image. Sign-ins don't travel, and neither does your code. Since 26.11.12 a move brings a checklist of the projects to clone, and on the new Mac you can pick the folder for any moved session whose folder isn't there. Since 26.11.13 it also carries each session's task list, plan, typed prompts and its project folder's trust and allowed tools, and Rewind's copies of the files the sessions edited if you include them.
 
-cl_audit relies on how Claude Code lays out its folder, and the release notes say 26.11.1 was checked with Claude Code 2.1.318. If a newer Claude Code stops a backup or restore working, update cl_audit.
+cl_audit relies on how Claude Code lays out its folder, and the 26.11.18 release notes say it was checked with Claude Code 2.1.318. If a newer Claude Code stops a backup or restore working, update cl_audit.
 
 ## Other tools, and when by hand is enough
 
