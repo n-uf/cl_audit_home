@@ -94,6 +94,8 @@ In cl_audit a **profile** is one Claude setup: a Claude Code folder with its sig
 
 You find them in Settings ▸ Main ▸ Claude Code ▸ **Accounts**. The account in use gets a lit **IN USE** box with its plan and organisation ("Ultra · Personal") and every limit its plan has, drawn as bars like the cards on the [dashboard demo](/dashboard/). A **STANDBY** box shows no limits, because nothing reads a standby account. It says when the account was last in use ("Last in use on Main 3 days ago").
 
+![Accounts in a profile's Claude Code card](/img/guides/accounts-card.webp "The site's demo of the Accounts for the profile Work: one account in use, two on standby, and two folders from before. Sample data.")
+
 The IN USE box shows the account the profile's Claude app is signed in to, or Claude Code's while the app is signed out or can't be read. Every screen shows that same account. The numbers always come through Claude Code's sign-in, so when Claude Code is on another account than the app, they say whose they are ("Usage: Claude Code on b…@example.com").
 
 ## Where the accounts come from
@@ -124,6 +126,8 @@ The page shows the account in use under NOW, with its limits, and the account yo
 - Claude Code's transcripts stay in the folder. So do the profile's name, Dock icon, look and settings, and ultra-1 stays on the profile as a standby account.
 
 Then come the steps and **Switch to ultra-2**.
+
+![The Switch page for the profile Work](/img/guides/switch-page.webp "The site's demo of the Switch page for the profile Work, before a switch to team-2. Sample data.")
 
 ## What happens when you switch, step by step
 

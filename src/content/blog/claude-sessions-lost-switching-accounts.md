@@ -176,6 +176,8 @@ cl_audit, our app, makes the same move part of a switch you start yourself. It's
 
 The move goes one way: from the account the profile is on to the account you switch to. So a switch changes accounts without the sidebar going blank. For sessions already sitting under an old account, claude-transplant lets you pick the From and To accounts yourself.
 
+![The Switch page for Work, with What changes and the steps](/img/guides/switch-page.webp "cl_audit's site demo: the Switch page for the Work profile, with What changes and the steps. Sample data.")
+
 Here is what happens when you switch Work from `ultra-1@example.com` to `ultra-2@example.com` in cl_audit 26.11.18.
 
 1. **Find the account.** In Settings ▸ the profile ▸ Claude Code ▸ **Accounts**, the account in use is marked IN USE and the others STANDBY. cl_audit finds your accounts on this Mac by itself, from the Claude window's session folders, Claude Code's records and the transcripts. **Sign in with another account…** is for one that isn't there yet.
