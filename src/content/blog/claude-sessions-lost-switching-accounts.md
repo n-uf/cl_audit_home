@@ -5,8 +5,8 @@ description: "Claude Code sessions lost switching accounts? The transcripts are 
 h1: "Claude Code sessions lost switching accounts? They're likely still on disk"
 mainKeyword: "claude code sessions lost switching accounts"
 kind: how-to
-published: 2026-11-20
-updated: 2026-11-20
+published: 2026-11-26
+updated: 2026-11-26
 author: n-uf
 takeaways:
   - "Claude Code keeps each session's transcript as a file under ~/.claude/projects, tied to a project folder. User reports say switching accounts in the Claude app leaves those files where they are."
