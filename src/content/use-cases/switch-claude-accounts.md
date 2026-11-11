@@ -5,8 +5,8 @@ h1: "Claude account switcher: move a profile between your accounts"
 mainKeyword: "claude account switcher"
 kind: use-case
 draft: true
-published: 2026-11-13
-updated: 2026-11-13
+published: 2026-11-19
+updated: 2026-11-19
 author: n-uf
 order: 6
 takeaways:

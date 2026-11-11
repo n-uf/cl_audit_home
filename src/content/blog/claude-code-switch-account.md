@@ -4,8 +4,8 @@ description: "How to switch account in Claude Code: /logout and /login or claude
 h1: "How to switch account in Claude Code, and what to check when it won't"
 mainKeyword: "claude code switch account"
 kind: how-to
-published: 2026-11-17
-updated: 2026-11-17
+published: 2026-11-22
+updated: 2026-11-22
 draft: true
 author: n-uf
 takeaways:
