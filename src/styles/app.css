@@ -1646,8 +1646,6 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .abox-badge { flex: none; }
 .abox .pn-limits { margin: 0; }
 .abox-note { font-size: 10.5px; color: var(--muted); }
-.abox-why { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 11.5px; color: #f59e0b; }
-.face-silver .abox-why { color: #8a4f00; }
 .abox .login-menu { top: calc(100% + 4px); left: 0; right: auto; }
 /* the account in use (26.11.15): a near-black well with a thin green-tinted edge, a faint green glow inside, and a lit
    green bar on its left edge; Silver: the display glass with a darker green. Standby boxes keep the plain window. */
@@ -1702,11 +1700,12 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .sw-keys > span:empty { flex: 1; }
 .sw-plain { border: 0; background: none; padding: 0; color: var(--muted); font: inherit; font-size: 12.5px; cursor: pointer; }
 .sw-plain:hover { color: var(--text); }
-.sw-busy { margin-left: auto; font-size: 12px; color: #f59e0b; }
-.face-silver .sw-busy { color: #8a4f00; }
 .sw-line { margin: 6px 0 0; }
-.sw-c-btns { gap: 8px; }
-.sw-page .dialog-veil { position: fixed; z-index: 40; }
+.sw-line.bad { color: #f87171; }
+.face-silver .sw-line.bad { color: #b42318; }
+/* What changes / What changed (26.11.18): the label above's width a little wider for "Claude window", rows from the top */
+.sw-changes .srow { align-items: flex-start; padding: 7px 0; }
+.sw-changes .srow > span:first-child { flex: 0 0 104px; }
 /* General ▸ Dock: the EXPERIMENTAL display under Keep in order, before the description */
 .exp-disp { display: inline-flex; margin: 2px 0 6px; }
 .g-note.caution { display: block; max-width: none; }   /* the warning runs the card's width, as the app's */
@@ -1747,7 +1746,6 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .acc-flow .acc-pick .abox.sel::after { left: -64px; }
 .acc-pick .abox.sel .abox-lamp { background: #8ff3e4 !important; box-shadow: 0 0 6px rgba(127,249,234,.85) !important; }
 .acc-pick .abox.sel .abox-t b, .acc-pick .abox.sel .abox-title { color: var(--text); }
-.acc-pick .nolim { font-size: 11.5px; color: var(--muted); }
 /* the lit displays: "Switching to" in mint glass; the Switch account key wears the Login Security badge's lit glass */
 .disp.litp { padding: 0 8px; border-radius: 3px; letter-spacing: .12em; font-weight: 700; font-size: 9.5px; text-shadow: none; color: #052b26;
   background: radial-gradient(120% 180% at 50% 55%, #8ff3e4 0%, #76e3d3 55%, #61cfbf 100%);
@@ -1776,10 +1774,6 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .acc-flow > .lbl { align-self: start; padding-top: 12px; font: 600 9.5px/1.2 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
 .acc-flow .pick-note { grid-column: 2; margin: 0; }
 /* the profile's tile while its Switch page is open: a display flush on its right, two lines */
-.tile-group { display: inline-flex; align-items: stretch; gap: 0; }
-.tile-group > .tile:first-child { border-top-right-radius: 0; border-bottom-right-radius: 0; }
-.tile-group > .tile:last-child { border-radius: 4px; }
-.tile-group .sw-disp { position: relative; height: auto; align-self: stretch; padding: 0 16px; font-size: 11px; border-radius: 0 5px 5px 0; transform: translateY(1px); }
 .sw-disp.two { flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px; min-width: 128px; }
 .sw-disp.two .l1 { font-size: 8px; letter-spacing: .18em; color: rgba(var(--glow), .45); text-shadow: none; }
 .sw-disp.two .l1.b { color: #a6fff3; text-shadow: 0 0 3px rgba(127,249,234,.7); }
@@ -1827,5 +1821,3 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* demo only: the cases a switch can meet when something goes wrong */
 .sw-demo { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12px; }
 .sw-demo .switch { flex-wrap: wrap; height: auto; }
-.sw-page .switch > button.dis { opacity: .4; }
-.sw-page .switch > button:disabled { cursor: default; }
