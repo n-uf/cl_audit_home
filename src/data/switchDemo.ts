@@ -27,6 +27,9 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   const other = () => list.find((s) => s.email !== to)!;
   const O = () => shortName(other().email);
   const SES = "14 Code-tab sessions and 2 scheduled tasks";
+  // what the switch's receipt still has moved after it stopped (SwitchRunner.movedWords): all of it once the move
+  // finished (no sign-in), part of it when it stopped half way (the sessions go first, then the tasks)
+  const MOVED = { all: "14 sessions, 2 tasks", half: "9 sessions" };
   const w = window as any;
   /** A run holds the profile's Claude window (closing, moving, waiting for the sign-in): a Restore waits for it. */
   const running = () => phase === "closing" || phase === "moving" || phase === "undoing" || phase === "waiting";
@@ -121,9 +124,9 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
         srow("Claude Code", `Terminal and editors on ${dir} signed in as ${O()}, not ${T()}.`),
         srow("Sessions", `${cap(SES)} moved to ${T()} already. Sign in as ${T()} again, or Undo the move to put them back under ${from}.`),
       ].join("")];
-      case "timedOut": return ["What changed", srow("Sessions", `${cap(SES)} moved to ${T()}; Claude Code on ${dir} is still on ${from}. Try again, or Undo the move to put them back.`)];
+      case "timedOut": return ["What changed", srow("Sessions", `${cap(MOVED.all)} moved to ${T()}; Claude Code on ${dir} is still on ${from}. Try again, or Undo the move to put them back.`)];
       case "failed": return ["What changed", fail === "half"
-        ? srow("Sessions", `${cap(SES)} moved to ${T()}; Claude Code on ${dir} is still on ${from}. Try again, or Undo the move to put them back.`)
+        ? srow("Sessions", `${cap(MOVED.half)} moved to ${T()}; Claude Code on ${dir} is still on ${from}. Try again, or Undo the move to put them back.`)
         : srow("Nothing", `${name} is still on ${from}: Claude Code on ${dir}, its sessions, the Claude window and ${name}'s settings are as they were.`)];
       case "undone": return ["What changed", srow("Nothing", `The move is undone: ${name}'s sessions and scheduled tasks are back under ${from}, and Claude Code is still on ${from}.`)];
       default: return ["What changes", [
@@ -147,8 +150,8 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       case "reached": return "done";
       case "other": return n < k + 3 ? "done" : "failed";
       case "timedOut": return n <= k + 1 ? "done" : n === k + 2 ? "failed" : "pending";
-      // the failed step is the one that stopped: 1 (the window didn't close) or 2 (the sessions' move). The app's
-      // SwitchPage `failedAt` marks one step later; its hub will fix the app to match this (item B4).
+      // the failed step is the one that stopped, as SwitchPage marks it since 26.11.20: 1 (the window didn't close)
+      // or 2 (the backup or the sessions' move)
       case "failed": { const at = fail === "window" ? 1 : 2; return n < at ? "done" : n === at ? "failed" : "pending"; }
     }
   };
@@ -213,7 +216,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       case "other": return display("", "Signed in as", "a", O());
       case "timedOut": return display("", "No sign-in", "a", "try again");
       case "failed": return fail === "half"
-        ? display("", "Stopped part way", "r", "sessions moved", "Stopped part way: sessions moved; Undo puts them back")
+        ? display("", "Stopped part way", "r", `${MOVED.half} moved · Undo puts them back`)
         : display("", "Not started", "r", "nothing changed");
       default: return removeDisplay();
     }
