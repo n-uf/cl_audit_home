@@ -1,6 +1,6 @@
 ---
 // The pages the Sessions card opens (switch UX round 2), in place of the profile's settings like the Switch page:
-// Restore (a preview, then steps, then checks, and an undo of its own; or "Not yet" while a switch is unfinished),
+// Restore (a preview, then steps, then checks, and an undo of its own; or "Not yet" while a switch, restore or import holds the profile's window; a switch that stopped half way no longer blocks it),
 // Export and Import. settings.astro shows them and fills in the profile's name ([data-pn]) and the backup's name
 // ([data-bk-name]). Sample figures only; nothing on this Mac changes.
 ---
@@ -58,9 +58,9 @@
         </div>
         <div class="card" data-rs="refused"><h4>First</h4>
           <ol class="sw-steps">
-            <li class="warn"><i></i><div><b>A switch of <span data-pn>work</span> is unfinished</b><span>It stopped half way. Undo it first: its receipt puts back exactly what it moved, then restore if anything's still missing.</span></div></li>
+            <li class="warn"><i></i><div><b><span data-pn>work</span>'s window is held closed</b><span>A switch of <span data-pn>work</span> is under way. Wait for it to end.</span></div></li>
           </ol>
-          <p class="g-note sub">One switch, restore or import at a time.</p>
+          <p class="g-note sub">One switch, restore, import or move at a time.</p>
           <div class="sw-keys"><button type="button" class="key k" data-sess-back>Back</button><span></span><button type="button" class="pill small tint t-green dimmed">Close and restore 26</button></div>
         </div>
       </div>

@@ -1,62 +1,39 @@
 ---
-// The Switch page, switching accounts round 2 (the switch UX sketch), in place of the profile's settings as in the app.
-// NOW is the account in use, lit; under TO every standby account, most room first, the picked one lit in mint; the
-// sessions are asked every time (nothing chosen for you); moving them always brings a backup, made right after the
-// window closes; each sign-in is checked; Cancel stays in sight while it runs. The demo switches "work" (settings.astro
-// runs it with sample timings, and shows the six cases it can meet when something goes wrong). Sample data only.
-import { accounts, standby, byRoom, shortName } from "../data/demo";
+// The Switch page, as the app's SwitchPage.swift draws it (26.11.18, "one-folder switching"), in place of the profile's
+// settings. A switch happens in the profile's own folder: the Claude window closes, a backup is made, the Code-tab
+// sessions and scheduled tasks move to the other account, then Claude Code's own sign-in opens in Terminal for the folder
+// and cl_audit watches it for up to 10 minutes. Two columns: Accounts (Now, To: standby accounts show no limits), then
+// What changes (What changed once it ran) and Steps. The demo switches "work" (switchDemo.ts runs it with sample
+// timings, and shows the cases it can meet when something goes wrong). Sample data only.
+import { accounts, standby, offerOrder, shortName } from "../data/demo";
 
 const a = accounts.find((x) => x.id === "work")!;
-const from = shortName(a.email);
-const list = byRoom(standby.work);
+const first = shortName(offerOrder(standby.work)[0].email);
 ---
 <section class="sw-page" data-sw-page hidden aria-label="Switch account">
-  <div class="sw-head"><h3 data-sw-head>Switch Claude {a.name} to <span class="tn">{shortName(list[0].email)}</span></h3></div>
+  <div class="sw-head"><h3 data-sw-head>Switch Claude {a.name} to {first}</h3></div>
   <!-- the line at the top while it runs, when it's done or when something went wrong: a display and the keys out -->
   <div class="sw-run" data-sw-run hidden></div>
   <!-- demo only: the cases a switch can meet when something goes wrong -->
   <div class="sw-demo" data-sw-demo><span class="sub">Demo: what can go wrong</span>
     <span class="switch small-switch" role="group" aria-label="What can go wrong">
-      <button type="button" data-sw-fail="window">Window won't close</button><button type="button" data-sw-fail="half">Stopped half way</button><button type="button" data-sw-fail="wrong">Wrong account</button><button type="button" data-sw-fail="sidebar">Sidebar not reached</button><button type="button" data-sw-fail="cancel">Cancelled</button><button type="button" data-sw-fail="undo">Undo stopped</button>
+      <button type="button" data-sw-fail="window">Window won't close</button><button type="button" data-sw-fail="wrong">Wrong account</button><button type="button" data-sw-fail="timeout">No sign-in in 10 min</button><button type="button" data-sw-fail="half">Stopped half way</button><button type="button" data-sw-fail="cancel">Cancelled</button>
     </span></div>
   <div class="sw-cols">
     <div class="sw-col">
-      <div class="card"><h4>Accounts <i class="idot" title="The account the profile works on now, and the one to switch to, with their limits as cl_audit last read them. Under TO, every standby account, most room first: click one to pick it.">i</i></h4>
+      <div class="card"><h4>Accounts <i class="idot" title={`The account ${a.name} works on now, with its limits, and the one it switches to. A standby account isn't read, so it shows no limits: only when it was last in use here.`}>i</i></h4>
         <div class="acc-flow" data-sw-acc-flow></div>
-      </div>
-      <div class="card"><h4>Stays as it is <i class="idot" title="Switching changes only the account the profile works on. Everything that makes it the profile stays.">i</i></h4>
-        <div class="srow"><span>Profile</span><span class="v-soft">Name, Dock icon, look</span></div>
-        <div class="srow"><span>Folder</span><span class="v-soft">{a.dir}: projects, settings, MCP, CLAUDE.md</span></div>
-        <div class="srow"><span>History</span><span class="v-soft">Claude Code's, for claude --resume</span></div>
       </div>
     </div>
     <div class="sw-col">
-      <div class="card"><h4>Sessions <i class="idot" title="The Claude window's Code sessions: the sidebar's sessions, sections and groups, pins and scheduled tasks. If they move, the window opens the same on the other account. If they stay, each account keeps its own. Chats and Projects on claude.ai belong to each account and never move.">i</i></h4>
-        <div class="srow"><span>Move them?</span><span class="switch small-switch" role="group" aria-label="Move the sessions?"><button type="button" data-sw-q="move">Move to <span class="tn">{shortName(list[0].email)}</span></button><button type="button" data-sw-q="leave">Leave with {from}</button></span></div>
-        <p class="g-note sub" data-sw-qline>Choose one to go on: nothing is chosen for you.</p>
-        <div class="srow"><span>Sessions</span><span class="v-soft">14 in the sidebar (and 3 archived)</span></div>
-        <div class="srow"><span>Sidebar</span><span class="v-soft">2 sections, 3 groups and the pins</span></div>
-        <div class="srow"><span>Routines</span><span class="v-soft">2 scheduled tasks</span></div>
-        <p class="g-note sub">Chats and Projects on claude.ai don't move; they belong to each account.</p>
+      <div class="card sw-changes"><h4><span data-sw-changes-t>What changes</span> <i class="idot" title={`A switch moves ${a.name}'s Claude window sessions and scheduled tasks from the account in use to the other one, inside ${a.name}'s folder (with a backup first, a receipt and Undo), then signs Claude Code in again on that folder as the other account, in Terminal, finished in the browser. The Claude app's own sign-in is yours to change: cl_audit never signs anything in or out.`}>i</i></h4>
+        <div data-sw-changes></div>
       </div>
-      <div class="card" data-sw-backup><h4>Backup <i class="idot" title="Whenever the sessions move, cl_audit backs them up first, right after the window closes and before anything moves. Never in a backup: sign-ins, and the sidebar kept on claude.ai (the switch's own record puts that back). It's listed under the profile's Sessions until you delete it or it ages out.">i</i></h4>
-        <div class="srow"><span>When</span><span class="v-soft" data-sw-bwhen>Every time the sessions move: right after the window closes, before anything moves</span></div>
-        <div class="srow"><span>What</span><span class="v-soft">The window's Code-tab list for both accounts, scheduled tasks, its sidebar records; cl_audit's records</span></div>
-        <div class="srow"><span>Takes</span><span class="v-soft">About 3 s, as clones: they share space with the originals</span></div>
-      </div>
-      <div class="card"><h4>Steps <i class="idot" title="What switching does, in order. Each step is checked before the next, each sign-in too. A receipt in cl_audit's folder keeps what moved: Cancel puts it back while the switch runs, and Undo after.">i</i></h4>
+      <div class="card" data-sw-stepscard><h4>Steps <i class="idot" title="When the switch moves sessions: the profile's Claude window closes, a backup is made, the sessions and scheduled tasks move (with a receipt, for Undo). Then Claude Code's own sign-in, and a check of the account it signed in. cl_audit never sees a password or a token. cl_audit itself never reads or writes Keychain items during a switch; Claude Code's own sign-in updates its own item.">i</i></h4>
         <ol class="sw-steps" data-sw-steps></ol>
         <div class="sw-keys" data-sw-keys></div>
+        <p class="g-note sub sw-line" data-sw-line hidden></p>
       </div>
-    </div>
-  </div>
-  <!-- the yes before it starts -->
-  <div class="dialog-veil" data-sw-confirm hidden>
-    <div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="sw-c-title">
-      <b id="sw-c-title" data-sw-c-title></b>
-      <p data-sw-c-text></p>
-      <p class="sub">This is a demo, so nothing on your Mac changes.</p>
-      <div class="dialog-btns sw-c-btns"><button type="button" class="pill small" data-sw-no>Cancel</button><button type="button" class="pill small tint t-green" data-sw-yes>Close and switch</button></div>
     </div>
   </div>
 </section>
