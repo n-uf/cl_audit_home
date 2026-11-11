@@ -134,7 +134,6 @@ related:
   - /settings/
   - /faq/
   - /install/
-  - /blog/claude-code-switch-account/
 ---
 
 A Claude Code session handoff means handing one session's state to a fresh session. The old session pushes its branches and writes down where it stands. The new one reads that note, checks it against git, and only then carries on. Nothing from the old session's history is copied: the note and the repository are the whole handover. That works between two sessions on one Mac, and it scales to a whole workspace moving to a new one: that's what machine-transfer, our Claude Code plugin, does. **[Source on GitHub](https://github.com/n-uf/claude-machine-transfer)** · [overview on n-uf.com](https://n-uf.com/claude-machine-transfer).
