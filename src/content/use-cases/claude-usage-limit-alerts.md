@@ -157,9 +157,9 @@ Since every notification comes from cl_audit and not from a separate app per pro
 
 It does, in the place you're working. Anthropic's help page for Claude Code on Pro, Max and Ultra plans says you'll see warning messages as you approach a limit, and Claude Code's command reference says `/usage` shows your plan usage limits. If you hit the session limit mid-response, Claude Code may keep working briefly to finish the step in progress and show "Usage limit reached · wrapping up"; that usage counts toward your weekly limit. From version 2.1.234, Claude Code can also wait for the reset and carry on with the interrupted task by itself, according to Anthropic's cost-management page.
 
-Those messages appear in Claude Code. A cl_audit notification reaches you in whatever app you're in, and it covers the accounts you aren't using at that moment.
+Those messages appear in Claude Code. A cl_audit notification reaches you in whatever app you're in, and it covers your other profiles' accounts too, while you work in one.
 
-If you use one account and live in the terminal, Claude Code's own warning and its wait-and-continue option may be all you need. If you switch between accounts, or leave long tasks running while you do something else, an alert per account means you don't come back to a run that stopped an hour ago.
+If you use one account and live in the terminal, Claude Code's own warning and its wait-and-continue option may be all you need. If you switch between accounts, or leave long tasks running while you do something else, an alert per profile means you don't come back to a run that stopped an hour ago.
 
 The limits themselves are shared. Anthropic's page says Claude and Claude Code count against the same limits, so a long chat can eat what Claude Code needed. Alerts are per profile, so each seat is watched on its own.
 
