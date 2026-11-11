@@ -876,7 +876,7 @@ select.menu option { background: #2c2c2f; color: var(--text); }
 .dialog { width: min(380px, 90%); padding: 18px; border-radius: 10px; display: grid; gap: 8px; font-size: 13.5px;
   background: var(--grain), linear-gradient(180deg, #2f2f32, #262628); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 0 0 1px #000, 0 20px 50px rgba(0,0,0,.6); }
 .dialog p { color: var(--soft); }
-.dialog-btns { display: flex; justify-content: flex-end; margin-top: 6px; }
+.dialog-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
 
 /* icon gallery: borderless tiles; the selected one joins the preview strip under its row */
 .gallery { grid-template-columns: repeat(4, 1fr); gap: 0 4px; }
@@ -1554,8 +1554,8 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* the usage history's CSV key and the cost in its totals */
 .csv-key { margin-left: 2px; }
 @media (max-width: 600px) { .mb-icons { display: none; } .mb-lane .mbg { zoom: .58; } }
-/* Claude Code ▸ Login (26.11.0): a pop-up like Folder; its menu lists this profile's account, the other profiles'
-   (dimmed) and Sign in to another account…, which adds the New account row */
+/* Claude Code ▸ Accounts (26.11.0, 26.11.18): a pop-up like Folder; the account in use's lists it ticked, Log in… and
+   Renew sign-in by itself; a standby account's lists Switch to it… and Forget… */
 .login-ctl { position: relative; display: inline-flex; min-width: 0; }
 .login-btn { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; border: 0; cursor: pointer; font: 12.5px/1.6 var(--font); }
 .login-btn .ok { color: rgb(var(--led-on)); }
@@ -1563,22 +1563,9 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   background: rgba(40,40,44,.97); box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 0 .5px rgba(255,255,255,.2); }
 .lm-row { display: grid; gap: 1px; padding: 4px 8px; border: 0; border-radius: 4px; background: none; color: inherit; font: inherit; text-align: left; }
 .lm-row em { font-style: normal; font-size: 10.5px; opacity: .6; }
-.lm-row.dim { opacity: .45; }
 .lm-row.on .ok { color: rgb(var(--led-on)); }
 .lm-row.act { cursor: pointer; } .lm-row.act:hover { background: #0a64d6; color: #fff; }
 .login-menu hr { border: 0; border-top: 1px solid rgba(255,255,255,.15); margin: 4px; }
-/* final shape: the account in green; Sign in to another account… turns it into the address field with the keys under
-   it, in the same row; one grey line under the row */
-.login-mail { color: rgb(var(--led-on)); }
-.face-silver .login-mail { color: #11743a; }
-/* one line, like Folder: the address in a boxed well filling the column, Sign in and Cancel at the row's end */
-.login-edit { display: flex; align-items: center; gap: 6px; flex: 1 1 auto; min-width: 0; }
-.login-edit .field { flex: 1 1 auto; min-width: 0; width: auto !important; padding: 3px 8px; border-radius: 4px; text-align: left; background: var(--win-bg); box-shadow: var(--win-shadow); }
-.login-keys { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; }
-.login-edit .field[hidden] + .login-keys { flex: 1 1 auto; }
-.signing { display: inline-flex; align-items: center; gap: 6px; flex: 1 1 auto; font-size: 12.5px; color: #f59e0b; }
-.login-x .lx-x { display: none; }
-@media (max-width: 480px) { .login-x { width: 26px; padding: 0; } .login-x .lx-t { display: none; } .login-x .lx-x { display: inline; font-size: 14px; } }
 
 /* 26.11.0: pop-ups and text fields fill the value column, so their right edges line up (Name, Icon label, Folder,
    Login, Refresh every, Click); steppers, switches and keys keep their size */
@@ -1593,9 +1580,6 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .settings .srow.vcol input.field[data-field] { width: 100%; text-align: left; }
 .settings .srow.vcol .fmsg { text-align: left; }
 .settings .srow.vcol .folder-ctl { display: flex; gap: 6px; }
-.signing i { width: 7px; height: 7px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,.8); animation: rlit 1.1s ease-in-out infinite; }
-.face-silver .signing { color: #8a4f00; }
-.login-line { margin: 0 0 8px; }
 
 /* ── A profile's page in layout A (app build 180) ─────────────────────────────────────────────────────────────────
    One label width on every row (146 pt in the app), so the values line up; a switch is followed by the words of its
@@ -1645,10 +1629,9 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .c-c .share-v { font-size: 13px; color: var(--soft); overflow-wrap: anywhere; }
 .c-c .share-v.mono, .c-c select.mono { font-family: var(--mono); font-size: 12px; }
 .c-c .folder-btn { cursor: default; }
-.c-c .login-edit { flex-wrap: wrap; }
-.c-c .login-edit .field { min-width: 180px; }   /* the address takes its own line only when the card is narrow */
-/* Claude Code ▸ Accounts (app build 238): one box per account in a lit window, a lamp, the address as a pop-up, plan
-   and organisation, IN USE or STANDBY; the limits in the dashboard's card style; Add account under them */
+/* Claude Code ▸ Accounts (app build 238, 26.11.18): one box per account in a lit window, a lamp, the address as a pop-up,
+   its plan, IN USE (the limits in the dashboard's card style) or STANDBY (when it was last in use, no limits); under
+   them the key for a new account and the folders from before */
 .settings .s-cols .c-c .srow.stk.stk > .acc-list { display: grid; gap: 8px; align-items: stretch; }
 .abox { display: grid; gap: 8px; padding: 9px 11px 10px; border-radius: 8px; background: var(--win-bg); box-shadow: var(--win-shadow); min-width: 0; }
 .face-silver .appwin .abox { --text: #1c1c1e; --soft: #2e3033; --muted: #55585c; color: var(--text); text-shadow: none; }
@@ -1665,7 +1648,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .abox-note { font-size: 10.5px; color: var(--muted); }
 .abox-why { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 11.5px; color: #f59e0b; }
 .face-silver .abox-why { color: #8a4f00; }
-.abox .login-menu, .add-wrap .login-menu { top: calc(100% + 4px); left: 0; right: auto; }
+.abox .login-menu { top: calc(100% + 4px); left: 0; right: auto; }
 /* the account in use (26.11.15): a near-black well with a thin green-tinted edge, a faint green glow inside, and a lit
    green bar on its left edge; Silver: the display glass with a darker green. Standby boxes keep the plain window. */
 .abox.in-use { position: relative; background: linear-gradient(180deg, #111214, #0e0f11);
@@ -1676,11 +1659,14 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   box-shadow: inset 0 0 0 1px rgba(17,116,58,.32), inset 0 0 12px rgba(17,116,58,.10), inset 0 2px 4px rgba(0,0,0,.14), 0 1px 0 rgba(255,255,255,.7); }
 .face-silver .appwin .abox.in-use::before { background: #11743a; box-shadow: 0 0 4px rgba(17,116,58,.35); }
 .add-acc { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.add-wrap { position: relative; }
 .add-acc small { font-size: 11px; }
-.lm-row.lm-head { font-size: 10.5px; opacity: .55; padding-top: 2px; }
-.login-line.bad { color: #f87171; }
-.face-silver .login-line.bad { color: #b42318; }
+/* Folders from before (26.11.18): each with its line and its keys, under the boxes */
+.leftovers { display: grid; gap: 8px; padding-top: 4px; }
+.left-head { font: 600 9px/1.2 var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.left { display: grid; gap: 6px; padding: 10px; border-radius: 8px; background: rgba(255,255,255,.05); }
+.left p { margin: 0; font-size: 11.5px; color: var(--soft); }
+.left-keys { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.face-silver .appwin .left { background: rgba(0,0,0,.06); }
 /* the dashboard card: the offer while a limit is full ("Switch to team-2…", the key alone) and each standby account's
    limits, small: "Standby · address", then a row per limit */
 .sb-offer { display: flex; justify-content: flex-end; margin-top: 8px; }
@@ -1753,9 +1739,6 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   .gallery.g5 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .mb-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pv-item { font-size: 9px; }
-  /* Sign in to another account… in a narrow column: the address on its own line, Sign in and × under it */
-  .login-edit { flex-wrap: wrap; }
-  .login-edit .field { flex: 1 1 100%; }
 }
 
 /* ── Switching accounts, round 2 (the switch UX sketch, sections A–G) ─────────────────────────────────────────────
@@ -1832,14 +1815,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .sw-steps li.fail > i::before { content: "!"; font-weight: 800; }
 .sw-steps li.warn > i { box-shadow: inset 0 0 0 1.2px #ffb24a, 0 0 6px rgba(255,170,60,.45); color: #ffb24a; }
 .sw-steps.reached li:not(.done):not(.now):not(.fail):not(.warn) b { color: var(--muted); }
-/* Add account: the Login pop-up's look, two lines a row; a new account a standby box from the start */
-.lm-cap { padding: 4px 8px 2px; font-size: 10.5px; opacity: .55; }
-.ap-addr { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .ap-note { font-size: 11px; color: var(--muted); }
-.ap-why { font-size: 11.5px; color: #ffb24a; flex: 1 1 200px; }
-.face-silver .ap-why { color: #8a4f00; }
-.sw-plain { border: 0; background: none; padding: 0; color: var(--muted); font: inherit; font-size: 12.5px; cursor: pointer; }
-.key.latched { transform: translateY(1px); background: var(--alu-down); box-shadow: var(--key-down); }
 /* the profile's Sessions card: backups, export, import (and the pages they open, like the Switch page) */
 .bk-list { display: grid; gap: 6px; min-width: 0; }
 .bk { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; align-items: center; padding: 8px 10px; border-radius: 8px; background: rgba(0,0,0,.24); box-shadow: var(--well); }
