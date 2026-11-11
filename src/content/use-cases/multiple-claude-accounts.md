@@ -5,13 +5,13 @@ h1: "Multiple Claude accounts on one Mac"
 mainKeyword: "multiple claude accounts"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-09
+updated: 2026-11-11
 author: n-uf
 order: 1
 takeaways:
   - "You can run multiple Claude accounts on one Mac at the same time. The first profile is the default one, on ~/.claude with the usual Claude app; each profile you add gets its own Claude window and Claude Code folder."
   - "An account belongs to one profile (checked by account and organisation), so a personal plan and a Team seat on the same email can be two profiles."
-  - "Each profile's 5-hour and weekly limits are read separately; cl_audit doesn't pool them. A profile can switch to another of your own accounts, Code sessions included if you choose."
+  - "Each profile's 5-hour and weekly limits are read separately; cl_audit doesn't pool them. A profile can switch to another of your own accounts, and its Code sessions move with it."
   - "Whether one person may hold more than one Claude account is set by Anthropic's terms, not by cl_audit."
   - "cl_audit is free, source-available and runs on Apple silicon Macs with macOS 13 or later."
 faq:
@@ -20,7 +20,7 @@ faq:
   - q: "How do I open several Claude windows on a Mac?"
     a: "Turn on the Claude window switch for each profile. The profile using ~/.claude opens the usual Claude app, and every other profile opens its own Claude window with its own sign-in, chats and settings, next to the others. You open or quit each window from its card on the dashboard, and open it from the launcher or its Dock icon."
   - q: "Do two accounts share usage limits?"
-    a: "cl_audit keeps them apart: each profile shows the limits of its own account, read from Anthropic with that profile's sign-in, and cl_audit doesn't pool them. A profile can switch to another of your own accounts, and you decide each time whether its Code sessions move too. Within one plan, Anthropic's help page says Claude and Claude Code count against the same limits."
+    a: "cl_audit keeps them apart: each profile shows the limits of its own account, read from Anthropic with that profile's sign-in, and cl_audit doesn't pool them. A profile can switch to another of your own accounts, and its Code sessions move with it, after a backup. Within one plan, Anthropic's help page says Claude and Claude Code count against the same limits."
   - q: "Can two profiles use the same email?"
     a: "Only if they are two different accounts. A personal plan and a Team seat on the same email are two accounts, so they can be two profiles. An account belongs to one profile: one that another profile already has is refused."
 sources:
@@ -56,6 +56,11 @@ sources:
   - title: "claude-multiprofile README (jmdarre-v/claude-multiprofile)"
     url: "https://github.com/jmdarre-v/claude-multiprofile"
     checked: 2026-11-02
+  - title: "cl_audit CHANGELOG, 26.11.18"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
+    checked: 2026-11-11
+    supports: "Standby accounts are remembered on the profile, signed out, with no folder or Keychain item of their own, and show no usage; accounts are found on this Mac; a full limit offers the standby account least used by the week it left with, not known to be full; a switch moves the Claude window's Code-tab sessions and scheduled tasks after a backup."
+    quote: "A profile is one Claude Code folder, and switching signs in again on it."
 related:
   - /
   - /use-cases/claude-usage-limit-alerts/
@@ -101,7 +106,7 @@ Each seat keeps its own limits. cl_audit shows them; it doesn't add them up or h
 
 An account belongs to one profile. If you add one that another profile already has, cl_audit refuses it. A personal plan and a Team seat on one email still work, because they're different accounts.
 
-A profile can also keep a second account on standby. Its limits show too, from a sign-in kept in a small Claude Code folder of its own, so you can see which account has room. When a limit is full, the profile's card selects the standby account with the most room and shows its **Switch account** key. You add one under Settings ▸ the profile ▸ Claude Code ▸ **Accounts**. {{live:/use-cases/switch-claude-accounts/}}If you'd rather move one profile between your own accounts than run several side by side, the [Claude account switcher](/use-cases/switch-claude-accounts/) page shows how.{{/live}}
+A profile can also keep your other accounts on standby, signed out. Nothing reads a standby account, so it shows no limits, only its plan and when it was last in use. When a limit is full, the profile's card selects one already, the account that had the most of its week left when it was last in use, and shows its **Switch account** key. cl_audit finds these accounts on this Mac by itself, under Settings ▸ the profile ▸ Claude Code ▸ **Accounts**. To watch two accounts' limits at the same time, give each its own profile. {{live:/use-cases/switch-claude-accounts/}}If you'd rather move one profile between your own accounts than run several side by side, the [Claude account switcher](/use-cases/switch-claude-accounts/) page shows how.{{/live}}
 
 cl_audit shows limits for plans that have them: Pro, Max, Ultra and Team. Anthropic says a verified Ultra account has no 5-hour limit, so its card shows the week alone. A profile that signs in with an API key is billed per token and has no usage limits to show.
 
@@ -151,7 +156,7 @@ Email addresses show in the launcher and on cards. If you share your screen, tur
 
 ## Is it allowed to have multiple Claude accounts?
 
-cl_audit doesn't get around usage limits. It doesn't pool limits across accounts: each account's limits are its own, and each profile shows its own accounts' limits, nothing more. A profile can switch to another of your own accounts, and the switch can move its Code sessions there if you choose; it doesn't switch on its own. The [FAQ](/faq/) covers how the usage figures are read.
+cl_audit doesn't get around usage limits. It doesn't pool limits across accounts: each account's limits are its own, and each profile shows its own accounts' limits, nothing more. A profile can switch to another of your own accounts, and the switch moves its Code sessions there; it doesn't switch on its own. The [FAQ](/faq/) covers how the usage figures are read.
 
 Whether you may hold more than one Claude account is up to Anthropic's terms. Anthropic's Usage Policy, as it read on 7 November 2026 (effective 12 November 2026), lists among things not to do: coordinating malicious activity across multiple accounts; creating multiple accounts to avoid detection, get around product guardrails or send repeated inputs that break the policy; automating account creation; and using a different account to get around a ban.
 
