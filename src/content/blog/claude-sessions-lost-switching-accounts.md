@@ -176,7 +176,7 @@ cl_audit, our app, makes the same move part of a switch you start yourself. It's
 
 The move goes one way: from the account the profile is on to the account you switch to. So a switch changes accounts without the sidebar going blank. For sessions already sitting under an old account, claude-transplant lets you pick the From and To accounts yourself.
 
-![The Switch page for Work, with What changes and the steps](/img/guides/switch-page.webp "cl_audit's site demo: the Switch page for the Work profile, with What changes and the steps. Sample data.")
+![The Switch page for Work, with What changes and the steps](/img/guides/switch-page.webp "cl_audit's site demo: the Switch page for its sample Work profile (team-1 to team-2), with What changes and the steps.")
 
 Here is what happens when you switch Work from `ultra-1@example.com` to `ultra-2@example.com` in cl_audit 26.11.18.
 
