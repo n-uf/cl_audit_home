@@ -8,21 +8,31 @@
 
 export type AccountId = "home" | "work" | "side";
 
-/** A profile's other accounts (after 26.11.0, app build 238): STANDBY, their limits read from a sign-in kept for each
- *  in a small folder of its own. The demo's "work" has one with room, so its card offers "Switch to team-2…" while
- *  its own 5-hour limit is full. */
-export type Standby = { email: string; plan: string; org: string; five: number; week: number; fiveLeftMin: number; weekLeftMin: number };
+/** A profile's other accounts (26.11.18, "one-folder switching"): STANDBY. A profile is one Claude Code folder holding one
+ *  signed-in account, the one in use, and the only one read. A standby account is remembered signed out, with no folder
+ *  or sign-in of its own, so it has no limits to show anywhere: only its address, its plan and when it was last in use
+ *  on the profile (`lastInUse`, as AccountBook.ago says it). `lastWeek` is its week as last read when it left: kept
+ *  only to order the offers (`offerOrder`), never shown. The demo's "work" has one with room, so while its own 5-hour
+ *  limit is full its card preselects team-2's tray and the menus offer "Switch to team-2…". */
+export type Standby = { email: string; plan: string; lastInUse: string; lastWeek: number };
 export const standby: Record<AccountId, Standby[]> = {
   home: [],
-  // most room first wherever they're listed (by the fuller of the two limits)
   work: [
-    { email: "team-2@work.example", plan: "Team", org: "Work", five: 12, week: 30, fiveLeftMin: 210, weekLeftMin: 4 * 1440 + 100 },
-    { email: "team-3@work.example", plan: "Team", org: "Work", five: 40, week: 88, fiveLeftMin: 95, weekLeftMin: 1440 + 600 },
+    { email: "team-2@work.example", plan: "Team", lastInUse: "2 days ago", lastWeek: 30 },
+    { email: "team-3@work.example", plan: "Team", lastInUse: "5 days ago", lastWeek: 88 },
   ],
   side: [],
 };
-/** A profile's standby accounts, most room first (the fuller of their two limits, lowest first). */
-export const byRoom = <T extends { five: number; week: number }>(list: T[]) => [...list].sort((a, b) => Math.max(a.five, a.week) - Math.max(b.five, b.week));
+/** Known to be full: its week was full when it left. */
+const knownFull = (s: Standby) => s.lastWeek >= 100;
+/** A profile's standby accounts in the order a full limit offers them (AccountBook.offerOrder): those not known to be
+ *  full first, the least used by the week they left with first, then the most recently in use (the list's own order). */
+export const offerOrder = (list: Standby[]) =>
+  list.map((s, i) => [s, i] as const).sort(([a, i], [b, j]) => Number(knownFull(a)) - Number(knownFull(b)) || a.lastWeek - b.lastWeek || i - j).map(([s]) => s);
+/** The one a full limit offers first (AccountBook.best): the first in that order not known to be full, or none. */
+export const bestOffer = (list: Standby[]) => offerOrder(list).find((s) => !knownFull(s));
+/** "Last in use on work 2 days ago." (the Accounts card's standby box; the dashboard and Switch page say it shorter). */
+export const lastInUseLine = (profile: string, s: Standby) => `Last in use on ${profile} ${s.lastInUse}.`;
 /** "team-2": an account's short name, its address before the @ (AccountNames.short). */
 export const shortName = (email: string) => email.split("@")[0];
 

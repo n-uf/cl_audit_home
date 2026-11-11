@@ -19,11 +19,11 @@ const jsonLd = [
 </Desktop>
 
 <script>
-  import { accounts, standby, byRoom, type AccountId, type Standby } from "../data/demo";
+  import { accounts, standby, offerOrder, lastInUseLine, type AccountId, type Standby } from "../data/demo";
   import { applyPrefs, loadPrefs, savePrefs, loadOrder, saveOrder, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
   import { glyphHTML, lane as mbLane } from "../data/menubar";
   import { widgetHTML } from "../data/widgetView";
-  import { limitsHTML, standbyLimitsHTML, whenWords, type Design } from "../data/panelView";
+  import { limitsHTML, whenWords, type Design } from "../data/panelView";
   import { showWhatNow } from "../data/whatNow";
   import { initSwitch } from "../data/switchDemo";
 
@@ -46,14 +46,15 @@ const jsonLd = [
     let general = false;
     // ── Sessions (switch UX round 2): the card's backups, and the pages it opens in place of the profile's settings ──
     // page: "" (the settings), "restore", "export", "import" (and "switch", the Switch page). Restore runs preview →
-    // run → done, or "refused" while a switch of the profile is unfinished. Sample figures; nothing on this Mac changes.
+    // run → done, or "refused" while a run holds the profile's window (a switch under way: clSwitchPending; a switch that
+    // stopped half way no longer blocks it). Sample figures; nothing on this Mac changes.
     let page = "", rs: "preview" | "run" | "done" | "refused" = "preview", bkName = "", rsTimer = 0;
     let mv: "plan" | "done" = "plan";   // the import of a move: before or after Make 2 profiles
     const madeNow: Record<string, string[]> = {};
     const bkKeep = { last: 3, days: 30 };   // General ▸ Backups
     const backupsOf = (id: AccountId) => [
       ...(madeNow[id] ?? []).map((n) => [n, "17 sessions · 2 tasks · sidebar · 40 MB"]),
-      ...(standby[id].length ? [[`Before switch to ${standby[id][0].email.split("@")[0]} · 5 Nov 18:40`, "17 sessions · 2 tasks · sidebar · transcripts · 5.5 GB, sharing space with the originals"]] : []),
+      ...(standby[id].length ? [[`Before switch to ${offerOrder(standby[id])[0].email.split("@")[0]} · 5 Nov 18:40`, "17 sessions · 2 tasks · sidebar · transcripts · 5.5 GB, sharing space with the originals"]] : []),
       ["Manual · 2 Nov 09:12", "15 sessions · 2 tasks · sidebar · 40 MB"],
     ];
     const showPage = () => {
@@ -122,8 +123,8 @@ const jsonLd = [
             ? `A click on ${n}'s Dock icon can open its Claude window again, as its Click setting says.`
             : `A click on ${n}'s Dock icon shows the usage only. Open window on the dashboard, the Dock and menu bar menus and the details panel open the Claude window.`);
         case "renew":
-          return showWhatNow("Renew sign-in by itself", on(pr.renew), pr.renew
-            ? `When ${n}'s access key runs out, the Dock icon runs Claude Code once with a tiny prompt so it fetches a fresh one (a sliver of usage).`
+          return showWhatNow("Renew sign-in", on(pr.renew), pr.renew
+            ? `When ${n}'s access key runs out, cl_audit runs Claude Code once with a tiny prompt so it fetches a fresh one (a sliver of usage).`
             : `When ${n}'s access key runs out, the usage waits until you next use Claude Code.`);
         case "refresh":
           return showWhatNow("Refresh every", pr.refresh, `Asks Anthropic for ${n}'s usage every ${pr.refresh}. It doesn't use any of your limits.`);
@@ -268,62 +269,58 @@ const jsonLd = [
       setTimeout(() => { show(); status(`<span class="g">Saved</span> <em>· ${f === "name" ? "Dock icon renamed" : "icon label changed"}</em>`, 4000); }, 700);
     };
 
-    // Cancel at the row's end; a small × in a narrow window (CSS picks the label)
-    const cancelKey = `<button type="button" class="key k login-x" data-login-cancel aria-label="Cancel"><span class="lx-t">Cancel</span><span class="lx-x" aria-hidden="true">×</span></button>`;
     // every pop-up of the Accounts row closed
     const closeMenus = () => {
       $$(".c-c .login-menu").forEach((m) => (m.hidden = true));
       $$('.c-c [aria-haspopup="menu"]').forEach((b) => b.setAttribute("aria-expanded", "false"));
-      $("[data-add-btn]")?.classList.remove("latched");
     };
-    // Claude Code ▸ Accounts back to rest: menus closed, Add account instead of the address field, no grey line
-    const loginReset = () => {
-      closeMenus();
-      $("[data-add-row]")!.hidden = false;
-      $("[data-login-edit]")!.hidden = true;
-      const line = $("[data-login-line]")!; line.hidden = true; line.classList.remove("bad");
-      const mail = $<HTMLInputElement>("[data-login-mail]")!; mail.hidden = false; mail.value = "";
-      $("[data-login-keys]")!.innerHTML = `<button type="button" class="key k lt" style="--lamp:rgb(74,222,128)" data-login-go>Sign in</button>${cancelKey}`;
-    };
-    // A profile's standby accounts (switch UX round 2): the demo's (removable here), most room first, then what Add
-    // account added on this page. Every one is unlit; a new one is an ordinary standby box from the start, its display
-    // and one line saying what's left. "ok": limits read; "wait": signing in in the browser; "wrong": the browser
-    // signed in to another account; "added": signed in, no numbers yet.
-    type Box = { email: string; state: "ok" | "wait" | "wrong" | "added"; plan?: string; s?: Standby };
-    // What Add account finds on this Mac: accounts signed in in a free Claude Code folder, and ones this profile's
-    // window has used (they need a sign-in). No usage for them: cl_audit reads limits only for a profile's own accounts.
-    const FOUND: { email: string; plan: string; detail: string; needsSignIn?: boolean }[] = [
-      { email: "spare@example.com", plan: "Pro · Personal", detail: "signed in, ~/.claude-spare · limits once added" },
-      { email: "old@example.com", plan: "Pro · Personal", detail: "needs a sign-in · used in this profile's window in October", needsSignIn: true },
-    ];
-    const added: Record<AccountId, Box[]> = { home: [], work: [], side: [] };
+    // A profile's standby accounts (26.11.18): the demo's, in the order a full limit offers them. Every one is unlit: its
+    // address (a pop-up with Switch to it… and Forget…), its plan, Standby and when it was last in use here. No limits: a
+    // standby account is remembered signed out, so nothing reads it. Forget… takes one off this page's list only.
     const removedSb = new Set<string>();
     let picked = "";   // the standby account selected in Settings ▸ Accounts ("" = none)
-    const boxes = (): Box[] => [
-      ...byRoom(standby[acc]).filter((s) => !removedSb.has(`${acc}:${s.email}`)).map((s) => ({ email: s.email, state: "ok" as const, s })),
-      ...added[acc],
-    ];
-    const boxHTML = (x: Box) => {
-      const design = loadCardStyle();
-      const badge = x.state === "wait" ? '<span class="a">Signing in</span>' : x.state === "wrong" ? '<span class="a">Wrong account</span>' : "<em>Standby</em>";
-      const body = x.state === "ok" && x.s ? standbyLimitsHTML(x.s, design)
-        : x.state === "wait" ? `<div class="ap-addr"><span class="ap-why">Finish the sign-in in the browser, as ${x.email}.</span><button type="button" class="sw-plain" data-sb-cancel="${x.email}">Cancel</button><button type="button" class="pill small" data-sb-terminal>Show Terminal</button></div>`
-        : x.state === "wrong" ? `<div class="ap-addr"><span class="ap-why">The browser signed in as ${accounts.find((y) => y.id === acc)!.email.split("@")[0]}, not ${x.email.split("@")[0]}. Switch the browser's account, then sign in again.</span><button type="button" class="sw-plain" data-sb-cancel="${x.email}">Cancel</button><button type="button" class="pill small" data-sb-signin="${x.email}">Sign in again…</button></div>`
-        : `<small class="ap-note">No numbers yet: cl_audit reads them within a few minutes, from the sign-in kept in its folder.</small>`;
-      // only an account with numbers can be switched to from here; the key takes the Standby display's place
-      const key = x.state === "ok" ? `<button type="button" class="disp xs trustlike sw-acc" data-sw-acc="${x.email}"><em>Switch</em> account</button>` : "";
-      return `<div class="abox unlit${picked === x.email ? " sel" : ""}" data-pick="${x.state === "ok" ? x.email : ""}"${x.state === "ok" ? ' tabindex="0" role="group" aria-label="' + x.email + ', standby"' : ""}><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
-        `<button type="button" class="abox-title" data-sb-btn="${x.email}" aria-haspopup="menu" aria-expanded="false"><span class="email">${x.email}</span><span class="chev" aria-hidden="true">⌃⌄</span></button>` +
-        `<span class="login-menu" data-sb-menu="${x.email}" role="menu" hidden></span>` +
-        (x.s ? `<small>${x.s.plan} · ${x.s.org}</small>` : x.plan ? `<small>${x.plan}</small>` : "") +
-        `</span><span class="disp xs abox-badge">${badge}</span>${key}</div>${body}</div>`;
+    const boxes = (): Standby[] => offerOrder(standby[acc]).filter((s) => !removedSb.has(`${acc}:${s.email}`));
+    const boxHTML = (s: Standby) =>
+      `<div class="abox unlit${picked === s.email ? " sel" : ""}" data-pick="${s.email}" tabindex="0" role="group" aria-label="${s.email}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
+      `<button type="button" class="abox-title" data-sb-btn="${s.email}" aria-haspopup="menu" aria-expanded="false"><span class="email">${s.email}</span><span class="chev" aria-hidden="true">⌃⌄</span></button>` +
+      `<span class="login-menu" data-sb-menu="${s.email}" role="menu" hidden></span><small>${s.plan}</small></span>` +
+      // the key takes the Standby display's place while the box is selected
+      `<span class="disp xs abox-badge"><em>Standby</em></span><button type="button" class="disp xs trustlike sw-acc" data-sw-acc="${s.email}"><em>Switch</em> account</button></div>` +
+      `<small class="abox-note">${lastInUseLine(who(), s)}</small></div>`;
+    // Folders from before (Leftovers.swift): the per-account folders 26.11.16 and earlier made for this profile's accounts.
+    // Each is listed with Move to Trash… (it asks first, says what is in it and names the folder's Keychain item) and
+    // Keep it; one that holds sessions offers Show in Finder instead of the Trash. Nothing is deleted by itself.
+    type Left = { path: string; sessions: number; inside: string; keychain: string };
+    const LEFT: Record<AccountId, Left[]> = {
+      home: [],
+      work: [
+        { path: "~/.claude-team-2", sessions: 0, inside: "the account record (.claude.json), projects (3 folders, no sessions), settings.json and 2 other items", keychain: "Claude Code-credentials-6d1f0a3c" },
+        { path: "~/.claude-team-3", sessions: 4, inside: "the account record (.claude.json), projects (4 sessions), settings.json and 5 other items", keychain: "Claude Code-credentials-b84e27d9" },
+      ],
+      side: [],
     };
-    // A new account signing in (the demo's timing): it waits for the browser, then after a few seconds it's either signed
-    // in (no numbers yet) or, for the demo's found account, signed in to the wrong account, as the browser decides
-    const signIn = (box: Box, then: "added" | "wrong") => {
-      const owner = acc;
-      added[owner].push(box);
-      setTimeout(() => { if (box.state !== "wait" || !added[owner].includes(box)) return; box.state = then; if (owner === acc && !general) show(); }, 3000);
+    const gone = new Set<string>();   // Move to Trash… and Keep it, on this page only
+    const leftHTML = (f: Left) =>
+      `<div class="left"><p>${f.path}: made by an earlier cl_audit for one of this profile's accounts. ` +
+      (f.sessions ? `It holds ${f.sessions === 1 ? "1 session" : `${f.sessions} sessions`}, so it isn't offered for the Trash: open it in Finder to look first.` : "Nothing uses it now.") +
+      `</p><div class="left-keys"><button type="button" class="sw-plain" data-left-keep="${f.path}" title="Keeps the folder and stops this list asking about it">Keep it</button>` +
+      (f.sessions ? `<button type="button" class="key k" data-left-finder="${f.path}">Show in Finder</button>` : `<button type="button" class="key k" data-left-trash="${f.path}">Move to Trash…</button>`) + "</div></div>";
+    const showLeftovers = () => {
+      const list = LEFT[acc].filter((f) => !gone.has(`${acc}:${f.path}`));
+      const el = $("[data-leftovers]")!;
+      el.hidden = !list.length;
+      el.innerHTML = list.length ? `<div class="left-head">Folders from before</div>${list.map(leftHTML).join("")}` : "";
+    };
+    // Forget… and Move to Trash… ask first (the app's alerts); the answer runs `done`
+    let askDone: (() => void) | null = null, askOpener = "";
+    const ask = (title: string, text: string, yes: string, opener: string, done: () => void) => {
+      $("[data-ask-title]")!.textContent = title; $("[data-ask-text]")!.textContent = text; $("[data-ask-yes]")!.textContent = yes;
+      askDone = done; askOpener = opener; $("[data-ask]")!.hidden = false; $<HTMLButtonElement>("[data-ask-no]")!.focus();
+    };
+    // Cancel, Esc or a click outside: nothing is done, and the focus goes back to the key that opened the question
+    const askCancel = () => {
+      $("[data-ask]")!.hidden = true; askDone = null;
+      $<HTMLElement>(askOpener)?.focus();
     };
 
     // Menu bar: every style and colour drawn as it would look (55 % / 77 %, as the app's card), the Label and When
@@ -454,13 +451,14 @@ const jsonLd = [
       }
       placeColumns();
       // Accounts: closed and at rest on every profile; the account in use with its limits in the dashboard's card style,
-      // then the standby ones
-      loginReset();
-      $("[data-abox-detail]")!.textContent = `${a.plan} · ${acc === "work" ? "Work" : "Personal"} · in use by ${who()}`;
+      // then the standby ones (no limits), then the folders from before
+      closeMenus();
+      $("[data-abox-detail]")!.textContent = a.plan;
       if (!boxes().some((x) => x.email === picked)) picked = "";
-      $("[data-pick-hint]")!.hidden = !boxes().some((x) => x.state === "ok");
+      $("[data-pick-hint]")!.hidden = !boxes().length || !!picked;
       $("[data-abox-limits]")!.innerHTML = limitsHTML(acc, loadCardStyle(), false);
       $("[data-standby-boxes]")!.innerHTML = boxes().map(boxHTML).join("");
+      showLeftovers();
       // Folder: this profile's folder, the other profiles' dimmed with who is signed in there
       $<HTMLSelectElement>("[data-folder]")!.innerHTML = `<option selected>${a.dir}</option>` +
         accounts.filter((x) => x.id !== acc).map((x) => `<option disabled>${x.dir} ${x.email} · ${prefs[x.id].name}'s</option>`).join("");
@@ -575,10 +573,10 @@ const jsonLd = [
       }
       if (pick("[data-remove]")) { $("[data-dialog]")!.hidden = false; return; }
       if (pick("[data-uninstall]")) { $("[data-udialog]")!.hidden = false; return; }
-      // Claude Code ▸ Accounts (app build 238). The account in use: its address is a pop-up with ✓ it and Renew sign-in
-      // by itself. Add account: the accounts found on this Mac (one click adds it; other profiles' dimmed), then Sign in to
-      // another account…, which turns the row into the address field. A standby account's address: Sign in again… and
-      // Remove from <profile>. Nothing signs in or changes on this Mac: the demo keeps what you add in this page only.
+      // Claude Code ▸ Accounts (26.11.18). The account in use: its address is a pop-up with ✓ it, Log in… and Renew
+      // sign-in by itself. A standby account's address is a pop-up too: Switch to it… and Forget…. There is no Add
+      // account: the accounts found on this Mac list themselves, and Sign in with another account… is a key under the
+      // boxes. Nothing signs in or changes on this Mac: the demo keeps what you forget in this page only.
       const menuToggle = (btnSel: string, menuSel: string, html: () => string) => {
         const m = $(menuSel)!, open = m.hidden;
         closeMenus();
@@ -588,29 +586,16 @@ const jsonLd = [
         const own = accounts.find((x) => x.id === acc)!;
         menuToggle("[data-login-btn]", "[data-login-menu]", () =>
           `<span class="lm-row on"><span class="ok">✓</span> ${own.email}<em>${own.plan} · this profile</em></span>` +
-          `<hr><button type="button" class="lm-row act" data-login-renew>${p().renew ? '<span class="ok">✓</span> ' : ""}Renew sign-in by itself</button>`);
+          `<hr><button type="button" class="lm-row act" data-login-again>Log in…</button>` +
+          `<button type="button" class="lm-row act" data-login-renew>${p().renew ? '<span class="ok">✓</span> ' : ""}Renew sign-in by itself</button>`);
         return;
       }
-      if (pick("[data-login-renew]")) { p().renew = !p().renew; commit(); loginReset(); say("renew"); return; }
-      if (pick("[data-add-btn]")) {
-        // a pop-up in the Login pop-up's look, two lines a row: the address, then its plan and state in words; signed in
-        // on this Mac first, then those needing a sign-in, then other profiles' (dimmed). No usage: cl_audit reads limits
-        // only for a profile's own accounts. Accounts the profile already has aren't listed. The key stays down meanwhile.
-        const have = boxes().map((s) => s.email), left = FOUND.filter((f) => !have.includes(f.email));
-        menuToggle("[data-add-btn]", "[data-add-menu]", () =>
-          `<div class="lm-cap">Found on this Mac</div>` +
-          (left.length ? left.map((f) => `<button type="button" class="lm-row act" data-add-found="${f.email}"><span>${f.email}</span><em>${f.plan} · ${f.detail}</em></button>`).join("") : `<span class="lm-row dim">Nothing else found</span>`) +
-          accounts.filter((x) => x.id !== acc).map((x) => `<span class="lm-row dim"><span>${x.email}</span><em>${prefs[x.id].name}'s · one profile per account</em></span>`).join("") +
-          `<hr><button type="button" class="lm-row act" data-login-other><span>Sign in to another account…</span></button>`);
-        $("[data-add-btn]")!.classList.toggle("latched", !$("[data-add-menu]")!.hidden);
+      if (pick("[data-login-renew]")) { p().renew = !p().renew; commit(); closeMenus(); say("renew"); return; }
+      if (pick("[data-login-again]")) {
+        const own = accounts.find((x) => x.id === acc)!;
+        closeMenus();
+        showWhatNow("Log in…", "", `Claude Code's own sign-in opens in Terminal for ${own.dir}, with ${own.email} filled in, and cl_audit watches the folder as it does for a switch. This is a demo, so nothing opens.`);
         return;
-      }
-      if ((b = pick("[data-add-found]"))) {
-        // one click adds it, unlit on standby; one that needs a sign-in opens that sign-in at once
-        const f = FOUND.find((x) => x.email === b!.dataset.addFound)!;
-        if (f.needsSignIn) signIn({ email: f.email, state: "wait", plan: f.plan }, "wrong");
-        else added[acc].push({ email: f.email, state: "added", plan: f.plan });
-        closeMenus(); show(); return;
       }
       // Settings ▸ Accounts: click a standby account to select it (again to deselect); its Switch account key opens the
       // Switch page with it picked
@@ -618,9 +603,9 @@ const jsonLd = [
       if ((b = pick("[data-pick]")) && b.dataset.pick && !pick("button")) {
         picked = picked === b.dataset.pick ? "" : b.dataset.pick;
         $$<HTMLElement>("[data-standby-boxes] .abox").forEach((x) => x.classList.toggle("sel", !!picked && x.dataset.pick === picked));
+        $("[data-pick-hint]")!.hidden = !boxes().length || !!picked;
         return;
       }
-      if ((b = pick("[data-sb-cancel]"))) { added[acc] = added[acc].filter((s) => s.email !== b!.dataset.sbCancel); show(); return; }
       // General ▸ Backups (26.11.1): the last N of each profile, and any under D days (the app's own day steps)
       if ((b = pick("[data-bk-step]"))) {
         const DAYS = [0, 7, 14, 30, 60, 90, 180, 365], dir = +b.dataset.dir!;
@@ -694,55 +679,37 @@ const jsonLd = [
           : "cl_audit unpacks the file as a backup of this profile, then restores from it. This is a demo, so nothing changed.");
         return;
       }
-      if (pick("[data-sb-terminal]")) { showWhatNow("Show Terminal", "", "Terminal comes forward with Claude Code's own sign-in for the new account. This is a demo, so nothing opens."); return; }
-      if (pick("[data-login-other]")) {
-        // the Add account row becomes the address field, with Sign in and Cancel, and one grey line under the row
-        loginReset();
-        $("[data-add-row]")!.hidden = true;
-        $("[data-login-edit]")!.hidden = false;
-        const line = $("[data-login-line]")!;
-        line.hidden = false;
-        line.textContent = `Claude Code signs in through Terminal, in a folder of its own; ${who()} keeps working meanwhile.`;
-        $<HTMLInputElement>("[data-login-mail]")!.focus();
+      // Sign in with another account…: Claude Code's own sign-in on the profile's folder, no address filled in
+      if (pick("[data-sign-other]")) {
+        const own = accounts.find((x) => x.id === acc)!;
+        showWhatNow("Sign in with another account…", "", `Claude Code's own sign-in opens in Terminal for ${own.dir}, with no address filled in. The account that signs in becomes the one ${who()} works on; the one before goes on standby. This is a demo, so nothing opens.`);
         return;
       }
-      if (pick("[data-login-go]")) {
-        // the account is added, waiting for its sign-in in the browser (in the demo, nothing signs in)
-        const mail = $<HTMLInputElement>("[data-login-mail]")!.value.trim();
-        const line = $("[data-login-line]")!;
-        if (!mail.includes("@") || mail.startsWith("@") || mail.endsWith("@")) { line.textContent = "Type the account's email address."; line.classList.add("bad"); return; }
-        if (boxes().some((s) => s.email.toLowerCase() === mail.toLowerCase()) || accounts.find((x) => x.id === acc)!.email === mail.toLowerCase()) { line.textContent = `That's already one of ${who()}'s accounts.`; line.classList.add("bad"); return; }
-        const owner = accounts.find((x) => x.id !== acc && x.email === mail.toLowerCase());
-        if (owner) { line.textContent = `That's the account of “${prefs[owner.id].name}”. One profile per account.`; line.classList.add("bad"); return; }
-        loginReset();
-        signIn({ email: mail, state: "wait" }, "added");
-        show();
-        return;
-      }
-      if (pick("[data-login-cancel]")) { loginReset(); return; }
+      // a standby account's address is a pop-up: Switch to it… (the Switch page with it picked) and Forget…
       if ((b = pick("[data-sb-btn]"))) {
         const email = b.dataset.sbBtn!;
         menuToggle(`[data-sb-btn="${email}"]`, `[data-sb-menu="${email}"]`, () =>
-          `<button type="button" class="lm-row act" data-sb-signin="${email}">${boxes().find((s) => s.email === email)?.state === "ok" ? "Sign in again…" : "Sign in…"}</button>` +
-          `<hr><button type="button" class="lm-row act" data-sb-remove="${email}">Remove from ${who()}</button>`);
+          `<button type="button" class="lm-row act" data-sb-switch="${email}">Switch to it…</button><hr><button type="button" class="lm-row act" data-sb-forget="${email}">Forget…</button>`);
         return;
       }
-      if ((b = pick("[data-sb-signin]"))) {
-        // a new account waiting or signed in wrong: its sign-in again; one already in use: just the note
-        const box = added[acc].find((s) => s.email === b!.dataset.sbSignin);
+      if ((b = pick("[data-sb-switch]"))) { closeMenus(); (window as any).clOpenSwitch?.(acc, b.dataset.sbSwitch); return; }
+      if ((b = pick("[data-sb-forget]"))) {
+        // asks first; nothing on the Mac changes, and signing in to it in this profile's folder brings it back
+        const email = b.dataset.sbForget!;
         closeMenus();
-        if (box) { added[acc] = added[acc].filter((s) => s !== box); signIn({ ...box, state: "wait" }, "added"); show(); return; }
-        const line = $("[data-login-line]")!;
-        line.hidden = false; line.classList.remove("bad");
-        line.textContent = `Claude Code's own sign-in opens in Terminal for ${b.dataset.sbSignin}. (This is a demo, so nothing signs in.)`;
+        ask(`Forget ${email}?`, `${who()} stops listing it. Nothing on this Mac changes; signing in to it in this profile's folder brings it back.`, "Forget", `[data-sb-btn="${email}"]`, () => { removedSb.add(`${acc}:${email}`); show(); });
         return;
       }
-      if ((b = pick("[data-sb-remove]"))) {
-        // removing a standby account leaves its folder as it is
-        const email = b.dataset.sbRemove!;
-        added[acc] = added[acc].filter((s) => s.email !== email); removedSb.add(`${acc}:${email}`);
-        closeMenus(); show(); applyPrefs(prefs); return;
+      // Folders from before: Keep it, Show in Finder, and Move to Trash… (asks first, says what is in it and names the Keychain item)
+      if ((b = pick("[data-left-keep]"))) { gone.add(`${acc}:${b.dataset.leftKeep}`); showLeftovers(); return; }
+      if ((b = pick("[data-left-finder]"))) { showWhatNow("Show in Finder", "", `${b.dataset.leftFinder} opens in Finder, so you can look at what is in it. This is a demo, so nothing opens.`); return; }
+      if ((b = pick("[data-left-trash]"))) {
+        const f = LEFT[acc].find((x) => x.path === b!.dataset.leftTrash)!;
+        ask(`Move ${f.path} to the Trash?`, `In it: ${f.inside}. Everything in it goes with it; you can put it back from the Trash. The sign-in itself isn't in the folder: Claude Code keeps it in your Keychain as “${f.keychain}”. Delete that in Keychain Access if you no longer need it; cl_audit doesn't touch it.`, "Move to Trash", `[data-left-trash="${f.path}"]`, () => { gone.add(`${acc}:${f.path}`); showLeftovers(); });
+        return;
       }
+      if (pick("[data-ask-yes]")) { $("[data-ask]")!.hidden = true; const done = askDone; askDone = null; done?.(); return; }
+      if (pick("[data-ask-no]") || t.matches("[data-ask]")) { askCancel(); return; }
       if (!pick(".login-menu") && $$(".login-menu").some((m) => !m.hidden)) closeMenus();
       if (pick("[data-udialog-close]") || t.matches("[data-udialog]")) { $("[data-udialog]")!.hidden = true; return; }
       if (pick("[data-dialog-close]") || t.matches("[data-dialog]")) { $("[data-dialog]")!.hidden = true; return; }
@@ -777,10 +744,9 @@ const jsonLd = [
       paintField(f); statusIdle();
     });
     root.addEventListener("keydown", (e) => {
-      // Esc closes the Login pop-up, or cancels Sign in to another account
-      if (e.key === "Escape" && ($$(".c-c .login-menu").some((m) => !m.hidden) || !$("[data-login-edit]")!.hidden)) { loginReset(); return; }
-      // Return in the address field presses Sign in
-      if (e.key === "Enter" && (e.target as HTMLElement).matches?.("[data-login-mail]")) { e.preventDefault(); $<HTMLButtonElement>("[data-login-go]")?.click(); return; }
+      // Esc answers Cancel to Forget… / Move to Trash…, else closes an Accounts pop-up
+      if (e.key === "Escape" && !$("[data-ask]")!.hidden) { askCancel(); return; }
+      if (e.key === "Escape" && $$(".c-c .login-menu").some((m) => !m.hidden)) { closeMenus(); return; }
       const t = e.target; if (!isEF(t)) return;
       if (e.key === "Enter") { e.preventDefault(); saveEdit(t.dataset.field as EF); }
       if (e.key === "Escape") { e.preventDefault(); revertEdit(t.dataset.field as EF); }

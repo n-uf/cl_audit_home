@@ -59,39 +59,39 @@ const sw = (key: string, label: string, on = true) => `<span class="ctl-pair"><b
       </div>
 
       <div class="card c-c"><h4>Claude Code <i class="idot" title="The Claude Code folder this profile uses and its sign-in. Its Claude window comes with it: the usual Claude app for the profile using ~/.claude, its own Claude window (own sign-in, chats and settings) for any other.">i</i></h4>
-        <!-- As the app (build 238): Accounts first, one box per account (IN USE, STANDBY), Add account, then Sessions
-             follow, Folder and (any folder but ~/.claude) Share from and Shared, read-only. Every row stacks, label above
-             and the value whole below, so long addresses and paths are never cut. -->
-        <div class="srow vcol stk"><span>Accounts <i class="idot" title="The claude.ai accounts this profile has. It works on one at a time, IN USE: the one the profile's Claude app is signed in to, or Claude Code's account while the app is signed out. The others STANDBY: their limits show too, read from a sign-in kept for each in a small folder of its own, so you can see which has room. Add account lists the accounts found on this Mac (signed in in a Claude Code folder, or used by this profile's Claude window) and Sign in to another account…, which opens Claude Code's own sign-in in Terminal in a new folder. An account belongs to one profile. cl_audit's background agent reads each sign-in from the Keychain, read-only, the same way Claude Code does; no new Keychain permission, and no sign-in is ever copied. Removing a standby account leaves its folder as it is.
+        <!-- As the app (26.11.18): Accounts first, one box per account (IN USE, STANDBY: no limits), the key Sign in with
+             another account… (accounts aren't added by hand: those found on this Mac list themselves), Folders from before; then
+             Folder and (any folder but ~/.claude) Share from and Shared, read-only. Every row stacks, label above and
+             the value whole below, so long addresses and paths are never cut. -->
+        <div class="srow vcol stk"><span>Accounts <i class="idot" title="The claude.ai accounts this profile has. Its Claude Code folder holds one sign-in at a time: IN USE is the account signed in there, and the only one whose limits cl_audit reads. The others are STANDBY: signed out, with no folder of their own, so they show no limits, only when they were last in use. They are found on this Mac by themselves: the Claude window's sessions folders, Claude Code's records and their backups, and the transcripts; Forget… takes one off. Switching to one (the Switch page) moves the Claude window's Code sessions and scheduled tasks to it inside this profile's folder, with a backup first and Undo, then signs Claude Code in again on the same folder as that account; the account it leaves goes on standby. Whatever account signs in to the folder, even from Terminal, is the one in use: cl_audit follows it at once. An account belongs to one profile. cl_audit's background agent reads the sign-in from the Keychain, read-only, the same way Claude Code does; no new Keychain permission, and no sign-in is ever copied. cl_audit itself never reads or writes Keychain items during a switch; Claude Code's own sign-in updates its own item.
 
-Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a short-lived access key, which Claude Code swaps for a fresh one whenever it runs. cl_audit only reads that key, so after a while without Claude Code it runs out and the usage stops updating. On: cl_audit then runs Claude Code once in the background (a one-line prompt, “Reply with OK.”, on Haiku, nothing saved) so it swaps the key; at most every 30 min, using a sliver of this profile's usage. Off: the usage waits until you next use Claude Code. Standby sign-ins are renewed while their folders are there; when one runs out, its box says when it was last read.">i</i></span>
+Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a short-lived access key, which Claude Code swaps for a fresh one whenever it runs. cl_audit only reads that key, so after a while without Claude Code it runs out and the usage stops updating. On: cl_audit then runs Claude Code once in the background (a one-line prompt, “Reply with OK.”, on Haiku, nothing saved) so it swaps the key; at most every 30 min, using a sliver of this profile's usage. Off: the usage waits until you next use Claude Code.">i</i></span>
           <div class="acc-list">
-            <!-- IN USE: a lit lamp, the address as a pop-up (✓ it, Renew sign-in by itself), plan and organisation, the
+            <!-- IN USE: a lit lamp, the address as a pop-up (✓ it, Log in…, Renew sign-in by itself), its plan, the
                  limits in the dashboard's card style -->
             <div class="abox in-use">
               <div class="abox-head"><i class="abox-lamp on"></i>
                 <span class="abox-t login-ctl">
                   <button type="button" class="abox-title" data-login-btn aria-haspopup="menu" aria-expanded="false"><span class="email" data-text="email">{a.email}</span><span class="chev" aria-hidden="true">⌃⌄</span></button>
                   <span class="login-menu" data-login-menu role="menu" hidden></span>
-                  <small data-abox-detail>{a.plan} · Personal</small>
+                  <small data-abox-detail>{a.plan}</small>
                 </span>
                 <span class="disp xs abox-badge"><span class="g">In use</span></span></div>
               <div class="abox-limits" data-abox-limits></div>
-              <small class="abox-note">Its limits come from a sign-in kept for it, renewed by itself.</small>
             </div>
-            <!-- the standby accounts, unlit, most room first: click one to select it (again to deselect); its Standby
-                 display becomes a Switch account key, which opens the Switch page with it picked -->
+            <!-- the standby accounts, unlit, in the order a full limit offers them: each shows its address (a pop-up: Switch
+                 to it…, Forget…), plan, Standby and when it was last in use here. Click one to select it (again to
+                 deselect); its Standby display becomes a Switch account key, which opens the Switch page with it picked -->
             <div class="acc-pick" data-standby-boxes></div>
-            <p class="g-note sub" data-pick-hint hidden>Click a standby account to select it: a Switch account key takes the place of “Standby” and opens the Switch page. Click the account again to deselect.</p>
-            <!-- Add account: what was found on this Mac, then Sign in to another account… (the address row in place) -->
-            <div class="add-acc" data-add-row>
-              <span class="add-wrap"><button type="button" class="key k" data-add-btn aria-haspopup="menu" aria-expanded="false">Add account <span class="chev" aria-hidden="true">⌄</span></button><span class="login-menu" data-add-menu role="menu" hidden></span></span>
-              <small class="sub">The profile works on one at a time.</small>
+            <p class="g-note sub" data-pick-hint hidden>Click a standby account to select it, then Switch account.</p>
+            <!-- the accounts found on this Mac are listed by themselves; a brand-new one signs in from here -->
+            <div class="add-acc">
+              <button type="button" class="key k" data-sign-other>Sign in with another account…</button>
+              <small class="sub">Accounts found on this Mac are listed here by themselves.</small>
             </div>
-            <span class="login-edit" data-login-edit hidden><input class="field" data-login-mail type="email" placeholder="name@example.com" aria-label="Address of the other account" />
-              <span class="login-keys" data-login-keys><button type="button" class="key k lt" style="--lamp:rgb(74,222,128)" data-login-go>Sign in</button><button type="button" class="key k login-x" data-login-cancel aria-label="Cancel"><span class="lx-t">Cancel</span><span class="lx-x" aria-hidden="true">×</span></button></span></span>
+            <!-- the folders an earlier cl_audit made for this profile's accounts: Move to Trash… or Keep it -->
+            <div class="leftovers" data-leftovers hidden></div>
           </div></div>
-        <p class="g-note sub login-line" data-login-line hidden></p>
         <div class="srow vcol stk"><span>Folder <i class="idot" title="The Claude Code folder for this profile, like ~/.claude: its sign-in, settings and history live there. One profile per folder; folders are used where they are (Claude Code names a folder's Keychain sign-in after its path).">i</i></span><span class="folder-ctl"><select class="menu mono" data-folder aria-label="Folder"></select><span class="folder-btn" title="Choose another folder…" aria-hidden="true"><svg width="15" height="12" viewBox="0 0 15 12"><path d="M1 2.2C1 1.5 1.5 1 2.2 1h3.3l1.4 1.5h5.9c.7 0 1.2.5 1.2 1.2v6.1c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></span></div>
         <div data-share hidden>
           <div class="srow vcol stk"><span>Share from <i class="idot" title="The Claude Code folder this profile's folder links some items from (instructions, agents, skills, commands, memory & history), so edits there show up here too. Sign-in, plugins and usage stay separate.">i</i></span><span class="share-v mono" data-share-from></span></div>
@@ -299,6 +299,16 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
       <p>In the app, this removes every Dock icon app and its pin, the background agent, saved usage, settings and caches, then moves cl_audit to the Trash. Per profile you choose whether its Claude Code folder (signed out first) and its own Claude window's data go too; <code>~/.claude</code> and the standard window are never deleted.</p>
       <p class="sub">This is a demo, so nothing is removed.</p>
       <div class="dialog-btns"><button type="button" class="pill small" data-udialog-close>OK</button></div>
+    </div>
+  </div>
+
+  <!-- Forget… on a standby account and Move to Trash… on a folder from before: each asks first, as the app's alert does -->
+  <div class="dialog-veil" data-ask hidden>
+    <div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="ask-title">
+      <b id="ask-title" data-ask-title></b>
+      <p data-ask-text></p>
+      <p class="sub">This is a demo, so nothing on your Mac changes.</p>
+      <div class="dialog-btns"><button type="button" class="pill small" data-ask-no>Cancel</button><button type="button" class="pill small tint t-red" data-ask-yes></button></div>
     </div>
   </div>
 
