@@ -4,14 +4,14 @@ export const site = "https://cl-audit.n-uf.com";
 
 // The current cl_audit release. Update on each cl_audit release (version from the app's VERSION file,
 // date from its CHANGELOG.md); the footer, the Install page and the structured data read these.
-export const version = "26.11.13";
+export const version = "26.11.14";
 export const released = "2026-11-10";
-export const build = "586";   // the release's build number (About shows "26.11.13 · build 586")
+export const build = "610";   // the release's build number (About shows "26.11.14 · build 610")
 /** SHA-256 of this release's cl_audit.dmg and cl_audit.zip (GitHub's asset digests; the hub's release note gives the
  *  same). Every release ships both: the same app with the same code signature. */
 export const sha256 = {
-  dmg: "f9d7ad0caf9996feaaeea95188b9d4cdb545924d6d1a1717c4ede4542a4169b4",
-  zip: "1371f2e6074e0625ff7c6ff61a8c277035e8317d398fcdfcb7c3838de14fa854",
+  dmg: "1dfc989c5868738d45ab7633b5b57047717e4e2576bcab5339473d72c7357f70",
+  zip: "8b89d3e2189d168c9cdc4505f4300df0f154eccb046ef6239dc11f172d2f3446",
 };
 export const changelog = `${repo}/blob/main/CHANGELOG.md`;
 /** The release stage the site shows next to the version (Overview display and At a glance, Install). Set to ""
@@ -26,7 +26,7 @@ export const requires = "Apple silicon · macOS 13 or later";
 /** The Claude versions this release was checked with (the app's release notes list them too). cl_audit relies on
  *  how Claude Code saves its login and on Anthropic's usage figures, neither a public interface, so newer Claude
  *  versions can change them. Update with each release. */
-export const checkedWith = { claudeCode: "2.1.318", claudeApp: "4.23118.0" };
+export const checkedWith = { claudeCode: "2.1.318", claudeApp: "5.1231.0" };
 export const driftNote = "cl_audit relies on how Claude Code saves its login and on Anthropic's usage figures, which aren't public interfaces. A newer Claude version can change them; if something stops working, update cl_audit.";
 
 /** "2026-10-24" -> "24 Oct 2026". */
