@@ -151,6 +151,11 @@ sources:
     checked: 2026-11-10
     supports: "26.11.13: a move brings each session's side files (task list, plan, typed prompts, the project folder's trust and allowed tools) in the encrypted disk image only; Rewind's copies of the files the sessions edited are their own Export row, left out unless included."
     quote: "A move brings each session's side files."
+  - title: "cl_audit CHANGELOG, 26.11.18"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
+    checked: 2026-11-11
+    supports: "26.11.18: a switch closes the profile's Claude window, makes a backup and moves its Code-tab sessions and scheduled tasks to the account switched to; no Move them? question."
+    quote: "The switch moves the Claude window's sessions inside the one folder"
 related:
   - /use-cases/claude-code-usage-history/
   - /blog/claude-sessions-lost-switching-accounts/
@@ -284,7 +289,7 @@ Since 26.11.1 a cl_audit profile's settings have a **Sessions** card after the C
 
 Backups are APFS clones, so they take seconds and share space with the originals. On the same disk that protects you from the sweep and from mistakes, not from a dead disk. **General ▸ Backups** sets where they go (**Change…** picks a folder) and how many are kept: by default the last 3 of each profile, plus any made in the last 30 days. On another volume it's a full copy, and the list says so.
 
-**A backup before every switch that moves sessions.** When you switch a profile to another of your own accounts and choose to move the Claude window's sessions with it, cl_audit closes that window and makes a backup first; if it can't, nothing moves. The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers the switch, and [Claude Code sessions lost after switching accounts](/blog/claude-sessions-lost-switching-accounts/) covers signing in to another account by hand. Whether you may hold more than one Claude account is up to Anthropic's terms.
+**A backup before every switch that moves sessions.** When you switch a profile to another of your own accounts, the Claude window's sessions move with it, so cl_audit closes that window and makes a backup first; if it can't, nothing moves. The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers the switch, and [Claude Code sessions lost after switching accounts](/blog/claude-sessions-lost-switching-accounts/) covers signing in to another account by hand. Whether you may hold more than one Claude account is up to Anthropic's terms.
 
 **Restore…, with a preview.** **Restore…** on a backup opens a page that says "Preview · nothing written yet · nothing is ever overwritten". It counts what would happen, by session ID for the Code-tab list and by path for transcripts:
 
