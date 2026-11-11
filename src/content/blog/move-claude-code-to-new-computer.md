@@ -367,7 +367,7 @@ On the old Mac, open Settings ▸ any profile ▸ Sessions ▸ **Export…** and
 
 ![Move to another Mac on cl_audit's Export page](/img/guides/move-export.webp "cl_audit's site demo: the Export page set to Move to another Mac, with all profiles, Claude Code's setup, the MCP settings and cl_audit's profiles. Sample data.")
 
-On the new Mac, install cl_audit and go through its first run, which sets up the first profile on `~/.claude`. Then open Settings ▸ that profile ▸ Sessions ▸ **Import…**, choose the file and type the password; the page says it's a move ([the demo's import](/settings/#import-a-move)). Make the profiles that aren't on this Mac yet, each in folders and a Claude window of its own, then **Close and import** that profile's sessions and do the same in each other profile. Afterwards, sign in to each account with **Add account** and put the profiles in the Dock.
+On the new Mac, install cl_audit and go through its first run, which sets up the first profile on `~/.claude`. Then open Settings ▸ that profile ▸ Sessions ▸ **Import…**, choose the file and type the password; the page says it's a move ([the demo's import](/settings/#import-a-move)). Make the profiles that aren't on this Mac yet, each in folders and a Claude window of its own, then **Close and import** that profile's sessions and do the same in each other profile. Afterwards, sign in to each account with **Sign in with another account…** under the profile's Accounts, and put the profiles in the Dock.
 
 ![Importing a move on the new Mac](/img/guides/move-import.webp "cl_audit's site demo: a move's import on the new Mac, with the profiles it made and what to do next for each. Sample data.")
 
