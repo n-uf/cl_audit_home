@@ -1,7 +1,7 @@
 // The app's usage panel in its five designs (Glow bars, Twin rings, Big numbers, Segmented, Pace bars),
 // drawn from a profile's figures. "large" is the full panel (Settings preview); otherwise the compact one
 // the Dock shows on a click. Same layout rules as the app's PanelDesigns.swift.
-import { accounts, standby, byRoom, type AccountId, type Standby } from "./demo";
+import { accounts, standby, offerOrder, bestOffer, type AccountId } from "./demo";
 
 export type Design = "glow" | "rings" | "numbers" | "segments" | "pace";
 
@@ -136,33 +136,19 @@ function fullHTML(id: AccountId, design: Design) {
  *  limit is full, the limits on the left and the box saying when it's back on the right. */
 export function cardLimitsHTML(id: AccountId, design: Design) {
   const a = accounts.find((x) => x.id === id)!;
-  return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="group" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}${cardExtrasHTML(id, design)}</div>`;
+  return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="group" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}${cardExtrasHTML(id)}</div>`;
 }
 
-// ── A profile's other accounts (app build 238) ──────────────────────────────────────────────────────────────────
-const standbyLs = (s: Standby): L[] => [
-  { name: "5-hour", title: "5-hour session", p: s.five, left: s.fiveLeftMin, elapsed: Math.round((1 - s.fiveLeftMin / 300) * 100) },
-  { name: "Week", title: "Week", p: s.week, left: s.weekLeftMin, elapsed: Math.round((1 - s.weekLeftMin / 10080) * 100) },
-];
-/** A standby account's limits in a dashboard design (Settings ▸ Claude Code ▸ Accounts, its STANDBY box). */
-export function standbyLimitsHTML(s: Standby, design: Design) {
-  const draw = { glow, rings: ring, numbers: number, segments, pace }[design];
-  const cls = design === "rings" ? "pn-limits rings" : design === "numbers" ? "pn-limits numbers" : "pn-limits";
-  return `<div class="${cls}">${standbyLs(s).map((l) => draw(l, false)).join("")}</div>`;
-}
-/** Under a card's limits (switch UX round 2): usage credits, then the profile's standby accounts as unlit trays, most
- *  room first. While a limit is full, the one with the most room is selected already: its row lit in mint, its Standby
- *  display become the Switch account key (it opens the Switch page with it picked). With room left nothing is selected
- *  until you click a tray. */
-export function cardExtrasHTML(id: AccountId, design: Design) {
-  const sb = byRoom(standby[id]);
-  const best = fullLimit(id) ? sb.find((s) => s.five < 100 && s.week < 100) : undefined;
-  const trays = sb.map((s) => `<div class="abox unlit sbx${s === best ? " sel" : ""}" tabindex="0" role="group" aria-label="${s.email}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t"><b class="email">${s.email}</b></span><span class="disp xs abox-badge"><em>Standby</em></span><button type="button" class="disp xs trustlike sw-acc" data-card-switch="${id}" data-to="${s.email}"><em>Switch</em> account</button></div><div class="sb-rows">${standbyLs(s).map((l) => {
-    const meter = design === "segments"
-      ? `<span class="sb-segs">${Array.from({ length: 12 }, (_, i) => i < segLit(l.p) ? `<i style="background:${level(((i + 1) / 12) * 100)}"></i>` : "<i></i>").join("")}</span>`
-      : `<span class="sb-bar"><i style="width:${l.p}%;background:${level(l.p)}"></i></span>`;
-    return `<div class="sb-row"><span class="sb-name">${l.name}</span>${meter}<b style="color:${level(l.p)}">${l.p}%</b><span class="sb-when">in ${short(l.left)}</span></div>`;
-  }).join("")}</div></div>`).join("");
+// ── A profile's other accounts (26.11.18) ───────────────────────────────────────────────────────────────────────
+/** Under a card's limits: usage credits, then the profile's standby accounts as unlit trays, in the order a full limit
+ *  offers them (AccountBook.offerOrder). A tray shows its address, Standby and one line, "Team · last in use 2 days
+ *  ago": no limits, since a standby account isn't read. While a limit is full, the one offered first is selected
+ *  already: its row lit in mint, its Standby display become the Switch account key (it opens the Switch page with it
+ *  picked). With room left nothing is selected until you click a tray. */
+export function cardExtrasHTML(id: AccountId) {
+  const sb = offerOrder(standby[id]);
+  const best = fullLimit(id) ? bestOffer(standby[id]) : undefined;
+  const trays = sb.map((s) => `<div class="abox unlit sbx${s === best ? " sel" : ""}" tabindex="0" role="group" aria-label="${s.email}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t"><b class="email">${s.email}</b></span><span class="disp xs abox-badge"><em>Standby</em></span><button type="button" class="disp xs trustlike sw-acc" data-card-switch="${id}" data-to="${s.email}"><em>Switch</em> account</button></div><small class="abox-note">${s.plan} · last in use ${s.lastInUse}</small></div>`).join("");
   return creditsHTML(id) + (sb.length ? `<div class="acc-pick sb-pick">${trays}</div>` : "");
 }
 

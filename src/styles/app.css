@@ -1667,21 +1667,6 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .left p { margin: 0; font-size: 11.5px; color: var(--soft); }
 .left-keys { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
 .face-silver .appwin .left { background: rgba(0,0,0,.06); }
-/* the dashboard card: the offer while a limit is full ("Switch to team-2…", the key alone) and each standby account's
-   limits, small: "Standby · address", then a row per limit */
-.sb-offer { display: flex; justify-content: flex-end; margin-top: 8px; }
-.sb { display: grid; gap: 5px; margin-top: 10px; }
-.sb-head { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sb-head .email { color: var(--soft); }
-.sb-row { display: grid; grid-template-columns: 46px minmax(0, 1fr) 38px 92px; align-items: center; gap: 8px; }
-.sb-name { font-size: 11.5px; color: var(--soft); }
-.sb-row b { font: 700 11px var(--mono); text-align: right; }
-.sb-when { font-size: 10.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sb-bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,.1); overflow: hidden; }
-.sb-bar i { display: block; height: 100%; border-radius: 2px; }
-.sb-segs { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; height: 5px; }
-.sb-segs i { border-radius: 1px; background: rgba(255,255,255,.1); }
-.face-silver :is(.sb-bar, .sb-segs i) { background: rgba(0,0,0,.12); }
 /* The Switch page (app build 252), shown in place of the dashboard: two columns of cards, the steps with numbered
    circles (green while under way, a tick when done) and the keys for the current step */
 .sw-page { display: grid; gap: 12px; position: relative; }
@@ -1747,10 +1732,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
    level in its own colours but dimmed and without glow. */
 .disp .b { color: #a6fff3; text-shadow: 0 0 3px rgba(127,249,234,.85), 0 0 9px rgba(127,249,234,.4); }
 .abox.unlit { background: rgba(0,0,0,.24); box-shadow: var(--well); }
-.abox.unlit .abox-t b, .abox.unlit .abox-title, .abox.unlit .pn-name { color: var(--soft); }
-.abox.unlit .pn-segs i[style] { opacity: .5; box-shadow: none !important; }
-.abox.unlit .pn-pct, .abox.unlit .sb-row b { opacity: .7; }
-.abox.unlit .sb-segs i[style] { opacity: .5; }
+.abox.unlit .abox-t b, .abox.unlit .abox-title { color: var(--soft); }
 .face-silver .appwin .abox.unlit { background: rgba(0,0,0,.08); box-shadow: inset 0 1px 3px rgba(0,0,0,.25); }
 /* picking an account: the picked one's row lights in mint across the panel, a lit bar at its left, a mint lamp */
 .acc-pick { display: grid; gap: 12px; min-width: 0; }
@@ -1782,13 +1764,13 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .acc-pick .abox.sel:has(.sw-acc) .abox-badge { display: none; }
 .acc-pick .sw-acc:hover { filter: brightness(1.07); }
 .acc-pick .sw-acc:active { transform: translateY(1px); box-shadow: inset 0 3px 4px rgba(0,0,0,.5), inset 0 0 0 1px rgba(0,0,0,.5), 0 0 0 1.5px #0b0c0d; }
-/* the dashboard card: the standby accounts as unlit trays under its own limits, most room first */
+/* the dashboard card: the standby accounts as unlit trays under its own limits, in the order a full limit offers them;
+   a tray is the address and one line (plan, last in use), no limits */
 .sb-pick { margin-top: 10px; }
 .sbx { gap: 6px; padding: 7px 10px 8px; }
 .sbx .abox-head { align-items: center; }
 .sbx .abox-lamp { margin-top: 0; }
 .sbx .abox-t b.email { font-size: 12.5px; font-weight: 600; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.sb-rows { display: grid; gap: 5px; }
 /* the Switch page: NOW and TO engraved beside the boxes */
 .acc-flow { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 12px 10px; align-items: center; padding: 4px 0; }
 .acc-flow > .lbl { align-self: start; padding-top: 12px; font: 600 9.5px/1.2 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }

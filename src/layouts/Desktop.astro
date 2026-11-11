@@ -152,16 +152,19 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     }
     if (openId && !t.closest("[data-mb-menu]")) closeMenu();
   });
-  // the standby trays on a card (switch UX round 2), on the dashboard and the home page: click one to select it (again
-  // to deselect); while a limit is full the one with the most room is selected already. Its Switch account key opens
-  // the Switch page, in Settings as in the app, with it picked.
+  // the standby trays on a card (no limits: address, plan, last in use), on the dashboard and the home page: click one
+  // to select it (again to deselect); while a limit is full the one offered first is selected already, and a click picks
+  // another instead (one is always selected then, as in the app). Its Switch account key opens the Switch page, in
+  // Settings as in the app, with it picked.
   document.addEventListener("click", (e) => {
     const t = e.target as HTMLElement;
     const key = t.closest<HTMLElement>("[data-card-switch]");
     if (key) { location.href = `/settings/?switch=${key.dataset.cardSwitch}&to=${encodeURIComponent(key.dataset.to!)}`; return; }
     const tray = t.closest<HTMLElement>(".sb-pick .abox");
     if (!tray) return;
-    const sel = !tray.classList.contains("sel");
+    // while the card's limit is full (its box saying when it's back, .fl) the selected tray stays selected
+    const full = !!tray.closest(".card-limits")?.querySelector(".fl");
+    const sel = full || !tray.classList.contains("sel");
     tray.parentElement!.querySelectorAll(".abox").forEach((x) => x.classList.toggle("sel", sel && x === tray));
   });
   // account boxes that can be picked (the trays, the Switch page's list) take Return and Space like a key
