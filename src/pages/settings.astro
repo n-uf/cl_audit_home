@@ -309,7 +309,7 @@ const jsonLd = [
       const body = x.state === "ok" && x.s ? standbyLimitsHTML(x.s, design)
         : x.state === "wait" ? `<div class="ap-addr"><span class="ap-why">Finish the sign-in in the browser, as ${x.email}.</span><button type="button" class="sw-plain" data-sb-cancel="${x.email}">Cancel</button><button type="button" class="pill small" data-sb-terminal>Show Terminal</button></div>`
         : x.state === "wrong" ? `<div class="ap-addr"><span class="ap-why">The browser signed in as ${accounts.find((y) => y.id === acc)!.email.split("@")[0]}, not ${x.email.split("@")[0]}. Switch the browser's account, then sign in again.</span><button type="button" class="sw-plain" data-sb-cancel="${x.email}">Cancel</button><button type="button" class="pill small" data-sb-signin="${x.email}">Sign in again…</button></div>`
-        : `<small class="ap-note">No numbers yet: cl_audit reads them within a few minutes, from a sign-in it keeps for this account, and keeps that sign-in renewed.</small>`;
+        : `<small class="ap-note">No numbers yet: cl_audit reads them within a few minutes, from the sign-in kept in its folder.</small>`;
       // only an account with numbers can be switched to from here; the key takes the Standby display's place
       const key = x.state === "ok" ? `<button type="button" class="disp xs trustlike sw-acc" data-sw-acc="${x.email}"><em>Switch</em> account</button>` : "";
       return `<div class="abox unlit${picked === x.email ? " sel" : ""}" data-pick="${x.state === "ok" ? x.email : ""}"${x.state === "ok" ? ' tabindex="0" role="group" aria-label="' + x.email + ', standby"' : ""}><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
