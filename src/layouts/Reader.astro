@@ -6,6 +6,7 @@ import Desktop from "./Desktop.astro";
 import "../styles/reader.css";
 import { download, version, requires } from "../data/site";
 import ScheduledBadge from "../components/ScheduledBadge.astro";
+import ExtLink from "../components/ExtLink.astro";
 import { sections, pathOf, dateText, pageInfo, kindLabel, isLive, showDrafts, type Entry, type Section } from "../data/content";
 import { orgNode, webPage, article, breadcrumbs, faqPage } from "../data/schema";
 
@@ -43,7 +44,7 @@ const jsonLd = [
         <li aria-current="page">{d.h1}</li>
       </ol>
     </nav>
-    <p class="byline"><span class="kind">{kindLabel[d.kind]}</span> <span class="divider" aria-hidden="true"></span> Updated <time datetime={d.updated.toISOString().slice(0, 10)}>{dateText(d.updated)}</time> · by <a href="https://n-uf.com">n-uf</a>{scheduled && <><span class="divider" aria-hidden="true"></span><ScheduledBadge date={d.published} /></>}</p>
+    <p class="byline"><span class="kind">{kindLabel[d.kind]}</span> <span class="divider" aria-hidden="true"></span> Updated <time datetime={d.updated.toISOString().slice(0, 10)}>{dateText(d.updated)}</time> · by <ExtLink href="https://n-uf.com">n-uf</ExtLink>{scheduled && <><span class="divider" aria-hidden="true"></span><ScheduledBadge date={d.published} /></>}</p>
 
     <div class="card takeaways">
       <h4>Key takeaways</h4>
@@ -78,7 +79,7 @@ const jsonLd = [
           <div class="card sources">
             <h4>Sources</h4>
             <ul>
-              {d.sources.map((s) => <li><a href={s.url} rel="noopener">{s.title}</a> <span class="chk">checked {dateText(s.checked)}</span></li>)}
+              {d.sources.map((s) => <li><ExtLink href={s.url}>{s.title}</ExtLink> <span class="chk">checked {dateText(s.checked)}</span></li>)}
             </ul>
           </div>
         )}
@@ -87,7 +88,7 @@ const jsonLd = [
           <h4>Download</h4>
           <!-- the same key as on the Install page; on a computer that isn't a Mac it is the unlit "Mac only" key -->
           <div class="key-note dl-row">
-            <a class="pill dl dim" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
+            <ExtLink class="pill dl dim" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></ExtLink>
             <span class="divider" aria-hidden="true"></span>
             <span class="note">cl_audit {version} · {requires} · free, source-available · <a href="/install/">Install steps</a></span>
           </div>
