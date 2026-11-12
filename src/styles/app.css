@@ -189,10 +189,10 @@ code, kbd { font-family: var(--mono); }
 .mb-dl::before { content: "↓"; font-size: 12px; letter-spacing: 0; }
 .mb-dl:hover { filter: brightness(1.05); }
 .mb-dl:active { transform: translateY(1px); }
-.mb-dl > span { display: none; }
+.mb-dl > span:not(.sr-only) { display: none; }   /* the ↓ arrow span; the screen-reader note (ExtLink) stays */
 .mb-dl.dim { padding: 0; height: auto; background: none; box-shadow: none; color: #e8e8ea !important; font: 500 13.5px/1 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; letter-spacing: -.005em; text-transform: none; }
 .mb-dl.dim::before { display: none; }
-.mb-dl.dim > span { display: inline; }
+.mb-dl.dim > span:not(.sr-only) { display: inline; }
 .mb-dl.dim:hover { color: #fff !important; }
 
 .kbd {
