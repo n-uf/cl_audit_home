@@ -11,11 +11,11 @@
     "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "^0.4.5",
+    "@astrojs/markdown-satteri": "0.4.5",
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.4.2"
   },
   "devDependencies": {
-    "satteri": "^0.10.5"
+    "satteri": "0.10.5"
   }
 }
