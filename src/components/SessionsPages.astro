@@ -3,18 +3,20 @@
 // Restore (a preview, then steps, then checks, and an undo of its own; or "Not yet" while a switch, restore or import holds the profile's window; a switch that stopped half way no longer blocks it),
 // Export and Import. settings.astro shows them and fills in the profile's name ([data-pn]) and the backup's name
 // ([data-bk-name]). Sample figures only; nothing on this Mac changes.
+import Experimental from "./Experimental.astro";
 ---
 <div class="sess-pages" data-sess-pages hidden>
   <!-- Restore… -->
   <section class="sw-page" data-sp="restore">
     <div class="sw-head"><h3 data-rs-head>Restore <span data-pn>work</span> from “<span data-bk-name></span>”</h3></div>
+    <Experimental flows={["restore"]} />
     <div class="sw-run" data-rs="preview"><span class="disp"><em>Preview · nothing written yet · nothing is ever overwritten</em></span></div>
     <div class="sw-run" data-rs="run"><span class="disp"><span class="b">Restoring ●</span> <em>· step 2 of 3 · <span data-rs-count>14</span> of 26 back</em></span><span class="spacer"></span><button type="button" class="pill small tint t-red" data-rs-stop>Stop, keep what's back</button></div>
     <div class="sw-run" data-rs="done"><span class="disp"><span class="g">Restored</span> <em>· 26 back · nothing overwritten · 3 listed</em></span><span class="spacer"></span><button type="button" class="key k" data-rs-undo>Undo this restore</button><button type="button" class="key k" data-sess-back>Back to <span data-pn>work</span>'s settings</button></div>
     <div class="sw-run" data-rs="refused"><span class="disp"><span class="a">Not yet</span> <em>· one thing first · nothing written</em></span></div>
     <div class="sw-cols">
       <div class="sw-col">
-        <div class="card"><h4>What happens <i class="idot" title="What the restore will do with each thing in the backup, worked out before anything is written. It merges and never overwrites.">i</i></h4>
+        <div class="card"><h4>What happens <i class="idot" title="What the restore will do with each thing in the backup, worked out before anything is written. It is built to merge and not to overwrite. Restore is experimental and can lose data.">i</i></h4>
           <div class="srow"><span>Back where it was</span><span class="v-soft"><b>10</b> entries the switch moved, unchanged since</span></div>
           <div class="srow"><span>Missing, restored</span><span class="v-soft"><b>4</b> entries · <b>12</b> transcripts</span></div>
           <div class="srow"><span>Made after the backup</span><span class="v-soft"><b>6</b> sessions: kept</span></div>
@@ -22,7 +24,7 @@
           <div class="srow"><span>In use</span><span class="v-soft"><b>1</b> transcript a running Claude Code session holds: left alone, listed</span></div>
           <div class="srow"><span>Would be deleted <i class="idot" title="Claude Code deletes the transcript of a session once it is older than cleanupPeriodDays (~/.claude/settings.json, 30 by default). A transcript comes back with its real age, so one older than that would be deleted again. Sessions started or last continued in the Claude window aren't counted: Claude Code keeps them at any age (2.1.248 and later), unless you deleted or archived the session in the Claude window (an archived one goes after a grace period). Your organisation's managed settings (or an error in them), HIPAA and zero data retention make the period apply to all of them; cl_audit can't see HIPAA or zero data retention. A project's own .claude/settings.json can also set a shorter period, which cl_audit can't see.">i</i></span><span class="v-soft"><b>9</b>: Claude Code would delete them again. Keep for 90 days would save all of them. <button type="button" class="key k" data-sess-keep>Keep for 90 days</button></span></div>
         </div>
-        <div class="card"><h4>Stays as it is <i class="idot" title="Restore only adds what is missing. The account, the sign-ins and claude.ai are not part of it; a file that is here (MCP settings, settings.json, a task file) is never replaced or merged into.">i</i></h4>
+        <div class="card"><h4>Stays as it is <i class="idot" title="Restore is built to only add what is missing. The account, the sign-ins and claude.ai are not part of it; a file that is here (MCP settings, settings.json, a task file) is not meant to be replaced or merged into.">i</i></h4>
           <div class="srow"><span>Account</span><span class="v-soft">The profile stays on the account it's on: a switch changes that</span></div>
           <div class="srow"><span>Sign-ins</span><span class="v-soft">Never in a backup, never written</span></div>
           <div class="srow"><span>MCP</span><span class="v-soft">Not in this Mac's backups: the window's MCP settings travel only in the encrypted export. Yours stay as they are</span></div>
@@ -54,7 +56,7 @@
             <li class="done"><i></i><div><b>What's listed came back</b><div class="chk"><span class="disp"><span class="g">26 back · 0 overwritten ✓</span></span></div><span>3 changed since stayed as they were.</span></div></li>
             <li class="warn"><i></i><div><b>The sidebar, as before</b><div class="chk"><span class="disp"><em>Press Return in “cl_audit · arrange sidebar”</em></span></div></div></li>
           </ol>
-          <p class="g-note sub">Undo this restore takes back exactly what it put back.</p>
+          <p class="g-note sub">Undo this restore is meant to take back what it put back, though it may not bring everything back.</p>
         </div>
         <div class="card" data-rs="refused"><h4>First</h4>
           <ol class="sw-steps">
@@ -70,6 +72,7 @@
   <!-- Export… -->
   <section class="sw-page" data-sp="export">
     <div class="sw-head"><h3>Export <span data-pn>work</span>'s sessions</h3></div>
+    <Experimental flows={["export"]} />
     <div class="sw-run"><span class="disp"><em>Preview · nothing written yet</em></span><span class="spacer"></span><button type="button" class="pill small" data-sess-go="move">Move to another Mac</button></div>
     <div class="sw-cols">
       <div class="sw-col">
@@ -98,6 +101,7 @@
   <!-- Import… -->
   <section class="sw-page" data-sp="import">
     <div class="sw-head"><h3>Import into <span data-pn>work</span></h3></div>
+    <Experimental flows={["import"]} />
     <div class="sw-run"><span class="disp"><em>Preview · nothing written yet · nothing is ever overwritten</em></span></div>
     <div class="sw-cols">
       <div class="sw-col">
@@ -114,7 +118,7 @@
           <div class="srow"><span>Code-tab entries</span><span class="v-soft"><b>10</b>: the window closes and opens again</span></div>
           <div class="srow"><span>Folder not here</span><span class="v-soft"><b>30</b> sessions whose folder isn't on this Mac: added anyway. Pick where each one's folder is here, or later under Sessions</span></div>
           <div class="sw-keys"><button type="button" class="key k" data-sess-back>Cancel</button><span></span><button type="button" class="pill small tint t-green" data-sess-demo="Import">Close and import 210 sessions</button></div>
-          <p class="g-note sub">Afterwards, Undo last import (under the profile's Sessions) removes exactly what it added.</p>
+          <p class="g-note sub">Afterwards, Undo last import (under the profile's Sessions) is meant to remove what it added, though it may not bring everything back.</p>
         </div>
       </div>
     </div>
@@ -124,6 +128,7 @@
        window's MCP settings and tasks, and cl_audit's own profiles. Sample names only (the demo's home, work, side). -->
   <section class="sw-page" data-sp="move">
     <div class="sw-head"><h3>Move to another Mac</h3></div>
+    <Experimental flows={["move"]} />
     <div class="sw-run"><span class="disp"><em>Preview · nothing written yet</em></span></div>
     <div class="sw-cols">
       <div class="sw-col">
@@ -163,6 +168,7 @@
        state lists what's next for each made profile. data-mv = plan | done. -->
   <section class="sw-page" data-sp="import-move">
     <div class="sw-head"><h3>Import into home</h3></div>
+    <Experimental flows={["import"]} />
     <div class="sw-run"><span class="disp"><em>Preview · a move from another Mac · nothing is ever overwritten</em></span></div>
     <div class="sw-cols">
       <div class="sw-col">
@@ -217,7 +223,7 @@
           <div class="srow"><span>side</span><span class="v-soft">Sign in to its account (side@example.com): Settings ▸ side ▸ Claude Code ▸ Accounts ▸ Sign in with another account…. Nothing is signed in yet.<small class="ap-note">Put it in the Dock: Settings ▸ side ▸ Dock icon ▸ Usage in the Dock, or the key here. It had a Dock icon on the other Mac.</small><small class="ap-note">Its sessions: Settings ▸ side ▸ Sessions ▸ Import…, the same file. Into is side there, and Profile in the file shows side's part.</small></span></div>
           <div class="sw-keys"><span></span><span></span><button type="button" class="key k" data-mv-dock="side">Put side in the Dock</button></div>
         </div>
-        <div class="card"><h4>Stays as it is <i class="idot" title="Import only adds what is missing. The account, the sign-ins and claude.ai are not part of it; a file that is here (MCP settings, settings.json, a task file) is never replaced or merged into.">i</i></h4>
+        <div class="card"><h4>Stays as it is <i class="idot" title="Import is built to only add what is missing. The account, the sign-ins and claude.ai are not part of it; a file that is here (MCP settings, settings.json, a task file) is not meant to be replaced or merged into.">i</i></h4>
           <div class="srow"><span>Sign-ins</span><span class="v-soft">Never travel: sign in again on this Mac</span></div>
           <div class="srow"><span>MCP</span><span class="v-soft">Yours stay; the file's are added only if none is here and you pick Add them</span></div>
           <div class="srow"><span>settings.json</span><span class="v-soft">Yours stay; one is added only if none is here and you pick Add them</span></div>

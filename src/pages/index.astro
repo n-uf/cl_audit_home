@@ -4,6 +4,7 @@ import Row from "../components/Row.astro";
 import AccountCard from "../components/AccountCard.astro";
 import AccIcon from "../components/AccIcon.astro";
 import ExtLink from "../components/ExtLink.astro";
+import Experimental from "../components/Experimental.astro";
 import { accounts } from "../data/demo";
 import { repo, site, version, released, releasedText, changelog, download, requires, checkedWith, stage } from "../data/site";
 import { cardLimitsHTML } from "../data/panelView";
@@ -40,7 +41,7 @@ const homeFaq: [string, string][] = [
   ["How do I check my Claude usage on a Mac?",
    "Claude shows it in Settings ▸ Usage, and Claude Code shows it with <code>/usage</code>, one account at a time. cl_audit shows the 5-hour and weekly limits of every profile's account at once: on each profile's Dock icon, in the launcher and on one dashboard, with the exact reset times."],
   ["Can cl_audit track several Claude accounts?",
-   "Yes. Each profile has its own accounts and can have its own Dock icon, and the dashboard shows every profile. A profile works on one account at a time and can keep others on standby, signed out and with no limits shown, to switch to when a limit is full. A personal plan and a Team seat on the same email count as two accounts."],
+   "Yes. Each profile has its own accounts and can have its own Dock icon, and the dashboard shows every profile. A profile works on one account at a time and can keep others on standby, signed out and with no limits shown, to switch to when a limit is full; switching is experimental and can lose data. A personal plan and a Team seat on the same email count as two accounts."],
   ["Is cl_audit a menu bar app?",
    "Mostly a Dock app: every profile with Usage in the Dock on gets its own Dock icon, so several accounts sit side by side. A profile can also have a menu bar icon of its own (off by default). The “Claude usage” widget shows every profile on the desktop or in Notification Center (macOS 14 or later)."],
   ["Which Claude plans does it work with?",
@@ -312,6 +313,7 @@ const jsonLd = [orgNode, {
       </div>
       <div class="card">
         <h4>Terms</h4>
+        <Experimental flows={["switch"]} />
         <div class="list">
           <div><b>Profile</b><span>One Claude setup in cl_audit: a Claude Code folder with its sign-in and, if you want them, a Claude window, a Dock icon and a menu bar icon.</span></div>
           <div><b>Account</b><span>A claude.ai account a profile uses. A profile works on one at a time and can keep others on standby; an account belongs to one profile. A personal plan and a Team seat on one email are two.</span></div>

@@ -1,5 +1,6 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
+import Experimental from "../components/Experimental.astro";
 import { faq } from "../data/faq";
 import { orgNode, webPage, breadcrumbs, faqPage } from "../data/schema";
 
@@ -15,6 +16,7 @@ const jsonLd = [
 ---
 <Desktop title={title} description={description} page="faq" headline="Common questions" jsonLd={jsonLd}>
   <div class="content-inner">
+    <Experimental />
     <div class="faq-list">
       {faq.map(([q, a], i) => (
         <details class="card" open={i < 3}><summary>{q}</summary><p>{a}</p></details>

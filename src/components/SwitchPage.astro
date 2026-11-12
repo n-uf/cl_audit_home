@@ -6,12 +6,14 @@
 // What changes (What changed once it ran) and Steps. The demo switches "work" (switchDemo.ts runs it with sample
 // timings, and shows the cases it can meet when something goes wrong). Sample data only.
 import { accounts, standby, offerOrder, shortName } from "../data/demo";
+import Experimental from "./Experimental.astro";
 
 const a = accounts.find((x) => x.id === "work")!;
 const first = shortName(offerOrder(standby.work)[0].email);
 ---
 <section class="sw-page" data-sw-page hidden aria-label="Switch account">
   <div class="sw-head"><h3 data-sw-head>Switch Claude {a.name} to {first}</h3></div>
+  <Experimental flows={["switch"]} />
   <!-- the line at the top while it runs, when it's done or when something went wrong: a display and the keys out -->
   <div class="sw-run" data-sw-run hidden></div>
   <!-- demo only: the cases a switch can meet when something goes wrong -->
