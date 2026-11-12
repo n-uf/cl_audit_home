@@ -34,7 +34,7 @@ export function experimentalParts(keys = ALL) {
   const one = wanted.length === 1;
   return {
     lead: "Experimental:",
-    rest: `${joinList(wanted.map((k) => FLOWS[k]))} can lose data. Use ${one ? "it" : "them"} for testing, never on anything you can't afford to lose. cl_audit asks you to confirm the risk each time before ${one ? "it runs" : "they run"}.`,
+    rest: `${joinList(wanted.map((k) => FLOWS[k]))} can lose data. Use ${one ? "it" : "them"} for testing, never on anything you can’t afford to lose. cl_audit asks you to confirm the risk each time before ${one ? "it runs" : "they run"}.`,
   };
 }
 
