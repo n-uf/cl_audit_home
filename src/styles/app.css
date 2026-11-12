@@ -680,6 +680,7 @@ body { overflow: hidden; }
   .desk:not([data-page="overview"]) .dock-bar { display: none; }
   .dock-bar { transition: transform .25s ease, opacity .25s ease; }
   .desk.pin .dock-bar { transform: translateY(calc(100% + 12px)); opacity: 0; pointer-events: none; }
+  .desk:is(.pin, .dock-away) .pop { visibility: hidden; }   /* a Dock peek (position: fixed, pointer-events: auto) goes with its Dock */
   /* no title bar and no brand row on a phone (the menu bar names cl_audit); the face keys sit at the right end
      of the menu bar */
   .appwin .titlebar { display: none; }
