@@ -7,12 +7,12 @@ const where = "src/content/blog/host.md";
 
 test("without a list the note names the five flows, in the hub's words", () => {
   assert.equal(experimentalText(),
-    "Experimental: account switching, import, restore, export and Move to another Mac can lose data. Use them for testing, never on anything you can't afford to lose. cl_audit asks you to confirm the risk each time before they run.");
+    "Experimental: account switching, import, restore, export and Move to another Mac can lose data. Use them for testing, never on anything you can’t afford to lose. cl_audit asks you to confirm the risk each time before they run.");
 });
 
 test("one flow names only that flow, in the singular", () => {
   assert.equal(experimentalText(["move"]),
-    "Experimental: Move to another Mac can lose data. Use it for testing, never on anything you can't afford to lose. cl_audit asks you to confirm the risk each time before it runs.");
+    "Experimental: Move to another Mac can lose data. Use it for testing, never on anything you can’t afford to lose. cl_audit asks you to confirm the risk each time before it runs.");
 });
 
 test("flows come out in a fixed order whatever order they are given in; making a profile the default is a flow too", () => {
