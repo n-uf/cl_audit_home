@@ -2,6 +2,7 @@
 import Desktop from "../layouts/Desktop.astro";
 import AccountCard from "../components/AccountCard.astro";
 import History from "../components/History.astro";
+import Experimental from "../components/Experimental.astro";
 import { accounts } from "../data/demo";
 import { orgNode, webPage, breadcrumbs } from "../data/schema";
 
@@ -31,6 +32,7 @@ const jsonLd = [
       </span>
     </div>
     <div class="dash-cards">{accounts.map((a) => <AccountCard {...a} />)}</div>
+    <Experimental flows={["switch"]} />
     <History />
     <!-- 26.10.5: until the first scan of the session files is done, the history says it's reading them (once per
          visit; set before the first paint so the numbers don't flash) -->
