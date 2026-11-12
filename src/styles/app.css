@@ -1852,6 +1852,9 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   .dock .sep { margin: 5px 2px 12px; }
   /* the Dock slides away once the page is scrolled and comes back at the top (Desktop.astro sets .dock-away) */
   .desk.dock-away .dock-bar { transform: translateY(calc(100% + 12px)); opacity: 0; pointer-events: none; }
+  /* a window opened from the Dock covers the whole screen (the menu bar is in the page now), above the Dock on the Overview */
+  .dapp.deskwin, .term.deskwin { top: 0; bottom: 0; }
+  .desk[data-page="overview"] :is(.dapp.deskwin, .term.deskwin) { bottom: 64px; }
 }
 
 /* ── Upright phones: text and touch targets ───────────────────────────────────────────────────────────────────────
