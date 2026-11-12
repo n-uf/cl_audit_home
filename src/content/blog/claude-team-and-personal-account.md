@@ -12,7 +12,7 @@ takeaways:
   - "Team usage limits are per member. They can't be shared or transferred, and each seat is for one named individual."
   - "A personal plan and a Team seat on the same email are two seats. cl_audit counts them as two accounts, and an account belongs to one profile, so each can get its own."
   - "The Claude app shows one account at a time. With cl_audit, the profile on ~/.claude opens the usual Claude app and every other profile has its own Claude window and Claude Code folder, side by side."
-  - "cl_audit is free and independent, not affiliated with Anthropic. It doesn't pool limits; a profile can switch to another of your own accounts, and its Code sessions can go along if you choose, but switching is experimental and can lose data."
+  - "cl_audit is free and independent, not affiliated with Anthropic. It doesn't pool limits; a profile can switch to another of your own accounts, and its Code sessions are meant to move with it, after a backup, but switching is experimental and can lose data."
 faq:
   - q: "Can I have a work and personal Claude account?"
     a: "Yes. Anthropic's help pages say you can hold a personal account and a Team or Enterprise account on the same email address and switch between them from the account menu. Whether you may use a personal plan for work, or the other way round, is up to your employer's rules and Anthropic's terms."
@@ -58,6 +58,11 @@ sources:
   - title: "[FEATURE] Add the ability to manage multiple Claude accounts within the Claude Desktop app (anthropics/claude-code#18435)"
     url: "https://github.com/anthropics/claude-code/issues/18435"
     checked: 2026-11-02
+  - title: "cl_audit CHANGELOG, 26.11.18"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.18: before the sign-in a switch closes the profile's Claude window, makes a backup and moves its Code-tab sessions and scheduled tasks to the account switched to, each checked, with a receipt; a session a running Claude Code owns stays until a later switch."
+    quote: "The switch moves the Claude window's sessions inside the one folder"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
@@ -136,7 +141,7 @@ If you only need the second account in a browser, a second browser profile with 
 
 A common layout: the personal profile on `~/.claude` with the usual Claude app, the work profile on `~/.claude-work` with its own Claude window, both open at once. The other way round works too. Give `~/.claude` to whichever you open most.
 
-Each profile can have its own Dock icon showing that seat's 5-hour and weekly limits, which cl_audit's background agent reads from Anthropic with the profile's Claude Code sign-in. You see both seats' limits without switching accounts. The [demo dashboard](/dashboard/) shows three sample profiles. Limits stay separate: cl_audit doesn't pool them. If a profile has both accounts, you can switch it from one to the other, and choose whether its Code sessions move too. Whether someone may use more than one Claude account is set by Anthropic's terms.
+Each profile can have its own Dock icon showing that seat's 5-hour and weekly limits, which cl_audit's background agent reads from Anthropic with the profile's Claude Code sign-in. You see both seats' limits without switching accounts. The [demo dashboard](/dashboard/) shows three sample profiles. Limits stay separate: cl_audit doesn't pool them. If a profile has both accounts, you can switch it from one to the other, and the switch is meant to move its Code sessions and scheduled tasks to the new account, after a backup. Whether someone may use more than one Claude account is set by Anthropic's terms.
 
 {{experimental: switch}}
 

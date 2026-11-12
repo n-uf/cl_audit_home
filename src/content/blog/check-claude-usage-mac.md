@@ -55,6 +55,11 @@ sources:
   - title: "cl_audit README (n-uf/cl_audit)"
     url: "https://github.com/n-uf/cl_audit"
     checked: 2026-11-02
+  - title: "cl_audit CHANGELOG, 26.11.18"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.18: before the sign-in a switch closes the profile's Claude window, makes a backup and moves its Code-tab sessions and scheduled tasks to the account switched to, each checked, with a receipt; a session a running Claude Code owns stays until a later switch."
+    quote: "The switch moves the Claude window's sessions inside the one folder"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
@@ -190,7 +195,7 @@ Anthropic's views show the account you're signed in to. With a personal plan and
 
 A tracker that reads each account separately shows them together. In cl_audit each Claude setup is a profile: one Claude Code folder with its sign-in, and optionally a Claude window and a Dock icon. A profile works on one account at a time, and no two profiles share an account (checked by account and organisation ids). A personal plan and a Team seat on the same email are two accounts, so they can be two profiles. Both limits for every profile show on the dashboard and on each Dock icon, and an alert names the profile that's full and says when it's back.
 
-cl_audit doesn't pool limits: each account's limits are its own, and it shows what each seat has used. When you ask, it can switch a profile to another of your own accounts, and the Code sessions can go with it if you want, but switching is experimental and can lose data. Whether someone may use more than one Claude account is set by Anthropic's terms. The page on [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/) explains the setup.
+cl_audit doesn't pool limits: each account's limits are its own, and it shows what each seat has used. When you ask, it can switch a profile to another of your own accounts, and the switch is meant to move the Code sessions with it, after a backup, but switching is experimental and can lose data. Whether someone may use more than one Claude account is set by Anthropic's terms. The page on [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/) explains the setup.
 
 {{experimental: switch}}
 
