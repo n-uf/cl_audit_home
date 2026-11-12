@@ -10,6 +10,8 @@ import { orgNode, webPage, breadcrumbs } from "../../data/schema";
 import { withActions } from "../../data/actions";
 import { withImages } from "../../data/images";
 import { withLiveBlocks } from "../../data/live";
+// @ts-ignore: plain JS module, so the tests can run it without Astro
+import { withExperimental } from "../../data/experimental.mjs";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -23,7 +25,8 @@ const { posts, entry } = Astro.props;
 const rendered = entry ? await render(entry) : undefined;
 // the body with its {{live:}} blocks resolved (src/data/live.ts), its images as sized figures (src/data/images.ts), then its
 // action buttons (src/data/actions.ts); the plain component if there is no rendered HTML
-const html = entry?.rendered?.html ? withActions(withImages(await withLiveBlocks(entry.rendered.html, entry.filePath ?? `src/content/blog/${entry.id}.md`)), pathOf("blog", entry.id), entry.data.mainKeyword) : undefined;
+const file = entry?.filePath ?? `src/content/blog/${entry?.id}.md`;
+const html = entry?.rendered?.html ? withActions(withImages(withExperimental(await withLiveBlocks(entry.rendered.html, file), file)), pathOf("blog", entry.id), entry.data.mainKeyword) : undefined;
 
 const title = "Claude usage blog: limits, resets, tracking";
 const description = "Guides on Claude's usage limits and how to track them on a Mac: when limits reset, how to check usage, and how to use several accounts.";

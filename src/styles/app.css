@@ -1078,6 +1078,11 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .more-link { color: #e8a07f; font-size: 12.5px; text-decoration: none; font-weight: 600; }
 .g-note { margin: 4px 0 0; font-size: 12.5px; color: var(--soft); line-height: 1.5; }
 .g-note.sub { color: var(--muted); }
+/* the "Experimental" note (src/data/experimental.mjs): a quiet bordered box, not an alarm */
+.exp-note { margin: 0 0 14px; padding: 9px 13px; border: 1px solid var(--line); border-left: 3px solid rgba(var(--led), .65); border-radius: 6px; font-size: 13.5px; line-height: 1.55; color: var(--soft); }
+.exp-note p { margin: 0; }
+.exp-note strong { color: var(--text); font-weight: 650; }
+.sw-page > .exp-note { margin: 0; }
 .settings .menu { max-width: 100%; }
 .srow > select.menu { min-width: 0; text-overflow: ellipsis; }
 

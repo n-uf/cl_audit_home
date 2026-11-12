@@ -1,0 +1,9 @@
+---
+// The "Experimental" note for an .astro page (a markdown page writes {{experimental}} instead); the words come from
+// src/data/experimental.mjs, so every page says the same thing. Once per page, next to the first description of the flow.
+import { experimentalParts } from "../data/experimental.mjs";
+interface Props { flows?: string[] }
+const { flows } = Astro.props;
+const { lead, rest } = experimentalParts(flows);
+---
+<div class="exp-note" role="note"><p><strong>{lead}</strong> {rest}</p></div>
