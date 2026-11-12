@@ -1205,9 +1205,9 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .start-box b { color: var(--text); font-weight: 600; }
 
 /* ── Touch screens ──────────────────────────────────────────────────── */
-/* no zooming (with the viewport tag in Base.astro), no pull-to-refresh or page bounce, the text size kept on
-   rotation, no grey flash on tap */
-html { touch-action: pan-x pan-y; overscroll-behavior: none; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+/* pinch zoom stays on (WCAG 1.4.4); only the double-tap zoom is off, so a quick second tap on a key isn't a zoom.
+   No pull-to-refresh or page bounce, the text size kept on rotation, no grey flash on tap */
+html { touch-action: manipulation; overscroll-behavior: none; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color: transparent; }
 /* the window's controls and the Dock behave like an app's: a long press neither selects their text nor opens the
    link/image menu */
