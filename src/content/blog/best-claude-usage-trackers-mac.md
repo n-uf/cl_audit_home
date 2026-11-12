@@ -65,6 +65,11 @@ sources:
   - title: "Claude Code docs: Manage costs effectively (the /usage command)"
     url: "https://code.claude.com/docs/en/costs"
     checked: 2026-11-02
+  - title: "cl_audit CHANGELOG, 26.11.18"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.18: before the sign-in a switch closes the profile's Claude window, makes a backup and moves its Code-tab sessions and scheduled tasks to the account switched to, each checked, with a receipt; a session a running Claude Code owns stays until a later switch."
+    quote: "The switch moves the Claude window's sessions inside the one folder"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
@@ -136,7 +141,7 @@ It reads your usage with your browser's session cookie: during setup you copy th
 - a Claude Code status line in the terminal, and a `claude-<profile>` command per profile;
 - automation, such as starting a new session when usage resets and switching to the next profile when a session limit is reached.
 
-cl_audit has no such automation. It doesn't start sessions, and it never switches on its own. A profile can switch to another of your own accounts, but only when you ask it to, and it asks whether that profile's Code sessions should move too. Switching is experimental and can lose data.
+cl_audit has no such automation. It doesn't start sessions, and it never switches on its own. A profile can switch to another of your own accounts, but only when you ask it to, and the switch is meant to move that profile's Code sessions and scheduled tasks to the new account, after a backup. Switching is experimental and can lose data.
 
 {{experimental: switch}}
 

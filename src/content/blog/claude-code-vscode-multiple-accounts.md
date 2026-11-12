@@ -71,6 +71,11 @@ sources:
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
     checked: 2026-11-09
     quote: "The default profile is the one on `~/.claude` with the usual Claude app"
+  - title: "cl_audit CHANGELOG, 26.11.18"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.18: before the sign-in a switch closes the profile's Claude window, makes a backup and moves its Code-tab sessions and scheduled tasks to the account switched to, each checked, with a receipt; a session a running Claude Code owns stays until a later switch."
+    quote: "The switch moves the Claude window's sessions inside the one folder"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
@@ -190,7 +195,7 @@ What it adds is the view across accounts. Each profile's 5-hour and weekly limit
 
 ![cl_audit usage history by project, model and surface](/img/guides/usage-history.webp "Usage history: tokens per day, and where they go by project, model and surface. Sample data.")
 
-For the Claude app side, see [running several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit doesn't pool limits. Switching a profile to another of your accounts is something you start yourself, and you decide whether the profile's Code sessions go with it, but switching is experimental and can lose data.
+For the Claude app side, see [running several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit doesn't pool limits. Switching a profile to another of your accounts is something you start yourself, and the switch is meant to move the profile's Code sessions with it, after a backup, but switching is experimental and can lose data.
 
 {{experimental: switch}}
 

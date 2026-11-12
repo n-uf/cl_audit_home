@@ -23,7 +23,7 @@ faq:
   - q: "Where does Claude Code store its login on a Mac?"
     a: "In the macOS Keychain. Anthropic's docs say that with CLAUDE_CONFIG_DIR set, Claude Code keys the Keychain entry to that directory. cl_audit's README gives the names: Claude Code-credentials for ~/.claude, and Claude Code-credentials plus eight characters for another folder."
   - q: "Does this let me get more usage?"
-    a: "No. Each account has its own plan and its own limits, and cl_audit only shows them. It doesn't pool limits. A profile can switch to another of your own accounts, and its Code sessions can move with it if you choose, but switching is experimental and can lose data. Whether you may use more than one Claude account is set by Anthropic's terms."
+    a: "No. Each account has its own plan and its own limits, and cl_audit only shows them. It doesn't pool limits. A profile can switch to another of your own accounts, and its Code sessions are meant to move with it, after a backup, but switching is experimental and can lose data. Whether you may use more than one Claude account is set by Anthropic's terms."
 sources:
   - title: "Claude Code docs: Authentication (Log in with multiple accounts, Credential management)"
     url: "https://code.claude.com/docs/en/authentication"
@@ -59,6 +59,11 @@ sources:
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
     checked: 2026-11-09
     quote: "The default profile is the one on `~/.claude` with the usual Claude app"
+  - title: "cl_audit CHANGELOG, 26.11.18"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.18: before the sign-in a switch closes the profile's Claude window, makes a backup and moves its Code-tab sessions and scheduled tasks to the account switched to, each checked, with a receipt; a session a running Claude Code owns stays until a later switch."
+    quote: "The switch moves the Claude window's sessions inside the one folder"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
@@ -171,7 +176,7 @@ After setup, the pieces you'd otherwise script yourself are in the app (see [you
 
 The page on multiple Claude accounts on one Mac covers the Claude app side, where each extra account gets its own Claude window. cl_audit is free and source-available; if you want to try it you can [download cl_audit](/install/). It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile.
 
-cl_audit doesn't pool limits: each account's limits are its own, and it shows what each seat has used. It can switch a profile between your own accounts when you ask, and asks whether the Code sessions go with it. Whether someone may use more than one Claude account is set by Anthropic's terms.
+cl_audit doesn't pool limits: each account's limits are its own, and it shows what each seat has used. It can switch a profile between your own accounts when you ask, and the switch is meant to move the Code sessions with it, after a backup. Whether someone may use more than one Claude account is set by Anthropic's terms.
 
 {{experimental: switch}}
 

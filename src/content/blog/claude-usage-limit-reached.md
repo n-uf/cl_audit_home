@@ -88,6 +88,11 @@ sources:
   - title: "cl_audit site: FAQ and Claude usage limit notifications (n-uf/cl_audit_home, origin/main on 2026-11-03)"
     url: "https://cl-audit.n-uf.com/use-cases/claude-usage-limit-alerts/"
     checked: 2026-11-03
+  - title: "cl_audit CHANGELOG, 26.11.18"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.18: before the sign-in a switch closes the profile's Claude window, makes a backup and moves its Code-tab sessions and scheduled tasks to the account switched to, each checked, with a receipt; a session a running Claude Code owns stays until a later switch."
+    quote: "The switch moves the Claude window's sessions inside the one folder"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
@@ -145,7 +150,7 @@ On Pro, Max and Ultra you turn usage credits on yourself. Open the Usage credits
 
 Some things don't help. A new chat doesn't give you a fresh allowance, because Anthropic describes usage limits as covering all your conversations. Moving to another app doesn't either: Claude, Claude Code, Claude Desktop and IDE use all draw on the same limits. And switching models does nothing for a session or weekly limit.
 
-cl_audit doesn't change any of this. It shows each profile's own limits, and doesn't pool them. A profile can switch to another of your own accounts, and you choose whether the switch takes its Code sessions along, but switching is experimental and can lose data. Whether you may use more than one Claude account is set by Anthropic's terms.
+cl_audit doesn't change any of this. It shows each profile's own limits, and doesn't pool them. A profile can switch to another of your own accounts, and the switch is meant to move its Code sessions to the new account, after a backup, but switching is experimental and can lose data. Whether you may use more than one Claude account is set by Anthropic's terms.
 
 {{experimental: switch}}
 
