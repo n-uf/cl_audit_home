@@ -67,13 +67,15 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
         </nav>
       </div>
       </div>
-      <!-- Phones: lay the head over the content before the first paint, as initPin (below) does once the page has loaded,
-           so the content doesn't jump up 184 px at that moment. initPin keeps --head-h up to date from then on.
+      <!-- Phones on their side (wide, but at most 500 px tall): lay the head over the content before the first paint, as
+           initPin (below) does once the page has loaded, so the content doesn't jump up 184 px at that moment. initPin
+           keeps --head-h up to date from then on. An upright phone (up to 600 px wide) doesn't pin anything: the page
+           itself scrolls, head and all, so Safari's toolbars can collapse (see app.css).
            data-astro-rerun: the ClientRouter runs it again after each page swap (it skips repeated inline scripts otherwise). -->
       <script is:inline data-astro-rerun>
         (function () {
           var desk = document.querySelector(".desk"), head = desk && desk.querySelector(".apphead");
-          if (!head || !matchMedia("(max-width: 600px), (max-height: 500px)").matches) return;
+          if (!head || !matchMedia("(min-width: 601px) and (max-height: 500px)").matches) return;
           desk.style.setProperty("--head-h", head.offsetHeight + (desk.classList.contains("ovl") ? 0 : 28) + "px");
           desk.classList.add("ovl");
         })();
@@ -203,11 +205,11 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     showFace();
   });
 
-  // Phones (upright or on their side): the window's head (title bar, brand, display, PAGE keys) lies over the content, which scrolls under it
+  // Phones on their side: the window's head (title bar, brand, display, PAGE keys) lies over the content, which scrolls under it
   // (.desk.ovl; until it is measured the head sits in the normal flow, in the same place). Scrolling down slides
   // the menu bar, title bar and brand away and leaves the display and the PAGE keys at the top (.desk.pin);
   // it stays compact while scrolling up, and only reaching the top slides them back. Only moved, never resized, so the scroll stays smooth.
-  const phone = matchMedia("(max-width: 600px), (max-height: 500px)");   // a phone upright or on its side (as in app.css)
+  const phone = matchMedia("(min-width: 601px) and (max-height: 500px)");   // a phone on its side (upright ones scroll the page: app.css)
   let headSeen: ResizeObserver | undefined;
   const initPin = () => {
     headSeen?.disconnect();
@@ -250,6 +252,13 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     });
   };
   document.addEventListener("astro:page-load", initPin);
+
+  // An upright phone scrolls the page itself (app.css): the Overview's Dock slides away once the page is scrolled and
+  // comes back at the top, so nothing stays on the screen over the text.
+  const upright = matchMedia("(max-width: 600px)");
+  const dockAway = () => document.querySelector(".desk")?.classList.toggle("dock-away", upright.matches && window.scrollY > 40);
+  window.addEventListener("scroll", dockAway, { passive: true });
+  document.addEventListener("astro:page-load", dockAway);
 
   // The menu bar clock, like the Mac's.
   const tick = () => {
