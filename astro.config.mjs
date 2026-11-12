@@ -2,6 +2,9 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import { readdirSync, readFileSync, existsSync } from "node:fs";
+import { satteri } from "@astrojs/markdown-satteri";
+import externalLinksPlugin from "./src/data/external-links-plugin.mjs";
+import { externalCheck, newTabNote, relWith } from "./src/data/links.mjs";
 
 const site = "https://cl-audit.n-uf.com";
 
@@ -21,6 +24,8 @@ for (const [dir, section] of [["src/content/use-cases", "use-cases"], ["src/cont
 
 export default defineConfig({
   site,
+  // a link to another host in a use case or an article opens in a new tab (links.mjs)
+  markdown: { processor: satteri({ hastPlugins: [externalLinksPlugin({ isExternal: externalCheck(site), note: newTabNote, relWith })] }) },
   integrations: [sitemap({
     serialize(item) {
       const d = lastmod.get(item.url);
