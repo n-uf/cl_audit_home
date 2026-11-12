@@ -5,7 +5,7 @@ h1: "Claude Code in VS Code with multiple accounts"
 mainKeyword: "claude code vscode multiple accounts"
 kind: how-to
 published: 2026-11-03
-updated: 2026-11-09
+updated: 2026-11-12
 author: n-uf
 takeaways:
   - "Out of the box, changing account in the Claude Code panel means signing out (Sign out, or /logout) and signing in again."
@@ -71,6 +71,11 @@ sources:
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
     checked: 2026-11-09
     quote: "The default profile is the one on `~/.claude` with the usual Claude app"
+  - title: "cl_audit CHANGELOG, 26.11.22"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
+    quote: "they can lose data, so use them for testing only"
 related:
   - /blog/claude-code-multiple-accounts/
   - /use-cases/multiple-claude-accounts/
@@ -185,4 +190,8 @@ What it adds is the view across accounts. Each profile's 5-hour and weekly limit
 
 ![cl_audit usage history by project, model and surface](/img/guides/usage-history.webp "Usage history: tokens per day, and where they go by project, model and surface. Sample data.")
 
-For the Claude app side, see [running several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit doesn't pool limits. Switching a profile to another of your accounts is something you start yourself, and you decide whether the profile's Code sessions go with it. Whether you may use more than one Claude account is set by Anthropic's terms. It's a free [Claude usage tracker](/) for Macs with Apple silicon and macOS 13 or later, and needs Claude Code signed in for each profile. To try it, [install cl_audit](/install/).
+For the Claude app side, see [running several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit doesn't pool limits. Switching a profile to another of your accounts is something you start yourself, and you decide whether the profile's Code sessions go with it, but switching is experimental and can lose data.
+
+{{experimental: switch}}
+
+Whether you may use more than one Claude account is set by Anthropic's terms. It's a free [Claude usage tracker](/) for Macs with Apple silicon and macOS 13 or later, and needs Claude Code signed in for each profile. To try it, [install cl_audit](/install/).

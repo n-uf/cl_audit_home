@@ -5,7 +5,7 @@ h1: "Claude usage limit notifications"
 mainKeyword: "claude usage limit notification"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-11
+updated: 2026-11-12
 author: n-uf
 order: 2
 takeaways:
@@ -57,6 +57,11 @@ sources:
     checked: 2026-11-11
     supports: "Standby accounts show no usage, the alert included; \"the other account is back\" and its Switch back offer are gone."
     quote: "A profile is one Claude Code folder, and switching signs in again on it."
+  - title: "cl_audit CHANGELOG, 26.11.22"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
+    quote: "they can lose data, so use them for testing only"
 related:
   - /
   - /use-cases/multiple-claude-accounts/
@@ -94,6 +99,8 @@ A profile works on one account at a time and can keep your other accounts on sta
 - **The switch is waiting for you.** While Claude Code's sign-in waits in the browser and the Switch page isn't in front, one alert says so: "Claude Main: the switch is waiting for you · Finish Claude Code's sign-in in Terminal and the browser. cl_audit checks the account when it's done." It has **Show switch** and **Cancel switch**.
 
 Switch account… only opens the Switch page. Nothing switches until you start the switch there, and each account's limits stay its own. {{live:/use-cases/switch-claude-accounts/}}What a switch moves, and how to undo one, is on the [Claude account switcher](/use-cases/switch-claude-accounts/) page.{{/live}}
+
+{{experimental: switch}}
 
 ## The countdown on the dashboard and in the Dock
 

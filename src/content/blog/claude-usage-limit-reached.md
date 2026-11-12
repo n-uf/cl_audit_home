@@ -5,7 +5,7 @@ h1: "Claude usage limit reached? Which limit it is, and what you can do now"
 mainKeyword: "claude usage limit reached"
 kind: how-to
 published: 2026-11-03
-updated: 2026-11-05
+updated: 2026-11-12
 author: n-uf
 takeaways:
   - "Claude usage limit reached means you've used up your 5-hour session limit, your weekly limit or, on Max and Ultra, the separate weekly limit for Fable."
@@ -88,6 +88,11 @@ sources:
   - title: "cl_audit site: FAQ and Claude usage limit notifications (n-uf/cl_audit_home, origin/main on 2026-11-03)"
     url: "https://cl-audit.n-uf.com/use-cases/claude-usage-limit-alerts/"
     checked: 2026-11-03
+  - title: "cl_audit CHANGELOG, 26.11.22"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
+    quote: "they can lose data, so use them for testing only"
 related:
   - /blog/claude-limit-reset-time/
   - /blog/claude-usage-limits/
@@ -140,7 +145,9 @@ On Pro, Max and Ultra you turn usage credits on yourself. Open the Usage credits
 
 Some things don't help. A new chat doesn't give you a fresh allowance, because Anthropic describes usage limits as covering all your conversations. Moving to another app doesn't either: Claude, Claude Code, Claude Desktop and IDE use all draw on the same limits. And switching models does nothing for a session or weekly limit.
 
-cl_audit doesn't change any of this. It shows each profile's own limits, and doesn't pool them. A profile can switch to another of your own accounts, and you choose whether the switch takes its Code sessions along. Whether you may use more than one Claude account is set by Anthropic's terms.
+cl_audit doesn't change any of this. It shows each profile's own limits, and doesn't pool them. A profile can switch to another of your own accounts, and you choose whether the switch takes its Code sessions along, but switching is experimental and can lose data. Whether you may use more than one Claude account is set by Anthropic's terms.
+
+{{experimental: switch}}
 
 ## Why did Claude hit the limit so fast?
 
