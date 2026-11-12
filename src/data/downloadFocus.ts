@@ -13,11 +13,12 @@ export function initDownloadFocus() {
 
   const update = () => {
     const area = content?.getBoundingClientRect();
-    // in view = at least three quarters of the button inside the scrolling content
+    // in view = at least three quarters of the button inside the content and on the screen (an upright phone scrolls
+    // the page, so the content is taller than the screen; elsewhere it is the content's own scroller)
     const first = buttons.find((b) => {
       const r = b.getBoundingClientRect();
       if (!area || r.height === 0) return false;
-      const visible = Math.min(r.bottom, area.bottom) - Math.max(r.top, area.top);
+      const visible = Math.min(r.bottom, area.bottom, window.innerHeight) - Math.max(r.top, area.top, 0);
       return visible >= r.height * 0.75;
     });
     buttons.forEach((b) => b.classList.toggle("dim", b !== first));
@@ -27,9 +28,11 @@ export function initDownloadFocus() {
   update();
   if (!content) return;
   content.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("scroll", update, { passive: true });
   window.addEventListener("resize", update);
   cleanup = () => {
     content.removeEventListener("scroll", update);
+    window.removeEventListener("scroll", update);
     window.removeEventListener("resize", update);
   };
 }
