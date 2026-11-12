@@ -1829,3 +1829,27 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* demo only: the cases a switch can meet when something goes wrong */
 .sw-demo { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12px; }
 .sw-demo .switch { flex-wrap: wrap; height: auto; }
+
+/* ── Upright phones (up to 600 px wide): the page itself scrolls ─────────────────────────────────────────────────
+   Not an inner window under a pinned head: the menu bar and the window's head are ordinary content at the top and
+   scroll away with it, so nothing stays pinned but the Overview's Dock, and Safari's toolbars can collapse. The
+   .ovl / .pin head (Desktop.astro) is only for phones on their side. Last in the file, so it wins over the
+   desktop rules above. */
+@media (max-width: 600px) {
+  html, body { height: auto; }
+  body { overflow: visible; }
+  .desk { position: relative; inset: auto; min-height: 100dvh; overflow: clip; }
+  .menubar { position: relative; height: 52px; }
+  .appwin { position: static; display: block; overflow: visible; }
+  .content { overflow: visible; padding-bottom: 24px; }
+  .desk[data-page="overview"] .content { padding-bottom: 84px; }   /* room for the Dock (56 px with its margin) */
+  /* the windows that open over the page stay on the screen, not in the page */
+  .dapp, .term, .whatnow { position: fixed; }
+  /* the Dock: 52 px high, 4 px from the bottom; each icon a 44 px key */
+  .dock-bar { bottom: 4px; }
+  .dock { gap: 3px; padding: 4px 6px 2px; }
+  .dock-item { padding: 0 3px 8px; }
+  .dock .sep { margin: 5px 2px 12px; }
+  /* the Dock slides away once the page is scrolled and comes back at the top (Desktop.astro sets .dock-away) */
+  .desk.dock-away .dock-bar { transform: translateY(calc(100% + 12px)); opacity: 0; pointer-events: none; }
+}
