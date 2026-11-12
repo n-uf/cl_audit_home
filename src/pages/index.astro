@@ -606,4 +606,13 @@ cd cl_audit && ./build.sh</code></pre>
     .intro-text { display: block; }
     .intro-ico { display: none; }   /* narrow: the text takes the full width */
   }
+  /* upright phones: 16 px running text, 12 px printing on the keys and the display, 44 px keys */
+  @media (max-width: 600px) {
+    .intro-text { font-size: 16px; }
+    .version-disp { height: 44px; font-size: 12px; }
+    .rel-mark { width: 24px; height: 28px; }
+    .hero-keys > .pill, .hero-keys > .key { height: 44px; font-size: 12px; }
+    .trust-note, .trust-more { font-size: 14px; }
+    .lane-icons figure { font-size: 12px; }
+  }
 </style>
