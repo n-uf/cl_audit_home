@@ -1847,7 +1847,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   .dapp, .term, .whatnow { position: fixed; }
   /* the Dock: 52 px high, 4 px from the bottom; each icon a 44 px key */
   .dock-bar { bottom: 4px; }
-  .dock { gap: 3px; padding: 4px 6px 2px; }
+  .dock { gap: 3px; padding: 4px 6px 2px; min-height: 55px; min-width: min(346px, 100%); }   /* its full size from the first paint, while the nav is still arriving */
   .dock-item { padding: 0 3px 8px; }
   .dock .sep { margin: 5px 2px 12px; }
   /* the Dock slides away once the page is scrolled and comes back at the top (Desktop.astro sets .dock-away) */
