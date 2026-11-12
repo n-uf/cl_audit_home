@@ -54,6 +54,17 @@ test("every link to the repo, the download or another host in the templates goes
   assert.deepEqual(found, [], "use <ExtLink> for these");
 });
 
+// A raw <a href={expression}> in a template may only have an expression known to be a path of this site. Any other
+// one could be external (a value from site.ts, front matter, a data file), so it must be an <ExtLink>, or be added
+// here once it is known to be internal. (The built HTML is checked too: check_build.py --external-new-tab.)
+const internalHref = /^(sec\.path|r\.path|href|pathOf\(.*\)|`#\$\{h\.slug\}`)$/;
+test("a raw <a href={...}> in a template is a known internal path", () => {
+  const found = astroFiles.flatMap((f) => [...readFileSync(f, "utf8").matchAll(/<a\b[^>]*?\bhref=\{(.+?)\}(?=[\s>/])/g)]
+    .filter((m) => !internalHref.test(m[1].trim()))
+    .map((m) => `${f}: href={${m[1]}}`));
+  assert.deepEqual(found, [], "use <ExtLink>, or add the expression to internalHref if it is always a path of this site");
+});
+
 // The screen-reader note of an ExtLink is a .sr-only span inside the link: no display:none rule may reach it.
 // (The menu-bar download link once hid every span inside it, for its arrow.)
 const link = /(^|[\s>+~])a\b|\.(pill|key|mb-dl|mb-gh|dl|trust-more)\b/;
