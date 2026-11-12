@@ -5,7 +5,7 @@ h1: "A Claude usage menu bar icon for each profile"
 mainKeyword: "claude usage menu bar"
 kind: use-case
 published: 2026-11-05
-updated: 2026-11-11
+updated: 2026-11-12
 author: n-uf
 order: 5
 takeaways:
@@ -70,6 +70,11 @@ sources:
   - title: "ClaudeBar README (tddworks/ClaudeBar)"
     url: "https://github.com/tddworks/ClaudeBar"
     checked: 2026-11-05
+  - title: "cl_audit CHANGELOG, 26.11.22"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
+    quote: "they can lose data, so use them for testing only"
 related:
   - /
   - /use-cases/multiple-claude-accounts/
@@ -147,6 +152,8 @@ A click opens that profile's own menu:
 In the menu bar, in the profile's settings, puts it back.
 
 A profile with more than one account shows the account in use under the profile's name, with a lit green lamp ("ultra-1 · in use"), and has **Switch account ›**: a submenu with the account in use ticked ("in use · week 94%"), then your other accounts, each with when it was last in use ("3 days ago"). A standby account is signed out, so the menu shows no numbers for it. While a limit is full, the first account not known to be full also sits on the top level, first among the actions: "Switch to ultra-3…". All of these only open cl_audit's Switch page; nothing switches until you start the switch there. {{live:/use-cases/switch-claude-accounts/}}The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers what a switch moves and how to undo one.{{/live}}
+
+{{experimental: switch}}
 
 ## One icon per profile
 

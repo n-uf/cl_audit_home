@@ -5,7 +5,7 @@ h1: "Best Claude usage trackers for Mac (2026)"
 mainKeyword: "best claude usage tracker"
 kind: best-tools
 published: 2026-11-02
-updated: 2026-11-08
+updated: 2026-11-12
 author: n-uf
 takeaways:
   - "Which Claude usage tracker suits you depends on where you want to see your usage: the menu bar, the Dock, the terminal or the browser."
@@ -65,6 +65,11 @@ sources:
   - title: "Claude Code docs: Manage costs effectively (the /usage command)"
     url: "https://code.claude.com/docs/en/costs"
     checked: 2026-11-02
+  - title: "cl_audit CHANGELOG, 26.11.22"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
+    quote: "they can lose data, so use them for testing only"
 related:
   - /
   - /use-cases/multiple-claude-accounts/
@@ -131,7 +136,9 @@ It reads your usage with your browser's session cookie: during setup you copy th
 - a Claude Code status line in the terminal, and a `claude-<profile>` command per profile;
 - automation, such as starting a new session when usage resets and switching to the next profile when a session limit is reached.
 
-cl_audit has no such automation. It doesn't start sessions, and it never switches on its own. A profile can switch to another of your own accounts, but only when you ask it to, and it asks whether that profile's Code sessions should move too.
+cl_audit has no such automation. It doesn't start sessions, and it never switches on its own. A profile can switch to another of your own accounts, but only when you ask it to, and it asks whether that profile's Code sessions should move too. Switching is experimental and can lose data.
+
+{{experimental: switch}}
 
 Claude Usage Tracker signs in with your Claude Code credentials if you use Claude Code, through a built-in browser sign-in, or with a session key you paste. It is MIT licensed, needs macOS 14 or later, and installs with Homebrew, Nix, a zip or Xcode. The README states no price.
 

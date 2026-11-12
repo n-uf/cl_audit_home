@@ -5,7 +5,7 @@ h1: "Claude Code multiple accounts with CLAUDE_CONFIG_DIR"
 mainKeyword: "claude code multiple accounts"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-09
+updated: 2026-11-12
 author: n-uf
 takeaways:
   - "Anthropic's docs give one way to stay signed in to several Claude Code accounts: a separate configuration directory per account, chosen with CLAUDE_CONFIG_DIR."
@@ -23,7 +23,7 @@ faq:
   - q: "Where does Claude Code store its login on a Mac?"
     a: "In the macOS Keychain. Anthropic's docs say that with CLAUDE_CONFIG_DIR set, Claude Code keys the Keychain entry to that directory. cl_audit's README gives the names: Claude Code-credentials for ~/.claude, and Claude Code-credentials plus eight characters for another folder."
   - q: "Does this let me get more usage?"
-    a: "No. Each account has its own plan and its own limits, and cl_audit only shows them. It doesn't pool limits. A profile can switch to another of your own accounts, and its Code sessions can move with it if you choose. Whether you may use more than one Claude account is set by Anthropic's terms."
+    a: "No. Each account has its own plan and its own limits, and cl_audit only shows them. It doesn't pool limits. A profile can switch to another of your own accounts, and its Code sessions can move with it if you choose, but switching is experimental and can lose data. Whether you may use more than one Claude account is set by Anthropic's terms."
 sources:
   - title: "Claude Code docs: Authentication (Log in with multiple accounts, Credential management)"
     url: "https://code.claude.com/docs/en/authentication"
@@ -59,6 +59,11 @@ sources:
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
     checked: 2026-11-09
     quote: "The default profile is the one on `~/.claude` with the usual Claude app"
+  - title: "cl_audit CHANGELOG, 26.11.22"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
+    quote: "they can lose data, so use them for testing only"
 related:
   - /use-cases/multiple-claude-accounts/
   - /use-cases/claude-code-usage-history/
@@ -167,6 +172,8 @@ After setup, the pieces you'd otherwise script yourself are in the app (see [you
 The page on multiple Claude accounts on one Mac covers the Claude app side, where each extra account gets its own Claude window. cl_audit is free and source-available; if you want to try it you can [download cl_audit](/install/). It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile.
 
 cl_audit doesn't pool limits: each account's limits are its own, and it shows what each seat has used. It can switch a profile between your own accounts when you ask, and asks whether the Code sessions go with it. Whether someone may use more than one Claude account is set by Anthropic's terms.
+
+{{experimental: switch}}
 
 ## Gotchas with Claude Code multiple accounts
 
