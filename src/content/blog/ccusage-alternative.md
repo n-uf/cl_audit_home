@@ -134,10 +134,10 @@ We'd pick ccusage over cl_audit for any of these, and for some there's no cl_aud
 
 - **You care about the limit, not the token count.** The 5-hour and weekly limits are what stop your work. Anthropic's help page (read on 2 November 2026) says usage across claude.ai, Claude Code and Claude Desktop counts towards the same limit. A report built from Claude Code's local logs leaves out claude.ai chats and other devices, and Claude Code's docs say the same of their own local figures. cl_audit's history has that boundary too (its README says usage from claude.ai chats, other computers and cloud sessions isn't there), but its limit bars come from Anthropic.
 - **You have more than one Claude account.** Each profile has its own sign-in and, if you want them, a Dock icon and a Claude window. The first profile is the default one, on `~/.claude` with the usual Claude app; the rest get their own Claude Code folder and window. The page on [using several Claude accounts on a Mac](/use-cases/multiple-claude-accounts/) shows how that works. cl_audit doesn't pool limits: each account's limits are its own. A profile can also switch to another of your accounts on its Switch page, and its Code sessions are meant to move with it, but switching is experimental and can lose data. Whether you may use more than one account is set by Anthropic's terms.
-
-{{experimental: switch}}
 - **You want it in view all day.** cl_audit is [a Claude usage tracker in the Dock](/). Each Dock icon shows both limits without a terminal open, and a full limit turns into a countdown.
 - **You want to know when you're back.** With Notify when back on (the default), cl_audit sends one notification when a full limit resets.
+
+{{experimental: switch}}
 
 ## Is there a ccusage Mac app?
 
