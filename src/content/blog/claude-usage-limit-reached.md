@@ -150,7 +150,7 @@ On Pro, Max and Ultra you turn usage credits on yourself. Open the Usage credits
 
 Some things don't help. A new chat doesn't give you a fresh allowance, because Anthropic describes usage limits as covering all your conversations. Moving to another app doesn't either: Claude, Claude Code, Claude Desktop and IDE use all draw on the same limits. And switching models does nothing for a session or weekly limit.
 
-cl_audit doesn't change any of this. It shows each profile's own limits, and doesn't pool them. A profile can switch to another of your own accounts, and the switch is meant to move its Code sessions to the new account, after a backup, but switching is experimental and can lose data. Whether you may use more than one Claude account is set by Anthropic's terms.
+cl_audit doesn't change any of this. It shows each profile's own limits, and doesn't pool them. A profile can switch to another of your own accounts, and the switch is meant to move its Code sessions to the new account, after a backup. Whether you may use more than one Claude account is set by Anthropic's terms.
 
 {{experimental: switch}}
 
