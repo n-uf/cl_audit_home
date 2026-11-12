@@ -18,6 +18,7 @@ import { limitsHTML, designs } from "../data/panelView";
 import { lane as mbLane } from "../data/menubar";
 import { version, build, changelog } from "../data/site";
 import AccIcon from "./AccIcon.astro";
+import ExtLink from "./ExtLink.astro";
 import SessionsPages from "./SessionsPages.astro";
 import SwitchPage from "./SwitchPage.astro";
 
@@ -233,7 +234,7 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
       </div>
       <div class="card" data-gcard="about"><h4>About</h4>
         <div class="srow"><span>Version <i class="idot" title="Calendar version: the year and month of the release, then a counter within that month (26.10.1 = the second release in October 2026). The build counts every change.">i</i></span><span class="disp">{version} <em>· build {build}</em></span></div>
-        <div class="srow"><span>Changes</span><a class="key k" href={changelog}>What's new</a></div>
+        <div class="srow"><span>Changes</span><ExtLink class="key k" href={changelog}>What's new</ExtLink></div>
         <div class="srow"><span>Clean-up <i class="idot" title="The agent tidies up on its own: at login, after every change and every 6 hours. It removes only what is provably cl_audit's: Dock icon apps no profile wants, second copies, what macOS keeps for them, saved usage of removed profiles, Dock pins of apps that are gone and old Terminal scripts. Never a Claude Code folder, a Claude window's data or a sign-in.">i</i></span><span class="v-soft one" data-cleanup>Cleaned up 2 leftovers · 09:00</span></div>
         <div class="srow"><span>Uninstall <i class="idot" title="Removes every Dock icon app and its pin, the agent, saved usage, settings and caches, then moves cl_audit to the Trash. You choose per profile whether its Claude Code folder (signed out first) and its own Claude window's data go too; ~/.claude and the standard window are never deleted.">i</i></span><button type="button" class="key k danger-key" data-uninstall>Uninstall cl_audit…</button></div>
       </div>

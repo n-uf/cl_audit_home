@@ -8,6 +8,7 @@
 // topic. With no anchor there, take the end of the section before the next ## heading. Never in the opening answer
 // (first 300 words), never in the last 250 words (the Download card follows), at least 400 words apart, at most 3.
 import { download } from "./site";
+import { newTabNote } from "./links.mjs";
 
 const WPM = 230;
 const MEAN = 2.5 * WPM;
@@ -112,7 +113,7 @@ function button(kind: Kind, nth: number, [label, href]: [string, string]): strin
   const a = ACTIONS[kind];
   return `<aside class="act" data-act="${kind}" aria-label="cl_audit">` +
     `<p class="act-why">${a.why[nth % a.why.length]}</p>` +
-    `<div class="plate act-keys"><a class="pill dl" href="${download}"><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>` +
+    `<div class="plate act-keys"><a class="pill dl" href="${download}" target="_blank" rel="noopener"><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span><span class="sr-only">${newTabNote}</span></a>` +
     `<a class="key" href="${href}">${label}</a></div></aside>`;
 }
 

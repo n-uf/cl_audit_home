@@ -6,6 +6,7 @@ import Base from "./Base.astro";
 import Dock from "../components/Dock.astro";
 import DesktopApps from "../components/DesktopApps.astro";
 import TerminalApps from "../components/TerminalApps.astro";
+import ExtLink from "../components/ExtLink.astro";
 import { repo, download, version } from "../data/site";
 import { hasBlog } from "../data/content";
 
@@ -30,9 +31,9 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       <a class="mb-brand" href="/"><img src="/favicon.png" alt="" width="16" height="16" />cl_audit</a>
       <nav class="mb-links" aria-label="Site">{nav.map(([, label, href]) => <a href={href}>{label}</a>)}</nav>
       <span class="spacer"></span>
-      <a class:list={["mb-dl", { dim: page === "overview" || page === "install" }]} href={download} title={`cl_audit ${version} for Mac`}><span aria-hidden="true">↓ </span>Download for Mac</a>
+      <ExtLink class:list={["mb-dl", { dim: page === "overview" || page === "install" }]} href={download} title={`cl_audit ${version} for Mac`}><span aria-hidden="true">↓ </span>Download for Mac</ExtLink>
       <span class="mb-na">Mac only</span>
-      <a class="mb-gh" href={repo}>GitHub</a>
+      <ExtLink class="mb-gh" href={repo}>GitHub</ExtLink>
       <!-- the profiles' menu bar icons (cl_audit 26.11.0): one for each profile with "In the menu bar" on, each with its
            own menu; drawn by data/menubar.ts from the demo's numbers and the profile's Menu bar settings -->
       <span class="mb-icons" data-mb-icons></span>

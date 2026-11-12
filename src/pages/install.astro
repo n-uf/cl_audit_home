@@ -1,5 +1,6 @@
 ---
 import Desktop from "../layouts/Desktop.astro";
+import ExtLink from "../components/ExtLink.astro";
 import { repo, version, releasedText, changelog, download, downloadZip, requires, checkedWith, driftNote, stage, sha256 } from "../data/site";
 import { orgNode, webPage, breadcrumbs } from "../data/schema";
 
@@ -23,11 +24,11 @@ const jsonLd = [
           <h4>Download</h4>
           <!-- as on the Overview's Install card: the key, a divider, what it is -->
           <div class="key-note dl-row">
-            <a class="pill dl" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
+            <ExtLink class="pill dl" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></ExtLink>
             <span class="divider" aria-hidden="true"></span>
-            <span class="note">cl_audit {version}{stage && ` ${stage}`} · {releasedText()} · {requires} · <a href={changelog}>What's new</a> · <a href={downloadZip} style="white-space:nowrap">or the .zip</a></span>
+            <span class="note">cl_audit {version}{stage && ` ${stage}`} · {releasedText()} · {requires} · <ExtLink href={changelog}>What's new</ExtLink> · <ExtLink href={downloadZip} style="white-space:nowrap">or the .zip</ExtLink></span>
           </div>
-          <p class="t login-note" style="margin:0 0 12px"><b>Claude login:</b> sign-in happens in Claude's own screens, so cl_audit never sees the password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <a href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>How it works</a></p>
+          <p class="t login-note" style="margin:0 0 12px"><b>Claude login:</b> sign-in happens in Claude's own screens, so cl_audit never sees the password. It reads Claude Code's saved login read-only and sends it only to Anthropic. <ExtLink href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>How it works</ExtLink></p>
           <div class="steps">
             <div><div><b>Open the disk image and drag cl_audit onto Applications</b><span>Double-click <code>cl_audit.dmg</code> in Downloads; in the window that opens, drag cl_audit onto the Applications folder. With the zip, double-click it and drag cl_audit onto Applications.</span></div></div>
             <div><div><b>Open it; macOS asks once</b><span>cl_audit isn't signed with an Apple Developer ID yet, so the first time macOS says it can't verify the app. Click Done.</span></div></div>
@@ -77,7 +78,7 @@ git checkout v{version}   # optional: exactly this release
             “cl_audit &lt;profile&gt;” app per profile, next to it, where Spotlight finds them. <code>./build.sh --no-install</code> only
             builds into the folder. Built on your own Mac, it opens without the Privacy &amp; Security step.
           </p>
-          <div class="key-note"><a class="key" href={repo}>GitHub</a><span class="divider" aria-hidden="true"></span><span class="note">needs the Xcode Command Line Tools</span></div>
+          <div class="key-note"><ExtLink class="key" href={repo}>GitHub</ExtLink><span class="divider" aria-hidden="true"></span><span class="note">needs the Xcode Command Line Tools</span></div>
         </div>
         <div class="card i-3">
           <h4>Requires</h4>
@@ -94,7 +95,7 @@ git checkout v{version}   # optional: exactly this release
         <div class="card i-5">
           <h4>Update, move, remove, uninstall</h4>
           <div class="steps">
-            <div><div><b>Update</b><span>Download the new disk image (or zip) and replace cl_audit in Applications (<a href={changelog}>what's new</a>), or run <code>git pull && ./build.sh</code> in the cl_audit folder. The Dock icon apps follow, and profiles and settings are kept.</span></div></div>
+            <div><div><b>Update</b><span>Download the new disk image (or zip) and replace cl_audit in Applications (<ExtLink href={changelog}>what's new</ExtLink>), or run <code>git pull && ./build.sh</code> in the cl_audit folder. The Dock icon apps follow, and profiles and settings are kept.</span></div></div>
             <div><div><b>Move to another Mac</b><span>Settings ▸ any profile ▸ Sessions ▸ Export… ▸ <b>Move to another Mac</b> puts most of your setup in one password-protected disk image: every profile's sessions and Claude Code setup, and cl_audit's own profiles and settings. Your project folders don't travel: the move brings a checklist of your code (push and commit first), and on the new Mac Import shows where to clone each project from, and you can point each session at its folder (Pick its folder on this Mac…). Each session's task list, plan, prompt history and folder trust travel too, and Rewind's copies of edited files if you include them. On the new Mac, install cl_audit, go through its first run, then Import… that file. A move with the code checklist needs 26.11.12 or later on both Macs, and one with these side files 26.11.13 or later: 26.11.12 and older can't open that. Sign-ins don't travel, so you sign in to each account again. The <a href="/settings/#move-to-another-mac">settings demo</a> shows the page.</span></div></div>
             <div><div><b>Remove a profile</b><span>Settings ▸ the profile ▸ Remove profile… removes its Dock icon app and what macOS keeps for it, plus its saved usage and the alert marks cl_audit keeps for it. “Delete its folders too” also signs its Claude Code folder out and deletes it and its Claude window's own folder; the default <code>~/.claude</code> and the usual Claude app's data are never deleted.</span></div></div>
             <div><div><b>Uninstall</b><span>Settings ▸ General ▸ <b>Uninstall cl_audit…</b> (or the cl_audit menu) removes every Dock icon app and its pin, the background agent, saved usage, settings and caches, then moves cl_audit to the Trash. For each profile you choose whether its folders go too. From Terminal, <code>/Applications/cl_audit.app/Contents/MacOS/UsageDock --uninstall</code> lists what would go, and adding <code>--yes</code> does it. Any leftovers in between are tidied up by the background agent, which removes only what is provably cl_audit's.</span></div></div>

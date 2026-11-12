@@ -3,6 +3,7 @@ import Desktop from "../layouts/Desktop.astro";
 import Row from "../components/Row.astro";
 import AccountCard from "../components/AccountCard.astro";
 import AccIcon from "../components/AccIcon.astro";
+import ExtLink from "../components/ExtLink.astro";
 import { accounts } from "../data/demo";
 import { repo, site, version, released, releasedText, changelog, download, requires, checkedWith, stage } from "../data/site";
 import { cardLimitsHTML } from "../data/panelView";
@@ -158,7 +159,7 @@ const jsonLd = [orgNode, {
         <script type="application/json" id="rel-data" set:html={JSON.stringify({ pages: relPages.map((p) => p.html), reason: relReason })} />
         <div class="plate hero-keys">
           <span class="lbl hk-ver" title={`cl_audit ${version}`}>{version}</span><span class="divider" aria-hidden="true"></span>
-          <a class="pill dl big" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
+          <ExtLink class="pill dl big" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></ExtLink>
           <a class="key" href="/install/">Install steps</a>
           <a class="key" href="/dashboard/" title="The dashboard with sample profiles">Demo dashboard</a>
         </div>
@@ -180,7 +181,7 @@ const jsonLd = [orgNode, {
         <span class="disp trust-disp" aria-hidden="true"><em>Login</em>Security</span>
         <h2 id="trust-title" class="trust-title">How does cl_audit handle your Claude login?</h2>
         <span class="trust-note">Source-available · runs locally · no account or server</span>
-        <a class="trust-more" href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>Details ›</a>
+        <ExtLink class="trust-more" href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>Details ›</ExtLink>
       </div>
       <!-- the tabs as on the production site: a dark track, plain-text tabs, one raised highlight that slides -->
       <div class="seg" role="tablist" aria-label="How cl_audit handles the Claude login">
@@ -346,12 +347,12 @@ const jsonLd = [orgNode, {
           <h4 class="sg-h1">Install</h4>
           <h4 class="sg-h2">Or build from source</h4>
           <div class="sg-k1 key-note">
-            <a class="pill dl dim" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></a>
+            <ExtLink class="pill dl dim" href={download}><span class="dl-l">Download for Mac</span><span class="dl-na">Mac only</span></ExtLink>
             <span class="divider" aria-hidden="true"></span>
             <span class="note">cl_audit {version} · {requires} · needs Claude Code (the Claude app's copy works as a fallback)</span>
           </div>
           <div class="sg-k2 key-note">
-            <a class="key" href={repo}>GitHub</a>
+            <ExtLink class="key" href={repo}>GitHub</ExtLink>
             <span class="divider" aria-hidden="true"></span>
             <span class="note">needs the Xcode Command Line Tools</span>
           </div>
@@ -366,7 +367,7 @@ cd cl_audit && ./build.sh</code></pre>
       </div>
     </div>
 
-    <p class="legal">cl_audit {version} · {releasedText()} · <a href={changelog}>What's new</a> · by <a href="https://n-uf.com">n-uf</a> · <a href={`${repo}/blob/main/LICENSE`}>PolyForm Perimeter 1.0.1</a> · Not affiliated with Anthropic. Claude is a trademark of Anthropic.</p>
+    <p class="legal">cl_audit {version} · {releasedText()} · <ExtLink href={changelog}>What's new</ExtLink> · by <ExtLink href="https://n-uf.com">n-uf</ExtLink> · <ExtLink href={`${repo}/blob/main/LICENSE`}>PolyForm Perimeter 1.0.1</ExtLink> · Not affiliated with Anthropic. Claude is a trademark of Anthropic.</p>
   </div>
 </Desktop>
 
