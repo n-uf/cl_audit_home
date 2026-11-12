@@ -195,7 +195,7 @@ What it adds is the view across accounts. Each profile's 5-hour and weekly limit
 
 ![cl_audit usage history by project, model and surface](/img/guides/usage-history.webp "Usage history: tokens per day, and where they go by project, model and surface. Sample data.")
 
-For the Claude app side, see [running several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit doesn't pool limits. Switching a profile to another of your accounts is something you start yourself, and the switch is meant to move the profile's Code sessions with it, after a backup, but switching is experimental and can lose data.
+For the Claude app side, see [running several Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit doesn't pool limits. Switching a profile to another of your accounts is something you start yourself, and the switch is meant to move the profile's Code sessions with it, after a backup.
 
 {{experimental: switch}}
 

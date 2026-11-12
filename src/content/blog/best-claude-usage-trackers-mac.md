@@ -141,7 +141,7 @@ It reads your usage with your browser's session cookie: during setup you copy th
 - a Claude Code status line in the terminal, and a `claude-<profile>` command per profile;
 - automation, such as starting a new session when usage resets and switching to the next profile when a session limit is reached.
 
-cl_audit has no such automation. It doesn't start sessions, and it never switches on its own. A profile can switch to another of your own accounts, but only when you ask it to, and the switch is meant to move that profile's Code sessions and scheduled tasks to the new account, after a backup. Switching is experimental and can lose data.
+cl_audit has no such automation. It doesn't start sessions, and it never switches on its own. A profile can switch to another of your own accounts, but only when you ask it to, and the switch is meant to move that profile's Code sessions and scheduled tasks to the new account, after a backup.
 
 {{experimental: switch}}
 
