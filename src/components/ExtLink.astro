@@ -1,0 +1,10 @@
+---
+// A link to another host: it opens in a new tab (static target and rel, no script) and says so to assistive tech with
+// a visually hidden note. Its visible text is the slot, unchanged. Same-site links stay plain <a>. Other attributes
+// (class, title, style, data-*) go on the <a>; a rel it is given keeps its tokens, with noopener added.
+// (Not for use inside a heading: the note would end up in the heading's text.)
+import { newTabNote, relWith } from "../data/links.mjs";
+interface Props extends astroHTML.JSX.AnchorHTMLAttributes { href: string }
+const { href, rel, target: _target, ...rest } = Astro.props;
+---
+<a href={href} target="_blank" rel={relWith(rel).join(" ")} {...rest}><slot /><span class="sr-only">{newTabNote}</span></a>
