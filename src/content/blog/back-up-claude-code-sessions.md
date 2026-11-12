@@ -311,7 +311,7 @@ Backups are APFS clones, so they take seconds and share space with the originals
 - changed since, which stays as it is now, with the backup's copy only listed;
 - in use, meaning a transcript a running Claude Code session holds, left alone;
 - would be deleted, counting only the transcripts Claude Code's clean-up would delete again (by the exceptions above), with a **Keep for 90 days** button when that would save some;
-- Claude Code's setup, which stays out until you pick **Add them**; then only what's missing is added, and nothing is replaced.
+- Claude Code's setup, which stays out until you pick **Add them**; then it is built to add only what's missing and replace nothing.
 
 Then **Close and restore N** closes only that profile's Claude window and writes what is missing, keeping a receipt as it goes. **Stop, keep what's back** halts it.
 
