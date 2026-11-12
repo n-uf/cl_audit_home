@@ -130,6 +130,11 @@ sources:
     checked: 2026-11-10
     supports: "26.11.13: a move brings each session's side files (task list, plan, typed prompts, the project folder's trust and allowed tools) in the encrypted disk image only; Rewind's copies of edited files are their own Export row, left out unless included; a file with side files is format 6, which 26.11.12 doesn't open (a move without them stays at 5 or 4)."
     quote: "A move brings each session's side files."
+  - title: "cl_audit CHANGELOG, 26.11.22"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
+    quote: "they can lose data, so use them for testing only"
 related:
   - /settings/
   - /faq/
@@ -222,6 +227,8 @@ The target checklist in the plugin's notes says each of its items failed at leas
 A handoff between two sessions on one Mac needs only the by-hand steps above. If you want one Mac's setup and files on a new one, with no sessions in flight, that is a smaller job. {{live:/blog/move-claude-code-to-new-computer/}}The guide to [moving Claude Code to a new computer](/blog/move-claude-code-to-new-computer/) covers which files to copy and what to re-add.{{/live}}
 
 cl_audit, n-uf's free Mac app for Claude usage, has **Move to another Mac**, which carries every profile's sessions and Claude Code setup, plus cl_audit's own profiles and settings, in one password-protected disk image. [The demo shows it](/settings/#move-to-another-mac). Your code doesn't travel with it, and sign-ins never do. Since 26.11.12 a move brings a checklist of each project's repository, branch and anything not yet pushed or committed, and its import can re-point a moved session to the folder you pick on the new Mac. Since 26.11.13 each session's task list, plan, typed prompts and its project folder's trust and allowed tools come along, and Rewind's copies of edited files if you include them. A move with those side files needs 26.11.13 on both Macs.
+
+{{experimental: move}}
 
 {{live:/blog/export-claude-code-sessions/}}Copying transcripts so old sessions resume is the other road above, and the [export article](/blog/export-claude-code-sessions/) is the place for it.{{/live}}
 

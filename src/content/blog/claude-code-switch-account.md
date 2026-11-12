@@ -69,6 +69,11 @@ sources:
     checked: 2026-11-11
     supports: "In use and standby; the routes to the Switch page; the sign-in command (claude auth login --claudeai --email, CLAUDE_CONFIG_DIR unset for ~/.claude and set for any other folder); the Claude app's signed-in account comes first, then Claude Code's with a muted line; the numbers come through Claude Code's sign-in and say whose they are; a sign-in changed in Terminal or the Claude app shows within a few seconds; worked out from the Claude app's own files, not by running it; for a week after a switch, the line under Accounts; the first profile is the default profile, on ~/.claude, and first run offers Use or Sign in…; to watch an old account's limits, give it a profile of its own."
     quote: "The Claude app's signed-in account comes first."
+  - title: "cl_audit CHANGELOG, 26.11.22"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
+    quote: "they can lose data, so use them for testing only"
 related:
   - /blog/claude-code-multiple-accounts/
   - /blog/claude-code-vscode-multiple-accounts/
@@ -142,6 +147,8 @@ Signing out and in is fine once a week. If you move between a client account and
 
 A cl_audit profile is one Claude setup: a Claude Code folder with its own sign-in, and optionally a Claude window and a Dock icon. The folder is signed in to one account at a time, the one in use, and the profile can remember your other accounts on standby, signed out. An account belongs to one profile, checked by account and organisation. So switching is either picking another profile, or switching one profile to another of its accounts.
 
+{{experimental: switch}}
+
 ![The cl_audit launcher listing each profile with its limits](/img/guides/launcher-profiles.webp "The launcher: ⌘↩ opens Terminal with Claude Code set to that profile's folder. Sample data.")
 
 On first run, **Set up cl_audit** takes a `~/.claude` that's already signed in (**Use**) or signs Claude Code in to it (**Sign in…**): that's the default profile. When you add a profile with **New profile**, Terminal runs `claude auth login` for its own folder. That's Claude's own sign-in, so cl_audit never sees your password. After that, ⌘↩ on a profile in the launcher opens Terminal with its folder, and its 5-hour and weekly limits show in the Dock, read with that profile's Claude Code sign-in.
@@ -152,7 +159,7 @@ The switch itself starts on the **Switch page**. You get there from a standby bo
 
 Say you switch to `ultra-2@example.com`. **Switch to ultra-2** first closes the profile's Claude window, makes a backup and moves the window's Code-tab sessions and scheduled tasks to ultra-2, with a receipt. A session that a running Claude Code has open stays with the old account until a later switch. Then Claude Code's own sign-in opens in Terminal: `claude auth login --claudeai --email` with the address filled in, and `CLAUDE_CONFIG_DIR` set to the profile's folder (or unset for `~/.claude`). Before it runs, cl_audit unsets `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN` and the Bedrock, Vertex and Foundry switches, so a stray key from the checklist above can't outrank the login. You finish in the browser. cl_audit watches the folder for up to 10 minutes and says whether it reached ultra-2, signed in as another account (the browser's), or timed out.
 
-**Undo the move** puts the sessions back until Claude Code is on the new account. After that, the way back is a switch the other way. The Claude app's own sign-in stays yours: the page tells you to sign the window in to the new account when you open it, and cl_audit never signs anything in or out.
+**Undo the move** puts back what was moved until Claude Code is on the new account, though it may not bring everything back. After that, the way back is a switch the other way. The Claude app's own sign-in stays yours: the page tells you to sign the window in to the new account when you open it, and cl_audit never signs anything in or out.
 
 If you sign in from Terminal yourself (`claude auth login` in the profile's folder), or in the Claude app, cl_audit shows the change within seconds, without a restart: the profile works on the account the folder signed in to, and the one before stands by.
 

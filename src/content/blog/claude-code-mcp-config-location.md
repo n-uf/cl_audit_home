@@ -131,6 +131,11 @@ sources:
     checked: 2026-11-10
     supports: "26.11.13: a move brings each session's side files, including its project folder's trust and allowed tools, in the encrypted disk image only; a folder's MCP servers travel in the image but start left out on Import, like the window's MCP settings; cl_audit never keeps a copy of .claude.json."
     quote: "A folder's MCP servers travel in the image but start left out on Import."
+  - title: "cl_audit CHANGELOG, 26.11.22"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
+    checked: 2026-11-12
+    supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
+    quote: "they can lose data, so use them for testing only"
 related:
   - /blog/move-claude-code-to-new-computer/
   - /blog/back-up-claude-code-sessions/
@@ -279,6 +284,8 @@ Most of this is one-time copying, and nothing here deletes anything. Keep the ol
 The rest of a new-Mac setup, such as `CLAUDE.md`, settings and skills, is in [how to move Claude Code to a new computer](/blog/move-claude-code-to-new-computer/). Your past sessions are a separate job, covered in [how to export Claude Code sessions](/blog/export-claude-code-sessions/).
 
 ## If you use cl_audit
+
+{{experimental: export, import, move}}
 
 cl_audit's **Move to another Mac** and its **Export…** carry the Claude window's MCP settings only in the password-protected disk image, and its backups have left them out since 26.11.9 (see [cl_audit's settings](/settings/)). On the new Mac, **Import…** adds them only if you pick **Add them** and the profile has no `claude_desktop_config.json` yet. Since 26.11.13 a move also carries the local-scope servers that `~/.claude.json` holds for your sessions' own project folders, in the image only, and they start left out on import. The file itself is still never in an export, so user-scope servers are yours to add again as above.
 
