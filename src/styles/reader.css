@@ -150,3 +150,23 @@
   .crumbs li:last-child { flex: 0 0 100%; }   /* the page's own name gets its own line, without a leading separator */
   .crumbs li:last-child::before { display: none; }
 }
+
+/* ── Upright phones: running text 16 px, the lines around it 14 px, every link a 44 px target ─────────────────── */
+@media (max-width: 600px) {
+  .prose { font-size: 16px; }
+  .prose > p:first-child { font-size: 17px; }
+  .prose table, .prose td, .prose th { font-size: 14px; }
+  .takeaways li, .faq-card details p, .faq-card summary { font-size: 16px; }
+  .faq-card summary { min-height: 44px; }
+  .prose .act .act-why { font-size: 16px; }
+  .prose figure.shot figcaption { font-size: 14px; }
+  .byline a { display: inline-flex; align-items: center; min-height: 44px; }
+  .crumbs ol, .byline, .byline a, .sources li, .sources .chk, .related a span, .toc li, .ix-list p, .ix-list .when { font-size: 14px; }
+  .related a b { font-size: 16px; }
+  .crumbs ol { gap: 0; }
+  .crumbs li { display: inline-flex; align-items: center; }
+  .crumbs li:not(:last-child) a { display: inline-flex; align-items: center; min-height: 44px; }
+  .sources li, .toc li { padding: 0; }
+  .sources li a, .toc li a { display: inline-flex; align-items: center; min-height: 44px; }
+  .related a { padding: 12px 0; min-height: 44px; }
+}

@@ -1853,3 +1853,50 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   /* the Dock slides away once the page is scrolled and comes back at the top (Desktop.astro sets .dock-away) */
   .desk.dock-away .dock-bar { transform: translateY(calc(100% + 12px)); opacity: 0; pointer-events: none; }
 }
+
+/* ── Upright phones: text and touch targets ───────────────────────────────────────────────────────────────────────
+   Running text is 16 px; the lines around it (notes, table cells, captions, code) 14 px; the printed labels on the
+   panel's keys and displays 12 px at the least. Every key, link and switch you press is at least 44 px high. */
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .content :is(p, li, summary) { font-size: 16px; }
+  .content p.t { font-size: 16px; }
+  .settings :is(p, li), .dash :is(p, li) { font-size: 14px; }   /* the demo panels' own notes */
+  .content :is(td, th, figcaption, small, code, kbd, .sub, .note, .legal, .email, .trust-note, .fl-back, .sg-k1, .sg-k2, .tf-text code) { font-size: 14px; }
+  .content :is(.srow > span, .pn-name, .pn-row .pn-pct, .fl-row .pn-pct, .mh b, .gk-row > span, .gk-title, .gk-btn, .pchip-text, .stab, .start-box, .hist-mini b, .abox-t .email, .fl-box .fl-back, .sha-list, b.pn-pct, .sbx .abox-t b.email) { font-size: 14px; }
+  .faq-list details p { font-size: 16px; }
+  .menubar { font-size: 14px; }
+  /* the printed labels, the keys and the display windows */
+  .lbl, .cap, .card h4, .byline .kind, .sched { font-size: 12px; }
+  .plate.pages .key, .key, .pill, .pill .dl-l { font-size: 12px; letter-spacing: .06em; }
+  .plate.pages .key { font-size: 11.5px; letter-spacing: .03em; }
+  .fk { font-size: 11px; }
+  .disp, .disp *, .fascia .page-disp { font-size: 12px; }
+  .content :is(.pill.small, .plate > a.key, .kbd, .sb-n, li.stage > b), .abox-note, .pn-sub, .pchip-title, .pchip-sub b, .fl-title, .fl-name span, .rel-line span, .mini .p, .mini .tag, .mini-palette .foot, .badge, .plan { font-size: 12px; }
+  .content .sr-only { font-size: 14px; }   /* not drawn, but counted as text by the checkers */
+
+  /* the keys of the head and the menu bar, the links under each card */
+  .mb-brand { min-height: 44px; padding: 0 6px 0 0; }
+  .menubar .mb-dl { display: none; }   /* no room beside the brand and three 44 px face keys (the pages carry their own Download keys) */
+  .menubar { gap: 8px; padding: 0 8px 0 12px; }
+  .mb-na { white-space: nowrap; font-size: 12px; }
+  .menubar .face-pick { gap: 4px; }
+  .menubar .fk { height: 44px; min-width: 44px; padding: 0 6px; letter-spacing: .08em; }
+  .menubar .fk[aria-pressed="true"] { padding-top: 3px; }
+  .plate.pages .key { height: 44px; }
+  .content :is(a.key, a.pill, button.pill, .more) { min-height: 44px; }
+  .more { display: inline-flex; align-items: center; margin-top: 0; font-size: 16px; }
+  .more + .more { margin-left: 16px; }
+  .stab { height: 44px; font-size: 14px; }
+  .faq-list details summary { min-height: 44px; }
+  .guides .list a, .home-faq .list a { display: block; padding: 10px 0; min-height: 44px; }
+  .more-btn { min-width: 44px; }
+  .disp.trustlike { min-height: 44px; }
+  .pill.small { height: 44px; }
+  .wn-x { width: 44px; height: 44px; top: 0; right: 0; }
+  /* a switch keeps its look; the press area grows around it */
+  .mswitch, .cswitch { width: 36px; height: 28px; }
+  .mswitch::before, .cswitch::before { content: ""; position: absolute; inset: -8px -6px; }
+  /* the 16 px of a text field keeps iOS from zooming the page when one is focused */
+  input, select, textarea { font-size: 16px; }
+}
