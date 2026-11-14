@@ -118,7 +118,7 @@ You find them in Settings ▸ Main ▸ Claude Code ▸ **Accounts**. The account
 
 ![Accounts in a profile's Claude Code card](/img/guides/accounts-card.webp "The site's demo, with its own sample profile Work and team accounts: one in use, two on standby, and two folders from before.")
 
-The IN USE box shows the account the profile's Claude app is signed in to, or Claude Code's while the app is signed out or can't be read. Every screen shows that same account. The numbers always come through Claude Code's sign-in, so when Claude Code is on another account than the app, they aren't shown as the profile's. The card says "No usage for a…@example.com yet: Claude Code here is signed in to b…@example.com", offers "Log Claude Code in to a…@example.com…", and keeps Claude Code's own numbers on one muted line labelled "Claude Code in Terminal".
+The IN USE box shows the account the profile's Claude app is signed in to, or Claude Code's while the app is signed out or can't be read. Every screen shows that same account. The numbers always come through Claude Code's sign-in, so when Claude Code is on another account than the app, they aren't shown as the profile's. The card says "No usage for a…@example.com yet: Claude Code here is signed in to b…@example.com", offers "Log Claude Code in to a…@example.com", and keeps Claude Code's own numbers on one muted line labelled "Claude Code in Terminal".
 
 ## Where the accounts come from
 
@@ -179,7 +179,7 @@ Chats and Projects on claude.ai don't move. They belong to each account, and so 
 
 ## The Claude app's sign-in stays yours
 
-cl_audit never signs the Claude app in or out. The Switch page tells you to sign the window in to the new account when you open it. Until you do, the account box shows the app's account and says "Switched to b…@example.com: sign the Claude app in to b…@example.com to finish", with no numbers and no key. For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it.
+cl_audit never signs the Claude app in or out. The Switch page tells you to sign the window in to the new account when you open it. Until you do, the account box shows the app's account and says "Switched to u…@example.com: sign the Claude app in to u…@example.com to finish", with no key and no numbers as the profile's. That line lasts up to a day after the switch; after that the card says "No usage for … yet" and offers the key to log Claude Code in to the app's account. For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it.
 
 You can also switch without the Switch page: run `claude auth login` yourself for the profile's folder. Within a second the profile works on the account that signed in, and the one before stands by. cl_audit moves the window's sessions as part of its own switch, not for a sign-in you run yourself. An account that another profile works on is refused.
 
