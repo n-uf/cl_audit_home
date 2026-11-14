@@ -67,13 +67,23 @@ sources:
   - title: "cl_audit README at tag v26.11.18 (Words used here; Which account is in use; When a limit is full; Profile settings, Accounts; First run; The default profile)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
     checked: 2026-11-11
-    supports: "In use and standby; the routes to the Switch page; the sign-in command (claude auth login --claudeai --email, CLAUDE_CONFIG_DIR unset for ~/.claude and set for any other folder); the Claude app's signed-in account comes first, then Claude Code's with a muted line; the numbers come through Claude Code's sign-in and say whose they are; a sign-in changed in Terminal or the Claude app shows within a few seconds; worked out from the Claude app's own files, not by running it; for a week after a switch, the line under Accounts; the first profile is the default profile, on ~/.claude, and first run offers Use or Sign in…; to watch an old account's limits, give it a profile of its own."
+    supports: "In use and standby; the routes to the Switch page; the sign-in command (claude auth login --claudeai --email, CLAUDE_CONFIG_DIR unset for ~/.claude and set for any other folder); the Claude app's signed-in account comes first, then Claude Code's with a muted line; the numbers come through Claude Code's sign-in; a sign-in changed in Terminal or the Claude app shows within a few seconds; worked out from the Claude app's own files, not by running it; for a week after a switch, the line under Accounts; the first profile is the default profile, on ~/.claude, and first run offers Use or Sign in…; to watch an old account's limits, give it a profile of its own."
     quote: "The Claude app's signed-in account comes first."
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
+  - title: "cl_audit CHANGELOG, 26.11.25"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.25/CHANGELOG.md"
+    checked: 2026-11-13
+    supports: "26.11.25: when the Claude app is on another account than Claude Code, cl_audit no longer shows Claude Code's usage as the profile's; it offers to log Claude Code in to the app's account."
+    quote: "cl_audit no longer shows Claude Code's usage as the profile's"
+  - title: "cl_audit source at commit 59b3dbf, Sources/AccountResolver.swift (SplitUsage)"
+    url: "https://github.com/n-uf/cl_audit/blob/59b3dbf/Sources/AccountResolver.swift#L125-L160"
+    checked: 2026-11-13
+    supports: "The card's words when the Claude app and Claude Code are on different accounts (“No usage for … yet”, the Log Claude Code in to … key) and right after a switch (“Switched to …: sign the Claude app in to … to finish”, no key); Claude Code's own numbers on one labelled line, “Claude Code in Terminal”."
+    quote: "Claude Code here is signed in to"
 related:
   - /blog/claude-code-multiple-accounts/
   - /blog/claude-code-vscode-multiple-accounts/
@@ -163,6 +173,6 @@ Say you switch to `ultra-2@example.com`. **Switch to ultra-2** first closes the 
 
 If you sign in from Terminal yourself (`claude auth login` in the profile's folder), or in the Claude app, cl_audit shows the change within seconds, without a restart: the profile works on the account the folder signed in to, and the one before stands by.
 
-The account box, and every other screen, shows the account the Claude app is signed in to. Without a Claude window, or with the app signed out or unreadable, it's Claude Code's, and a muted line says so. The numbers come through Claude Code's sign-in, so when the two differ they say whose they are ("Usage: Claude Code on b…@example.com"), and you can tell when only one of the two sign-ins has moved. cl_audit's notes say the app's account is worked out from the app's own files, not by running it. For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it. To watch the old account's limits at the same time, give it a profile of its own with **New profile**.
+The account box, and every other screen, shows the account the Claude app is signed in to. Without a Claude window, or with the app signed out or unreadable, it's Claude Code's, and a muted line says so. The numbers come through Claude Code's sign-in, so when the two differ, they aren't shown as the profile's. The card says "No usage for a…@example.com yet: Claude Code here is signed in to b…@example.com", offers "Log Claude Code in to a…@example.com…", and keeps Claude Code's own numbers on one muted line labelled "Claude Code in Terminal". That is how you can tell that only one of the two sign-ins has moved. Right after a switch, while the app still waits to be signed in to the new account, the card says "Switched to b…@example.com: sign the Claude app in to b…@example.com to finish", with no numbers and no key. cl_audit's notes say the app's account is worked out from the app's own files, not by running it. For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it. To watch the old account's limits at the same time, give it a profile of its own with **New profile**.
 
 Each account's limits are its own, and cl_audit doesn't pool them. A profile moves to another of your accounts only when you start a switch or sign its folder in yourself, and whether you may use more than one Claude account is set by Anthropic's terms. cl_audit needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. The [Claude account switcher](/use-cases/switch-claude-accounts/) page has the whole switch, the backup and Undo the move included; for several profiles side by side, see [multiple Claude accounts on one Mac](/use-cases/multiple-claude-accounts/). cl_audit is free, and you can [download cl_audit](/install/) to try it.
