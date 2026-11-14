@@ -166,6 +166,11 @@ sources:
     checked: 2026-11-12
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
+  - title: "cl_audit CHANGELOG, 26.11.23"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.23/CHANGELOG.md"
+    checked: 2026-11-13
+    supports: "26.11.23: restore, import, the default profile and Undo no longer promise that nothing is ever overwritten or that Undo takes back exactly everything; the app's strings now say built not to overwrite and Undo is meant to take back what it added, and may not bring everything back."
+    quote: "no longer promise that nothing is ever overwritten"
 related:
   - /use-cases/claude-code-usage-history/
   - /blog/claude-sessions-lost-switching-accounts/
@@ -303,7 +308,7 @@ Backups are APFS clones, so they take seconds and share space with the originals
 
 **A backup before every switch that moves sessions.** When you switch a profile to another of your own accounts, the Claude window's sessions move with it, so cl_audit closes that window and makes a backup first; if it can't, nothing moves. The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers the switch, and [Claude Code sessions lost after switching accounts](/blog/claude-sessions-lost-switching-accounts/) covers signing in to another account by hand. Whether you may hold more than one Claude account is up to Anthropic's terms.
 
-**Restore…, with a preview.** **Restore…** on a backup opens a page that says "Preview · nothing written yet · nothing is ever overwritten". It counts what would happen, by session ID for the Code-tab list and by path for transcripts:
+**Restore…, with a preview.** **Restore…** on a backup opens a page that says "Preview · nothing written yet · built not to overwrite". It counts what would happen, by session ID for the Code-tab list and by path for transcripts:
 
 - back where it was, unchanged since;
 - missing, restored;
@@ -315,7 +320,7 @@ Backups are APFS clones, so they take seconds and share space with the originals
 
 Then **Close and restore N** closes only that profile's Claude window and writes what is missing, keeping a receipt as it goes. **Stop, keep what's back** halts it.
 
-**Merge-only, by design.** Restore is built to only create files, never to write over a name that already exists or through a link. A backup that holds anything other than plain files, or anything named like a sign-in, is refused whole.
+**Merge-only, by design.** Restore is built to only create files, not to write over a name that already exists or through a link. A backup that holds anything other than plain files, or anything named like a sign-in, is refused whole.
 
 **Undo this restore** is meant to take back what the restore put back, and only files unchanged since. It may not bring everything back.
 
