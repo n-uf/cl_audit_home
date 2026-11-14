@@ -171,6 +171,11 @@ sources:
     checked: 2026-11-13
     supports: "26.11.23: restore, import, the default profile and Undo no longer promise that nothing is ever overwritten or that Undo takes back exactly everything; the app's strings now say built not to overwrite and Undo is meant to take back what it added, and may not bring everything back."
     quote: "no longer promise that nothing is ever overwritten"
+  - title: "cl_audit README at tag v26.11.24 (Backups of a profile's sessions)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.24/README.md"
+    checked: 2026-11-13
+    supports: "26.11.24: Restore… on a backup puts back what is missing, merged, and is built not to overwrite anything; its preview reads \"Preview · nothing written yet · built not to overwrite\"; Undo this restore is meant to take back what it put back and may not bring everything back."
+    quote: "puts back what is missing, merged, and is built not to overwrite anything"
 related:
   - /use-cases/claude-code-usage-history/
   - /blog/claude-sessions-lost-switching-accounts/
