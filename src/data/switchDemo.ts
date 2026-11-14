@@ -99,9 +99,10 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       // the lit "Switching to" badge only while it is waited for ("Next"), as the app's `going`
       case "closing": case "moving": case "undoing": return row("Now", nowBox()) + row("Wanted", wanted(B.sb));
       case "waiting": return row("Now", nowBox()) + row("Next", wanted(B.to));
-      // the Claude app is still on the account in use: that is the one in use, and the box says whose the numbers are.
-      // The folder is on the new account now, so team-1's numbers are gone; the agent hasn't read the new ones yet.
-      case "reached": return row("Now", inUse(work.email, work.plan, note(`Usage: Claude Code on ${to}`) + note("No numbers yet: the agent reads them within a few minutes.")));
+      // the Claude app is still on the account in use, and Claude Code is on the new one (cl_audit 26.11.25, AccountResolver's
+      // SplitUsage): nothing shows Claude Code's numbers as the profile's, so the box says the switch waits for the app's
+      // sign-in. No numbers (the old account's are gone; the plan goes with them) and no key to log Claude Code in.
+      case "reached": return row("Now", inUse(work.email, "", note(`Switched to ${to}: sign the Claude app in to ${to} to finish`) + note("No numbers yet: the agent reads them within a few minutes.")));
       // the folder is on another of the profile's accounts now, and that is the one in use (no numbers read yet)
       case "other": return row("Now", inUse(other().email, other().plan, note("No numbers yet: the agent reads them within a few minutes."))) + row("Wanted", wanted(B.sb));
       default: return row("Now", nowBox()) + row("Wanted", wanted(B.sb));
