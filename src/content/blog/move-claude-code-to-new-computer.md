@@ -201,6 +201,11 @@ sources:
     checked: 2026-11-13
     supports: "26.11.23: restore, import, the default profile and Undo no longer promise that nothing is ever overwritten or that Undo takes back exactly everything; the app's strings now say built not to overwrite and Undo is meant to take back what it added, and may not bring everything back."
     quote: "no longer promise that nothing is ever overwritten"
+  - title: "cl_audit README at tag v26.11.24 (Import… of a move)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.24/README.md"
+    checked: 2026-11-13
+    supports: "26.11.24: a file already there is built not to be replaced, whether the import comes from this Mac or another; Undo this import is meant to take back what it added, though it may not bring everything back."
+    quote: "A file already there is built not to be replaced either way."
 related:
   - /blog/export-claude-code-sessions/
   - /blog/back-up-claude-code-sessions/
