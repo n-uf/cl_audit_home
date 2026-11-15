@@ -201,7 +201,7 @@ The profile's folder holds no Claude Code sign-in, so cl_audit has nothing to re
 
 ### Terminal's sign-in has expired
 
-The folder had a sign-in, but it ran out. The card is red and gives the same sentence as the signed-out card: "Sign in as ann@example.com to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal again says it asks to sign in first. In Settings ▸ Accounts, the account's address menu also has **Renew sign-in by itself**.
+The folder had a sign-in, but it ran out. The card is red and gives the same sentence as the signed-out card: "Sign in as ann@example.com to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal again says it asks to sign in first. To keep it from running out again, turn on **Renew sign-in by itself** in the account's address menu under Settings ▸ Accounts.
 
 ### Terminal is signed in to Work's account
 
