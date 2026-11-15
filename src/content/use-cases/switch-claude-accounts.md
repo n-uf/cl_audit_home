@@ -27,10 +27,15 @@ faq:
   - q: "Can I undo a switch?"
     a: "Until Claude Code is on the new account, Undo the move puts back what was moved, though it may not bring everything back. After that, the way back is a switch the other way. A switch that stopped half way offers Undo it on the profile's Sessions card."
 sources:
+  - title: "cl_audit CHANGELOG, 26.11.47"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.47/CHANGELOG.md"
+    checked: 2026-11-15
+    supports: "26.11.47: before you press Switch the Switch page says “Will stay with ann: …” for the files named like a Code-tab session that stay behind, and keeps “Left with ann: …” for after something has moved; when Claude Code's folder is on another profile's account and the profile's own account is on its standby list, the switch menus list it once, ticked, as “ann · move Claude Code back here”, and choosing it still switches to it."
+    quote: "ann · move Claude Code back here"
   - title: "cl_audit CHANGELOG, 26.11.44"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.44/CHANGELOG.md"
     checked: 2026-11-15
-    supports: "26.11.44: when Claude Code's folder is signed in to another profile's account, the dashboard card, the Switch page, the Dock icon's usage panel and menu and the menu bar menu name the profile's own account instead of the other profile's, or none when it has none of its own; the Switch page says before you press Switch which files named like a Code-tab session will stay with the old account (“Left with ann: 2 files named like a Code-tab session that aren't one…”)."
+    supports: "26.11.44: when Claude Code's folder is signed in to another profile's account, the dashboard card, the Switch page, the Dock icon's usage panel and menu and the menu bar menu name the profile's own account instead of the other profile's, or none when it has none of its own; the Switch page says before you press Switch which files named like a Code-tab session will stay with the old account (“Left with ann: 2 files named like a Code-tab session that aren't one…”; 26.11.47 reworded it before the switch to “Will stay with …”)."
     quote: "which files named like a Code-tab session will stay with the old account"
   - title: "cl_audit CHANGELOG, 26.11.33"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
@@ -172,7 +177,7 @@ The page shows the account in use under NOW, with its limits, and the account yo
 - The window closes for the move. When you open it again, you sign it in to ultra-2 yourself.
 - Claude Code's transcripts stay in the folder. So do the profile's name, Dock icon, look and settings, and ultra-1 stays on the profile as a standby account.
 
-If the old account's folder holds files named like a Code-tab session that aren't one, the page also says so before you press Switch: "Left with ultra-1: 2 files named like a Code-tab session that aren't one (a link, a file not named by an id)." They are never moved.
+If the old account's folder holds files named like a Code-tab session that aren't one, the page also says so before you press Switch: "Will stay with ultra-1: 2 files named like a Code-tab session that aren't one (a link, a file not named by an id)." It keeps saying so until something has moved, also after a Cancel. Once sessions have moved, the line reads "Left with ultra-1: …" instead. Those files are never moved.
 
 Then come the steps and **Switch to ultra-2**.
 
@@ -228,6 +233,8 @@ The folder had a sign-in, but it ran out. The card is red and gives the same sen
 ### Terminal is signed in to Work's account
 
 Terminal on Main's folder is signed in to ben@example.com, the account in use on your Work profile. Its numbers show only on Work's card. Main's card is red and names Main's own account: "Sign in as ann@example.com to read Main's usage." With no account of its own, it says "Sign in to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says it is on Work's account.
+
+If ann@example.com is also on Main's standby list, the switch menus list it once, ticked, as "ann · move Claude Code back here". Choosing it still switches to it, which moves Claude Code back; **Sign in…** moves nothing.
 
 ### Terminal is signed in to another account
 
