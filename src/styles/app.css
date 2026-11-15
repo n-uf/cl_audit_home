@@ -226,12 +226,19 @@ code, kbd { font-family: var(--mono); }
 .acc-name { display: flex; align-items: center; gap: 7px; font-weight: 600; font-size: 16px; }
 .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 .sub { color: var(--muted); font-size: 13px; }
-/* the plan, in a small display window */
-.plan { margin-left: auto; align-self: flex-start; position: relative; overflow: hidden; height: 22px; padding: 0 8px; border-radius: 4px; display: inline-flex; align-items: center;
+/* the account in use under the profile's name: its lit lamp and the address, one line */
+.inuse { display: flex; align-items: center; gap: 6px; min-width: 0; color: var(--muted); font-size: 12.5px; }
+.inuse i { width: 6px; height: 6px; border-radius: 50%; flex: none; background: rgb(var(--led-on)); box-shadow: 0 0 5px rgba(var(--led-on), .8); }
+.inuse .email { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* the plan and, under it, the last refresh, in a small display window: one width for every card (the longest plan,
+   "Enterprise", over the longest time, "13 days ago") and two lines always, so it never moves as the minutes tick */
+.plan { margin-left: auto; align-self: flex-start; position: relative; overflow: hidden; flex: none; width: 92px; box-sizing: border-box; padding: 4px 8px; border-radius: 4px;
+  display: inline-flex; flex-direction: column; align-items: center; gap: 1px; white-space: nowrap;
   background: linear-gradient(180deg, #030607, #0c1517); box-shadow: inset 0 1px 3px rgba(0,0,0,.9), 0 0 0 1px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.07);
-  font: 600 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: rgb(var(--glow)); text-shadow: 0 0 3px rgba(var(--glow), .7), 0 0 8px rgba(var(--glow), .3); }
+  font: 600 10px/1.1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: rgb(var(--glow)); text-shadow: 0 0 3px rgba(var(--glow), .7), 0 0 8px rgba(var(--glow), .3); }
+.plan b, .plan small { max-width: 100%; overflow: hidden; text-overflow: ellipsis; font: inherit; }
+.plan small { font-size: 8.5px; letter-spacing: .08em; color: #8a9a98; text-shadow: none; }
 .acc-actions { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-.acc-actions .sub { margin-left: auto; font-size: 12px; }
 /* the card's keys: gunmetal, white legend, as production's Demo dashboard key */
 .acc-actions .pill { height: 26px; padding: 0 12px; border-radius: 4px; font-size: 10px; letter-spacing: .12em; color: #f1f1f0; text-shadow: 0 -1px 0 rgba(0,0,0,.35);
   background: repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, rgba(0,0,0,.06) 1px 2px), linear-gradient(180deg, #74746f, #52524e);
@@ -1877,6 +1884,8 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   .fk { font-size: 11px; }
   .disp, .disp *, .fascia .page-disp { font-size: 12px; }
   .content :is(.pill.small, .plate > a.key, .kbd, .sb-n, li.stage > b), .abox-note, .pn-sub, .pchip-title, .pchip-sub b, .fl-title, .fl-name span, .rel-line span, .mini .p, .mini .tag, .mini-palette .foot, .badge, .plan { font-size: 12px; }
+  .plan { width: 116px; }   /* still one width for every card, wide enough for the 12 px plan over its time */
+  .content .plan small { font-size: 10px; }
   .content .sr-only { font-size: 14px; }   /* not drawn, but counted as text by the checkers */
 
   /* the keys of the head and the menu bar, the links under each card */
