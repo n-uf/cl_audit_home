@@ -281,7 +281,7 @@ If you only want to carry on from a phone or a browser while the Mac stays on, t
 
 ## Third-party tools
 
-Two tools script this, and we haven't tested either. claude-code-migrate, by its README, migrates Claude Code state between machines or rebinds a project's history to another path; its steps copy `~/.claude.json` across before you log in again, which this page doesn't advise. codex-claude-transfer is an unofficial tool whose README describes moving local Codex and Claude Code sessions between machines as one `.codexbundle` file, and warns that a bundle can contain secrets.
+Two tools script this, and we haven't tested either. claude-code-migrate, by its README, migrates Claude Code state between machines or rebinds a project's history to another path; its steps copy `~/.claude.json` across before you sign in again, which this page doesn't advise. codex-claude-transfer is an unofficial tool whose README describes moving local Codex and Claude Code sessions between machines as one `.codexbundle` file, and warns that a bundle can contain secrets.
 
 ## Export…, Import… and Move to another Mac in cl_audit
 
