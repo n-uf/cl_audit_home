@@ -217,7 +217,7 @@ cl_audit asked the Keychain for Claude Code's sign-in, and macOS refused or didn
 
 ### Can't read Terminal's sign-in
 
-Claude Code saved its sign-in in a form cl_audit doesn't know, so the card says exactly that: "Claude Code saved it in a form cl_audit doesn't know." It is amber, because this isn't a sign-in problem, and it has no **Sign in…** key. The row has **Refresh now**, Show window and ⋯. A newer Claude Code can change how it saves its sign-in.
+Claude Code saved its sign-in in a form cl_audit doesn't know, so the card says exactly that: "Claude Code saved it in a form cl_audit doesn't know." It is amber, not red: the sign-in itself may be fine. The row has **Refresh now**, Show window and ⋯, and no **Sign in…** key.
 
 ### Switching to ben@example.com: one step left
 
