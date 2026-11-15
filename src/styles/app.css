@@ -1940,6 +1940,9 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .plan.amber small { color: #b08a52; }
 .inuse.out { color: #ff8a80; }
 .inuse.out i { background: #ff6b5e; box-shadow: 0 0 5px rgba(255,107,94,.8); }
+/* the sign-in can't be read, or is on another account or profile: the lamp is off (26.11.41), an unlit dot like an
+   account box's */
+.inuse.unlit i { background: #3a3532; box-shadow: inset 0 1px 1px rgba(0,0,0,.55); }
 .card .acc-actions .pill.small.signin { border: 0; color: #1f0705; text-shadow: none;
   background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #f4907f, #dc5a4b);
   box-shadow: inset 0 1px rgba(255,255,255,.55), inset 0 -1px rgba(110,26,10,.35), 0 0 0 1px #5e170d, 0 2px #3d0e07, 0 3px 7px rgba(0,0,0,.45); }
