@@ -1769,19 +1769,12 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.55), 0 0 10px rgba(127,249,234,.35); }
 .disp.trustlike::after { background: linear-gradient(180deg, rgba(255,255,255,.22), transparent); }
 .disp.trustlike em { color: rgba(4,48,43,.55); text-shadow: none; }
-/* Settings and the card: the selected standby account's "Standby" display becomes a Switch account key, in place */
+/* Settings: the selected standby account's "Standby" display becomes a Switch account key, in place */
 .acc-pick .sw-acc { display: none; flex: none; border: 0; cursor: pointer; font: inherit; }
 .acc-pick .abox.sel .sw-acc { display: inline-flex; align-items: center; }
 .acc-pick .abox.sel:has(.sw-acc) .abox-badge { display: none; }
 .acc-pick .sw-acc:hover { filter: brightness(1.07); }
 .acc-pick .sw-acc:active { transform: translateY(1px); box-shadow: inset 0 3px 4px rgba(0,0,0,.5), inset 0 0 0 1px rgba(0,0,0,.5), 0 0 0 1.5px #0b0c0d; }
-/* the dashboard card: the standby accounts as unlit trays under its own limits, in the order a full limit offers them;
-   a tray is the address and one line (plan, last in use), no limits */
-.sb-pick { margin-top: 10px; }
-.sbx { gap: 6px; padding: 7px 10px 8px; }
-.sbx .abox-head { align-items: center; }
-.sbx .abox-lamp { margin-top: 0; }
-.sbx .abox-t b.email { font-size: 12.5px; font-weight: 600; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 /* the Switch page: NOW and TO engraved beside the boxes */
 .acc-flow { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 12px 10px; align-items: center; padding: 4px 0; }
 .acc-flow > .lbl { align-self: start; padding-top: 12px; font: 600 9.5px/1.2 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
@@ -1874,7 +1867,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   .content p.t { font-size: 16px; }
   .settings :is(p, li), .dash :is(p, li) { font-size: 14px; }   /* the demo panels' own notes */
   .content :is(td, th, figcaption, small, code, kbd, .sub, .note, .legal, .email, .trust-note, .fl-back, .sg-k1, .sg-k2, .tf-text code) { font-size: 14px; }
-  .content :is(.srow > span, .pn-name, .pn-row .pn-pct, .fl-row .pn-pct, .mh b, .gk-row > span, .gk-title, .gk-btn, .pchip-text, .stab, .start-box, .hist-mini b, .abox-t .email, .fl-box .fl-back, .sha-list, b.pn-pct, .sbx .abox-t b.email) { font-size: 14px; }
+  .content :is(.srow > span, .pn-name, .pn-row .pn-pct, .fl-row .pn-pct, .mh b, .gk-row > span, .gk-title, .gk-btn, .pchip-text, .stab, .start-box, .hist-mini b, .abox-t .email, .fl-box .fl-back, .sha-list, b.pn-pct) { font-size: 14px; }
   .faq-list details p { font-size: 16px; }
   .menubar { font-size: 14px; }
   /* the printed labels, the keys and the display windows */

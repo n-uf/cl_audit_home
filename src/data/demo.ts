@@ -13,7 +13,7 @@ export type AccountId = "home" | "work" | "side";
  *  or sign-in of its own, so it has no limits to show anywhere: only its address, its plan and when it was last in use
  *  on the profile (`lastInUse`, as AccountBook.ago says it). `lastWeek` is its week as last read when it left: kept
  *  only to order the offers (`offerOrder`), never shown. The demo's "work" has one with room, so while its own 5-hour
- *  limit is full its card preselects team-2's tray and the menus offer "Switch to team-2…". */
+ *  limit is full its card's Switch account menu and the menu bar's offer team-2 first. */
 export type Standby = { email: string; plan: string; lastInUse: string; lastWeek: number };
 export const standby: Record<AccountId, Standby[]> = {
   home: [],

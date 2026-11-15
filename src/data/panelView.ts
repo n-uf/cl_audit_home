@@ -1,7 +1,7 @@
 // The app's usage panel in its five designs (Glow bars, Twin rings, Big numbers, Segmented, Pace bars),
 // drawn from a profile's figures. "large" is the full panel (Settings preview); otherwise the compact one
 // the Dock shows on a click. Same layout rules as the app's PanelDesigns.swift.
-import { accounts, standby, offerOrder, bestOffer, type AccountId } from "./demo";
+import { accounts, type AccountId } from "./demo";
 
 export type Design = "glow" | "rings" | "numbers" | "segments" | "pace";
 
@@ -133,23 +133,11 @@ function fullHTML(id: AccountId, design: Design) {
 }
 
 /** The profile's two limits as a dashboard card draws them: the small panel design, one for every card; while a
- *  limit is full, the limits on the left and the box saying when it's back on the right. */
+ *  limit is full, the limits on the left and the box saying when it's back on the right. Under them, while the profile
+ *  spends usage credits, that line. A standby account is never read, so the card shows none. */
 export function cardLimitsHTML(id: AccountId, design: Design) {
   const a = accounts.find((x) => x.id === id)!;
-  return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="group" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}${cardExtrasHTML(id)}</div>`;
-}
-
-// ── A profile's other accounts (26.11.18) ───────────────────────────────────────────────────────────────────────
-/** Under a card's limits: usage credits, then the profile's standby accounts as unlit trays, in the order a full limit
- *  offers them (AccountBook.offerOrder). A tray shows its address, Standby and one line, "Team · last in use 2 days
- *  ago": no limits, since a standby account isn't read. While a limit is full, the one offered first is selected
- *  already: its row lit in mint, its Standby display become the Switch account key (it opens the Switch page with it
- *  picked). With room left nothing is selected until you click a tray. */
-export function cardExtrasHTML(id: AccountId) {
-  const sb = offerOrder(standby[id]);
-  const best = fullLimit(id) ? bestOffer(standby[id]) : undefined;
-  const trays = sb.map((s) => `<div class="abox unlit sbx${s === best ? " sel" : ""}" tabindex="0" role="group" aria-label="${s.email}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t"><b class="email">${s.email}</b></span><span class="disp xs abox-badge"><em>Standby</em></span><button type="button" class="disp xs trustlike sw-acc" data-card-switch="${id}" data-to="${s.email}"><em>Switch</em> account</button></div><small class="abox-note">${s.plan} · last in use ${s.lastInUse}</small></div>`).join("");
-  return creditsHTML(id) + (sb.length ? `<div class="acc-pick sb-pick">${trays}</div>` : "");
+  return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="group" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}${creditsHTML(id)}</div>`;
 }
 
 /** A whole panel: header (icon, name, email, plan), the limits in the chosen design, and the footer. */

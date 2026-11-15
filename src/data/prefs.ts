@@ -3,7 +3,7 @@
 // Claude open dot, how long a Dock click shows the usage before opening Claude, and what a profile includes
 // (Usage in the Dock, Claude window).
 import { accounts, type AccountId } from "./demo";
-import { limitsHTML, backWords, cardExtrasHTML, type Design } from "./panelView";
+import { limitsHTML, backWords, creditsHTML, type Design } from "./panelView";
 import manifest from "./icon-manifest.json";   // written by scripts/render-icons.sh
 
 export const styles = [
@@ -202,7 +202,7 @@ export function applyPrefs(p = loadPrefs()) {
     const id = el.dataset.cardLimits as AccountId, key = `${design}:${p[id].showFable ? 1 : 0}`;
     if (el.dataset.design === key) return;
     el.dataset.design = key;
-    el.innerHTML = limitsHTML(id, design, false) + cardExtrasHTML(id);
+    el.innerHTML = limitsHTML(id, design, false) + creditsHTML(id);
   });
   // the profiles' order (26.11.0): dashboard keys and cards, the history's legend, the launcher (its ⌘1, ⌘2… follow)
   // and the Settings strip; never the Dock
