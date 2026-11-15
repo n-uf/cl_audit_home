@@ -1655,22 +1655,35 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .abox-t small { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .abox-title { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 0; border: 0; background: none; color: var(--text); font: 600 13px/1.3 var(--font); cursor: pointer; text-align: left; }
 .abox-title .email { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.abox-title .chev { font-size: 8px; color: var(--muted); letter-spacing: -.1em; }
 .abox-badge { flex: none; }
 .abox .pn-limits { margin: 0; }
 .abox-note { font-size: 10.5px; color: var(--muted); }
 .abox .login-menu { top: calc(100% + 4px); left: 0; right: auto; }
-/* the account in use (26.11.15): a near-black well with a thin green-tinted edge, a faint green glow inside, and a lit
-   green bar on its left edge; Silver: the display glass with a darker green. Standby boxes keep the plain window. */
+/* the account in use (26.11.15): a near-black well with a thin green-tinted edge and a faint green glow inside; Silver:
+   the display glass with a darker green. Two shades only: this dark one while it is in focus, and the unlit shade (.rest)
+   while a standby account is picked, as every other box. Standby boxes keep the plain window. */
 .abox.in-use { position: relative; background: linear-gradient(180deg, #111214, #0e0f11);
   box-shadow: inset 0 0 0 1px #24372a, inset 0 0 12px rgba(var(--led-on), .09), inset 0 1px 1.5px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.05); }
-.abox.in-use::before { content: ""; position: absolute; left: -1px; top: 10px; bottom: 10px; width: 3px; border-radius: 1.5px;
-  background: rgb(var(--led-on)); box-shadow: 0 0 4px rgba(var(--led-on), .6); }
 .face-silver .appwin .abox.in-use { background: linear-gradient(180deg, #fbfcfc, #eef0f1);
   box-shadow: inset 0 0 0 1px rgba(17,116,58,.32), inset 0 0 12px rgba(17,116,58,.10), inset 0 2px 4px rgba(0,0,0,.14), 0 1px 0 rgba(255,255,255,.7); }
-.face-silver .appwin .abox.in-use::before { background: #11743a; box-shadow: 0 0 4px rgba(17,116,58,.35); }
-.add-acc { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.abox.in-use.rest { background: rgba(0,0,0,.24); box-shadow: var(--well); }
+.abox.in-use.rest .abox-title { color: var(--soft); }
+.face-silver .appwin .abox.in-use.rest { background: rgba(0,0,0,.08); box-shadow: inset 0 1px 3px rgba(0,0,0,.25); }
+/* where an account is signed in: the Claude app (its Code tab included) and Claude Code in Terminal, the folder's
+   sign-in that usage is read through; a marker is lit where it is, struck through where it isn't */
+.where { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 0 15px; }
+.mk { font: 600 9px var(--font); letter-spacing: .1em; text-transform: uppercase; padding: 2px 7px; border-radius: 9px; color: #5b5b62; box-shadow: inset 0 0 0 1px #34343a; }
+.mk.on { color: #cfd3da; box-shadow: inset 0 0 0 1px #4a4d55; background: rgba(255,255,255,.03); }
+.mk.on::before { content: "● "; color: rgb(var(--led-on)); font-size: 7px; vertical-align: 1px; }
+.mk.off { text-decoration: line-through; text-decoration-color: rgba(91,91,98,.6); }
+.face-silver .mk { color: #8a8d91; box-shadow: inset 0 0 0 1px rgba(0,0,0,.18); }
+.face-silver .mk.on { color: #2e3033; box-shadow: inset 0 0 0 1px rgba(0,0,0,.3); background: rgba(0,0,0,.04); }
+.add-acc { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
 .add-acc small { font-size: 11px; }
+/* "+ Sign in with another account…": a link, not a key */
+.lnk { padding: 0; border: 0; background: none; font: inherit; font-size: 12px; color: #8ab4ff; cursor: pointer; text-align: left; }
+.lnk:hover { text-decoration: underline; }
+.face-silver .lnk { color: #0b57d0; }
 /* Folders from before (26.11.18): each with its line and its keys, under the boxes */
 .leftovers { display: grid; gap: 8px; padding-top: 4px; }
 .left-head { font: 600 9px/1.2 var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
@@ -1775,6 +1788,12 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .acc-pick .abox.sel:has(.sw-acc) .abox-badge { display: none; }
 .acc-pick .sw-acc:hover { filter: brightness(1.07); }
 .acc-pick .sw-acc:active { transform: translateY(1px); box-shadow: inset 0 3px 4px rgba(0,0,0,.5), inset 0 0 0 1px rgba(0,0,0,.5), 0 0 0 1.5px #0b0c0d; }
+/* Settings ▸ Accounts, a standby account laid out like the displays: the lamp and the Standby badge (or the key) level with
+   the address, the details in full, never cut, on a second line */
+.sbx .abox-head { align-items: flex-start; }
+.sbx .abox-lamp { margin-top: 6px; }
+.sbx .abox-badge { margin-top: 1px; }
+.rest2 { display: block; color: var(--muted); font-size: 11px; font-weight: 400; white-space: normal; }
 /* the Switch page: NOW and TO engraved beside the boxes */
 .acc-flow { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 12px 10px; align-items: center; padding: 4px 0; }
 .acc-flow > .lbl { align-self: start; padding-top: 12px; font: 600 9.5px/1.2 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
@@ -1949,6 +1968,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   .menubar .fk[aria-pressed="true"] { padding-top: 3px; }
   .plate.pages .key { height: 44px; }
   .content :is(a.key, a.pill, button.pill, .more) { min-height: 44px; }
+  .content .lnk { min-height: 44px; font-size: 14px; }
   .more { display: inline-flex; align-items: center; margin-top: 0; font-size: 16px; }
   .more + .more { margin-left: 16px; }
   .stab { height: 44px; font-size: 14px; }

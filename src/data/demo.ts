@@ -31,8 +31,6 @@ export const offerOrder = (list: Standby[]) =>
   list.map((s, i) => [s, i] as const).sort(([a, i], [b, j]) => Number(knownFull(a)) - Number(knownFull(b)) || a.lastWeek - b.lastWeek || i - j).map(([s]) => s);
 /** The one a full limit offers first (AccountBook.best): the first in that order not known to be full, or none. */
 export const bestOffer = (list: Standby[]) => offerOrder(list).find((s) => !knownFull(s));
-/** "Last in use on work 2 days ago." (the Accounts card's standby box; the dashboard and Switch page say it shorter). */
-export const lastInUseLine = (profile: string, s: Standby) => `Last in use on ${profile} ${s.lastInUse}.`;
 /** "team-2": an account's short name, its address before the @ (AccountNames.short). */
 export const shortName = (email: string) => email.split("@")[0];
 

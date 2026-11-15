@@ -19,7 +19,8 @@ const jsonLd = [
 </Desktop>
 
 <script>
-  import { accounts, standby, offerOrder, lastInUseLine, type AccountId, type Standby } from "../data/demo";
+  import { accounts, standby, offerOrder, type AccountId, type Standby } from "../data/demo";
+  import { chevronHTML } from "../data/chevron";
   import { applyPrefs, loadPrefs, savePrefs, loadOrder, saveOrder, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
   import { glyphHTML, lane as mbLane } from "../data/menubar";
   import { widgetHTML } from "../data/widgetView";
@@ -281,13 +282,21 @@ const jsonLd = [
     const removedSb = new Set<string>();
     let picked = "";   // the standby account selected in Settings ▸ Accounts ("" = none)
     const boxes = (): Standby[] => offerOrder(standby[acc]).filter((s) => !removedSb.has(`${acc}:${s.email}`));
+    // Laid out like a display: the lamp and Standby level with the address, the details in full on a second line.
     const boxHTML = (s: Standby) =>
-      `<div class="abox unlit${picked === s.email ? " sel" : ""}" data-pick="${s.email}" tabindex="0" role="group" aria-label="${s.email}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
-      `<button type="button" class="abox-title" data-sb-btn="${s.email}" aria-haspopup="menu" aria-expanded="false"><span class="email">${s.email}</span><span class="chev" aria-hidden="true">⌃⌄</span></button>` +
-      `<span class="login-menu" data-sb-menu="${s.email}" role="menu" hidden></span><small>${s.plan}</small></span>` +
+      `<div class="abox unlit sbx${picked === s.email ? " sel" : ""}" data-pick="${s.email}" tabindex="0" role="group" aria-label="${s.email}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
+      `<button type="button" class="abox-title" data-sb-btn="${s.email}" aria-haspopup="menu" aria-expanded="false"><span class="email">${s.email}</span>${chevronHTML}</button>` +
+      `<span class="login-menu" data-sb-menu="${s.email}" role="menu" hidden></span>` +
+      `<span class="rest2">${s.plan} · signed out · last in use on ${who()} ${s.lastInUse}</span></span>` +   // words: SEO
       // the key takes the Standby display's place while the box is selected
-      `<span class="disp xs abox-badge"><em>Standby</em></span><button type="button" class="disp xs trustlike sw-acc" data-sw-acc="${s.email}"><em>Switch</em> account</button></div>` +
-      `<small class="abox-note">${lastInUseLine(who(), s)}</small></div>`;
+      `<span class="disp xs abox-badge"><em>Standby</em></span><button type="button" class="disp xs trustlike sw-acc" data-sw-acc="${s.email}"><em>Switch</em> account</button></div></div>`;
+    // Two shades only: the box in focus is dark (the account in use, or the selected standby account) and every other
+    // box is unlit, the account in use too while a standby account is picked.
+    const paintPick = () => {
+      $$<HTMLElement>("[data-standby-boxes] .abox").forEach((x) => x.classList.toggle("sel", !!picked && x.dataset.pick === picked));
+      $("[data-abox-inuse]")!.classList.toggle("rest", !!picked);
+      $("[data-pick-hint]")!.hidden = !boxes().length || !!picked;
+    };
     // Folders from before (Leftovers.swift): the per-account folders 26.11.16 and earlier made for this profile's accounts.
     // Each is listed with Move to Trash… (it asks first, says what is in it and names the folder's Keychain item) and
     // Keep it; one that holds sessions offers Show in Finder instead of the Trash. Nothing is deleted by itself.
@@ -456,9 +465,12 @@ const jsonLd = [
       closeMenus();
       $("[data-abox-detail]")!.textContent = a.plan;
       if (!boxes().some((x) => x.email === picked)) picked = "";
-      $("[data-pick-hint]")!.hidden = !boxes().length || !!picked;
       $("[data-abox-limits]")!.innerHTML = limitsHTML(acc, loadCardStyle(), false);
       $("[data-standby-boxes]")!.innerHTML = boxes().map(boxHTML).join("");
+      // "Claude app" is where the profile's Claude window is signed in: none without a window
+      $("[data-mk-app]")!.classList.toggle("on", p().win);
+      $("[data-mk-app]")!.classList.toggle("off", !p().win);
+      paintPick();
       showLeftovers();
       // Folder: this profile's folder, the other profiles' dimmed with who is signed in there
       $<HTMLSelectElement>("[data-folder]")!.innerHTML = `<option selected>${a.dir}</option>` +
@@ -603,8 +615,7 @@ const jsonLd = [
       if ((b = pick("[data-sw-acc]"))) { (window as any).clOpenSwitch?.(acc, b.dataset.swAcc); return; }
       if ((b = pick("[data-pick]")) && b.dataset.pick && !pick("button")) {
         picked = picked === b.dataset.pick ? "" : b.dataset.pick;
-        $$<HTMLElement>("[data-standby-boxes] .abox").forEach((x) => x.classList.toggle("sel", !!picked && x.dataset.pick === picked));
-        $("[data-pick-hint]")!.hidden = !boxes().length || !!picked;
+        paintPick();
         return;
       }
       // General ▸ Backups (26.11.1): the last N of each profile, and any under D days (the app's own day steps)

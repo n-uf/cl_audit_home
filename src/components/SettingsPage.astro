@@ -15,6 +15,7 @@
 import { accounts } from "../data/demo";
 import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices, dockRunsChoices, menuBarFamilies, appIconStyles, appIconSrc, appIconDefault } from "../data/prefs";
 import { limitsHTML, designs } from "../data/panelView";
+import { chevronHTML } from "../data/chevron";
 import { lane as mbLane } from "../data/menubar";
 import { version, build, changelog } from "../data/site";
 import AccIcon from "./AccIcon.astro";
@@ -69,26 +70,32 @@ const sw = (key: string, label: string, on = true) => `<span class="ctl-pair"><b
 
 Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a short-lived access key, which Claude Code swaps for a fresh one whenever it runs. cl_audit only reads that key, so after a while without Claude Code it runs out and the usage stops updating. On: cl_audit then runs Claude Code once in the background (a one-line prompt, “Reply with OK.”, on Haiku, nothing saved) so it swaps the key; at most every 30 min, using a sliver of this profile's usage. Off: the usage waits until you next use Claude Code.">i</i></span>
           <div class="acc-list">
-            <!-- IN USE: a lit lamp, the address as a pop-up (✓ it, Log in…, Renew sign-in by itself), its plan, the
-                 limits in the dashboard's card style -->
-            <div class="abox in-use">
+            <!-- IN USE: a lit lamp, the address as a pop-up (✓ it, Log in…, Renew sign-in by itself), its plan, where it is
+                 signed in (the Claude app, which includes its Code tab, and Claude Code in Terminal, the folder's sign-in
+                 that usage is read through), the limits in the dashboard's card style. Two shades only: it is dark while
+                 it is in focus and unlit (.rest) while a standby account is picked. -->
+            <div class="abox in-use" data-abox-inuse>
               <div class="abox-head"><i class="abox-lamp on"></i>
                 <span class="abox-t login-ctl">
-                  <button type="button" class="abox-title" data-login-btn aria-haspopup="menu" aria-expanded="false"><span class="email" data-text="email">{a.email}</span><span class="chev" aria-hidden="true">⌃⌄</span></button>
+                  <button type="button" class="abox-title" data-login-btn aria-haspopup="menu" aria-expanded="false"><span class="email" data-text="email">{a.email}</span><Fragment set:html={chevronHTML} /></button>
                   <span class="login-menu" data-login-menu role="menu" hidden></span>
                   <small data-abox-detail>{a.plan}</small>
                 </span>
                 <span class="disp xs abox-badge"><span class="g">In use</span></span></div>
+              <!-- words: SEO -->
+              <div class="where"><span class="mk on" data-mk-app>Claude app</span><span class="mk on">Claude Code in Terminal</span></div>
               <div class="abox-limits" data-abox-limits></div>
             </div>
-            <!-- the standby accounts, unlit, in the order a full limit offers them: each shows its address (a pop-up: Switch
-                 to it…, Forget…), plan, Standby and when it was last in use here. Click one to select it (again to
-                 deselect); its Standby display becomes a Switch account key, which opens the Switch page with it picked -->
+            <!-- the standby accounts, unlit, in the order a full limit offers them: each is laid out like a display (lamp and
+                 Standby level with the address, a pop-up with Switch to it… and Forget…; the plan and when it was last in
+                 use here in full on a second line). Click one to select it (again to deselect); its Standby display
+                 becomes a Switch account key, which opens the Switch page with it picked -->
             <div class="acc-pick" data-standby-boxes></div>
             <p class="g-note sub" data-pick-hint hidden>Click a standby account to select it, then Switch account.</p>
             <!-- the accounts found on this Mac are listed by themselves; a brand-new one signs in from here -->
             <div class="add-acc">
-              <button type="button" class="key k" data-sign-other>Sign in with another account…</button>
+              <!-- words: SEO -->
+              <button type="button" class="lnk" data-sign-other>+ Sign in with another account…</button>
               <small class="sub">Accounts found on this Mac are listed here by themselves.</small>
             </div>
             <!-- the folders an earlier cl_audit made for this profile's accounts: Move to Trash… or Keep it -->
