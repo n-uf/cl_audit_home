@@ -589,7 +589,7 @@ const jsonLd = [
       if (pick("[data-uninstall]")) { $("[data-udialog]")!.hidden = false; return; }
       // Claude Code ▸ Accounts (26.11.18). The account in use: its address is a pop-up with ✓ it, Sign in… and Renew
       // sign-in by itself. A standby account's address is a pop-up too: Switch to it… and Forget…. There is no Add
-      // account: the accounts found on this Mac list themselves, and Sign in with another account… is a key under the
+      // account: the accounts found on this Mac list themselves, and Sign in with another account… is a link under the
       // boxes. Nothing signs in or changes on this Mac: the demo keeps what you forget in this page only.
       const menuToggle = (btnSel: string, menuSel: string, html: () => string) => {
         const m = $(menuSel)!, open = m.hidden;

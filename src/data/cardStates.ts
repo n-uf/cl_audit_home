@@ -3,7 +3,7 @@
 // that is signed in to the same account. In every other state the usage slot says why, in a bold one-line heading about
 // Terminal's sign-in and one sentence saying what to do, and the keys row changes to match. Red: the sign-in is on the
 // wrong account or gone. Amber: the sign-in is fine but can't be read yet, or a switch is under way.
-// Sample data only; every address is written in full, so Show emails off blurs it.
+// Sample data only; every address is written in full, so Show emails off can mask it (data/emails.ts).
 import { accounts } from "./demo";
 import { blurEmails } from "./emails";
 import { usualKeys, type KeysSpec } from "./cardKeys";
@@ -26,8 +26,8 @@ const OTHER = "other@example.com";   // an account the profile doesn't use: the 
 const work = accounts.find((x) => x.id === "work")!;   // another profile, whose account is in use there
 const signInAs = (a: Acc) => `Sign in as ${a.email} to read ${a.name}'s usage.`;   // words: SEO
 
-// ⋯ holds Show window and Terminal while Sign in… (or Refresh now) leads the row
-const signedOutKeys: KeysSpec = { lead: "signin", keys: [], more: ["show", "terminal", "-", "refresh", "settings"], terminalNote: "asks to sign in first" };   // words: SEO
+// ⋯ holds Show window and Terminal (then Refresh now and Profile settings…) while Sign in… leads the row
+const signedOutKeys: KeysSpec = { lead: "signin", keys: [], more: ["show", "terminal"], terminalNote: "asks to sign in first" };   // words: SEO
 
 export const cardStates: Record<CardStateKey, CardState> = {
   split: {
@@ -35,7 +35,7 @@ export const cardStates: Record<CardStateKey, CardState> = {
     tone: "red",
     heading: () => `Terminal is signed in to ${OTHER}`,   // words: SEO
     sentence: signInAs,
-    keys: { lead: "signin", keys: ["show"], more: ["terminal", "-", "refresh", "settings"], terminalNote: `signed in as ${OTHER}` },   // words: SEO
+    keys: { lead: "signin", keys: ["show"], more: ["terminal"], terminalNote: `signed in as ${OTHER}` },   // words: SEO
   },
   out: {
     label: "Signed out",   // words: SEO
@@ -65,22 +65,23 @@ export const cardStates: Record<CardStateKey, CardState> = {
     tone: "red",
     heading: () => "Terminal is signed in to another account",   // words: SEO
     sentence: signInAs,
-    // mostly a usage-only profile, which has no window and no Terminal key: just Sign in… and ⋯
-    keys: { lead: "signin", keys: [], more: ["refresh", "settings"] },
+    // the demo shows it on home, which has a window: Sign in…, Show window, and Terminal in ⋯ (a usage-only profile has
+    // neither, and its ⋯ hides both); no note on Terminal, since the account it is signed in to isn't one the profile knows
+    keys: { lead: "signin", keys: ["show"], more: ["terminal"] },
   },
   denied: {
     label: "Keychain denied",   // words: SEO
     tone: "amber",
     heading: () => "Can't read Terminal's sign-in yet",   // words: SEO
     sentence: () => "The Keychain didn't hand it over: unlock it, then Refresh now.",   // words: SEO
-    keys: { lead: "refresh", keys: ["show"], more: ["terminal", "-", "settings"] },
+    keys: { lead: "refresh", keys: ["show"], more: ["terminal"] },
   },
   unreadable: {
     label: "Unreadable",   // words: SEO
     tone: "amber",
     heading: () => "Can't read Terminal's sign-in",   // words: SEO
     sentence: () => "Claude Code saved it in a form cl_audit doesn't know.",   // words: SEO
-    keys: { lead: "refresh", keys: ["show"], more: ["terminal", "-", "settings"] },
+    keys: { lead: "refresh", keys: ["show"], more: ["terminal"] },
   },
   switching: {
     label: "One step left",   // words: SEO

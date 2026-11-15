@@ -97,7 +97,8 @@ function paint(chip: HTMLElement | null, sw: HTMLElement | null, on: boolean, bu
 /** A card in a state with no numbers (or back with them): the usage slot says why, the keys row, the plan badge's tone
  *  and the account line follow. A limit that is full keeps its own keys and red badge once the state is taken away. */
 function paintState(card: HTMLElement, a: (typeof accounts)[number], win: boolean) {
-  const key = shown[a.id] ?? "";
+  // only the page with the demo row shows a state; the home page's cards always have their numbers
+  const key = document.querySelector("[data-card-demo]") ? shown[a.id] ?? "" : "";
   if ((card.dataset.cardStateKey ?? "") === key) return;
   card.dataset.cardStateKey = key;
   const st = key ? cardStates[key] : undefined, full = !!fullLimit(a.id);
@@ -132,7 +133,11 @@ export function renderCards() {
     document.querySelectorAll<HTMLElement>(`[data-win-badge="${a.id}"]`).forEach((b) => (b.hidden = !(s.win && !s.winBusy)));
   }
   // the demo row's keys: lit while their state is shown
-  document.querySelectorAll<HTMLElement>("[data-card-state]").forEach((b) => b.classList.toggle("on", shown[demoProfile] === b.dataset.cardState));
+  document.querySelectorAll<HTMLElement>("[data-card-state]").forEach((b) => {
+    const on = shown[demoProfile] === b.dataset.cardState;
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", String(on));
+  });
 }
 
 function tick() {
@@ -183,6 +188,17 @@ export function setDock(id: string, on: boolean, byFollow = false) {
 
 export const isWindowOpen = (id: string) => !!state[id]?.win;
 
+/** Closes the cards' ⋯ and Switch account menus; the focus goes back to the key that opened one if it was inside it. */
+function closeCardMenus() {
+  document.querySelectorAll<HTMLElement>(".more-menu, .nmenu").forEach((m) => {
+    const opener = m.parentElement?.querySelector<HTMLElement>("[data-more], [data-switch-menu]");
+    const refocus = !m.hidden && m.contains(document.activeElement);
+    m.hidden = true;
+    opener?.setAttribute("aria-expanded", "false");
+    if (refocus) opener?.focus();
+  });
+}
+
 /** Registers the click handling once and paints the cards of the page that just loaded. */
 export function initCards() {
   if (!w.__clCardsInit) {
@@ -190,6 +206,17 @@ export function initCards() {
     document.addEventListener("click", (e) => {
       const t = e.target as HTMLElement;
       let b: HTMLElement | null;
+      // the card's "⋯" and Switch account menus: one open at a time; their key opens or closes its own, any other click
+      // (on an item, a switch, the page) closes them
+      const menuBtn = t.closest<HTMLElement>("[data-more], [data-switch-menu]");
+      if (menuBtn) {
+        const m = menuBtn.parentElement!.querySelector<HTMLElement>(".more-menu, .nmenu")!, open = m.hidden;
+        closeCardMenus();
+        m.hidden = !open;
+        menuBtn.setAttribute("aria-expanded", String(open));
+        return;
+      }
+      closeCardMenus();
       if ((b = t.closest("[data-win-switch]"))) { setWin(b.dataset.winSwitch!, !state[b.dataset.winSwitch!].win); return; }
       if ((b = t.closest("[data-dock-switch]"))) { setDock(b.dataset.dockSwitch!, !state[b.dataset.dockSwitch!].dock); return; }
       // Open window / Show window, the launcher rows and the Dock's Claude tiles open the demo window
@@ -210,6 +237,8 @@ export function initCards() {
         renderCards();
         return;
       }
+      // Refresh now (a key, or in ⋯): reads every profile's usage again
+      if (t.closest("[data-refresh]")) showWhatNow("Refresh now", "", "Reads every profile's usage again now. It doesn't use any of your limits. This is a demo, so nothing is read.");   // words: SEO
       // Sign in… (a state without numbers): Claude Code's own sign-in, with the address filled in
       if ((b = t.closest("[data-card-signin]"))) {
         const acc = accounts.find((x) => x.id === b!.dataset.cardSignin)!;
@@ -222,18 +251,8 @@ export function initCards() {
         const id = b.dataset.cardSigninOther as AccountId;
         showWhatNow("Sign in to another account…", "", signInOtherNote(accounts.find((x) => x.id === id)!.dir, loadPrefs()[id].name.trim() || "this profile"));   // words: SEO
       }
-      // the card's "⋯" and Switch account menus: one open at a time, a click elsewhere or on an item closes it
-      const menuBtn = t.closest<HTMLElement>("[data-more], [data-switch-menu]");
-      document.querySelectorAll<HTMLElement>(".more-menu, .nmenu").forEach((m) => {
-        const mine = menuBtn && menuBtn.parentElement === m.parentElement;
-        const open = mine ? m.hidden : false;
-        m.hidden = !open;
-        m.parentElement?.querySelector("[data-more], [data-switch-menu]")?.setAttribute("aria-expanded", String(open));
-      });
     });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") document.querySelectorAll<HTMLElement>(".more-menu, .nmenu").forEach((m) => (m.hidden = true));
-    });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCardMenus(); });
     window.addEventListener("resize", fitTicks);
   }
   renderCards();

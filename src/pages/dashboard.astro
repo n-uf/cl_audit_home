@@ -33,11 +33,11 @@ const jsonLd = [
       </span>
     </div>
     <div class="dash-cards">{accounts.map((a) => <AccountCard {...a} />)}</div>
-    <!-- demo only, like the Switch page's "what can go wrong": a key puts the first card into a state with no numbers
+    <!-- demo only, like the Switch page's "what can go wrong": a key puts the home card into a state with no numbers
          (data/cardStates.ts) and the same key puts it back; nothing else changes -->
     <div class="sw-demo" data-card-demo><span class="sub">Demo: other states</span><!-- words: SEO -->
       <span class="switch small-switch" role="group" aria-label="Other states"><!-- words: SEO -->
-        {cardStateKeys.map((k) => <button type="button" data-card-state={k}>{cardStates[k].label}</button>)}
+        {cardStateKeys.map((k) => <button type="button" data-card-state={k} aria-pressed="false">{cardStates[k].label}</button>)}
       </span></div>
     <Experimental flows={["switch"]} />
     <History />
