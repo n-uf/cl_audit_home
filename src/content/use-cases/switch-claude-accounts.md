@@ -206,7 +206,7 @@ A profile's card shows numbers only when Claude Code in Terminal, on the profile
 
 **Can't read Terminal's sign-in.** Claude Code saved its sign-in in a form cl_audit doesn't know, so the card says exactly that: "Claude Code saved it in a form cl_audit doesn't know." It is amber, because this isn't a sign-in problem, and it has no **Sign in…** key. The row has **Refresh now**, Show window and ⋯. A newer Claude Code can change how it saves its sign-in.
 
-**Switching to b…@example.com: one step left.** A switch to b…@example.com has moved Claude Code in Terminal and now waits for the Claude app. The card is amber and says "Sign the Claude app in to b…@example.com to finish." It has no **Sign in…** key, because cl_audit can't sign the app in: open it with Show window and sign in there. After 24 hours, the card falls back to the red message.
+**Switching to b…@example.com: one step left.** A switch to b…@example.com has moved Claude Code in Terminal and waits for the Claude app. The card is amber and says "Sign the Claude app in to b…@example.com to finish." It has no **Sign in…** key, because cl_audit can't sign the app in: open it with Show window and sign in there. After 24 hours, the card falls back to the red message.
 
 ## Cancel it, or undo it
 
