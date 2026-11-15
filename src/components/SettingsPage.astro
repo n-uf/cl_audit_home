@@ -16,6 +16,7 @@ import { accounts } from "../data/demo";
 import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices, dockRunsChoices, menuBarFamilies, appIconStyles, appIconSrc, appIconDefault } from "../data/prefs";
 import { limitsHTML, designs } from "../data/panelView";
 import { chevronHTML } from "../data/chevron";
+import { maskEmail } from "../data/emails";
 import { lane as mbLane } from "../data/menubar";
 import { version, build, changelog } from "../data/site";
 import AccIcon from "./AccIcon.astro";
@@ -77,7 +78,7 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
             <div class="abox in-use" data-abox-inuse>
               <div class="abox-head"><i class="abox-lamp on"></i>
                 <span class="abox-t login-ctl">
-                  <button type="button" class="abox-title" data-login-btn aria-haspopup="menu" aria-expanded="false"><span class="email" data-text="email">{a.email}</span><Fragment set:html={chevronHTML} /></button>
+                  <button type="button" class="abox-title" data-login-btn aria-haspopup="menu" aria-expanded="false"><span class="email" data-text="email">{a.email}</span><span class="email-m" data-text="email-m">{maskEmail(a.email)}</span><Fragment set:html={chevronHTML} /></button>
                   <span class="login-menu" data-login-menu role="menu" hidden></span>
                   <small data-abox-detail>{a.plan}</small>
                 </span>
