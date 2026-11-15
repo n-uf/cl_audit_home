@@ -587,7 +587,7 @@ const jsonLd = [
       }
       if (pick("[data-remove]")) { $("[data-dialog]")!.hidden = false; return; }
       if (pick("[data-uninstall]")) { $("[data-udialog]")!.hidden = false; return; }
-      // Claude Code ▸ Accounts (26.11.18). The account in use: its address is a pop-up with ✓ it, Log in… and Renew
+      // Claude Code ▸ Accounts (26.11.18). The account in use: its address is a pop-up with ✓ it, Sign in… and Renew
       // sign-in by itself. A standby account's address is a pop-up too: Switch to it… and Forget…. There is no Add
       // account: the accounts found on this Mac list themselves, and Sign in with another account… is a key under the
       // boxes. Nothing signs in or changes on this Mac: the demo keeps what you forget in this page only.
@@ -600,7 +600,7 @@ const jsonLd = [
         const own = accounts.find((x) => x.id === acc)!;
         menuToggle("[data-login-btn]", "[data-login-menu]", () =>
           `<span class="lm-row on"><span class="ok">✓</span> <span class="email">${own.email}</span><em>${own.plan} · this profile</em></span>` +
-          `<hr><button type="button" class="lm-row act" data-login-again>Log in…</button>` +
+          `<hr><button type="button" class="lm-row act" data-login-again>Sign in…</button>` +
           `<button type="button" class="lm-row act" data-login-renew>${p().renew ? '<span class="ok">✓</span> ' : ""}Renew sign-in by itself</button>`);
         return;
       }
@@ -608,7 +608,7 @@ const jsonLd = [
       if (pick("[data-login-again]")) {
         const own = accounts.find((x) => x.id === acc)!;
         closeMenus();
-        showWhatNow("Log in…", "", signInNote(own.dir, own.email));
+        showWhatNow("Sign in…", "", signInNote(own.dir, own.email));
         return;
       }
       // Settings ▸ Accounts: click a standby account to select it (again to deselect); its Switch account key opens the
