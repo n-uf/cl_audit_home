@@ -34,8 +34,13 @@ sources:
   - title: "cl_audit README at v26.11.18 (n-uf): the menus, Switch account ›, crimson for a full limit"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
     checked: 2026-11-11
-    supports: "The account in use under the profile's name with a lit green lamp; Switch account › with the account in use ticked and every other account with when it was last in use; Switch to … on the top level while a limit is full; all of them open the Switch page; When full: crimson only"
+    supports: "At v26.11.18: the account in use under the profile's name with a lit green lamp; Switch account › with the account in use ticked and every other account with when it was last in use; Switch to … on the top level while a limit is full; all of them open the Switch page; When full: crimson only"
     quote: "A full limit is crimson, except in System, where its countdown shows it."
+  - title: "cl_audit CHANGELOG, 26.11.32"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.32/CHANGELOG.md"
+    checked: 2026-11-15
+    supports: "26.11.32: the menu bar icon and the bars at the top of its menu turn grey when the usage is old (three missed reads, 30 minutes at the usual setting), the same moment the Dock icon does; the green lamp in the menu bar menu goes off when the sign-in has run out, is gone, can't be read, or is on another account than the folder's or on another profile's."
+    quote: "now turn grey when the usage is old"
   - title: "cl_audit CHANGELOG, 26.11.1 (2026-11-07)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
     checked: 2026-11-07
@@ -144,14 +149,14 @@ A click opens that profile's own menu:
 
 - its limits and when each resets, Fable's weekly limit included when the plan has one;
 - usage credits, while the profile is spending them;
-- when the figures were read;
+- when the figures were read. When the usage is old (three missed reads, 30 minutes at the usual setting), the icon and the bars at the top of the menu turn grey, the same moment the Dock icon does;
 - **Quick chat**, a floating chat over any app, answered by Claude Code on that profile's account in use (the [FAQ](/faq/) says more);
 - **Open Claude window**, **Refresh now**, **Dashboard** and **Profile settings…**;
 - **Hide from the menu bar**, which takes that profile's icon away.
 
 In the menu bar, in the profile's settings, puts it back.
 
-A profile with more than one account shows the account in use under the profile's name, with a lit green lamp ("ultra-1 · in use"), and has **Switch account ›**: a submenu with the account in use ticked ("in use · week 94%"), then your other accounts, each with when it was last in use ("3 days ago"). A standby account is signed out, so the menu shows no numbers for it. While a limit is full, the first account not known to be full also sits on the top level, first among the actions: "Switch to ultra-3…". All of these only open cl_audit's Switch page; nothing switches until you start the switch there. {{live:/use-cases/switch-claude-accounts/}}The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers what a switch moves and how to undo one.{{/live}}
+A profile with more than one account shows the account in use under the profile's name, with a lit green lamp and no label ("ultra-1"), and has **Switch account ›**: a submenu with the account in use ticked ("ultra-1 · week 94%"), then your other accounts by address only ("ultra-2…"). The lamp goes off when the sign-in has run out, can't be read, or is on another account or another profile. A standby account is signed out, so the menu shows no numbers for it. While a limit is full, the first account not known to be full also sits on the top level, first among the actions: "Switch to ultra-3…". All of these only open cl_audit's Switch page; nothing switches until you start the switch there. {{live:/use-cases/switch-claude-accounts/}}The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers what a switch moves and how to undo one.{{/live}}
 
 {{experimental: switch}}
 
