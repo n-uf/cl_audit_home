@@ -27,6 +27,16 @@ faq:
   - q: "Can I undo a switch?"
     a: "Until Claude Code is on the new account, Undo the move puts back what was moved, though it may not bring everything back. After that, the way back is a switch the other way. A switch that stopped half way offers Undo it on the profile's Sessions card."
 sources:
+  - title: "cl_audit CHANGELOG, 26.11.33"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
+    checked: 2026-11-15
+    supports: "26.11.33: a profile with no numbers to show says why in one heading and one sentence, with one compact key (Terminal signed out, its sign-in expired, Terminal on another account or on another profile's account, the Keychain not handing the sign-in over, a switch with one step left); standby accounts no longer sit on the card, and while a limit is full a compact Switch account key opens a menu of them, by address only; after a switch the waiting line reads “Switching to … : one step left. Sign the Claude app in to … to finish.” instead of “Switched to …”; menus no longer say “· in use”, the account in use is ticked; Settings ▸ Accounts shows In use and Standby; “Log in” is now “Sign in”."
+    quote: "a compact Switch account key opens a menu of them, by address only"
+  - title: "cl_audit source at v26.11.33, Sources/CardParts.swift (UsageNotice) and AccountResolver.swift (switchWaits)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/Sources/CardParts.swift#L22-L58"
+    checked: 2026-11-15
+    supports: "The card's headings and sentences for each state without numbers (“Terminal is signed in to …”, “Terminal is signed in to another account”, “Terminal's sign-in has expired”, “Terminal is signed out”, “Can't read Terminal's sign-in yet”, “Can't read Terminal's sign-in”), amber for the last three and for a switch with one step left, with the keys each one has; the one-step-left state lasts 24 hours after the switch linked (switchWaits, AccountResolver.swift), after that it is the split."
+    quote: "The Keychain didn't hand it over: unlock it, then Refresh now."
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
@@ -213,7 +223,7 @@ This one mostly shows on usage-only profiles, which have no Claude app account t
 
 ### Can't read Terminal's sign-in yet
 
-cl_audit asked the Keychain for Claude Code's sign-in, and macOS refused or didn't answer in time. A locked Keychain is the usual cause, and cl_audit shows no prompt of its own. The card is amber and says "The Keychain didn't hand it over: unlock it, then Refresh now." **Refresh now** leads the row, Show window stays, and Terminal is in the ⋯ menu.
+cl_audit asked the Keychain for Claude Code's sign-in, and macOS refused or didn't answer in time. A locked Keychain is the usual cause, and cl_audit shows no prompt of its own. Numbers it read earlier stay. With none to show, the card is amber and says "The Keychain didn't hand it over: unlock it, then Refresh now." **Refresh now** leads the row, Show window stays, and Terminal is in the ⋯ menu.
 
 ### Can't read Terminal's sign-in
 
@@ -225,7 +235,7 @@ A switch to ben@example.com has moved Claude Code in Terminal and waits for the 
 
 ## Cancel it, or undo it
 
-**Cancel** stops the waiting. Sessions that already moved stay where they went until you undo the move. **Undo the move** puts them back as long as Claude Code isn't on the new account yet. Once the switch has finished there's no undo: the way back is a switch the other way, and the Reached screen offers **Switch back to ultra-1…**.
+**Cancel** stops the waiting. Sessions that already moved stay where they went until you undo the move. **Undo the move** puts them back as long as Claude Code isn't on the new account yet. Once the switch has finished there's no undo: the way back is a switch the other way, and the Reached screen offers **Switch back…**, whose hover text says "Switch back to ultra-1".
 
 A switch that stopped half way, now or in 26.11.16 and earlier, shows on the profile's Sessions card: how many sessions sit under which account, with **Undo it**. Its backup isn't pruned meanwhile.
 
