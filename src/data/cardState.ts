@@ -5,6 +5,8 @@
 // icon starts, and so on. The state lives on window, so it survives page changes (not a reload).
 import { accounts, type AccountId } from "./demo";
 import { loadPrefs } from "./prefs";
+import { showWhatNow } from "./whatNow";
+import { signInOtherNote } from "./signInNotes";
 
 type S = { win: boolean; dock: boolean; winBusy?: "opening" | "quitting"; dockBusy?: "starting" | "quitting"; quitAt?: number };
 
@@ -172,17 +174,24 @@ export function initCards() {
       }
       // "Profile settings…" opens Settings on that profile
       if ((b = t.closest("[data-profile-settings]"))) { try { sessionStorage.setItem("cl_audit.settingsProfile", b.dataset.profileSettings!); } catch {} }
-      // the card's "⋯" menu
-      const menuBtn = t.closest<HTMLElement>("[data-more]");
-      document.querySelectorAll<HTMLElement>(".more-menu").forEach((m) => {
+      // Switch account's menu (while a limit is full): a standby account opens the Switch page, in Settings as in the
+      // app, with it picked; Sign in to another account… says what it would do
+      if ((b = t.closest("[data-card-switch]"))) { location.href = `/settings/?switch=${b.dataset.cardSwitch}&to=${encodeURIComponent(b.dataset.to!)}`; return; }
+      if ((b = t.closest("[data-card-signin-other]"))) {
+        const id = b.dataset.cardSigninOther as AccountId;
+        showWhatNow("Sign in to another account…", "", signInOtherNote(accounts.find((x) => x.id === id)!.dir, loadPrefs()[id].name.trim() || "this profile"));   // words: SEO
+      }
+      // the card's "⋯" and Switch account menus: one open at a time, a click elsewhere or on an item closes it
+      const menuBtn = t.closest<HTMLElement>("[data-more], [data-switch-menu]");
+      document.querySelectorAll<HTMLElement>(".more-menu, .nmenu").forEach((m) => {
         const mine = menuBtn && menuBtn.parentElement === m.parentElement;
         const open = mine ? m.hidden : false;
         m.hidden = !open;
-        m.parentElement?.querySelector("[data-more]")?.setAttribute("aria-expanded", String(open));
+        m.parentElement?.querySelector("[data-more], [data-switch-menu]")?.setAttribute("aria-expanded", String(open));
       });
     });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") document.querySelectorAll<HTMLElement>(".more-menu").forEach((m) => (m.hidden = true));
+      if (e.key === "Escape") document.querySelectorAll<HTMLElement>(".more-menu, .nmenu").forEach((m) => (m.hidden = true));
     });
     window.addEventListener("resize", fitTicks);
   }
