@@ -72,20 +72,20 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     }
   };
   const top = (): string => {
-    const back = K("data-sw-back", `Back to ${name}'s settings`);
+    const back = K("data-sw-back", "‹ Back");
     switch (phase) {
       case "ready": return "";
       case "closing": return bar(`<span class="b">Switching</span> <em>· closing the window</em>`, STOP("data-sw-cancel", "Cancel"));
       case "moving": case "undoing": return bar(`<span class="b">Switching</span> <em>· moving sessions</em>`);
       case "waiting": return bar(`<span class="b">Switching</span> <em>· waiting · until ${until}</em>`, STOP("data-sw-cancel", "Cancel"));
       // Claude Code is on the new account; the Claude app (the account in use follows it) is still on the old one
-      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, K("data-sw-backswitch", `Switch back to ${from}…`), GO("data-sw-back", `Back to ${name}'s settings`));
+      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, K("data-sw-backswitch", "Switch back…"), GO("data-sw-back", "‹ Back"));
       case "other": return bar(`<span class="a">Signed in as ${O()}</span> <em>· not ${T()}</em>`, GO("data-sw-retry", `Sign in as ${T()} again`), K("data-sw-undo", "Undo the move"));
       case "timedOut": return bar(`<span class="a">No sign-in</span> <em>· sessions on ${T()}</em>`, GO("data-sw-retry", "Try again"), K("data-sw-undo", "Undo the move"), back);
       case "failed": return fail === "half"
         ? bar(`<span class="r">Stopped</span> <em>· Undo puts it back</em>`, GO("data-sw-retry", "Try again"), K("data-sw-undo", "Undo the move"), back)
         : bar(`<span class="r">Not started</span> <em>· nothing changed</em>`, GO("data-sw-retry", "Try again"), back);
-      case "undone": return bar(`<span class="g">Undone</span> <em>· still on ${from}</em>`, GO("data-sw-back", `Back to ${name}'s settings`));
+      case "undone": return bar(`<span class="g">Undone</span> <em>· still on ${from}</em>`, GO("data-sw-back", "‹ Back"));
     }
   };
 
@@ -104,7 +104,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       // the Claude app is still on the account in use, and Claude Code is on the new one (cl_audit 26.11.25, AccountResolver's
       // SplitUsage): nothing shows Claude Code's numbers as the profile's, so the box says the switch waits for the app's
       // sign-in. No numbers (the old account's are gone; the plan goes with them) and no key to sign Claude Code in.
-      case "reached": return row("Now", inUse(work.email, "", note(`Switched to ${E()}: sign the Claude app in to ${E()} to finish`) + note("No numbers yet: the agent reads them within a few minutes.")));
+      case "reached": return row("Now", inUse(work.email, "", note(`Switching to ${E()}: one step left. Sign the Claude app in to ${E()} to finish.`) + note("No numbers yet: the agent reads them within a few minutes.")));
       // the folder is on another of the profile's accounts now, and that is the one in use (no numbers read yet)
       case "other": return row("Now", inUse(other().email, other().plan, note("No numbers yet: the agent reads them within a few minutes."))) + row("Wanted", wanted(B.sb));
       default: return row("Now", nowBox()) + row("Wanted", wanted(B.sb));
@@ -281,7 +281,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     // Switch back: the app opens this page with the account it came from picked. The demo can't model work now being on
     // team-2, so it says what happens and leaves the page.
     if (has("[data-sw-backswitch]")) {
-      showWhatNow(`Switch back to ${from}…`, "", `The way back is a switch the other way: the Switch page opens with ${from} picked, ${name}'s sessions move back to ${from} and Claude Code on ${dir} signs in as ${from} again. This is a demo, so nothing changed.`);
+      showWhatNow("Switch back…", "", `The way back is a switch the other way: the Switch page opens with ${from} picked, ${name}'s sessions move back to ${from} and Claude Code on ${dir} signs in as ${from} again. This is a demo, so nothing changed.`);
       hooks.close();
       return;
     }
