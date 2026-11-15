@@ -5,7 +5,7 @@ h1: "Multiple Claude accounts on one Mac"
 mainKeyword: "multiple claude accounts"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-12
+updated: 2026-11-15
 author: n-uf
 order: 1
 takeaways:
@@ -61,6 +61,11 @@ sources:
     checked: 2026-11-11
     supports: "26.11.18: standby accounts are remembered on the profile, signed out, with no folder or Keychain item of their own, and show no usage; accounts are found on this Mac; a full limit offers the standby account least used by the week it left with, not known to be full; a switch moves the Claude window's Code-tab sessions and scheduled tasks after a backup."
     quote: "A profile is one Claude Code folder, and switching signs in again on it."
+  - title: "cl_audit README at v26.11.33 (Settings: Show emails)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/README.md#L419-L420"
+    checked: 2026-11-15
+    supports: "26.11.33: with Show emails (General settings) off, email addresses are left out of the launcher, the dashboard, the panels and the Dock menus, and blurred in Settings (hover one to see it), for screen sharing."
+    quote: "and blurs them in Settings (hover one to see it), for screen sharing"
   - title: "cl_audit CHANGELOG, 26.11.33"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
     checked: 2026-11-15
@@ -164,7 +169,7 @@ Each profile keeps its own:
 
 When you create a new folder, you can copy some Claude Code setup into it from another folder you pick: instructions, agents, skills, commands or memory. That way a new profile starts with your usual `CLAUDE.md` and skills.
 
-Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and addresses are left out or blurred.
+Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and addresses are left out of the dashboard, the launcher, the panels and the Dock menus, and blurred in Settings.
 
 ## Is it allowed to have multiple Claude accounts?
 
