@@ -64,12 +64,12 @@ sources:
   - title: "cl_audit source at v26.11.36, Sources/Privacy.swift (Show emails)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/Privacy.swift#L44-L83"
     checked: 2026-11-15
-    supports: "26.11.36: with Show emails off, an address that stands alone is left out of the launcher, dashboard and panels (HiddenEmail) and of the Dock menus (IconApp), and an address in a menu or a sentence is shown masked, as y•••@example.com (Privacy.masked), in Settings too; only an account's title in Settings is also blurred, and hovering lifts only the blur (SettingsEmail)."
+    supports: "26.11.36: with Show emails off, an address that stands alone is left out of the launcher, dashboard and panels (HiddenEmail) and of the Dock menus (IconApp), and an address in a menu or a sentence is shown masked, as y•••@example.com (Privacy.masked), in Settings too; there, account titles and pickers are also blurred (SettingsEmail), and hovering lifts only the blur."
     quote: "Settings text that can't blur (menus, sentences): masked while emails are hidden."
   - title: "cl_audit source at v26.11.36, Sources/AccountsView.swift (AccountBoxTitle)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/AccountsView.swift#L173-L186"
     checked: 2026-11-15
-    supports: "26.11.36: an account's title in Settings is the one place that blurs an address (settingsEmail)."
+    supports: "26.11.36: an account box's title in Settings is blurred while emails are hidden (settingsEmail)."
     quote: ".settingsEmail(text.contains(\"@\"))"
   - title: "cl_audit source at v26.11.36, Sources/IconApp.swift (the Dock icon's menu)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/IconApp.swift#L498-L500"
@@ -179,7 +179,7 @@ Each profile keeps its own:
 
 When you create a new folder, you can copy some Claude Code setup into it from another folder you pick: instructions, agents, skills, commands or memory. That way a new profile starts with your usual `CLAUDE.md` and skills.
 
-Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and an address that stands alone is left out of the launcher, the dashboard, the panels and the Dock menus (the Dock's folder warning says only "a different account"), one inside a menu or a message is shown masked, such as y•••@example.com, and in Settings it's masked everywhere, and an account's title is also blurred (hovering lifts the blur, not the mask).
+Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and an address that stands alone is left out of the launcher, the dashboard, the panels and the Dock menus (the Dock's folder warning says only "a different account"), one inside a menu or a message is shown masked, such as y•••@example.com, and in Settings it's masked everywhere and also blurred in account titles and pickers (hovering lifts the blur, not the mask).
 
 ## Is it allowed to have multiple Claude accounts?
 
