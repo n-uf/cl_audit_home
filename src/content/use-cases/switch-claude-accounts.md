@@ -220,7 +220,7 @@ The folder had a sign-in, but it ran out. The card is red and gives the same sen
 
 ### Terminal is signed in to Work's account
 
-Terminal on Main's folder is signed in to ben@example.com, and that is the account in use on your Work profile. Its numbers show on Work's card and never on Main's. Main's card is red and says "Sign in as ann@example.com to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says "signed in as ben@example.com (Work)".
+Terminal on Main's folder is signed in to ben@example.com, and that is the account in use on your Work profile. Its numbers show on Work's card and never on Main's. Main's card is red and says "Sign in as ann@example.com to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says it is on Work's account.
 
 ### Terminal is signed in to another account
 

@@ -58,7 +58,7 @@ export const cardStates: Record<CardStateKey, CardState> = {
     tone: "red",
     heading: () => `Terminal is signed in to ${work.name}'s account`,   // words: SEO
     sentence: signInAs,
-    keys: { lead: "signin", keys: ["show"], more: ["terminal", "-", "refresh", "settings"], terminalNote: `signed in as ${work.email} (${work.name})` },   // words: SEO
+    keys: { lead: "signin", keys: ["show"], more: ["terminal"], terminalNote: `on ${work.name}'s account` },   // words: SEO
   },
   mismatch: {
     label: "Different account",   // words: SEO
