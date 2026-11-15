@@ -177,7 +177,7 @@ The page shows the account in use under NOW, with its limits, and the account yo
 - The window closes for the move. When you open it again, you sign it in to ultra-2 yourself.
 - Claude Code's transcripts stay in the folder. So do the profile's name, Dock icon, look and settings, and ultra-1 stays on the profile as a standby account.
 
-If the old account's folder holds files named like a Code-tab session that aren't one, the page also says so before you press Switch: "Will stay with ultra-1: 2 files named like a Code-tab session that aren't one (a link, a file not named by an id)." It keeps saying so until something has moved, also after a Cancel. Once sessions have moved, the line reads "Left with ultra-1: …" instead. Those files are never moved.
+If the old account's folder holds files named like a Code-tab session that aren't one, the page also says so before you press Switch: "Will stay with ultra-1: 2 files named like a Code-tab session that aren't one (a link, a file not named by an id)." It keeps saying so until something has moved, also after a Cancel. Once something has moved, the line reads "Left with ultra-1: …" instead. Those files are never moved.
 
 Then come the steps and **Switch to ultra-2**.
 
@@ -234,7 +234,7 @@ The folder had a sign-in, but it ran out. The card is red and gives the same sen
 
 Terminal on Main's folder is signed in to ben@example.com, the account in use on your Work profile. Its numbers show only on Work's card. Main's card is red and names Main's own account: "Sign in as ann@example.com to read Main's usage." With no account of its own, it says "Sign in to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says it is on Work's account.
 
-If ann@example.com is also on Main's standby list, the switch menus list it once, ticked, as "ann · move Claude Code back here". Choosing it still switches to it, which moves Claude Code back; **Sign in…** moves nothing.
+If ann@example.com is also on Main's standby list, the switch menus list it once, ticked, as "ann · move Claude Code back here" (the card's Switch account menu spells out ann@example.com). Choosing it still switches to it, which moves Claude Code back; **Sign in…** is the lighter way: it signs Claude Code in as ann@example.com again and moves nothing.
 
 ### Terminal is signed in to another account
 
