@@ -21,7 +21,7 @@ const jsonLd = [
 <script>
   import { accounts, standby, offerOrder, type AccountId, type Standby } from "../data/demo";
   import { chevronHTML } from "../data/chevron";
-  import { emailsHTML } from "../data/emails";
+  import { emailHTML, emailsHTML, emailText, maskEmail } from "../data/emails";
   import { applyPrefs, loadPrefs, savePrefs, loadOrder, saveOrder, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
   import { glyphHTML, lane as mbLane } from "../data/menubar";
   import { widgetHTML } from "../data/widgetView";
@@ -286,7 +286,7 @@ const jsonLd = [
     // Laid out like a display: the lamp and Standby level with the address, the details in full on a second line.
     const boxHTML = (s: Standby) =>
       `<div class="abox unlit sbx${picked === s.email ? " sel" : ""}" data-pick="${s.email}" tabindex="0" role="group" aria-label="${s.email}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
-      `<button type="button" class="abox-title" data-sb-btn="${s.email}" aria-haspopup="menu" aria-expanded="false"><span class="email">${s.email}</span>${chevronHTML}</button>` +
+      `<button type="button" class="abox-title" data-sb-btn="${s.email}" aria-haspopup="menu" aria-expanded="false">${emailHTML(s.email)}${chevronHTML}</button>` +
       `<span class="login-menu" data-sb-menu="${s.email}" role="menu" hidden></span>` +
       `<span class="rest2">${s.plan} · signed out · last in use on ${who()} ${s.lastInUse}</span></span>` +   // words: SEO
       // the key takes the Standby display's place while the box is selected
@@ -442,6 +442,7 @@ const jsonLd = [
       $$<HTMLElement>("[data-frame]").forEach((b) => b.classList.toggle("on", b.dataset.frame === pr.frame));
       $$<HTMLElement>('[data-text="dir"]').forEach((e) => (e.textContent = a.dir));
       $$<HTMLElement>('[data-text="email"]').forEach((e) => (e.textContent = a.email));
+      $$<HTMLElement>('[data-text="email-m"]').forEach((e) => (e.textContent = maskEmail(a.email)));
       $$<HTMLElement>('[data-text="name"]').forEach((e) => (e.textContent = who()));
       $<HTMLSelectElement>('[data-field="refresh"]')!.value = pr.refresh;
       $<HTMLSelectElement>('[data-field="dockRuns"]')!.value = pr.dockRuns;
@@ -475,7 +476,7 @@ const jsonLd = [
       showLeftovers();
       // Folder: this profile's folder, the other profiles' dimmed with who is signed in there
       $<HTMLSelectElement>("[data-folder]")!.innerHTML = `<option selected>${a.dir}</option>` +
-        accounts.filter((x) => x.id !== acc).map((x) => `<option disabled>${x.dir} ${x.email} · ${prefs[x.id].name}'s</option>`).join("");
+        accounts.filter((x) => x.id !== acc).map((x) => `<option disabled>${x.dir} ${emailText(x.email)} · ${prefs[x.id].name}'s</option>`).join("");
       // Share from / Shared: read-only on an existing profile; ~/.claude is the source, so it has neither row
       const sh = SHARE[acc];
       $("[data-share]")!.hidden = !sh;
@@ -599,7 +600,7 @@ const jsonLd = [
       if (pick("[data-login-btn]")) {
         const own = accounts.find((x) => x.id === acc)!;
         menuToggle("[data-login-btn]", "[data-login-menu]", () =>
-          `<span class="lm-row on"><span class="ok">✓</span> <span class="email">${own.email}</span><em>${own.plan} · this profile</em></span>` +
+          `<span class="lm-row on"><span class="ok">✓</span> ${emailHTML(own.email)}<em>${own.plan} · this profile</em></span>` +
           `<hr><button type="button" class="lm-row act" data-login-again>Sign in…</button>` +
           `<button type="button" class="lm-row act" data-login-renew>${p().renew ? '<span class="ok">✓</span> ' : ""}Renew sign-in by itself</button>`);
         return;
@@ -808,6 +809,7 @@ const jsonLd = [
       const on = document.documentElement.classList.contains("hide-emails");   // it was off, so it turns on
       pulse(sw, $("[data-emails-t]"), on, 600, () => {
         document.documentElement.classList.toggle("hide-emails", !on);
+        swi.refreshTitles();   // the Switch page's hover title with an address follows the setting
         try { localStorage.setItem("cl_audit.showEmails", on ? "1" : "0"); } catch {}
         syncEmails();
         showWhatNow("Show emails", on ? "on" : "off", on

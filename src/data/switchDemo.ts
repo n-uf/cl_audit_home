@@ -9,7 +9,7 @@ import { accounts, standby, offerOrder, shortName, type Standby } from "./demo";
 import { limitsHTML } from "./panelView";
 import { loadCardStyle } from "./prefs";
 import { showWhatNow } from "./whatNow";
-import { emailText } from "./emails";
+import { emailHTML, emailText } from "./emails";
 
 // "undoing": Undo the move putting the sessions back (the app's .moving phase, with a receipt)
 type Phase = "ready" | "closing" | "moving" | "undoing" | "waiting" | "reached" | "other" | "timedOut" | "failed" | "undone";
@@ -24,8 +24,10 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   const list = offerOrder(standby.work);
   let to = list[0].email, phase: Phase = "ready", fail: "window" | "half" = "window", shown: Case | "" = "", timer = 0, until = "";
   const T = () => shortName(to), target = () => list.find((s) => s.email === to)!;
-  /** The address the switch is moving to, in full, in the class Show emails off blurs (this page is part of Settings). */
-  const E = () => `<span class="email">${to}</span>`;
+  /** The address the switch is moving to, for a sentence: masked and blurred while Show emails is off (this page is part of Settings). */
+  const E = () => emailHTML(to);
+  /** Switch back…'s hover text: the address it goes back to, masked while Show emails is off (redraw keeps it current). */
+  const backSwitchTitle = () => `Switch back to ${emailText(work.email)}`;
   /** The account the browser signs in as in "Wrong account": another of the profile's standby accounts. */
   const other = () => list.find((s) => s.email !== to)!;
   const O = () => shortName(other().email);
@@ -50,11 +52,11 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   const note = (t: string) => `<small class="abox-note">${t}</small>`;
   /** The account in use: its limits (only it is read), and a line when the Claude app is on another account. */
   const inUse = (email: string, plan: string, content: string) =>
-    `<div class="abox"><div class="abox-head">${lamp(true)}<span class="abox-t"><b class="email">${email}</b><small>${plan}</small></span>${B.use}</div>${content}</div>`;
+    `<div class="abox"><div class="abox-head">${lamp(true)}<span class="abox-t"><b>${emailHTML(email)}</b><small>${plan}</small></span>${B.use}</div>${content}</div>`;
   const nowBox = (line = "") => inUse(work.email, work.plan, `<div class="abox-limits">${limitsHTML("work", loadCardStyle(), false)}</div>${line ? note(line) : ""}`);
   /** A standby account: address, plan and when it was last in use. No limits: it isn't read. */
   const sbBox = (s: Standby, selected: boolean, badge: string, attr = "") =>
-    `<div class="abox unlit${selected ? " sel" : ""}"${attr}><div class="abox-head">${lamp(false)}<span class="abox-t"><b class="email">${s.email}</b><small>${s.plan}</small></span>${badge}</div>${note(`Last in use ${s.lastInUse}.`)}</div>`;
+    `<div class="abox unlit${selected ? " sel" : ""}"${attr}><div class="abox-head">${lamp(false)}<span class="abox-t"><b>${emailHTML(s.email)}</b><small>${s.plan}</small></span>${badge}</div>${note(`Last in use ${s.lastInUse}.`)}</div>`;
   const K = (a: string, t: string) => `<button type="button" class="key k" ${a}>${t}</button>`;
   const GO = (a: string, t: string) => `<button type="button" class="pill small tint t-green" ${a}>${t}</button>`;
   const STOP = (a: string, t: string) => `<button type="button" class="pill small tint t-red" ${a}>${t}</button>`;
@@ -82,7 +84,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       case "moving": case "undoing": return bar(`<span class="b">Switching</span> <em>· moving sessions</em>`);
       case "waiting": return bar(`<span class="b">Switching</span> <em>· waiting · until ${until}</em>`, STOP("data-sw-cancel", "Cancel"));
       // Claude Code is on the new account; the Claude app (the account in use follows it) is still on the old one
-      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, K(`data-sw-backswitch title="Switch back to ${emailText(work.email)}"`, "Switch back…"), GO(backTitle, "‹ Back"));   // words: SEO
+      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, K(`data-sw-backswitch title="${backSwitchTitle()}"`, "Switch back…"), GO(backTitle, "‹ Back"));   // words: SEO
       case "other": return bar(`<span class="a">Signed in as ${O()}</span> <em>· not ${T()}</em>`, GO("data-sw-retry", `Sign in as ${T()} again`), K("data-sw-undo", "Undo the move"));
       case "timedOut": return bar(`<span class="a">No sign-in</span> <em>· sessions on ${T()}</em>`, GO("data-sw-retry", "Try again"), K("data-sw-undo", "Undo the move"), back);
       case "failed": return fail === "half"
@@ -292,6 +294,8 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   });
 
   return {
+    /** Show emails changed: Switch back…'s hover title shows the address as it reads now. */
+    refreshTitles() { page.querySelectorAll<HTMLElement>("[data-sw-backswitch]").forEach((b) => (b.title = backSwitchTitle())); },
     /** Opens the page with an account picked (a standby address, or the one a full limit offers first). */
     open(pickEmail?: string) {
       if (!running()) { phase = "ready"; shown = ""; to = pickEmail && list.some((s) => s.email === pickEmail) ? pickEmail : list[0].email; }
