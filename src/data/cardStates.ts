@@ -65,7 +65,8 @@ export const cardStates: Record<CardStateKey, CardState> = {
     tone: "red",
     heading: () => "Terminal is signed in to another account",   // words: SEO
     sentence: signInAs,
-    keys: { lead: "signin", keys: [], more: ["show", "terminal", "-", "refresh", "settings"] },
+    // mostly a usage-only profile, which has no window and no Terminal key: just Sign in… and ⋯
+    keys: { lead: "signin", keys: [], more: ["refresh", "settings"] },
   },
   denied: {
     label: "Keychain denied",   // words: SEO
