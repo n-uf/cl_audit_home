@@ -16,7 +16,7 @@ window's top-bar switch is the site navigation, and each page is its own address
 | --- | --- | --- |
 | Overview | `/` | the three features: several Claude profiles side by side, usage limits in the Dock, a dashboard read directly from Anthropic; the switches, adding a profile and the words used |
 | Dashboard | `/dashboard` | the app's dashboard with demo profiles: a card each with working Claude window and Dock icon switches, and usage history (24 h / 7 d / 30 d) |
-| Settings | `/settings` | the app's Settings page, working: General and each profile's settings (Profile, Claude Code and window, Updates and alerts, Clicking and panels, Icon, Dock icon, Opening and closing), with a note saying what a changed setting now does |
+| Settings | `/settings` | the app's Settings page, working: General and each profile's settings (Profile, Claude Code, Claude window, Alerts and Sessions, then Dock icon and Menu bar), with a note saying what a changed setting now does |
 | Install | `/install` | build steps, the latest version, requirements, adding a profile, update and uninstall |
 | FAQ | `/faq` | questions and answers (also as FAQPage data) |
 
