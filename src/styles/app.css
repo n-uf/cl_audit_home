@@ -279,9 +279,11 @@ code, kbd { font-family: var(--mono); }
 }
 
 [hidden] { display: none !important; }
-/* Show emails off: every address on every surface blurs (hover one to see it); it is never left out or masked */
-.hide-emails .email { filter: blur(3.5px); transition: filter .12s; }
-.hide-emails .email:hover { filter: none; }
+/* Show emails off, as 26.11.33 does it: addresses are left out of the dashboard, launcher, panels and menus, and blur
+   in Settings (and the pages it opens), where hovering one shows it */
+.hide-emails .email { display: none; }
+.hide-emails .settings .email { display: inline !important; filter: blur(3.5px); transition: filter .12s; }
+.hide-emails .settings .email:hover { filter: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dash-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(352px, 1fr)); gap: 12px; }   /* wide enough for both switches in one row */
 .dash .history { margin-top: 10px; }
