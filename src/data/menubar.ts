@@ -62,21 +62,21 @@ export function menuHTML(id: AccountId, name: string) {
   const row = (n: string, p: number, sub: string, hot: boolean) =>
     `<div class="mbm-row"><span>${n}</span><span class="mbm-bar"><i style="width:${Math.min(100, p)}%;background:${level(p)}"></i></span><b style="color:${level(p)}">${p}%</b></div><div class="mbm-sub${hot ? " hot" : ""}">${sub}</div>`;
   const when = (m: number) => (m >= 1440 ? (Math.round(m / 1440) === 1 ? "in 1 day" : `in ${Math.round(m / 1440)} days`) : m >= 60 ? `in ${Math.floor(m / 60)} h ${m % 60} min` : `in ${m} min`);
-  // a profile with other accounts (26.11.18): the account in use under its name, then "Switch account ›", a submenu
-  // with the account in use ticked ("in use · week 61%", the only account read) and every standby account in the order
-  // a full limit offers them, each with when it was last in use ("2 days ago"): a standby account isn't read, so it has
-  // no week. While a limit is full, the one offered first also sits on the top level, right under the full line.
+  // a profile with other accounts (26.11.18): the account in use under its name with its lamp and no label, then "Switch
+  // account ›", a submenu with the account in use ticked ("ultra-1 · week 61%", the only account read, still enabled) and
+  // every standby account in the order a full limit offers them, by address only (26.11.33; no "in use", no "2 days
+  // ago"). While a limit is full, the one offered first also sits on the top level, right under the full line.
   const sb = offerOrder(standby[id]), full = a.five >= 100 || a.week >= 100;
   const best = full ? bestOffer(standby[id]) : undefined;
   const sw = (s: { email: string }, label: string, words = "") => `<button type="button" class="mbm-it" data-mbm="switch" data-to="${s.email}">${label}${words ? `<span class="r">${words}</span>` : ""}</button>`;
   const switching = sb.length
     ? (best ? sw(best, `Switch to ${shortName(best.email)}…`) : "") +
       `<button type="button" class="mbm-it" data-mbm="submenu" aria-expanded="false">Switch account<span class="chev">›</span></button>` +
-      `<div class="mbm-subm" hidden><div class="mbm-it cur"><span class="ck">✓</span>${shortName(a.email)}<span class="r">in use · week ${a.week}%</span></div>` +
-      sb.map((s) => sw(s, `<span class="ck"></span>${shortName(s.email)}…`, s.lastInUse)).join("") + "</div><hr>"
+      `<div class="mbm-subm" hidden><div class="mbm-it cur"><span class="ck">✓</span>${shortName(a.email)}<span class="r">week ${a.week}%</span></div>` +
+      sb.map((s) => sw(s, `<span class="ck"></span>${shortName(s.email)}…`)).join("") + "</div><hr>"
     : "";
   return `<div class="mbm-head"><i style="background:${a.hex}"></i><b>Claude ${name}</b><span>${a.plan}</span></div>` +
-    (sb.length ? `<div class="mbm-acc"><i></i>${shortName(a.email)} <span>· in use</span></div>` : "") +
+    (sb.length ? `<div class="mbm-acc"><i></i>${shortName(a.email)}</div>` : "") +
     (a.five >= 100 ? `<div class="mbm-sub hot">5-hour full · in ${countdownWords(a.fiveLeftMin)}</div>` : "") +
     row("5-hour", a.five, a.five >= 100 ? "full" : `resets ${when(a.fiveLeftMin)}`, a.five >= 100) +
     row("Week", a.week, `resets ${when(a.weekLeftMin)}`, false) +
