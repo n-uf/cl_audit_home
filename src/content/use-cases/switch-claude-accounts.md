@@ -188,6 +188,26 @@ cl_audit never signs the Claude app in or out. The Switch page tells you to sign
 
 You can also switch without the Switch page: run `claude auth login` yourself for the profile's folder. Within a second the profile works on the account that signed in, and the one before stands by. cl_audit moves the window's sessions as part of its own switch, not for a sign-in you run yourself. An account that another profile works on is refused.
 
+## What the card says when it shows no numbers
+
+A profile's card shows numbers only when Claude Code in Terminal, on the profile's folder, is signed in to the same account as the Claude app. Otherwise it shows a bold heading about Terminal's sign-in and one sentence on what to do. Red means the sign-in is on the wrong account or gone. Amber means it can't be read yet, or a switch is under way. The addresses here are shortened, as the card shortens one that is too long for its line.
+
+**Terminal is signed in to b…@example.com.** The Claude app is on a…@example.com, but Claude Code in Terminal is signed in to b…@example.com, so the card shows no numbers and turns red. Its sentence reads "Sign in as a…@example.com to read Main's usage." Press **Sign in…** and sign Terminal in as a…@example.com. Terminal moves into the ⋯ menu, where it says which account it is on.
+
+**Terminal is signed out.** The profile's folder holds no Claude Code sign-in, so cl_audit has nothing to read. The card is red and says "Sign in as a…@example.com to read Main's usage." If cl_audit doesn't know the address, it says "Sign in to read Main's usage." Press **Sign in…**. Show window and Terminal move into the ⋯ menu, where Terminal says it "asks to sign in first".
+
+**Terminal's sign-in has expired.** The folder had a sign-in, but it ran out. The card is red and gives the same sentence as the signed-out card: "Sign in as a…@example.com to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal again says it asks to sign in first. In Settings ▸ Accounts, the account's address menu also has **Renew sign-in by itself**.
+
+**Terminal is signed in to Work's account.** Terminal on Main's folder is signed in to b…@example.com, and that is the account in use on your Work profile. Its numbers show on Work's card and never on Main's. Main's card is red and says "Sign in as a…@example.com to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says "signed in as b…@example.com (Work)".
+
+**Terminal is signed in to another account.** This one mostly shows on usage-only profiles, which have no Claude app account to compare with. Terminal's sign-in differs from the account the profile's record names, so the card is red. Its sentence gives the account the record names: "Sign in as a…@example.com to read Main's usage." A usage-only card has no window key and no Terminal key, only **Sign in…** and ⋯.
+
+**Can't read Terminal's sign-in yet.** cl_audit asked the Keychain for Claude Code's sign-in, and macOS refused or didn't answer in time. A locked Keychain is the usual cause, and cl_audit shows no prompt of its own. The card is amber and says "The Keychain didn't hand it over: unlock it, then Refresh now." **Refresh now** leads the row, Show window stays, and Terminal is in the ⋯ menu.
+
+**Can't read Terminal's sign-in.** Claude Code saved its sign-in in a form cl_audit doesn't know, so the card says exactly that: "Claude Code saved it in a form cl_audit doesn't know." It is amber, because this isn't a sign-in problem, and it has no **Sign in…** key. The row has **Refresh now**, Show window and ⋯. A newer Claude Code can change how it saves its sign-in.
+
+**Switching to b…@example.com: one step left.** A switch to b…@example.com has moved Claude Code in Terminal and now waits for the Claude app. The card is amber and says "Sign the Claude app in to b…@example.com to finish." It has no **Sign in…** key, because cl_audit can't sign the app in: open it with Show window and sign in there. After 24 hours, the card falls back to the red message.
+
 ## Cancel it, or undo it
 
 **Cancel** stops the waiting. Sessions that already moved stay where they went until you undo the move. **Undo the move** puts them back as long as Claude Code isn't on the new account yet. Once the switch has finished there's no undo: the way back is a switch the other way, and the Reached screen offers **Switch back to ultra-1…**.

@@ -103,7 +103,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       case "waiting": return row("Now", nowBox()) + row("Next", wanted(B.to));
       // the Claude app is still on the account in use, and Claude Code is on the new one (cl_audit 26.11.25, AccountResolver's
       // SplitUsage): nothing shows Claude Code's numbers as the profile's, so the box says the switch waits for the app's
-      // sign-in. No numbers (the old account's are gone; the plan goes with them) and no key to log Claude Code in.
+      // sign-in. No numbers (the old account's are gone; the plan goes with them) and no key to sign Claude Code in.
       case "reached": return row("Now", inUse(work.email, "", note(`Switched to ${E()}: sign the Claude app in to ${E()} to finish`) + note("No numbers yet: the agent reads them within a few minutes.")));
       // the folder is on another of the profile's accounts now, and that is the one in use (no numbers read yet)
       case "other": return row("Now", inUse(other().email, other().plan, note("No numbers yet: the agent reads them within a few minutes."))) + row("Wanted", wanted(B.sb));
