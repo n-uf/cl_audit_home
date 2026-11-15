@@ -238,7 +238,10 @@ export function initCards() {
         return;
       }
       // Refresh now (a key, or in ⋯): reads every profile's usage again
-      if (t.closest("[data-refresh]")) showWhatNow("Refresh now", "", "Reads every profile's usage again now. It doesn't use any of your limits. This is a demo, so nothing is read.");   // words: SEO
+      if (t.closest("[data-refresh]")) {
+        showWhatNow("Refresh now", "", "Reads every profile's usage again now. It doesn't use any of your limits. This is a demo, so nothing is read.");   // words: SEO
+        return;
+      }
       // Sign in… (a state without numbers): Claude Code's own sign-in, with the address filled in
       if ((b = t.closest("[data-card-signin]"))) {
         const acc = accounts.find((x) => x.id === b!.dataset.cardSignin)!;

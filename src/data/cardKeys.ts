@@ -5,13 +5,12 @@ import { chevronHTML } from "./chevron";
 import { emailsHTML, emailHTML, emailText } from "./emails";
 
 type Acc = (typeof accounts)[number];
-/** What steps out of the row into ⋯ ("show", "terminal"). Refresh now and Profile settings… are always in ⋯, with a
- *  divider after what stepped out and one between them, as the app's menu has them; the other values are not read. */
-export type MoreItem = "show" | "terminal" | "refresh" | "settings" | "-";
 export type KeysSpec = {
   lead?: "signin" | "refresh";     // a first key: the reddish Sign in…, or Refresh now (also in ⋯)
   keys: ("show" | "terminal")[];   // the keys after it, before ⋯
-  more: MoreItem[];
+  /** What steps out of the row into ⋯. Refresh now and Profile settings… are always in ⋯, with a divider after what
+   *  stepped out and one between them, as the app's menu has them. */
+  more: ("show" | "terminal")[];
   terminalNote?: string;           // what Terminal's ⋯ item says about its sign-in, to its right
   switchMenu?: boolean;            // Switch account at the right end of the row, with its menu
 };
@@ -45,7 +44,7 @@ export function cardKeysHTML(a: Acc, spec: KeysSpec, open = !!a.winOpen) {
   const terminal = `<button type="button" class="pill small" data-open-terminal="${a.id}">Terminal</button>`;
   // what stepped out of the row comes first, with its divider; a usage-only profile has neither a window nor Terminal,
   // so the group is hidden whole (app.css) and no divider is left behind
-  const out = spec.more.filter((m) => m === "show" || m === "terminal").map((m) => m === "show"
+  const out = spec.more.map((m) => m === "show"
     ? `<button type="button" role="menuitem" data-open-desktop="${a.id}" data-open-label>${open ? "Show window" : "Open window"}</button>`
     : `<button type="button" role="menuitem" data-open-terminal="${a.id}">Terminal${spec.terminalNote ? `<small>${emailsHTML(spec.terminalNote)}</small>` : ""}</button>`).join("");
   const more = `<span class="more-wrap"><button type="button" class="pill small more-btn" data-more aria-haspopup="menu" aria-expanded="false" aria-label="More for ${a.name}" title="More for ${a.name}">⋯</button>` +
