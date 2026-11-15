@@ -4,7 +4,7 @@
 // the next change replaces it. It stays 6 s (the timer restarts on each change; it waits while the pointer
 // or keyboard focus is on it), and the × closes it. The region is aria-live="polite".
 
-import { blurEmails } from "./emails";
+import { emailsHTML } from "./emails";
 
 const HOLD_MS = 6000;
 const w = window as any;
@@ -30,13 +30,13 @@ function arm() {
   }, HOLD_MS);
 }
 
-/** Shows "<setting> · <value>" in bold and the description under it. */
+/** Shows "<setting> · <value>" (just "<setting>" without a value) in bold and the description under it. */
 export function showWhatNow(setting: string, value: string, text: string) {
   const c = card();
   if (!c) return;
-  // an address in either line is blurred while Show emails is off
-  c.querySelector(".wn-t")!.innerHTML = blurEmails(`${setting} · ${value}`);
-  c.querySelector(".wn-d")!.innerHTML = blurEmails(text);
+  // an address in either line is masked while Show emails is off
+  c.querySelector(".wn-t")!.innerHTML = emailsHTML(value ? `${setting} · ${value}` : setting);
+  c.querySelector(".wn-d")!.innerHTML = emailsHTML(text);
   c.classList.add("show");
   arm();
 }

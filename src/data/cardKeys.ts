@@ -2,7 +2,7 @@
 // one spec, so the page (AccountCard.astro) and the script that changes a card's state use the same markup.
 import { accounts, standby, offerOrder } from "./demo";
 import { chevronHTML } from "./chevron";
-import { blurEmails, emailHTML, emailText } from "./emails";
+import { emailsHTML, emailHTML, emailText } from "./emails";
 
 type Acc = (typeof accounts)[number];
 /** What steps out of the row into ⋯ ("show", "terminal"). Refresh now and Profile settings… are always in ⋯, with a
@@ -47,7 +47,7 @@ export function cardKeysHTML(a: Acc, spec: KeysSpec, open = !!a.winOpen) {
   // so the group is hidden whole (app.css) and no divider is left behind
   const out = spec.more.filter((m) => m === "show" || m === "terminal").map((m) => m === "show"
     ? `<button type="button" role="menuitem" data-open-desktop="${a.id}" data-open-label>${open ? "Show window" : "Open window"}</button>`
-    : `<button type="button" role="menuitem" data-open-terminal="${a.id}">Terminal${spec.terminalNote ? `<small>${blurEmails(spec.terminalNote)}</small>` : ""}</button>`).join("");
+    : `<button type="button" role="menuitem" data-open-terminal="${a.id}">Terminal${spec.terminalNote ? `<small>${emailsHTML(spec.terminalNote)}</small>` : ""}</button>`).join("");
   const more = `<span class="more-wrap"><button type="button" class="pill small more-btn" data-more aria-haspopup="menu" aria-expanded="false" aria-label="More for ${a.name}" title="More for ${a.name}">⋯</button>` +
     `<span class="more-menu" role="menu" hidden>${out ? `<span class="more-out">${out}<hr></span>` : ""}` +
     `<button type="button" role="menuitem" data-refresh>Refresh now</button><hr><a role="menuitem" href="/settings/" data-profile-settings="${a.id}">Profile settings…</a></span></span>`;

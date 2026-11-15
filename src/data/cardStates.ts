@@ -5,7 +5,7 @@
 // wrong account or gone. Amber: the sign-in is fine but can't be read yet, or a switch is under way.
 // Sample data only; every address is written in full, so Show emails off can mask it (data/emails.ts).
 import { accounts } from "./demo";
-import { blurEmails } from "./emails";
+import { emailsHTML } from "./emails";
 import { usualKeys, type KeysSpec } from "./cardKeys";
 
 type Acc = (typeof accounts)[number];
@@ -96,4 +96,4 @@ export const cardStates: Record<CardStateKey, CardState> = {
 export const cardStateKeys = Object.keys(cardStates) as CardStateKey[];
 
 /** The usage slot's content: the heading, then the sentence. */
-export const stateSlotHTML = (a: Acc, s: CardState) => `<p class="redline"><b>${blurEmails(s.heading(a))}</b><span>${blurEmails(s.sentence(a))}</span></p>`;
+export const stateSlotHTML = (a: Acc, s: CardState) => `<p class="redline"><b>${emailsHTML(s.heading(a))}</b><span>${emailsHTML(s.sentence(a))}</span></p>`;
