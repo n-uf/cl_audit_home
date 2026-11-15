@@ -45,7 +45,7 @@ sources:
   - title: "cl_audit source at v26.11.29, Sources/AccountResolver.swift (SplitUsage)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.29/Sources/AccountResolver.swift#L127-L175"
     checked: 2026-11-14
-    supports: "The card's words when the Claude app and Claude Code in Terminal are on different accounts (“cl_audit can't read …'s usage: Claude Code in Terminal is signed in to …”, the line under it, the “Log in to … in Terminal…” button) and right after a switch (“Switched to …: sign the Claude app in to … to finish”, no key); Claude Code's own numbers on one labelled line, “Claude Code in Terminal”."
+    supports: "The card's words when the Claude app and Claude Code in Terminal are on different accounts (“cl_audit can't read …'s usage: Claude Code in Terminal is signed in to …”, the “Log in to … in Terminal…” button) and right after a switch (“Switched to …: sign the Claude app in to … to finish”, no key); Claude Code's own numbers on one labelled line, “Claude Code in Terminal”."
     quote: "Claude Code in Terminal is signed in to"
   - title: "cl_audit README at commit 4cb6007 (Experimental: switching, import, export, restore and the default profile)"
     url: "https://github.com/n-uf/cl_audit/blob/4cb6007/README.md#experimental-switching-import-export-restore-and-the-default-profile"
@@ -123,7 +123,7 @@ You find them in Settings ▸ Main ▸ Claude Code ▸ **Accounts**. The account
 
 ![Accounts in a profile's Claude Code card](/img/guides/accounts-card.webp "The site's demo, with its own sample profile Work and team accounts: one in use, two on standby, and two folders from before.")
 
-The IN USE box shows the account the profile's Claude app is signed in to, or Claude Code's while the app is signed out or can't be read. Every screen shows that same account. The numbers always come through Claude Code's sign-in, so when Claude Code is on another account than the app, they aren't shown as the profile's. The card says "cl_audit can't read a…@example.com's usage: Claude Code in Terminal is signed in to b…@example.com." and under it "Log Claude Code in Terminal in to a…@example.com to see its numbers.", offers a "Log in to a…@example.com in Terminal…" button, and keeps Claude Code's own numbers on one muted line labelled "Claude Code in Terminal".
+The IN USE box shows the account the profile's Claude app is signed in to, or Claude Code's while the app is signed out or can't be read. Every screen shows that same account. The numbers always come through Claude Code's sign-in, so when Claude Code is on another account than the app, they aren't shown as the profile's. The profile's dashboard card says "cl_audit can't read a…@example.com's usage: Claude Code in Terminal is signed in to b…@example.com.", offers a "Log in to a…@example.com in Terminal…" button, and keeps Claude Code's own numbers on one muted line labelled "Claude Code in Terminal".
 
 ## Where the accounts come from
 
@@ -184,7 +184,7 @@ Chats and Projects on claude.ai don't move. They belong to each account, and so 
 
 ## The Claude app's sign-in stays yours
 
-cl_audit never signs the Claude app in or out. The Switch page tells you to sign the window in to the new account when you open it. Until you do, the account box shows the app's account and says "Switched to u…@example.com: sign the Claude app in to u…@example.com to finish", with no key and no numbers as the profile's. That line lasts up to a day after the switch; after that the card says "cl_audit can't read …'s usage" and offers the button to log Claude Code in Terminal in to the app's account. For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it.
+cl_audit never signs the Claude app in or out. The Switch page tells you to sign the window in to the new account when you open it. Until you do, the account box shows the app's account and says "Switched to u…@example.com: sign the Claude app in to u…@example.com to finish", with no key and no numbers as the profile's. That line lasts up to a day after the switch; after that the dashboard card says "cl_audit can't read …'s usage" and offers "Log in to … in Terminal…". For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it.
 
 You can also switch without the Switch page: run `claude auth login` yourself for the profile's folder. Within a second the profile works on the account that signed in, and the one before stands by. cl_audit moves the window's sessions as part of its own switch, not for a sign-in you run yourself. An account that another profile works on is refused.
 
