@@ -69,6 +69,11 @@ sources:
     checked: 2026-11-11
     supports: "In use and standby; the routes to the Switch page; the sign-in command (claude auth login --claudeai --email, CLAUDE_CONFIG_DIR unset for ~/.claude and set for any other folder); the Claude app's signed-in account comes first, then Claude Code's with a muted line; the numbers come through Claude Code's sign-in; a sign-in changed in Terminal or the Claude app shows within a few seconds; worked out from the Claude app's own files, not by running it; for a week after a switch, the line under Accounts; the first profile is the default profile, on ~/.claude, and first run offers Use or Sign in…; to watch an old account's limits, give it a profile of its own."
     quote: "The Claude app's signed-in account comes first."
+  - title: "cl_audit CHANGELOG, 26.11.33"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
+    checked: 2026-11-15
+    supports: "26.11.33: the dashboard card says why it has no numbers in one heading and one sentence, with one compact key; standby accounts no longer sit on the card, and while a limit is full a compact Switch account key opens a menu of them, by address only; after a switch the waiting line reads “Switching to … : one step left. Sign the Claude app in to … to finish.” instead of “Switched to …”; “Log in” is now “Sign in”."
+    quote: "After a switch, the waiting line now reads"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
