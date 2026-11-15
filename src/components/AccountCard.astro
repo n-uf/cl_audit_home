@@ -1,10 +1,11 @@
 ---
 // A profile's dashboard card, as the app draws it: icon and name, one row of two switches (its Claude
 // window and its Dock icon; only the Dock icon one without a window; none for a usage only profile, which
-// gets one display instead), both limits, and the buttons. The switches work in the demo: the script in
+// gets one display instead), both limits, and the keys. The switches work in the demo: the script in
 // data/cardState.ts moves them, with a spinner, and keeps the state across pages.
-import { cardLimitsHTML } from "../data/panelView";
-import type { AccountId } from "../data/demo";
+import { cardLimitsHTML, fullLimit } from "../data/panelView";
+import { cardKeysHTML, fullKeys, usualKeys } from "../data/cardKeys";
+import { accounts, type AccountId } from "../data/demo";
 import AccIcon from "./AccIcon.astro";
 interface Props {
   id?: string; icon: string; name: string; email: string; plan: string; color: string; tint: string;
@@ -13,6 +14,8 @@ interface Props {
 const a = Astro.props;
 const glyphW = "chip-glyph chip-glyph-w";
 const open = !!a.winOpen;   // the demo's starting state; data/cardState.ts takes over in the browser
+const account = accounts.find((x) => x.id === a.id)!;
+const full = !!fullLimit(a.id as AccountId);   // a limit is full: the plan badge turns red and Switch account shows
 ---
 <article class="card acc" data-account={a.id}>
   <div class="acc-head">
@@ -21,7 +24,7 @@ const open = !!a.winOpen;   // the demo's starting state; data/cardState.ts take
       <div class="acc-name"><span class="dot" style={`background:${a.color}`} />Claude {a.name}</div>
       <div class="inuse"><i></i><span class="email">{a.email}</span></div>
     </div>
-    <span class="plan"><b>{a.plan}</b><small>{a.updated}</small></span>
+    <span class:list={["plan", { red: full }]}><b>{a.plan}</b><small>{a.updated}</small></span>
   </div>
 
   <div class="chips2" role="group" aria-label={`Claude window and Dock icon of ${a.name}`}>
@@ -41,15 +44,7 @@ const open = !!a.winOpen;   // the demo's starting state; data/cardState.ts take
   <div class="watchbar"><span class="pchip-title">Profile</span><span class="disp watch-disp"><span class="g">Usage only</span> <em>· not in the Dock · no window</em></span></div>
 
   <Fragment set:html={cardLimitsHTML(a.id as AccountId, "segments")} />
-  <div class="acc-actions">
-    <button type="button" class={`pill small tint ${a.tint}${open ? "" : " unlit"}`} data-open-desktop={a.id} data-open-label>{open ? "Show window" : "Open window"}</button>
-    <button type="button" class="pill small" data-open-terminal={a.id}>Terminal</button>
-    <span class="more-wrap">
-      <button type="button" class="pill small more-btn" data-more aria-haspopup="menu" aria-expanded="false" aria-label={`More for ${a.name}`} title={`More for ${a.name}`}>⋯</button>
-      <span class="more-menu" role="menu" hidden>
-        <button type="button" role="menuitem" data-refresh>Refresh now</button>
-        <a role="menuitem" href="/settings/" data-profile-settings={a.id}>Profile settings…</a>
-      </span>
-    </span>
-  </div>
+  <!-- the keys: Show window, Terminal and ⋯; while a limit is full Terminal steps into ⋯ and Switch account (orange)
+       sits at the right end, under the full display (data/cardKeys.ts draws the row, also for the demo's states) -->
+  <div class="acc-actions" data-card-keys><Fragment set:html={cardKeysHTML(account, full ? fullKeys : usualKeys, open)} /></div>
 </article>

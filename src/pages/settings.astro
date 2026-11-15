@@ -25,6 +25,7 @@ const jsonLd = [
   import { widgetHTML } from "../data/widgetView";
   import { limitsHTML, whenWords, type Design } from "../data/panelView";
   import { showWhatNow } from "../data/whatNow";
+  import { signInNote, signInOtherNote } from "../data/signInNotes";
   import { initSwitch } from "../data/switchDemo";
 
   const PEEK = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -594,7 +595,7 @@ const jsonLd = [
       if (pick("[data-login-again]")) {
         const own = accounts.find((x) => x.id === acc)!;
         closeMenus();
-        showWhatNow("Log in…", "", `Claude Code's own sign-in opens in Terminal for ${own.dir}, with ${own.email} filled in, and cl_audit watches the folder as it does for a switch. This is a demo, so nothing opens.`);
+        showWhatNow("Log in…", "", signInNote(own.dir, own.email));
         return;
       }
       // Settings ▸ Accounts: click a standby account to select it (again to deselect); its Switch account key opens the
@@ -682,7 +683,7 @@ const jsonLd = [
       // Sign in with another account…: Claude Code's own sign-in on the profile's folder, no address filled in
       if (pick("[data-sign-other]")) {
         const own = accounts.find((x) => x.id === acc)!;
-        showWhatNow("Sign in with another account…", "", `Claude Code's own sign-in opens in Terminal for ${own.dir}, with no address filled in. The account that signs in becomes the one ${who()} works on; the one before goes on standby. This is a demo, so nothing opens.`);
+        showWhatNow("Sign in with another account…", "", signInOtherNote(own.dir, who()));
         return;
       }
       // a standby account's address is a pop-up: Switch to it… (the Switch page with it picked) and Forget…

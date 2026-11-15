@@ -1858,6 +1858,41 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   .desk[data-page="overview"] :is(.dapp.deskwin, .term.deskwin) { bottom: 64px; }
 }
 
+/* ── The profile card while a limit is full (UI fixes, 2026-11) ──────────────────────────────────────────────────────
+   The limit rows keep the pitch of every other card's and the full display fits the same two-row slot, so the keys row
+   stays level. SWITCH ACCOUNT, in cl_audit-quick's orange Download key face, sits at the right end of that row under the
+   display and as wide as it; its menu is a macOS one. The plan badge is red while a limit is full. */
+.plan.red { color: #ff6b5e; text-shadow: 0 0 3px rgba(255,107,94,.7), 0 0 8px rgba(255,107,94,.3); background: linear-gradient(180deg, #0b0303, #1a0a09); }
+.plan.red small { color: #b0605a; }
+.card.acc .fl { align-items: flex-start; height: 69px; }
+.card.acc .fl .fl-rows { display: flex; flex-direction: column; gap: 9px; justify-content: flex-start; }
+.card.acc .fl .fl-row { height: 30px; align-items: center; }
+.card.acc .fl .fl-name { line-height: 1.1; }
+.card.acc .fl .fl-box { height: 69px; box-sizing: border-box; padding-top: 5px; padding-bottom: 5px; justify-content: center; gap: 0; }
+.chev2 { width: 7px; height: 11px; flex: none; color: var(--muted); margin-left: 5px; vertical-align: -1px; }
+.offer2 { position: relative; display: inline-flex; align-items: center; margin: 0; }
+.acc-actions .offer2.under { margin-left: auto; }
+.acc-actions .offer2.under, .acc-actions .offer2.under > .sw-acc { width: 132px; box-sizing: border-box; }
+.acc-actions .offer2 .sw-acc { flex: none; display: inline-flex; align-items: center; justify-content: center; height: 24px; padding: 0 9px; letter-spacing: .08em; cursor: pointer; }
+.disp.sw-acc.orangek { border: 0; color: #1d0b04; text-shadow: none;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #f4a075, #e47b4c);
+  box-shadow: inset 0 1px rgba(255,255,255,.55), inset 0 -1px rgba(110,40,10,.35), 0 0 0 1px #5e240d, 0 2px #3d1707, 0 3px 7px rgba(0,0,0,.45); }
+.disp.sw-acc.orangek:hover { box-shadow: inset 0 1px rgba(255,255,255,.55), inset 0 -1px rgba(110,40,10,.35), 0 0 0 1px #5e240d, 0 2px #3d1707, 0 0 16px rgba(255,122,61,.6), 0 3px 7px rgba(0,0,0,.45); }
+.disp.sw-acc.orangek::after { display: none; }
+.sw-acc.orangek .chev2 { color: inherit; margin-left: 2px; }
+.nmenu { position: absolute; bottom: 30px; right: 0; z-index: 6; min-width: 300px; padding: 5px; border-radius: 10px; font: 13px var(--font); color: #ececef;
+  background: rgba(42,42,45,.98); -webkit-backdrop-filter: blur(24px) saturate(1.4); backdrop-filter: blur(24px) saturate(1.4);
+  box-shadow: 0 10px 28px rgba(0,0,0,.65), inset 0 0 0 1px rgba(255,255,255,.12); }
+.nmenu .ni { display: grid; grid-template-columns: 18px auto 1fr; align-items: baseline; gap: 4px 8px; width: 100%; box-sizing: border-box; padding: 4px 10px 4px 6px; border: 0; border-radius: 5px; background: none; color: inherit; font: inherit; text-align: left; }
+.nmenu button.ni { cursor: pointer; }
+.nmenu button.ni:hover { background: #0a64d6; }
+.nmenu .ck { text-align: center; }
+.nmenu .nd { text-align: right; color: #a1a1a8; white-space: nowrap; }
+.nmenu .ni.cur .nl, .nmenu .ni.cur .nd { color: #8a8a92; }
+.nmenu hr { border: 0; border-top: 1px solid rgba(255,255,255,.13); margin: 5px 8px; }
+.more-menu hr { border: 0; border-top: 1px solid rgba(255,255,255,.13); margin: 3px 8px; }
+@media (max-width: 420px) { .acc-actions .offer2.under, .acc-actions .offer2.under > .sw-acc { width: 112px; } }
+
 /* ── Upright phones: text and touch targets ───────────────────────────────────────────────────────────────────────
    Running text is 16 px; the lines around it (notes, table cells, captions, code) 14 px; the printed labels on the
    panel's keys and displays 12 px at the least. Every key, link and switch you press is at least 44 px high. */
