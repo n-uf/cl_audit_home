@@ -277,7 +277,9 @@ code, kbd { font-family: var(--mono); }
 }
 
 [hidden] { display: none !important; }
-.hide-emails .email { display: none; }
+/* Show emails off: every address on every surface blurs (hover one to see it); it is never left out or masked */
+.hide-emails .email { filter: blur(3.5px); transition: filter .12s; }
+.hide-emails .email:hover { filter: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dash-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(352px, 1fr)); gap: 12px; }   /* wide enough for both switches in one row */
 .dash .history { margin-top: 10px; }
@@ -1148,10 +1150,6 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 .oc-note { color: var(--muted); font-size: 10px; }
 .oc-none { color: var(--faint); font-size: 11px; }
 @media (max-width: 480px) { .oc-row { grid-template-columns: 14px minmax(0, 1fr); } .oc-eff { grid-column: 2; } }
-
-/* Show emails off: left out everywhere, but blurred in Settings (hover to see one), as the app does */
-.hide-emails .settings .email { display: inline !important; filter: blur(5px); transition: filter .12s; }
-.hide-emails .settings .email:hover { filter: none; }
 
 /* The dashboard card style (General settings ▸ Dashboard cards): the two limits in one of the five designs.
    The preview keeps the height of the tallest design, so the cards below it stay where they are. */
