@@ -19,9 +19,9 @@ const open = !!a.winOpen;   // the demo's starting state; data/cardState.ts take
     <AccIcon id={a.id!} src={a.icon} size={56} alt={`Dock icon of the ${a.name} profile: ${a.five}% of the 5-hour limit used`} loading="lazy" />
     <div style="display:grid;gap:2px;min-width:0">
       <div class="acc-name"><span class="dot" style={`background:${a.color}`} />Claude {a.name}</div>
-      <div class="sub email">{a.email}</div>
+      <div class="inuse"><i></i><span class="email">{a.email}</span></div>
     </div>
-    <span class="plan">{a.plan}</span>
+    <span class="plan"><b>{a.plan}</b><small>{a.updated}</small></span>
   </div>
 
   <div class="chips2" role="group" aria-label={`Claude window and Dock icon of ${a.name}`}>
@@ -51,6 +51,5 @@ const open = !!a.winOpen;   // the demo's starting state; data/cardState.ts take
         <a role="menuitem" href="/settings/" data-profile-settings={a.id}>Profile settings…</a>
       </span>
     </span>
-    <span class="sub">{a.updated}</span>
   </div>
 </article>
