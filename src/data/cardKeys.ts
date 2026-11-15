@@ -2,13 +2,16 @@
 // one spec, so the page (AccountCard.astro) and the script that changes a card's state use the same markup.
 import { accounts, standby, offerOrder } from "./demo";
 import { chevronHTML } from "./chevron";
+import { blurEmails } from "./emails";
 
 type Acc = (typeof accounts)[number];
 /** What ⋯ holds, in order; "-" is a separator. */
 export type MoreItem = "show" | "terminal" | "refresh" | "settings" | "-";
 export type KeysSpec = {
-  keys: ("show" | "terminal")[];   // the keys in the row, before ⋯
+  lead?: "signin" | "refresh";     // a first key: the reddish Sign in…, or Refresh now
+  keys: ("show" | "terminal")[];   // the keys after it, before ⋯
   more: MoreItem[];
+  terminalNote?: string;           // what Terminal's ⋯ item says about its sign-in, to its right
   switchMenu?: boolean;            // Switch account at the right end of the row, with its menu
 };
 
@@ -40,10 +43,12 @@ export function cardKeysHTML(a: Acc, spec: KeysSpec, open = !!a.winOpen) {
   const item = (m: MoreItem) =>
     m === "-" ? "<hr>"
     : m === "show" ? `<button type="button" role="menuitem" data-open-desktop="${a.id}" data-open-label>${open ? "Show window" : "Open window"}</button>`
-    : m === "terminal" ? `<button type="button" role="menuitem" data-open-terminal="${a.id}">Terminal</button>`
+    : m === "terminal" ? `<button type="button" role="menuitem" data-open-terminal="${a.id}">Terminal${spec.terminalNote ? `<small>${blurEmails(spec.terminalNote)}</small>` : ""}</button>`
     : m === "refresh" ? "<button type=\"button\" role=\"menuitem\" data-refresh>Refresh now</button>"
     : `<a role="menuitem" href="/settings/" data-profile-settings="${a.id}">Profile settings…</a>`;
   const more = `<span class="more-wrap"><button type="button" class="pill small more-btn" data-more aria-haspopup="menu" aria-expanded="false" aria-label="More for ${a.name}" title="More for ${a.name}">⋯</button>` +
     `<span class="more-menu" role="menu" hidden>${spec.more.map(item).join("")}</span></span>`;
-  return spec.keys.map((k) => (k === "show" ? show : terminal)).join("") + more + (spec.switchMenu ? switchMenuHTML(a) : "");
+  const lead = spec.lead === "signin" ? `<button type="button" class="pill small signin" data-card-signin="${a.id}">Sign in…</button>` :   // words: SEO
+    spec.lead === "refresh" ? "<button type=\"button\" class=\"pill small\" data-refresh>Refresh now</button>" : "";
+  return lead + spec.keys.map((k) => (k === "show" ? show : terminal)).join("") + more + (spec.switchMenu ? switchMenuHTML(a) : "");
 }

@@ -125,6 +125,12 @@
 .face-silver :is(.disp, .plan, .stepper [data-value], .wn-t)::after { display: none; }
 .face-silver :is(.disp, .plan, .wn-t) * { text-shadow: none !important; }
 .face-silver .plan small { color: rgba(28,30,32,.5); }
+.face-silver .plan.red, .face-silver .inuse.out { color: #b42318; }
+.face-silver .plan.amber { color: #a85f00; }
+.face-silver .msgslot .redline { color: #7a2a22; }
+.face-silver .msgslot .redline b { color: #b42318; }
+.face-silver .msgslot.amber .redline { color: #6b4a12; }
+.face-silver .msgslot.amber .redline b { color: #a85f00; }
 .face-silver .disp em:not(.amber) { color: rgba(28,30,32,.45); }
 .face-silver .disp em.amber { color: #a85f00 !important; }
 

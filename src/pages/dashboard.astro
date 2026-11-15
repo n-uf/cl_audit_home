@@ -4,6 +4,7 @@ import AccountCard from "../components/AccountCard.astro";
 import History from "../components/History.astro";
 import Experimental from "../components/Experimental.astro";
 import { accounts } from "../data/demo";
+import { cardStates, cardStateKeys } from "../data/cardStates";
 import { orgNode, webPage, breadcrumbs } from "../data/schema";
 
 // main keyword: "Claude usage dashboard"
@@ -32,6 +33,12 @@ const jsonLd = [
       </span>
     </div>
     <div class="dash-cards">{accounts.map((a) => <AccountCard {...a} />)}</div>
+    <!-- demo only, like the Switch page's "what can go wrong": a key puts the first card into a state with no numbers
+         (data/cardStates.ts) and the same key puts it back; nothing else changes -->
+    <div class="sw-demo" data-card-demo><span class="sub">Demo: other states</span><!-- words: SEO -->
+      <span class="switch small-switch" role="group" aria-label="Other states"><!-- words: SEO -->
+        {cardStateKeys.map((k) => <button type="button" data-card-state={k}>{cardStates[k].label}</button>)}
+      </span></div>
     <Experimental flows={["switch"]} />
     <History />
     <!-- 26.10.5: until the first scan of the session files is done, the history says it's reading them (once per

@@ -1006,7 +1006,7 @@ select.menu option { background: #2c2c2f; color: var(--text); }
 .more-btn { padding: 0 9px; letter-spacing: .08em; }
 .more-menu { position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 6; min-width: 170px; padding: 5px; border-radius: 7px; display: grid; gap: 2px;
   background: var(--grain), linear-gradient(180deg, #3a3a3d, #2c2c2f); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 0 0 1px #0b0b0c, 0 12px 30px rgba(0,0,0,.55); }
-.more-menu > * { padding: 6px 10px; border: 0; border-radius: 4px; background: none; color: var(--text); font: inherit; font-size: 13px; text-align: left; text-decoration: none; cursor: pointer; white-space: nowrap; }
+.more-menu > * { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 6px 10px; border: 0; border-radius: 4px; background: none; color: var(--text); font: inherit; font-size: 13px; text-align: left; text-decoration: none; cursor: pointer; white-space: nowrap; }
 .more-menu > *:hover { background: rgba(0,0,0,.3); }
 
 /* ── Claude open dot: over each profile's icon, like the app draws it (top-left, dark ring) ── */
@@ -1890,8 +1890,31 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .nmenu .nd { text-align: right; color: #a1a1a8; white-space: nowrap; }
 .nmenu .ni.cur .nl, .nmenu .ni.cur .nd { color: #8a8a92; }
 .nmenu hr { border: 0; border-top: 1px solid rgba(255,255,255,.13); margin: 5px 8px; }
-.more-menu hr { border: 0; border-top: 1px solid rgba(255,255,255,.13); margin: 3px 8px; }
+.more-menu > hr { padding: 0; border: 0; border-top: 1px solid rgba(255,255,255,.13); margin: 3px 8px; cursor: default; }
+.more-menu > hr:hover { background: none; }
 @media (max-width: 420px) { .acc-actions .offer2.under, .acc-actions .offer2.under > .sw-acc { width: 112px; } }
+
+/* ── The profile card in a state with no numbers (UI fixes, 2026-11; data/cardStates.ts) ──────────────────────────────
+   The usage slot holds the limits; in a state they keep their room, unseen, and the heading and sentence fill exactly
+   that room, so the keys row stays level with every card's. Red: the sign-in is on the wrong account or gone; amber:
+   it can't be read yet, or a switch is under way. The plan badge takes the tone; Sign in… is a reddish key. */
+.usage-slot { display: grid; }
+.usage-slot > * { grid-area: 1 / 1; min-width: 0; }
+.usage-slot.msg > .card-limits { visibility: hidden; }
+.msgslot { contain: size; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; }
+.msgslot .redline { margin: 0; display: flex; flex-direction: column; gap: 2px; font-size: 12.5px; line-height: 1.35; color: #e9b3ad; }
+.msgslot .redline b { font-weight: 600; font-size: 13px; color: #ff8a80; }
+.msgslot.amber .redline { color: #e9d3a8; }
+.msgslot.amber .redline b { color: #ffb24a; }
+.plan.amber { color: #ffb24a; text-shadow: 0 0 3px rgba(255,178,74,.7), 0 0 8px rgba(255,178,74,.3); background: linear-gradient(180deg, #0b0703, #1a1209); }
+.plan.amber small { color: #b08a52; }
+.inuse.out { color: #ff8a80; }
+.inuse.out i { background: #ff6b5e; box-shadow: 0 0 5px rgba(255,107,94,.8); }
+.acc-actions .pill.signin { border: 0; color: #1f0705; text-shadow: none;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #f4907f, #dc5a4b);
+  box-shadow: inset 0 1px rgba(255,255,255,.55), inset 0 -1px rgba(110,26,10,.35), 0 0 0 1px #5e170d, 0 2px #3d0e07, 0 3px 7px rgba(0,0,0,.45); }
+.acc-actions .pill.signin::before, .acc-actions .pill.signin::after { display: none; }
+.more-menu small { font-size: 11px; color: var(--muted); }
 
 /* ── Upright phones: text and touch targets ───────────────────────────────────────────────────────────────────────
    Running text is 16 px; the lines around it (notes, table cells, captions, code) 14 px; the printed labels on the
