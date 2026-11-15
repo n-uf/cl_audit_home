@@ -61,6 +61,11 @@ sources:
     checked: 2026-11-11
     supports: "26.11.18: standby accounts are remembered on the profile, signed out, with no folder or Keychain item of their own, and show no usage; accounts are found on this Mac; a full limit offers the standby account least used by the week it left with, not known to be full; a switch moves the Claude window's Code-tab sessions and scheduled tasks after a backup."
     quote: "A profile is one Claude Code folder, and switching signs in again on it."
+  - title: "cl_audit CHANGELOG, 26.11.33"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
+    checked: 2026-11-15
+    supports: "26.11.33: standby accounts no longer sit on the dashboard card; while a limit is full, a compact Switch account key opens a menu of them, by address only."
+    quote: "a compact Switch account key opens a menu of them, by address only"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
@@ -159,7 +164,7 @@ Each profile keeps its own:
 
 When you create a new folder, you can copy some Claude Code setup into it from another folder you pick: instructions, agents, skills, commands or memory. That way a new profile starts with your usual `CLAUDE.md` and skills.
 
-Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and every address is blurred; hover one to see it.
+Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and addresses are left out or blurred.
 
 ## Is it allowed to have multiple Claude accounts?
 
