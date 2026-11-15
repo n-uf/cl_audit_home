@@ -220,7 +220,9 @@ code, kbd { font-family: var(--mono); }
 .updated { color: var(--muted); font-size: 12px; white-space: nowrap; }
 
 /* ── Profile cards (dashboard) ──────────────────────────────────────── */
-.acc { display: grid; gap: 12px; }
+/* a column with the keys row pinned to the bottom: cards in a row are as tall as the tallest, and the spare height goes
+   above the keys, so every card's keys row is level (the app keeps them level) */
+.acc { display: flex; flex-direction: column; gap: 12px; }
 .acc-head { display: flex; gap: 12px; align-items: center; }
 .acc-head img { width: 56px; height: 56px; flex: none; }
 .acc-name { display: flex; align-items: center; gap: 7px; font-weight: 600; font-size: 16px; }
@@ -238,7 +240,7 @@ code, kbd { font-family: var(--mono); }
   font: 600 10px/1.1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: rgb(var(--glow)); text-shadow: 0 0 3px rgba(var(--glow), .7), 0 0 8px rgba(var(--glow), .3); }
 .plan b, .plan small { max-width: 100%; overflow: hidden; text-overflow: ellipsis; font: inherit; }
 .plan small { font-size: 8.5px; letter-spacing: .08em; color: #8a9a98; text-shadow: none; }
-.acc-actions { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.acc-actions { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-top: auto; }
 /* the card's keys: gunmetal, white legend, as production's Demo dashboard key */
 .acc-actions .pill { height: 26px; padding: 0 12px; border-radius: 4px; font-size: 10px; letter-spacing: .12em; color: #f1f1f0; text-shadow: 0 -1px 0 rgba(0,0,0,.35);
   background: repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, rgba(0,0,0,.06) 1px 2px), linear-gradient(180deg, #74746f, #52524e);
@@ -1783,6 +1785,8 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* Settings: the selected standby account's "Standby" display becomes a Switch account key, in place */
 .acc-pick .sw-acc { display: none; flex: none; border: 0; cursor: pointer; font: inherit; }
 .acc-pick .abox.sel .sw-acc { display: inline-flex; align-items: center; }
+/* a compact key, the size of the STANDBY display it replaces (the sketch's key; no huge buttons) */
+.acc-pick .sw-acc.disp { height: 20px; min-height: 0; padding: 0 8px; font-size: 9.5px; letter-spacing: .12em; }
 .acc-pick .abox.sel:has(.sw-acc) .abox-badge { display: none; }
 .acc-pick .sw-acc:hover { filter: brightness(1.07); }
 .acc-pick .sw-acc:active { transform: translateY(1px); box-shadow: inset 0 3px 4px rgba(0,0,0,.5), inset 0 0 0 1px rgba(0,0,0,.5), 0 0 0 1.5px #0b0c0d; }
