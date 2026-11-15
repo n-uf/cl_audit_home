@@ -61,11 +61,11 @@ sources:
     checked: 2026-11-11
     supports: "26.11.18: standby accounts are remembered on the profile, signed out, with no folder or Keychain item of their own, and show no usage; accounts are found on this Mac; a full limit offers the standby account least used by the week it left with, not known to be full; a switch moves the Claude window's Code-tab sessions and scheduled tasks after a backup."
     quote: "A profile is one Claude Code folder, and switching signs in again on it."
-  - title: "cl_audit README at v26.11.33 (Settings: Show emails)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/README.md#L419-L420"
+  - title: "cl_audit source at v26.11.34, Sources/Privacy.swift (Show emails)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.34/Sources/Privacy.swift#L45-L83"
     checked: 2026-11-15
-    supports: "26.11.33: with Show emails (General settings) off, email addresses are left out of the launcher, the dashboard, the panels and the Dock menus, and blurred in Settings (hover one to see it), for screen sharing."
-    quote: "and blurs them in Settings (hover one to see it), for screen sharing"
+    supports: "26.11.34: with Show emails off, an address that stands alone is left out of the launcher, dashboard and panels (HiddenEmail), an address in a menu or a sentence is shown masked, as y•••@example.com (Privacy.masked), and Settings blurs the address until it is hovered (SettingsEmail). The README and the Settings hover text give only the first and last of the three."
+    quote: "Settings text that can't blur (menus, sentences): masked while emails are hidden."
   - title: "cl_audit CHANGELOG, 26.11.33"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
     checked: 2026-11-15
@@ -169,7 +169,7 @@ Each profile keeps its own:
 
 When you create a new folder, you can copy some Claude Code setup into it from another folder you pick: instructions, agents, skills, commands or memory. That way a new profile starts with your usual `CLAUDE.md` and skills.
 
-Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and addresses are left out of the dashboard, the launcher, the panels and the Dock menus, and blurred in Settings.
+Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and an address that stands alone is left out of the launcher, the dashboard and the panels, one inside a menu or a message is shown in a masked form such as y•••@example.com, and Settings blurs it until you hover it.
 
 ## Is it allowed to have multiple Claude accounts?
 
