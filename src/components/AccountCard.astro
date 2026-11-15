@@ -43,7 +43,12 @@ const full = !!fullLimit(a.id as AccountId);   // a limit is full: the plan badg
   <!-- a usage only profile (Usage in the Dock and Claude window both off): no switches, one display says so -->
   <div class="watchbar"><span class="pchip-title">Profile</span><span class="disp watch-disp"><span class="g">Usage only</span> <em>· not in the Dock · no window</em></span></div>
 
-  <Fragment set:html={cardLimitsHTML(a.id as AccountId, "segments")} />
+  <!-- the usage slot: the limits; in a state with no numbers (data/cardStates.ts) they keep their room, unseen, and the
+       state's heading and sentence fill it, so the keys row stays level with every card's -->
+  <div class="usage-slot">
+    <Fragment set:html={cardLimitsHTML(a.id as AccountId, "segments")} />
+    <div class="msgslot" data-card-msg hidden></div>
+  </div>
   <!-- the keys: Show window, Terminal and ⋯; while a limit is full Terminal steps into ⋯ and Switch account (orange)
        sits at the right end, under the full display (data/cardKeys.ts draws the row, also for the demo's states) -->
   <div class="acc-actions" data-card-keys><Fragment set:html={cardKeysHTML(account, full ? fullKeys : usualKeys, open)} /></div>

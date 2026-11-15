@@ -3,10 +3,15 @@
 // spinner for a moment ("opening…", "quitting…", "starting…"), then the final state. Opening and closing
 // (Settings) is followed too: the Dock icon quits 10 s after the window, the window opens when the Dock
 // icon starts, and so on. The state lives on window, so it survives page changes (not a reload).
+// The dashboard's "Demo: other states" keys put one card (demoProfile) into a state with no numbers (cardStates.ts) and
+// back: its usage slot, keys row, plan badge and account line change, nothing else.
 import { accounts, type AccountId } from "./demo";
 import { loadPrefs } from "./prefs";
+import { fullLimit } from "./panelView";
 import { showWhatNow } from "./whatNow";
-import { signInOtherNote } from "./signInNotes";
+import { signInNote, signInOtherNote } from "./signInNotes";
+import { cardKeysHTML, fullKeys, usualKeys } from "./cardKeys";
+import { cardStates, demoProfile, stateSlotHTML, type CardStateKey } from "./cardStates";
 
 type S = { win: boolean; dock: boolean; winBusy?: "opening" | "quitting"; dockBusy?: "starting" | "quitting"; quitAt?: number };
 
@@ -16,6 +21,8 @@ const QUIT_AFTER_S = 10;   // the Dock icon quits this long after its Claude win
 const w = window as any;
 const state: Record<string, S> = (w.__clState ??= Object.fromEntries(accounts.map((a) => [a.id, { win: !!a.winOpen, dock: true }])));
 let ticker = 0;
+// the state each card is shown in ("" = its own, with numbers), kept on window like the switches'
+const shown: Record<string, CardStateKey | ""> = (w.__clCardShown ??= {});
 
 // Opening and closing links a profile's Dock icon and Claude window; without a window there's nothing to link
 const follows = (id: string) => {
@@ -87,12 +94,32 @@ function paint(chip: HTMLElement | null, sw: HTMLElement | null, on: boolean, bu
   if (el) setSub(el, sub);
 }
 
+/** A card in a state with no numbers (or back with them): the usage slot says why, the keys row, the plan badge's tone
+ *  and the account line follow. A limit that is full keeps its own keys and red badge once the state is taken away. */
+function paintState(card: HTMLElement, a: (typeof accounts)[number], win: boolean) {
+  const key = shown[a.id] ?? "";
+  if ((card.dataset.cardStateKey ?? "") === key) return;
+  card.dataset.cardStateKey = key;
+  const st = key ? cardStates[key] : undefined, full = !!fullLimit(a.id);
+  const msg = card.querySelector<HTMLElement>("[data-card-msg]")!;
+  msg.hidden = !st;
+  msg.className = `msgslot${st ? ` ${st.tone}` : ""}`;
+  msg.innerHTML = st ? stateSlotHTML(a, st) : "";
+  card.querySelector(".usage-slot")?.classList.toggle("msg", !!st);
+  card.querySelector("[data-card-keys]")!.innerHTML = cardKeysHTML(a, st ? st.keys : full ? fullKeys : usualKeys, win);
+  const plan = card.querySelector(".plan");
+  plan?.classList.toggle("red", st ? st.tone === "red" : full);
+  plan?.classList.toggle("amber", st?.tone === "amber");
+  card.querySelector(".inuse")?.classList.toggle("out", !!st?.out);
+}
+
 export function renderCards() {
   const root = document.documentElement;
   for (const a of accounts) {
     const s = state[a.id];
     root.classList.toggle(`win-${a.id}`, s.win && !s.winBusy);
     document.querySelectorAll<HTMLElement>(`.acc[data-account="${a.id}"]`).forEach((card) => {
+      paintState(card, a, s.win);
       const winOn = s.winBusy ? s.winBusy === "opening" : s.win;
       const dockOn = s.dockBusy ? s.dockBusy === "starting" : s.dock;
       paint(card.querySelector("[data-chip-w]"), card.querySelector("[data-win-switch]"), winOn, !!s.winBusy, winSub(s));
@@ -104,6 +131,8 @@ export function renderCards() {
     });
     document.querySelectorAll<HTMLElement>(`[data-win-badge="${a.id}"]`).forEach((b) => (b.hidden = !(s.win && !s.winBusy)));
   }
+  // the demo row's keys: lit while their state is shown
+  document.querySelectorAll<HTMLElement>("[data-card-state]").forEach((b) => b.classList.toggle("on", shown[demoProfile] === b.dataset.cardState));
 }
 
 function tick() {
@@ -174,6 +203,18 @@ export function initCards() {
       }
       // "Profile settings…" opens Settings on that profile
       if ((b = t.closest("[data-profile-settings]"))) { try { sessionStorage.setItem("cl_audit.settingsProfile", b.dataset.profileSettings!); } catch {} }
+      // the "Demo: other states" keys: one card goes into that state; the same key again puts it back
+      if ((b = t.closest("[data-card-state]"))) {
+        const key = b.dataset.cardState as CardStateKey;
+        shown[demoProfile] = shown[demoProfile] === key ? "" : key;
+        renderCards();
+        return;
+      }
+      // Sign in… (a state without numbers): Claude Code's own sign-in, with the address filled in
+      if ((b = t.closest("[data-card-signin]"))) {
+        const acc = accounts.find((x) => x.id === b!.dataset.cardSignin)!;
+        showWhatNow("Sign in…", "", signInNote(acc.dir, acc.email));   // words: SEO
+      }
       // Switch account's menu (while a limit is full): a standby account opens the Switch page, in Settings as in the
       // app, with it picked; Sign in to another account… says what it would do
       if ((b = t.closest("[data-card-switch]"))) { location.href = `/settings/?switch=${b.dataset.cardSwitch}&to=${encodeURIComponent(b.dataset.to!)}`; return; }
