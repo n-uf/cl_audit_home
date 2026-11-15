@@ -59,7 +59,7 @@ sources:
   - title: "cl_audit CHANGELOG, 26.11.18"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
     checked: 2026-11-11
-    supports: "Standby accounts are remembered on the profile, signed out, with no folder or Keychain item of their own, and show no usage; accounts are found on this Mac; a full limit offers the standby account least used by the week it left with, not known to be full; a switch moves the Claude window's Code-tab sessions and scheduled tasks after a backup."
+    supports: "26.11.18: standby accounts are remembered on the profile, signed out, with no folder or Keychain item of their own, and show no usage; accounts are found on this Mac; a full limit offers the standby account least used by the week it left with, not known to be full; a switch moves the Claude window's Code-tab sessions and scheduled tasks after a backup."
     quote: "A profile is one Claude Code folder, and switching signs in again on it."
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
@@ -111,7 +111,7 @@ Each seat keeps its own limits. cl_audit shows them; it doesn't add them up or h
 
 An account belongs to one profile. If you add one that another profile already has, cl_audit refuses it. A personal plan and a Team seat on one email still work, because they're different accounts.
 
-A profile can also keep your other accounts on standby, signed out. Nothing reads a standby account, so it shows no limits, only its plan and when it was last in use. When a limit is full, the profile's card selects one already: the standby account that isn't known to be full and had the most of its week left when it was last in use. Its STANDBY label turns into a **Switch account** key. cl_audit finds these accounts on this Mac by itself, under Settings ▸ the profile ▸ Claude Code ▸ **Accounts**. To watch two accounts' limits at the same time, give each its own profile. {{live:/use-cases/switch-claude-accounts/}}If you'd rather move one profile between your own accounts than run several side by side, the [Claude account switcher](/use-cases/switch-claude-accounts/) page shows how.{{/live}}
+A profile can also keep your other accounts on standby, signed out. Nothing reads a standby account, so it shows no limits, only its plan and when it was last in use. When a limit is full, the profile's card shows a **Switch account** key under the full display. It selects nothing for you: its menu ticks the account in use, lists the standby accounts by address and ends with "Sign in to another account…". cl_audit finds these accounts on this Mac by itself, under Settings ▸ the profile ▸ Claude Code ▸ **Accounts**. To watch two accounts' limits at the same time, give each its own profile. {{live:/use-cases/switch-claude-accounts/}}If you'd rather move one profile between your own accounts than run several side by side, the [Claude account switcher](/use-cases/switch-claude-accounts/) page shows how.{{/live}}
 
 {{experimental: switch}}
 
