@@ -4,14 +4,14 @@ export const site = "https://cl-audit.n-uf.com";
 
 // The current cl_audit release. Update on each cl_audit release (version from the app's VERSION file,
 // date from its CHANGELOG.md); the footer, the Install page and the structured data read these.
-export const version = "26.11.42";
+export const version = "26.11.43";
 export const released = "2026-11-15";
-export const build = "917";   // the release's build number (About shows "26.11.42 · build 917")
+export const build = "924";   // the release's build number (About shows "26.11.43 · build 924")
 /** SHA-256 of this release's cl_audit.dmg and cl_audit.zip (GitHub's asset digests; the hub's release note gives the
  *  same). Every release ships both: the same app with the same code signature. */
 export const sha256 = {
-  dmg: "df5a0ca4c6e42a3cd5cdd529274f73a31bf30a8ff9187d7c06c00dddc7b6183b",
-  zip: "97db5f4506b7d11bb513f37e1d893784c9c5febaff6f455e9f7ae37e2052a25e",
+  dmg: "7fbbce209ce9613530464440634625b044d1afc527232fdb959f8c7206592544",
+  zip: "de76f589cd67a99df712bfa7d1b11d197b4d1e0ad87b97d9848d1d98eb5c48d7",
 };
 export const changelog = `${repo}/blob/main/CHANGELOG.md`;
 /** The release stage the site shows next to the version (Overview display and At a glance, Install). Set to ""
