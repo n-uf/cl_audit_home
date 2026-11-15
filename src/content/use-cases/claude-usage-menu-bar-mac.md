@@ -36,6 +36,11 @@ sources:
     checked: 2026-11-11
     supports: "At v26.11.18: the account in use under the profile's name with a lit green lamp; Switch account › with the account in use ticked and every other account with when it was last in use; Switch to … on the top level while a limit is full; all of them open the Switch page; When full: crimson only"
     quote: "A full limit is crimson, except in System, where its countdown shows it."
+  - title: "cl_audit CHANGELOG, 26.11.33"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
+    checked: 2026-11-15
+    supports: "26.11.33: menus no longer say “· in use”; the account in use is ticked."
+    quote: "the account in use is ticked"
   - title: "cl_audit CHANGELOG, 26.11.32"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.32/CHANGELOG.md"
     checked: 2026-11-15
