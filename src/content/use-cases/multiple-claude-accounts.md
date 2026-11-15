@@ -159,7 +159,7 @@ Each profile keeps its own:
 
 When you create a new folder, you can copy some Claude Code setup into it from another folder you pick: instructions, agents, skills, commands or memory. That way a new profile starts with your usual `CLAUDE.md` and skills.
 
-Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and they're left out or blurred.
+Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and every address is blurred; hover one to see it.
 
 ## Is it allowed to have multiple Claude accounts?
 
