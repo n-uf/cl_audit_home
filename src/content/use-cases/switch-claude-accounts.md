@@ -27,6 +27,11 @@ faq:
   - q: "Can I undo a switch?"
     a: "Until Claude Code is on the new account, Undo the move puts back what was moved, though it may not bring everything back. After that, the way back is a switch the other way. A switch that stopped half way offers Undo it on the profile's Sessions card."
 sources:
+  - title: "cl_audit CHANGELOG, 26.11.44"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.44/CHANGELOG.md"
+    checked: 2026-11-15
+    supports: "26.11.44: when Claude Code's folder is signed in to another profile's account, the dashboard card, the Switch page, the Dock icon's usage panel and menu and the menu bar menu name the profile's own account instead of the other profile's, or none when it has none of its own; the Switch page says before you press Switch which files named like a Code-tab session will stay with the old account (“Left with ann: 2 files named like a Code-tab session that aren't one…”)."
+    quote: "which files named like a Code-tab session will stay with the old account"
   - title: "cl_audit CHANGELOG, 26.11.33"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
     checked: 2026-11-15
@@ -167,6 +172,8 @@ The page shows the account in use under NOW, with its limits, and the account yo
 - The window closes for the move. When you open it again, you sign it in to ultra-2 yourself.
 - Claude Code's transcripts stay in the folder. So do the profile's name, Dock icon, look and settings, and ultra-1 stays on the profile as a standby account.
 
+If the old account's folder holds files named like a Code-tab session that aren't one, the page also says so before you press Switch: "Left with ultra-1: 2 files named like a Code-tab session that aren't one (a link, a file not named by an id)." They are never moved.
+
 Then come the steps and **Switch to ultra-2**.
 
 ![The Switch page for the profile Work](/img/guides/switch-page.webp "The site's demo of the Switch page, with its sample profile Work about to switch from team-1 to team-2.")
@@ -220,7 +227,7 @@ The folder had a sign-in, but it ran out. The card is red and gives the same sen
 
 ### Terminal is signed in to Work's account
 
-Terminal on Main's folder is signed in to ben@example.com, and that is the account in use on your Work profile. Its numbers show on Work's card and never on Main's. Main's card is red and says "Sign in as ann@example.com to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says it is on Work's account.
+Terminal on Main's folder is signed in to ben@example.com, the account in use on your Work profile. Its numbers show only on Work's card. Main's card is red and names Main's own account: "Sign in as ann@example.com to read Main's usage." With no account of its own, it says "Sign in to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says it is on Work's account.
 
 ### Terminal is signed in to another account
 
