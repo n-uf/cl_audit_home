@@ -1567,7 +1567,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* the usage history's CSV key and the cost in its totals */
 .csv-key { margin-left: 2px; }
 @media (max-width: 600px) { .mb-icons { display: none; } .mb-lane .mbg { zoom: .58; } }
-/* Claude Code ▸ Accounts (26.11.0, 26.11.18): a pop-up like Folder; the account in use's lists it ticked, Log in… and
+/* Claude Code ▸ Accounts (26.11.0, 26.11.18): a pop-up like Folder; the account in use's lists it ticked, Sign in… and
    Renew sign-in by itself; a standby account's lists Switch to it… and Forget… */
 .login-ctl { position: relative; display: inline-flex; min-width: 0; }
 .login-btn { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; border: 0; cursor: pointer; font: 12.5px/1.6 var(--font); }
