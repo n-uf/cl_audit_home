@@ -63,7 +63,7 @@ export const cardStates: Record<CardStateKey, CardState> = {
   mismatch: {
     label: "Different account",   // words: SEO
     tone: "red",
-    heading: () => "Terminal is on a different account",   // words: SEO
+    heading: () => "Terminal is signed in to another account",   // words: SEO
     sentence: signInAs,
     keys: { lead: "signin", keys: [], more: ["show", "terminal", "-", "refresh", "settings"] },
   },
@@ -71,7 +71,7 @@ export const cardStates: Record<CardStateKey, CardState> = {
     label: "Keychain denied",   // words: SEO
     tone: "amber",
     heading: () => "Can't read Terminal's sign-in yet",   // words: SEO
-    sentence: () => "Allow cl_audit when the Keychain asks.",   // words: SEO
+    sentence: () => "The Keychain didn't hand it over: unlock it, then Refresh now.",   // words: SEO
     keys: { lead: "refresh", keys: ["show"], more: ["terminal", "-", "settings"] },
   },
   unreadable: {
