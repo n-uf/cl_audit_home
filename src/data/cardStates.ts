@@ -14,6 +14,8 @@ export type CardState = {
   label: string;                 // the demo row's key
   tone: "red" | "amber";         // the plan badge takes it
   out?: boolean;                 // signed out or expired: the account line gets a red lamp and a red address
+  lampOff?: boolean;             // the sign-in can't be read, or is on another account or profile: the green lamp goes off
+                                 // (26.11.41, ProfileDisplay.lamp); in the split it stays lit, the account in use's
   heading: (a: Acc) => string;
   sentence: (a: Acc) => string;
   keys: KeysSpec;
@@ -56,6 +58,7 @@ export const cardStates: Record<CardStateKey, CardState> = {
   clash: {
     label: "Another profile's account",   // words: SEO
     tone: "red",
+    lampOff: true,
     heading: () => `Terminal is signed in to ${work.name}'s account`,   // words: SEO
     sentence: signInAs,
     keys: { lead: "signin", keys: ["show"], more: ["terminal"], terminalNote: `on ${work.name}'s account` },   // words: SEO
@@ -63,6 +66,7 @@ export const cardStates: Record<CardStateKey, CardState> = {
   mismatch: {
     label: "Different account",   // words: SEO
     tone: "red",
+    lampOff: true,
     heading: () => "Terminal is signed in to another account",   // words: SEO
     sentence: signInAs,
     // the demo shows it on home, which has a window: Sign in…, Show window, and Terminal in ⋯ (a usage-only profile has
@@ -72,6 +76,7 @@ export const cardStates: Record<CardStateKey, CardState> = {
   denied: {
     label: "Keychain denied",   // words: SEO
     tone: "amber",
+    lampOff: true,
     heading: () => "Can't read Terminal's sign-in yet",   // words: SEO
     sentence: () => "The Keychain didn't hand it over: unlock it, then Refresh now.",   // words: SEO
     keys: { lead: "refresh", keys: ["show"], more: ["terminal"] },
@@ -79,6 +84,7 @@ export const cardStates: Record<CardStateKey, CardState> = {
   unreadable: {
     label: "Unreadable",   // words: SEO
     tone: "amber",
+    lampOff: true,
     heading: () => "Can't read Terminal's sign-in",   // words: SEO
     sentence: () => "Claude Code saved it in a form cl_audit doesn't know.",   // words: SEO
     keys: { lead: "refresh", keys: ["show"], more: ["terminal"] },

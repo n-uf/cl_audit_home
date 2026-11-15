@@ -112,6 +112,7 @@ function paintState(card: HTMLElement, a: (typeof accounts)[number], win: boolea
   plan?.classList.toggle("red", st ? st.tone === "red" : full);
   plan?.classList.toggle("amber", st?.tone === "amber");
   card.querySelector(".inuse")?.classList.toggle("out", !!st?.out);
+  card.querySelector(".inuse")?.classList.toggle("unlit", !!st?.lampOff);
 }
 
 export function renderCards() {
