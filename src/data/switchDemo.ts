@@ -9,6 +9,7 @@ import { accounts, standby, offerOrder, shortName, type Standby } from "./demo";
 import { limitsHTML } from "./panelView";
 import { loadCardStyle } from "./prefs";
 import { showWhatNow } from "./whatNow";
+import { emailText } from "./emails";
 
 // "undoing": Undo the move putting the sessions back (the app's .moving phase, with a receipt)
 type Phase = "ready" | "closing" | "moving" | "undoing" | "waiting" | "reached" | "other" | "timedOut" | "failed" | "undone";
@@ -23,7 +24,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   const list = offerOrder(standby.work);
   let to = list[0].email, phase: Phase = "ready", fail: "window" | "half" = "window", shown: Case | "" = "", timer = 0, until = "";
   const T = () => shortName(to), target = () => list.find((s) => s.email === to)!;
-  /** The address the switch is moving to, in full, in the class Show emails off blurs. */
+  /** The address the switch is moving to, in full, in the class Show emails off blurs (this page is part of Settings). */
   const E = () => `<span class="email">${to}</span>`;
   /** The account the browser signs in as in "Wrong account": another of the profile's standby accounts. */
   const other = () => list.find((s) => s.email !== to)!;
@@ -81,7 +82,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       case "moving": case "undoing": return bar(`<span class="b">Switching</span> <em>· moving sessions</em>`);
       case "waiting": return bar(`<span class="b">Switching</span> <em>· waiting · until ${until}</em>`, STOP("data-sw-cancel", "Cancel"));
       // Claude Code is on the new account; the Claude app (the account in use follows it) is still on the old one
-      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, K(`data-sw-backswitch title="Switch back to ${work.email}"`, "Switch back…"), GO(backTitle, "‹ Back"));   // words: SEO
+      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, K(`data-sw-backswitch title="Switch back to ${emailText(work.email)}"`, "Switch back…"), GO(backTitle, "‹ Back"));   // words: SEO
       case "other": return bar(`<span class="a">Signed in as ${O()}</span> <em>· not ${T()}</em>`, GO("data-sw-retry", `Sign in as ${T()} again`), K("data-sw-undo", "Undo the move"));
       case "timedOut": return bar(`<span class="a">No sign-in</span> <em>· sessions on ${T()}</em>`, GO("data-sw-retry", "Try again"), K("data-sw-undo", "Undo the move"), back);
       case "failed": return fail === "half"

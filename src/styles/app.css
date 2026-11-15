@@ -284,6 +284,11 @@ code, kbd { font-family: var(--mono); }
 .hide-emails .email { display: none; }
 .hide-emails .settings .email { display: inline !important; filter: blur(3.5px); transition: filter .12s; }
 .hide-emails .settings .email:hover { filter: none; }
+/* an address inside a sentence, a menu or a toast also carries its masked form (y•••@example.com, data/emails.ts), shown
+   instead of it while emails are hidden, except in Settings, which blurs the full address */
+.email-m { display: none; }
+.hide-emails .email-m { display: inline; }
+.hide-emails .settings .email-m { display: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dash-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(352px, 1fr)); gap: 12px; }   /* wide enough for both switches in one row */
 .dash .history { margin-top: 10px; }
@@ -1012,8 +1017,12 @@ select.menu option { background: #2c2c2f; color: var(--text); }
 .more-btn { padding: 0 9px; letter-spacing: .08em; }
 .more-menu { position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 6; min-width: 170px; padding: 5px; border-radius: 7px; display: grid; gap: 2px;
   background: var(--grain), linear-gradient(180deg, #3a3a3d, #2c2c2f); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 0 0 1px #0b0b0c, 0 12px 30px rgba(0,0,0,.55); }
-.more-menu > * { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 6px 10px; border: 0; border-radius: 4px; background: none; color: var(--text); font: inherit; font-size: 13px; text-align: left; text-decoration: none; cursor: pointer; white-space: nowrap; }
-.more-menu > *:hover { background: rgba(0,0,0,.3); }
+.more-menu :is(button, a) { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 6px 10px; border: 0; border-radius: 4px; background: none; color: var(--text); font: inherit; font-size: 13px; text-align: left; text-decoration: none; cursor: pointer; white-space: nowrap; }
+.more-menu :is(button, a):hover { background: rgba(0,0,0,.3); }
+/* what stepped out of the row (Show window, Terminal) and its divider: one group, so a profile without a window or
+   Terminal (usage only) hides it whole and no divider is left behind */
+.more-out { display: contents; }
+.acc.usage-only .more-out { display: none; }
 
 /* ── Claude open dot: over each profile's icon, like the app draws it (top-left, dark ring) ── */
 .ico { position: relative; display: inline-block; line-height: 0; flex: none; }
@@ -1661,13 +1670,13 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .abox .pn-limits { margin: 0; }
 .abox-note { font-size: 10.5px; color: var(--muted); }
 .abox .login-menu { top: calc(100% + 4px); left: 0; right: auto; }
-/* the account in use (26.11.15): a near-black well with a thin green-tinted edge and a faint green glow inside; Silver:
-   the display glass with a darker green. Two shades only: this dark one while it is in focus, and the unlit shade (.rest)
-   while a standby account is picked, as every other box. Standby boxes keep the plain window. */
+/* the account in use (26.11.15): a near-black well with a faint green glow inside and no hairline, as the app's focused
+   box; Silver: the display glass with a darker green. Two shades only: this dark one while it is in focus, and the unlit
+   shade (.rest) while a standby account is picked, as every other box. Standby boxes keep the plain window. */
 .abox.in-use { position: relative; background: linear-gradient(180deg, #111214, #0e0f11);
-  box-shadow: inset 0 0 0 1px #24372a, inset 0 0 12px rgba(var(--led-on), .09), inset 0 1px 1.5px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.05); }
+  box-shadow: inset 0 0 12px rgba(var(--led-on), .09), inset 0 1px 1.5px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.05); }
 .face-silver .appwin .abox.in-use { background: linear-gradient(180deg, #fbfcfc, #eef0f1);
-  box-shadow: inset 0 0 0 1px rgba(17,116,58,.32), inset 0 0 12px rgba(17,116,58,.10), inset 0 2px 4px rgba(0,0,0,.14), 0 1px 0 rgba(255,255,255,.7); }
+  box-shadow: inset 0 0 12px rgba(17,116,58,.10), inset 0 2px 4px rgba(0,0,0,.14), 0 1px 0 rgba(255,255,255,.7); }
 .abox.in-use.rest { background: rgba(0,0,0,.24); box-shadow: var(--well); }
 .abox.in-use.rest .abox-title { color: var(--soft); }
 .face-silver .appwin .abox.in-use.rest { background: rgba(0,0,0,.08); box-shadow: inset 0 1px 3px rgba(0,0,0,.25); }
@@ -1903,7 +1912,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .acc-actions .disp.sw-acc.orangek:hover { box-shadow: inset 0 1px rgba(255,255,255,.55), inset 0 -1px rgba(110,40,10,.35), 0 0 0 1px #5e240d, 0 2px #3d1707, 0 0 16px rgba(255,122,61,.6), 0 3px 7px rgba(0,0,0,.45); }
 .acc-actions .disp.sw-acc.orangek::after { display: none; }
 .sw-acc.orangek .chev2 { color: inherit; margin-left: 2px; }
-.nmenu { position: absolute; bottom: 30px; right: 0; z-index: 6; min-width: 300px; padding: 5px; border-radius: 10px; font: 13px var(--font); color: #ececef;
+.nmenu { position: absolute; bottom: calc(100% + 6px); right: 0; z-index: 6; min-width: 300px; padding: 5px; border-radius: 10px; font: 13px var(--font); color: #ececef;
   background: rgba(42,42,45,.98); -webkit-backdrop-filter: blur(24px) saturate(1.4); backdrop-filter: blur(24px) saturate(1.4);
   box-shadow: 0 10px 28px rgba(0,0,0,.65), inset 0 0 0 1px rgba(255,255,255,.12); }
 .nmenu .ni { display: grid; grid-template-columns: 18px auto 1fr; align-items: baseline; gap: 4px 8px; width: 100%; box-sizing: border-box; padding: 4px 10px 4px 6px; border: 0; border-radius: 5px; background: none; color: inherit; font: inherit; text-align: left; }
@@ -1913,8 +1922,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .nmenu .nd { text-align: right; color: #a1a1a8; white-space: nowrap; }
 .nmenu .ni.cur .nl, .nmenu .ni.cur .nd { color: #8a8a92; }
 .nmenu hr { border: 0; border-top: 1px solid rgba(255,255,255,.13); margin: 5px 8px; }
-.more-menu > hr { padding: 0; border: 0; border-top: 1px solid rgba(255,255,255,.13); margin: 3px 8px; cursor: default; }
-.more-menu > hr:hover { background: none; }
+.more-menu hr { border: 0; border-top: 1px solid rgba(255,255,255,.13); margin: 3px 8px; }
 @media (max-width: 420px) { .acc-actions .offer2.under, .acc-actions .offer2.under > .sw-acc { width: 112px; } }
 
 /* ── The profile card in a state with no numbers (UI fixes, 2026-11; data/cardStates.ts) ──────────────────────────────
@@ -1926,7 +1934,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .usage-slot.msg > .card-limits { visibility: hidden; }
 .msgslot { contain: size; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; }
 .msgslot .redline { margin: 0; display: flex; flex-direction: column; gap: 2px; font-size: 12.5px; line-height: 1.35; color: #e9b3ad; }
-.msgslot .redline b { font-weight: 600; font-size: 13px; color: #ff8a80; }
+.msgslot .redline b { font-weight: 600; font-size: 13px; color: #ff8a80; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }   /* the heading is one line, as in the app, so the sentence is never clipped */
 .msgslot.amber .redline { color: #e9d3a8; }
 .msgslot.amber .redline b { color: #ffb24a; }
 .plan.amber { color: #ffb24a; text-shadow: 0 0 3px rgba(255,178,74,.7), 0 0 8px rgba(255,178,74,.3); background: linear-gradient(180deg, #0b0703, #1a1209); }
