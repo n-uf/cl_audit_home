@@ -61,15 +61,20 @@ sources:
     checked: 2026-11-11
     supports: "26.11.18: standby accounts are remembered on the profile, signed out, with no folder or Keychain item of their own, and show no usage; accounts are found on this Mac; a full limit offers the standby account least used by the week it left with, not known to be full; a switch moves the Claude window's Code-tab sessions and scheduled tasks after a backup."
     quote: "A profile is one Claude Code folder, and switching signs in again on it."
-  - title: "cl_audit source at v26.11.34, Sources/Privacy.swift (Show emails)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.34/Sources/Privacy.swift#L45-L83"
+  - title: "cl_audit source at v26.11.36, Sources/Privacy.swift (Show emails)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/Privacy.swift#L44-L83"
     checked: 2026-11-15
-    supports: "26.11.34: with Show emails off, an address that stands alone is left out of the launcher, dashboard and panels (HiddenEmail) and of the Dock menus (IconApp), an address in a menu or a sentence is shown masked, as y•••@example.com (Privacy.masked), and Settings shows it masked and blurred; hovering lifts only the blur (Privacy.masked with SettingsEmail, as in AccountBoxTitle). The README and the Settings hover text give only part of this."
+    supports: "26.11.36: with Show emails off, an address that stands alone is left out of the launcher, dashboard and panels (HiddenEmail) and of the Dock menus (IconApp), and an address in a menu or a sentence is shown masked, as y•••@example.com (Privacy.masked), in Settings too; only an account's title in Settings is also blurred, and hovering lifts only the blur (SettingsEmail)."
     quote: "Settings text that can't blur (menus, sentences): masked while emails are hidden."
-  - title: "cl_audit source at v26.11.34, Sources/IconApp.swift (the Dock icon's menu)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.34/Sources/IconApp.swift#L498-L500"
+  - title: "cl_audit source at v26.11.36, Sources/AccountsView.swift (AccountBoxTitle)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/AccountsView.swift#L173-L186"
     checked: 2026-11-15
-    supports: "26.11.34: in the Dock icon's menu, with Show emails off, the sign-in line is left out and the folder warning reads “set up for a different account” instead of naming the address."
+    supports: "26.11.36: an account's title in Settings is the one place that blurs an address (settingsEmail)."
+    quote: ".settingsEmail(text.contains(\"@\"))"
+  - title: "cl_audit source at v26.11.36, Sources/IconApp.swift (the Dock icon's menu)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/IconApp.swift#L498-L500"
+    checked: 2026-11-15
+    supports: "26.11.36: in the Dock icon's menu, with Show emails off, the sign-in line is left out and the folder warning reads “set up for a different account” instead of naming the address."
     quote: "This folder is set up for a different account"
   - title: "cl_audit CHANGELOG, 26.11.33"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
@@ -174,7 +179,7 @@ Each profile keeps its own:
 
 When you create a new folder, you can copy some Claude Code setup into it from another folder you pick: instructions, agents, skills, commands or memory. That way a new profile starts with your usual `CLAUDE.md` and skills.
 
-Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and an address that stands alone is left out of the launcher, the dashboard, the panels and the Dock menus (the Dock's folder warning says only "a different account"), one inside a menu or a message is shown masked, such as y•••@example.com, and in Settings it's shown masked and blurred; hovering lifts the blur, not the mask.
+Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and an address that stands alone is left out of the launcher, the dashboard, the panels and the Dock menus (the Dock's folder warning says only "a different account"), one inside a menu or a message is shown masked, such as y•••@example.com, and in Settings it's masked everywhere, and an account's title is also blurred (hovering lifts the blur, not the mask).
 
 ## Is it allowed to have multiple Claude accounts?
 
