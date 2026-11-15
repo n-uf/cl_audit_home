@@ -99,7 +99,7 @@ sources:
   - title: "Claude Code docs: Connect Claude Code to tools via MCP (remote servers and claude.ai connectors)"
     url: "https://code.claude.com/docs/en/mcp#authenticate-with-remote-mcp-servers"
     checked: 2026-11-09
-    supports: "Remote servers that need OAuth are authenticated with /mcp; their tokens are stored securely and not in the config; connectors added in claude.ai are available in Claude Code when you're logged in with a claude.ai account."
+    supports: "Remote servers that need OAuth are authenticated with /mcp; their tokens are stored securely and not in the config; connectors added in claude.ai are available in Claude Code when you're signed in with a claude.ai account."
     quote: "Authentication tokens are stored securely and refreshed automatically"
   - title: "Claude Code docs: Desktop application (MCP servers from the Claude Desktop chat app)"
     url: "https://code.claude.com/docs/en/desktop#mcp-servers-from-the-claude-desktop-chat-app"
@@ -119,7 +119,7 @@ sources:
   - title: "Claude Code docs: Authentication (credential management)"
     url: "https://code.claude.com/docs/en/authentication#credential-management"
     checked: 2026-11-09
-    supports: "On macOS, credentials are in the encrypted Keychain, with ~/.claude/.credentials.json as a fallback when the Keychain rejects the write; with CLAUDE_CONFIG_DIR set, the Keychain entry is keyed to that directory; on first launch Claude Code opens a browser window to log in."
+    supports: "On macOS, credentials are in the encrypted Keychain, with ~/.claude/.credentials.json as a fallback when the Keychain rejects the write; with CLAUDE_CONFIG_DIR set, the Keychain entry is keyed to that directory; on first launch Claude Code opens a browser window to sign in."
     quote: "On macOS, credentials are stored in the encrypted macOS Keychain."
   - title: "Claude Code docs: Set up Claude Code (install)"
     url: "https://code.claude.com/docs/en/setup"
@@ -307,7 +307,7 @@ Three things the add doesn't cover:
 
 - **The program a server runs.** A stdio server is a command (`npx`, `uvx`, a binary, a script path), so it has to exist on the new Mac, at the same path if the config writes it out in full.
 - **Sign-ins to remote servers.** Their tokens are stored by Claude Code, not in the config. Run `/mcp` and authenticate each one again.
-- **claude.ai connectors.** Connectors you added in claude.ai are available in Claude Code when you're logged in with that account, so there's nothing to copy.
+- **claude.ai connectors.** Connectors you added in claude.ai are available in Claude Code when you're signed in with that account, so there's nothing to copy.
 
 {{live:/blog/claude-code-mcp-config-location/}}Where each of these files sits, scope by scope, is in [Claude Code MCP config file location](/blog/claude-code-mcp-config-location/).{{/live}}
 

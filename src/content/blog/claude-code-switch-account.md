@@ -19,7 +19,7 @@ faq:
     a: "Type /logout at the prompt, start claude again and sign in with the other account, then check /status. From the shell, claude auth logout and claude auth login do the same. It replaces the saved login rather than adding a second one."
   - q: "Can I switch account in the middle of a Claude Code session?"
     a: "You can run /login in a running session, but Anthropic's pages don't describe what a conversation in progress does when the account changes, so finish the task first. They do say that a Remote Control session stops when the signed-in account changes, and the local session keeps running. Other windows on the same configuration folder share the saved login."
-  - q: "Why does Claude Code still use my old account after I log in?"
+  - q: "Why does Claude Code still use my old account after I sign in?"
     a: "Something outranks the login. Anthropic's docs rank ANTHROPIC_AUTH_TOKEN, ANTHROPIC_API_KEY, an apiKeyHelper script and CLAUDE_CODE_OAUTH_TOKEN above the login from /login. Run /status to see which one is active, unset the variable, relaunch claude and sign in again. A different CLAUDE_CONFIG_DIR is the other usual cause."
   - q: "What's the difference between /login and claude auth login?"
     a: "/login runs inside a Claude Code session; claude auth login is the same sign-in from the shell, with --email to pre-fill your address and --sso to force SSO. Anthropic's docs note that signing in with claude auth login before your first session lets Claude Code skip the login prompt."
@@ -96,7 +96,7 @@ related:
   - /use-cases/multiple-claude-accounts/
 ---
 
-To switch account in Claude Code, sign out and sign in again: type `/logout` at the prompt, start `claude` again and log in with the other account. From the terminal, `claude auth logout` and `claude auth login` do the same job. Either way you replace the one login Claude Code keeps for its configuration folder, so run `/status` afterwards to see which account you're on. If you swap every day, a second folder is less work than signing out each time, and [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) shows how.
+To switch account in Claude Code, sign out and sign in again: type `/logout` at the prompt, start `claude` again and sign in with the other account. From the terminal, `claude auth logout` and `claude auth login` do the same job. Either way you replace the one login Claude Code keeps for its configuration folder, so run `/status` afterwards to see which account you're on. If you swap every day, a second folder is less work than signing out each time, and [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) shows how.
 
 What follows about Claude Code comes from Anthropic's docs and help pages as they read on 5 November 2026. [cl_audit](/) is our free Mac app that shows each Claude profile's limits in the Dock. It's an independent tool, not affiliated with Anthropic.
 
@@ -147,7 +147,7 @@ When `/login` seems to work and the old account keeps showing up, go down this l
 2. **A different folder.** Each `CLAUDE_CONFIG_DIR` has its own settings, session history and login. An alias, a line in `.zshrc` or a terminal profile that sets one means you're looking at another login. `claude auth status` names the folder in `configDirectory`.
 3. **The Claude app is separate.** When the Claude app or an IDE hosts your session, the error reference says, Claude Code gets its login token from that app rather than from `/login`. In the app's Code tab the message is `Authentication required · Sign in again to continue`, and Anthropic's desktop page says to sign out and back in from the app menu.
 4. **The account you want isn't offered.** Anthropic's help page has steps for this: `/logout`, `claude update`, restart the terminal completely, then run `claude` and select the account.
-5. **The login won't stick.** If you're asked to log in again and again, the troubleshooting page points to the system clock and, on macOS, the Keychain. `claude doctor` reports a warning starting `macOS Keychain is not writable`, and Anthropic's unlock command is `security unlock-keychain ~/Library/Keychains/login.keychain-db`.
+5. **The login won't stick.** If you're asked to sign in again and again, the troubleshooting page points to the system clock and, on macOS, the Keychain. `claude doctor` reports a warning starting `macOS Keychain is not writable`, and Anthropic's unlock command is `security unlock-keychain ~/Library/Keychains/login.keychain-db`.
 6. **An organization rule.** An administrator can require claude.ai logins to belong to specific organizations, and Claude Code reports an error for a login to any other. That's a managed setting, so ask your admin.
 
 ## Switching the account in VS Code
