@@ -280,13 +280,14 @@ code, kbd { font-family: var(--mono); }
 
 [hidden] { display: none !important; }
 /* Show emails off, as 26.11.34 does it (data/emails.ts): a plain address is left out everywhere; one inside a sentence,
-   a menu, a toast or Settings carries its masked twin (y•••@example.com), shown instead of it. Settings (and the pages
-   it opens) blur the masked form, and hovering one shows it masked, never in full; its menus and dialogs are masked only. */
+   a menu, a toast or Settings carries its masked twin (y•••@example.com), shown instead of it. Only the account boxes'
+   titles in Settings (and the pages it opens) blur that masked form, and hovering one shows it masked, never in full;
+   sentences, menus and dialogs are masked only (Privacy.swift: "Settings text that can't blur … masked"). */
 .hide-emails .email { display: none; }
 .email-m { display: none; }
 .hide-emails .email-m { display: inline; }
-.hide-emails .settings .email-m { filter: blur(3.5px); transition: filter .12s; }
-.hide-emails .settings .email-m:hover, .hide-emails .settings :is(.login-menu, .dialog) .email-m { filter: none; }
+.hide-emails .settings :is(.abox-title, .abox-t > b) .email-m { filter: blur(3.5px); transition: filter .12s; }
+.hide-emails .settings :is(.abox-title, .abox-t > b) .email-m:hover { filter: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dash-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(352px, 1fr)); gap: 12px; }   /* wide enough for both switches in one row */
 .dash .history { margin-top: 10px; }
@@ -1709,7 +1710,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .sw-col { display: grid; gap: 12px; min-width: 0; }
 @media (max-width: 799px) { .sw-cols { grid-template-columns: minmax(0, 1fr); } }
 .sw-page .acc-list { display: grid; gap: 8px; padding: 6px 0; }
-.sw-page .abox-t :is(.email, .email-m) { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sw-page .abox-t > b { font-size: 13px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sw-page .srow > span:first-child { flex: 0 0 90px; }
 .sw-page .srow > .v-soft { flex: 1; text-align: left; min-width: 0; }
 /* the move pages (Export ▸ Move to another Mac, Import of a move): longer labels, and a note under its value */
@@ -1954,7 +1955,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   .content p.t { font-size: 16px; }
   .settings :is(p, li), .dash :is(p, li) { font-size: 14px; }   /* the demo panels' own notes */
   .content :is(td, th, figcaption, small, code, kbd, .sub, .note, .legal, .email, .email-m, .trust-note, .fl-back, .sg-k1, .sg-k2, .tf-text code) { font-size: 14px; }
-  .content :is(.srow > span, .pn-name, .pn-row .pn-pct, .fl-row .pn-pct, .mh b, .gk-row > span, .gk-title, .gk-btn, .pchip-text, .stab, .start-box, .hist-mini b, .abox-t :is(.email, .email-m),.fl-box .fl-back, .sha-list, b.pn-pct) { font-size: 14px; }
+  .content :is(.srow > span, .pn-name, .pn-row .pn-pct, .fl-row .pn-pct, .mh b, .gk-row > span, .gk-title, .gk-btn, .pchip-text, .stab, .start-box, .hist-mini b, .abox-t :is(.email, .email-m), .fl-box .fl-back, .sha-list, b.pn-pct) { font-size: 14px; }
   .faq-list details p { font-size: 16px; }
   .menubar { font-size: 14px; }
   /* the printed labels, the keys and the display windows */

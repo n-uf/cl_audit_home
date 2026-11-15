@@ -2,8 +2,8 @@
 //  - left out: the card's standalone address line, the launcher and panels (a plain `.email`, hidden everywhere);
 //  - masked, y•••@example.com: inside a sentence, a menu, a toast or a hover text (the `.email-m` twin that emailHTML
 //    writes beside the full `.email`);
-//  - masked and blurred: in Settings and the pages it opens, where hovering shows the masked form, never the full address
-//    (menus and dialogs there are masked only). app.css has the rules.
+//  - masked and blurred: the account boxes' titles in Settings and the pages it opens, where hovering shows the masked
+//    form, never the full address (sentences, menus and dialogs there are masked only). app.css has the rules.
 
 /** you@example.com → y•••@example.com: the first letter, then "•" clamp(len(local) - 1, 3, 7) times, then the domain. */
 export const maskEmail = (email: string) => {

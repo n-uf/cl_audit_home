@@ -285,7 +285,7 @@ const jsonLd = [
     const boxes = (): Standby[] => offerOrder(standby[acc]).filter((s) => !removedSb.has(`${acc}:${s.email}`));
     // Laid out like a display: the lamp and Standby level with the address, the details in full on a second line.
     const boxHTML = (s: Standby) =>
-      `<div class="abox unlit sbx${picked === s.email ? " sel" : ""}" data-pick="${s.email}" tabindex="0" role="group" aria-label="${s.email}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
+      `<div class="abox unlit sbx${picked === s.email ? " sel" : ""}" data-pick="${s.email}" tabindex="0" role="group" aria-label="${emailText(s.email)}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
       `<button type="button" class="abox-title" data-sb-btn="${s.email}" aria-haspopup="menu" aria-expanded="false">${emailHTML(s.email)}${chevronHTML}</button>` +
       `<span class="login-menu" data-sb-menu="${s.email}" role="menu" hidden></span>` +
       `<span class="rest2">${s.plan} · signed out · last in use on ${who()} ${s.lastInUse}</span></span>` +   // words: SEO

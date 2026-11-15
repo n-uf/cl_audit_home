@@ -100,7 +100,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     switch (phase) {
       case "ready": {
         const pick = `<div class="acc-pick" role="radiogroup" aria-label="Switch to">${list.map((s) => sbBox(s, s.email === to, s.email === to ? B.to : B.sb,
-          ` data-sw-to="${s.email}" role="radio" tabindex="0" aria-checked="${s.email === to}" aria-label="${s.email}"`)).join("")}</div>`;
+          ` data-sw-to="${s.email}" role="radio" tabindex="0" aria-checked="${s.email === to}" aria-label="${emailText(s.email)}"`)).join("")}</div>`;
         return row("Now", nowBox()) + row("To", pick) + (list.length > 1 ? '<p class="g-note sub pick-note">The one offered first is on top. Click another to switch to it instead.</p>' : "");
       }
       // the lit "Switching to" badge only while it is waited for ("Next"), as the app's `going`
