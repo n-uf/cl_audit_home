@@ -32,11 +32,16 @@ sources:
     checked: 2026-11-15
     supports: "26.11.33: a profile with no numbers to show says why in one heading and one sentence, with one compact key (Terminal signed out, its sign-in expired, Terminal on another account or on another profile's account, the Keychain not handing the sign-in over, a switch with one step left); standby accounts no longer sit on the card, and while a limit is full a compact Switch account key opens a menu of them, by address only; after a switch the waiting line reads “Switching to … : one step left. Sign the Claude app in to … to finish.” instead of “Switched to …”; menus no longer say “· in use”, the account in use is ticked; Settings ▸ Accounts shows In use and Standby; “Log in” is now “Sign in”."
     quote: "a compact Switch account key opens a menu of them, by address only"
-  - title: "cl_audit source at v26.11.33, Sources/CardParts.swift (UsageNotice) and AccountResolver.swift (switchWaits)"
+  - title: "cl_audit source at v26.11.33, Sources/CardParts.swift (UsageNotice)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/Sources/CardParts.swift#L22-L58"
     checked: 2026-11-15
-    supports: "The card's headings and sentences for each state without numbers (“Terminal is signed in to …”, “Terminal is signed in to another account”, “Terminal's sign-in has expired”, “Terminal is signed out”, “Can't read Terminal's sign-in yet”, “Can't read Terminal's sign-in”), amber for the last three and for a switch with one step left, with the keys each one has; the one-step-left state lasts 24 hours after the switch linked (switchWaits, AccountResolver.swift), after that it is the split."
+    supports: "The card's headings and sentences for each state without numbers (“Terminal is signed in to …”, “Terminal is signed in to another account”, “Terminal's sign-in has expired”, “Terminal is signed out”, “Can't read Terminal's sign-in yet”, “Can't read Terminal's sign-in”), amber for the last two and for a switch with one step left, with the keys each one has."
     quote: "The Keychain didn't hand it over: unlock it, then Refresh now."
+  - title: "cl_audit source at v26.11.33, Sources/AccountResolver.swift (switchWaits)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/Sources/AccountResolver.swift#L72-L78"
+    checked: 2026-11-15
+    supports: "A switch waiting for the Claude app (the one-step-left state) lasts 24 hours after the switch linked; a switch linked more than a day ago waits no more, and then the card shows the split."
+    quote: "a switch linked more than a day ago waits no more"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
@@ -194,7 +199,7 @@ Chats and Projects on claude.ai don't move. They belong to each account, and so 
 
 ## The Claude app's sign-in stays yours
 
-cl_audit never signs the Claude app in or out. The Switch page tells you to sign the window in to the new account when you open it. Until you do, the Switch page's account box shows the app's account and says "Switched to ultra-2@example.com: sign the Claude app in to ultra-2@example.com to finish". The dashboard card says, in amber, "Switching to ultra-2@example.com: one step left" and "Sign the Claude app in to ultra-2@example.com to finish.", with no Sign in… key and no numbers. Settings, the menu bar, the widget, the Dock panel and quick chat say the same, in one line, or only "Switching to ultra-2@example.com: one step left" where space is short. It says so for up to 24 hours after the switch; after that the card falls back to the red message about Terminal's sign-in. In Settings ▸ Accounts, the account in use says "In use until the switch to ultra-2@example.com finishes.", and the account you are switching to is lit SWITCHING TO. For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it.
+cl_audit never signs the Claude app in or out. The Switch page tells you to sign the window in to the new account when you open it. Until you do, the Switch page's account box shows the app's account and says "Switching to ultra-2@example.com: one step left. Sign the Claude app in to ultra-2@example.com to finish." The dashboard card says the same, in amber, as a heading ("Switching to ultra-2@example.com: one step left") and a sentence ("Sign the Claude app in to ultra-2@example.com to finish."), with no Sign in… key and no numbers. Settings, the menu bar, the widget, the Dock panel and quick chat say it too, in one line, or only "Switching to ultra-2@example.com: one step left" where space is short. It says so for up to 24 hours after the switch; after that the card falls back to the red message about Terminal's sign-in. In Settings ▸ Accounts, the account in use says "In use until the switch to ultra-2@example.com finishes.", and the account you are switching to is lit SWITCHING TO. For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it.
 
 You can also switch without the Switch page: run `claude auth login` yourself for the profile's folder. Within a second the profile works on the account that signed in, and the one before stands by. cl_audit moves the window's sessions as part of its own switch, not for a sign-in you run yourself. An account that another profile works on is refused.
 
@@ -235,7 +240,7 @@ A switch to ben@example.com has moved Claude Code in Terminal and waits for the 
 
 ## Cancel it, or undo it
 
-**Cancel** stops the waiting. Sessions that already moved stay where they went until you undo the move. **Undo the move** puts them back as long as Claude Code isn't on the new account yet. Once the switch has finished there's no undo: the way back is a switch the other way, and the Reached screen offers **Switch back…**, whose hover text says "Switch back to ultra-1".
+**Cancel** stops the waiting. Sessions that already moved stay where they went until you undo the move. **Undo the move** puts them back as long as Claude Code isn't on the new account yet. Once the switch has finished there's no undo: the way back is a switch the other way, and the Reached screen offers **Switch back…**, whose hover text says "Switch back to ultra-1@example.com".
 
 A switch that stopped half way, now or in 26.11.16 and earlier, shows on the profile's Sessions card: how many sessions sit under which account, with **Undo it**. Its backup isn't pruned meanwhile.
 
