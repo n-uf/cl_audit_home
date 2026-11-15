@@ -21,6 +21,7 @@ const jsonLd = [
 <script>
   import { accounts, standby, offerOrder, type AccountId, type Standby } from "../data/demo";
   import { chevronHTML } from "../data/chevron";
+  import { blurEmails } from "../data/emails";
   import { applyPrefs, loadPrefs, savePrefs, loadOrder, saveOrder, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
   import { glyphHTML, lane as mbLane } from "../data/menubar";
   import { widgetHTML } from "../data/widgetView";
@@ -324,7 +325,7 @@ const jsonLd = [
     // Forget… and Move to Trash… ask first (the app's alerts); the answer runs `done`
     let askDone: (() => void) | null = null, askOpener = "";
     const ask = (title: string, text: string, yes: string, opener: string, done: () => void) => {
-      $("[data-ask-title]")!.textContent = title; $("[data-ask-text]")!.textContent = text; $("[data-ask-yes]")!.textContent = yes;
+      $("[data-ask-title]")!.innerHTML = blurEmails(title); $("[data-ask-text]")!.innerHTML = blurEmails(text); $("[data-ask-yes]")!.textContent = yes;
       askDone = done; askOpener = opener; $("[data-ask]")!.hidden = false; $<HTMLButtonElement>("[data-ask-no]")!.focus();
     };
     // Cancel, Esc or a click outside: nothing is done, and the focus goes back to the key that opened the question
@@ -598,7 +599,7 @@ const jsonLd = [
       if (pick("[data-login-btn]")) {
         const own = accounts.find((x) => x.id === acc)!;
         menuToggle("[data-login-btn]", "[data-login-menu]", () =>
-          `<span class="lm-row on"><span class="ok">✓</span> ${own.email}<em>${own.plan} · this profile</em></span>` +
+          `<span class="lm-row on"><span class="ok">✓</span> <span class="email">${own.email}</span><em>${own.plan} · this profile</em></span>` +
           `<hr><button type="button" class="lm-row act" data-login-again>Log in…</button>` +
           `<button type="button" class="lm-row act" data-login-renew>${p().renew ? '<span class="ok">✓</span> ' : ""}Renew sign-in by itself</button>`);
         return;
@@ -811,7 +812,7 @@ const jsonLd = [
         syncEmails();
         showWhatNow("Show emails", on ? "on" : "off", on
           ? "Email addresses show everywhere in cl_audit."
-          : "Email addresses are left out of the launcher, dashboard, panels and Dock menus, and blurred in Settings — for screen sharing.");
+          : "Email addresses are blurred everywhere in cl_audit, and hovering one shows it — for screen sharing.");   // words: SEO (said "left out"; every address blurs now)
       });
     }));
     // Privacy ▸ Usage history (26.11.0), shared with the dashboard: off, its history (charts, totals, CSV) is hidden

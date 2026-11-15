@@ -4,6 +4,8 @@
 // the next change replaces it. It stays 6 s (the timer restarts on each change; it waits while the pointer
 // or keyboard focus is on it), and the × closes it. The region is aria-live="polite".
 
+import { blurEmails } from "./emails";
+
 const HOLD_MS = 6000;
 const w = window as any;
 let timer = 0;
@@ -32,8 +34,9 @@ function arm() {
 export function showWhatNow(setting: string, value: string, text: string) {
   const c = card();
   if (!c) return;
-  c.querySelector(".wn-t")!.textContent = `${setting} · ${value}`;
-  c.querySelector(".wn-d")!.textContent = text;
+  // an address in either line is blurred while Show emails is off
+  c.querySelector(".wn-t")!.innerHTML = blurEmails(`${setting} · ${value}`);
+  c.querySelector(".wn-d")!.innerHTML = blurEmails(text);
   c.classList.add("show");
   arm();
 }

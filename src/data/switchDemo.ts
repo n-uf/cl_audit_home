@@ -23,6 +23,8 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   const list = offerOrder(standby.work);
   let to = list[0].email, phase: Phase = "ready", fail: "window" | "half" = "window", shown: Case | "" = "", timer = 0, until = "";
   const T = () => shortName(to), target = () => list.find((s) => s.email === to)!;
+  /** The address the switch is moving to, in full, in the class Show emails off blurs. */
+  const E = () => `<span class="email">${to}</span>`;
   /** The account the browser signs in as in "Wrong account": another of the profile's standby accounts. */
   const other = () => list.find((s) => s.email !== to)!;
   const O = () => shortName(other().email);
@@ -102,7 +104,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       // the Claude app is still on the account in use, and Claude Code is on the new one (cl_audit 26.11.25, AccountResolver's
       // SplitUsage): nothing shows Claude Code's numbers as the profile's, so the box says the switch waits for the app's
       // sign-in. No numbers (the old account's are gone; the plan goes with them) and no key to log Claude Code in.
-      case "reached": return row("Now", inUse(work.email, "", note(`Switched to ${to}: sign the Claude app in to ${to} to finish`) + note("No numbers yet: the agent reads them within a few minutes.")));
+      case "reached": return row("Now", inUse(work.email, "", note(`Switched to ${E()}: sign the Claude app in to ${E()} to finish`) + note("No numbers yet: the agent reads them within a few minutes.")));
       // the folder is on another of the profile's accounts now, and that is the one in use (no numbers read yet)
       case "other": return row("Now", inUse(other().email, other().plan, note("No numbers yet: the agent reads them within a few minutes."))) + row("Wanted", wanted(B.sb));
       default: return row("Now", nowBox()) + row("Wanted", wanted(B.sb));
@@ -131,7 +133,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
         : srow("Nothing", `${name} is still on ${from}: Claude Code on ${dir}, its sessions, the Claude window and ${name}'s settings are as they were.`)];
       case "undone": return ["What changed", srow("Nothing", `The move is undone: ${name}'s sessions and scheduled tasks are back under ${from}, and Claude Code is still on ${from}.`)];
       default: return ["What changes", [
-        srow("Claude Code", `Terminal and editors using ${dir} move to ${to}, sessions running now included; the Claude app keeps its own sign-in. Finish the sign-in in Terminal and the browser as that account.`),
+        srow("Claude Code", `Terminal and editors using ${dir} move to ${E()}, sessions running now included; the Claude app keeps its own sign-in. Finish the sign-in in Terminal and the browser as that account.`),
         srow("Sessions", `${SES} move from ${from} to ${T()}, inside ${name}'s folder, with a backup made first. A session Claude Code is running stays with ${from} until a later switch. Transcripts stay in ${dir}.`),
         srow("Claude window", `It closes for the move (${windowWords}). Sign it in to ${T()} yourself when you open it again: cl_audit never signs it in or out.`),
         stays,
@@ -164,7 +166,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     const rows: [string, string][] = [
       [`${name}'s Claude window closes`, "Only that window, by its own quit; it stays closed until the sign-in ends."],
       [`Its sessions move to ${T()}`, `A backup first, then ${SES}, each checked; a receipt keeps Undo possible.`],
-      ["Claude Code's sign-in opens in Terminal", `For ${dir}, with ${to} filled in.`],
+      ["Claude Code's sign-in opens in Terminal", `For ${dir}, with ${E()} filled in.`],
       [`Finish it in the browser as ${T()}`, "If the browser is signed in to claude.ai as someone else, switch its account there first."],
       ["cl_audit checks the account", "The folder is looked at every 2 seconds, for up to 10 minutes."],
     ];
