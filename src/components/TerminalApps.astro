@@ -4,6 +4,7 @@
 // then leaves a prompt you can type into, with cl_audit's own status line underneath.
 // Deliberately not Claude Code's start screen.
 import { accounts, chats } from "../data/demo";
+import { emailHTML } from "../data/emails";
 ---
 <div class="terms" transition:persist="terms">
   {accounts.map((a, i) => {
@@ -16,7 +17,7 @@ import { accounts, chats } from "../data/demo";
           <span class="term-title">{a.name} — claude — 80×24</span>
         </div>
         <div class="term-body" data-log data-script={JSON.stringify({ cmds: [setup, "claude"], ask: c.ask, steps: c.steps, done: c.done })}>
-          <div class="term-signed" hidden><span class="term-dim">Claude Code · signed in as </span><span class="email term-dim">{a.email}</span><span class="term-dim"> · {a.plan} plan</span></div>
+          <div class="term-signed" hidden><span class="term-dim">Claude Code · signed in as </span><span class="term-dim"><Fragment set:html={emailHTML(a.email)} /></span><span class="term-dim"> · {a.plan} plan</span></div>
         </div>
         <form class="term-prompt" data-term-form data-astro-reload hidden>
           <span>&gt;</span><input type="text" autocomplete="off" aria-label="Message to Claude Code" />
