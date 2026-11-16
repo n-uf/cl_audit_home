@@ -24,7 +24,7 @@ faq:
   - q: "Does the Claude spend limit reset every month?"
     a: "Yes, it's monthly. For usage credits, Anthropic's Team help page says a member who reaches their limit has their credits paused until the end of the month. On the API, hitting your tier's cap pauses usage until 00:00 UTC on the first day of the next month, unless you ask for a higher limit sooner."
   - q: "Is there a spend limit on the Claude API?"
-    a: "Yes. Each usage tier carries a monthly cap: $500 USD on Start, $1,000 on Build and $200,000 on Scale, while Custom organizations have none. You can set your own lower limit under Spend limits in the Claude Console, and a limit you set returns an HTTP 400 error when it's reached."
+    a: "Yes. The Start, Build and Scale tiers each carry a monthly cap: $500 USD on Start, $1,000 on Build and $200,000 on Scale, while Custom organizations have none. You can set your own lower limit under Spend limits in the Claude Console, and a limit you set returns an HTTP 400 error when it's reached."
 sources:
   - title: "Manage usage credits for paid Claude plans (Claude Help Center)"
     url: "https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans"
@@ -42,7 +42,7 @@ sources:
     url: "https://platform.claude.com/docs/en/api/rate-limits"
     checked: 2026-11-16
   - title: "Workspaces (Claude API Docs)"
-    url: "https://platform.claude.com/docs/en/build-with-claude/workspaces"
+    url: "https://platform.claude.com/docs/en/manage-claude/workspaces"
     checked: 2026-11-16
   - title: "cl_audit README, version 26.11.53 (n-uf/cl_audit): usage credits on the card and in alerts"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.53/README.md"
@@ -108,7 +108,7 @@ When a member reaches their own limit, the help page says their credits pause un
 
 ## The spend limit on the API
 
-The Claude Console has two kinds, and they behave differently. Anthropic's rate-limits page says every usage tier carries a monthly spend cap, the most your organization can spend on the API in a calendar month:
+The Claude Console has two kinds, and they behave differently. Anthropic's rate-limits page says the Start, Build and Scale tiers each carry a monthly spend cap, the most your organization can spend on the API in a calendar month:
 
 | Usage tier | Monthly spend cap |
 |---|---|
@@ -130,6 +130,6 @@ If you're weighing a bigger plan against paying for credits, [Claude Max vs Pro]
 
 ## See credits start before a limit stops you
 
-A spend limit only matters once a plan limit is full, so the useful warning comes earlier. If you keep several Claude setups on one Mac, cl_audit, our free [Claude usage tracker](/) for macOS, shows each profile's 5-hour and weekly limits in the Dock, and a profile that's spending credits says so: "Using usage credits · $4.20 spent". With alerts on, it sends a notification when a profile starts spending credits and another when they run out. It doesn't show your spend limit or balance; those stay in Settings ▸ Usage and `/usage`.
+A spend limit only matters once a plan limit is full, so the useful warning comes earlier. cl_audit, our free [Claude usage tracker](/) for macOS, shows when a profile starts spending credits: its card, panels and Dock menu say "Using usage credits · $4.20 spent", and with alerts on you get a notification when credits start and another when they run out. It doesn't show your spend limit or balance; those stay in Settings ▸ Usage and `/usage`.
 
 How to set the alerts is on the page about [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/), and cl_audit needs Claude Code signed in for each profile.
