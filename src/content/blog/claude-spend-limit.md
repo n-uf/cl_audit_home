@@ -15,7 +15,7 @@ takeaways:
   - "The API has its own monthly cap by usage tier: $500 on Start, $1,000 on Build and $200,000 on Scale. You can set a lower limit of your own in the Claude Console."
   - "A limit can be passed slightly: Anthropic checks it before a request and counts the tokens after, so one request may go over and the next ones are blocked."
 faq:
-  - q: "What is the Claude spend limit?"
+  - q: "What does a Claude spend limit cap?"
     a: "A monthly cap on pay-as-you-go spending. On Pro, Max and Ultra it caps your usage credits; on Team and Enterprise, an admin can set one for the organization, a seat tier or a member. The Claude API has its own monthly cap. None of them changes your 5-hour or weekly plan limits."
   - q: "How do I raise my Claude spend limit?"
     a: "On Pro, Max and Ultra, open Settings ▸ Usage, find the Usage credits section and click Adjust limit, or run /usage-credits in Claude Code. On Team and Enterprise, an Owner changes it in Organization settings ▸ Usage. For the API, use Spend limits in the Claude Console."
