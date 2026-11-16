@@ -13,14 +13,14 @@ takeaways:
   - "Anthropic's context window page lists 1M tokens for the newest models on paid plans, 500K for some older ones and 200K for the rest. Part of the window is kept for Claude's reply."
   - "With code execution on, paid plans summarize earlier messages as a chat nears the limit, so most people rarely see the error. A very large first message can still hit it."
   - "In Claude Code, \"Context limit reached · /compact or /clear to continue\" is the same limit. /compact summarizes the conversation, and /clear starts fresh."
-  - "Long conversations use more of your usage limit, so hitting a length limit and running low on usage often arrive together."
+  - "Long conversations use more of your usage limit, so a long chat can bring you closer to a usage limit too."
 faq:
   - q: "What is the Claude conversation length limit?"
     a: "The size of the context window: the amount of text Claude can work with in one conversation, like working memory. Anthropic's help page says the window depends on the model, and that a part is always kept for Claude's reply, so the longest possible conversation is slightly smaller than the full window."
   - q: "How long can a Claude conversation be?"
     a: "It depends on the model. On paid plans, Anthropic lists 1M tokens for the newest models, such as Opus 5.5 and Sonnet 5.5, 500K for some older ones and 200K for the rest. With code execution on, Claude summarizes earlier messages as a chat nears the limit, so it can go on much longer."
   - q: "How do I fix \"Your message will exceed the length limit for this chat\"?"
-    a: "Attach fewer or smaller files, or start a new conversation. Anthropic also suggests splitting your content into smaller chunks, summarizing or extracting the key parts before you send them, or asking Claude to find the most relevant portions first. A very large first message is the usual cause."
+    a: "Attach fewer or smaller files, or start a new conversation. Anthropic also suggests splitting your content into smaller chunks, summarizing the key parts first, or asking Claude to find the most relevant portions. With code execution on, Anthropic says a very large first message is one of the rare cases that still hits the limit."
   - q: "What does \"Context limit reached\" mean in Claude Code?"
     a: "The conversation plus attached files no longer fits the model's context window, which Claude Code also reports as \"Prompt is too long\". Run /compact to summarize the conversation and carry on, or /clear to start fresh. Auto-compact normally does the first for you."
   - q: "Does a long conversation use more of my usage limit?"
@@ -71,7 +71,7 @@ Anthropic keeps a separate page for this, and it changes as models change. On 16
 | 500K tokens | Fable 5, Opus 4.8, 4.7 and 4.6, Sonnet 4.6 |
 | 200K tokens | Any other model, per the page |
 
-In Claude Code the page lists 1M tokens for each of those models, including the ones that have 500K in chat. For Opus 4.6 and Sonnet 4.6 it's the `[1m]` variant you pick with `/model`, and the page says [usage credits](/blog/claude-usage-credits/) are needed for Sonnet 4.6's, and for Opus 4.6's on Pro. Claude Cowork has its own, different table on that page. The page is about paid plans and gives no table for the Free plan, so we don't give a Free figure. The window is fixed for your plan: Anthropic says you can't increase it, only use it better.
+In Claude Code the page lists 1M tokens for each of those models, including the ones that have 500K in chat. For Opus 4.6 and Sonnet 4.6 it's the `[1m]` variant you pick with `/model`, and the page says [usage credits](/blog/claude-usage-credits/) are needed for Sonnet 4.6's (except on usage-based Enterprise plans), and for Opus 4.6's on Pro. Claude Cowork has its own, different table on that page. The page is about paid plans and gives no table for the Free plan, so we don't give a Free figure. The window is fixed for your plan: Anthropic says you can't increase it, only use it better.
 
 ## Why a chat hits the limit, and what Claude does first
 
@@ -88,11 +88,11 @@ It doesn't catch everything. Anthropic names very large first messages as a rare
 - Summarize or extract the key sections before you send them.
 - Ask Claude to find the most relevant portions of your content first.
 
-If you hit it often, the page lists ways to make the window go further. Use projects, which load only the relevant content into the window. Keep project instructions short, and remove project files you no longer use. Turn thinking off on models that have the toggle, or choose a lower effort level where thinking is always on. Turn off connected tools a conversation doesn't need, and ask Claude not to search the web when you don't need current information. Anthropic notes that tools and connectors are token-intensive.
+If you hit it often, Anthropic's usage and length limits page lists ways to make the window go further. Use projects, which load only the relevant content into the window. Keep project instructions short, and remove project files you no longer use. Turn thinking off on models that have the toggle, or choose a lower effort level where thinking is always on. Turn off connected tools a conversation doesn't need, and ask Claude not to search the web when you don't need current information. Anthropic notes that tools and connectors are token-intensive.
 
 ## Claude Code: "Context limit reached" and "Prompt is too long"
 
-Claude Code's error reference describes it the same way: the conversation plus attached files exceeds the model's context window. In an interactive session the message is "Context limit reached · /compact or /clear to continue". In `-p` output and the transcript it stays "Prompt is too long". If you've turned auto-compact off, the line says so and points to `/config`.
+Claude Code's error reference describes it the same way: the conversation plus attached files exceeds the model's context window. In an interactive session the message is "Context limit reached · /compact or /clear to continue". In `-p` output and the transcript it stays "Prompt is too long". If you've turned auto-compact off, the line usually says so and points to `/config`.
 
 Normally you don't get that far. When automatic compaction runs, it summarizes your oldest exchanges and keeps the newest. Two variants are worth knowing:
 
