@@ -5,7 +5,7 @@ h1: "Claude usage credits explained: when they start and what they cost"
 mainKeyword: "claude usage credits"
 kind: what-is
 published: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-16
 draft: false
 author: n-uf
 takeaways:
@@ -23,15 +23,18 @@ faq:
     a: "There's no price per credit or per message. Usage is billed at standard API rates, which Anthropic's API pricing page lists per million tokens for each model, so the cost depends on the model and how much text goes through. Settings ▸ Usage shows your month-to-date spend, and so does /usage in Claude Code while credits are on."
   - q: "Why does Claude say usage credits are required for this model?"
     a: "On your plan, that model or feature is paid for with usage credits rather than your included limits. In Claude Code, \"Requires usage credits\" on the Fable row of /model means Fable bills to credits for you. \"Usage credits required for 1M context\" means your plan includes that model's 1M-token window only through credits; Anthropic calls it an entitlement check, so it can appear while your limits still have room."
-  - q: "Do Claude Team members need the owner to turn on usage credits?"
-    a: "Yes. An Owner or Primary Owner enables them in Organization settings ▸ Usage, sets the organization's monthly spend limit and chooses which members can use them. A member without billing access who runs /usage-credits in Claude Code sends a request to the admins instead."
+  - q: "What does MTD spend mean in Claude?"
+    a: "MTD spend is month-to-date spend: what usage credits have cost so far this month. Anthropic's help pages use the term for Team and Enterprise admins, in the MTD Spend column under Spend limits by user and in the spend report's list of periods. It isn't your subscription fee."
 sources:
   - title: "Manage usage credits for paid Claude plans (Claude Help Center)"
     url: "https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans"
-    checked: 2026-11-05
+    checked: 2026-11-16
   - title: "Manage usage credits for Team and seat-based Enterprise plans (Claude Help Center)"
     url: "https://support.claude.com/en/articles/12005970-manage-usage-credits-for-team-and-seat-based-enterprise-plans"
-    checked: 2026-11-05
+    checked: 2026-11-16
+  - title: "View usage analytics for Team and Enterprise plans (Claude Help Center)"
+    url: "https://support.claude.com/en/articles/12883420-view-usage-analytics-for-team-and-enterprise-plans"
+    checked: 2026-11-16
   - title: "Troubleshoot Claude error messages (Claude Help Center)"
     url: "https://support.claude.com/en/articles/12466728-troubleshoot-claude-error-messages"
     checked: 2026-11-05
@@ -146,6 +149,15 @@ Seat-based Enterprise differs in two ways. Credits are billed at the end of each
 A member without billing access who runs `/usage-credits` in Claude Code confirms, and a request goes to the admins. On seat-based Enterprise, members also get a "Request usage credits" link when they reach a limit; it asks for a Premium seat or credits and then reads "Request sent to admin". Owners can switch requests off with the Usage credit requests toggle.
 
 A spend limit can be passed slightly. Anthropic checks the limit before a request and counts the tokens after it, so one request may go over; the next ones are blocked.
+
+## What MTD spend means in Claude
+
+"MTD spend" is short for month-to-date spend: what usage credits have cost so far this month. It's an admin's term. Anthropic's help pages use it in two places, both for Team and Enterprise organizations, and neither means your subscription fee:
+
+- **Spend limits by user.** Anthropic's help page on usage credits for Team and seat-based Enterprise plans says this section of Organization settings ▸ Usage has an "MTD Spend" column, so Owners can track members' usage patterns and adjust seat assignments. It's the table where per-member spend limits are set. Those limits aren't available to every Team organization: if usage credits are on and the page shows "Spend by org member" instead, yours doesn't have them.
+- **The spend report.** The analytics help page lists "MTD" first among the periods you can pick when an Owner exports the spend report from Settings ▸ Analytics, under "How much is Claude costing?". Total spend and Spend by model on the same page also run month-to-date, quarter-to-date, year-to-date and over one year. The report gives estimated spend per person and per model, updated daily, with data up to yesterday.
+
+Both cover usage-credit spend only. On seat-based Enterprise plans, spend reports appear only once credits are enabled, and usage inside the seat allowances isn't counted. On Pro, Max and Ultra the label "MTD" doesn't appear on the pages we read. Anthropic's help page says Settings ▸ Usage shows your month-to-date usage credit costs, and `/usage` in Claude Code shows this month's spend against your limit.
 
 ## Messages you may see
 
