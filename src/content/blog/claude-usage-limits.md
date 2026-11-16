@@ -5,7 +5,7 @@ h1: "Claude usage limits explained: the 5-hour and weekly limits"
 mainKeyword: "claude usage limits"
 kind: what-is
 published: 2026-11-02
-updated: 2026-11-04
+updated: 2026-11-16
 author: n-uf
 takeaways:
   - "Paid Claude plans have two usage limits: a session limit that resets every five hours and a weekly limit that resets once a week."
@@ -22,8 +22,8 @@ faq:
     a: "Yes. Anthropic's help page says usage on claude.ai, Claude Code and Claude Desktop counts toward the same limit, and its Claude Code page says the same for IDE use. A long Claude Code session can use up what you wanted for chat."
   - q: "How many messages do I get on Claude Pro?"
     a: "Anthropic doesn't give a number. Its Pro page says the count varies with message length, attached files, the length of the conversation and the model or feature you use."
-  - q: "What happens when I reach a Claude usage limit?"
-    a: "You can wait for the limit to reset, upgrade your plan, or turn on usage credits to keep working at pay-as-you-go rates. Claude and Claude Code both show when the limit resets."
+  - q: "Is the Claude Code limit per developer or shared by the team?"
+    a: "Per developer. On Team and Enterprise seats, each member's Claude Code usage draws on their own seat allowance, with five-hour and weekly windows shared with Claude chat. On the Claude Console API, limits are set for the organization instead, and one developer can briefly use more than an even share."
 sources:
   - title: "How do usage and length limits work? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
@@ -61,6 +61,9 @@ sources:
   - title: "Error reference, Usage limits (Claude Code Docs)"
     url: "https://code.claude.com/docs/en/errors"
     checked: 2026-11-02
+  - title: "Manage costs effectively, for Teams and Enterprise and the Claude Console (Claude Code Docs)"
+    url: "https://code.claude.com/docs/en/costs"
+    checked: 2026-11-16
 related:
   - /blog/claude-limit-reset-time/
   - /blog/check-claude-usage-mac/
@@ -150,6 +153,28 @@ The names have changed. Anthropic's Ultra page says the Max 20x plan is now call
 Ultra includes ten times Pro's usage every week. Verified accounts have no five-hour limit. Anthropic verifies Ultra accounts automatically, and until then a temporary limit applies. To check yours, open Settings ▸ Usage: no "Current session" bar means you're verified.
 
 On Team plans, limits are per member, not shared by the team. One person reaching their limit doesn't affect anyone else, and usage can't be moved between members, because each seat is for one named person.
+
+### Claude Code limits per developer, on Team and the API
+
+Which Claude Code limit a developer meets depends on how they sign in. This is from Anthropic's Claude Code costs page, read on 16 November 2026.
+
+- **On a Team or Enterprise seat,** each member's Claude Code usage draws from their own seat allowance: the five-hour and weekly windows, shared with Claude chat and Cowork and sized by seat tier, Standard or Premium. It isn't a team pool. Past it, [usage credits](/blog/claude-usage-credits/) carry on if an admin turned them on, with spend limits for the organization, a group or one member.
+- **On the Claude Console (API),** there's no seat allowance. Usage is billed per token to the organization, and an admin can set spend limits per workspace. Rate limits belong to the organization, not to each developer.
+
+For the API case Anthropic gives rough token-per-minute and request-per-minute figures per user, by team size, to use when asking for higher organization limits:
+
+| Team size | Tokens per minute, per user | Requests per minute, per user |
+|---|---|---|
+| 1-5 users | 200k-300k | 5-7 |
+| 5-20 users | 100k-150k | 2.5-3.5 |
+| 20-50 users | 50k-75k | 1.25-1.75 |
+| 50-100 users | 25k-35k | 0.62-0.87 |
+| 100-500 users | 15k-20k | 0.37-0.47 |
+| 500+ users | 10k-15k | 0.25-0.35 |
+
+Anthropic says these limits apply to the whole organization, so one developer can briefly use more than an even share while the others are idle. Where Claude Code is billed by token, its page also puts the average at about $13 per developer per active day, or $150-250 per developer per month, with 90% of users under $30 a day. Those are API figures, not what a Pro, Max or Team seat costs, and Anthropic suggests starting with a small pilot group.
+
+A developer who sees "You've hit your session limit" or "You've hit your weekly limit" has reached a seat window. It covers all models, so switching with `/model` doesn't help.
 
 ## How to see your usage
 
