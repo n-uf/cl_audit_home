@@ -80,7 +80,7 @@ Anthropic's help page calls usage limits a kind of conversation budget. They con
 
 Two details are easy to miss.
 
-Usage limits are not length limits. A length limit is about the context window: how much text one chat can hold. You can hit a length limit with plenty of usage left, and the other way round. Anthropic treats them as separate things, and this article is only about usage.
+Usage limits are not length limits. A length limit is about the context window: how much text one chat can hold. You can hit a length limit with plenty of usage left, and the other way round. Anthropic treats them as separate things, and this article is only about usage. {{live:/blog/claude-conversation-length-limit/}}The length side, from the context window sizes to the fixes, is in [our guide to the conversation length limit](/blog/claude-conversation-length-limit/).{{/live}}
 
 The limits can also change. The help page says Anthropic may adjust usage limits at its discretion to manage capacity, for example with weekly and monthly caps or limits on certain models and features, and that it doesn't guarantee uninterrupted service. A number from a forum post last spring is a snapshot, nothing more.
 
