@@ -148,7 +148,7 @@ Seat-based Enterprise differs in two ways. Credits are billed at the end of each
 
 A member without billing access who runs `/usage-credits` in Claude Code confirms, and a request goes to the admins. On seat-based Enterprise, members also get a "Request usage credits" link when they reach a limit; it asks for a Premium seat or credits and then reads "Request sent to admin". Owners can switch requests off with the Usage credit requests toggle.
 
-A spend limit can be passed slightly. Anthropic checks the limit before a request and counts the tokens after it, so one request may go over; the next ones are blocked.
+A spend limit can be passed slightly. Anthropic checks the limit before a request and counts the tokens after it, so one request may go over; the next ones are blocked. {{live:/blog/claude-spend-limit/}}Which limit each message means, and how to raise it on every plan and on the API, is in [the Claude spend limit guide](/blog/claude-spend-limit/).{{/live}}
 
 ## What MTD spend means in Claude
 
