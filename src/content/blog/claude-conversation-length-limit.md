@@ -94,7 +94,7 @@ If you hit it often, Anthropic's usage and length limits page lists ways to make
 
 Claude Code's error reference describes it the same way: the conversation plus attached files exceeds the model's context window. In an interactive session the message is "Context limit reached · /compact or /clear to continue". In `-p` output and the transcript it stays "Prompt is too long". If you've turned auto-compact off, the line usually says so and points to `/config`.
 
-Normally you don't get that far. When automatic compaction runs, it summarizes your oldest exchanges and keeps the newest. Two variants are worth knowing:
+Normally you don't get that far. When automatic compaction runs, it summarizes your oldest exchanges and keeps the newest. Two variants:
 
 - **"Prompt is too long · automatic compaction failed:"** followed by a named error, such as an unavailable model or an authentication failure. Fix that first, because `/compact` fails on the same error until you do.
 - **"A single-exchange conversation cannot be compacted".** There are no earlier turns to summarize. When Claude Code has the token counts, the message gives the request size and the limit and says what fills it: either the conversation's own content, so you start with less pasted text or smaller files, or the system prompt, tool definitions and attachments, so you reduce attached files or tools.
@@ -106,7 +106,7 @@ What helps, from the Claude Code costs page:
 - `/context` shows what is using space, and `/mcp` lists MCP servers you can disable.
 - Move detailed instructions from `CLAUDE.md` into skills, which load only when used.
 
-{{live:/blog/claude-code-session-handoff/}}When a task is too big for one session even so, [a session handoff](/blog/claude-code-session-handoff/) carries it into a fresh one with a written note.{{/live}}
+When a task is too big for one session even so, [a session handoff](/blog/claude-code-session-handoff/) carries it into a fresh one with a written note.
 
 ## Does a long conversation use more usage?
 
