@@ -10,14 +10,14 @@ draft: true
 author: n-uf
 takeaways:
   - "A Claude spend limit is a monthly cap on pay-as-you-go spending: usage credits on a paid plan, or API usage in the Claude Console. It doesn't change your plan's 5-hour or weekly limits."
-  - "The message tells you which limit it is: \"monthly spend limit\" is your own cap on Pro, Max and Ultra, while \"individual\", \"org's\" and \"team's shared budget\" are set by an admin."
+  - "The message tells you which limit it is: the plain \"monthly spend limit\" is your own cap on Pro, Max and Ultra, while \"individual\", \"org's\" and \"team's shared budget\" are set by an admin."
   - "On Pro, Max and Ultra you raise or remove it in Settings ▸ Usage, or with /usage-credits in Claude Code. On Team and Enterprise an Owner changes it in Organization settings ▸ Usage."
   - "The API has its own monthly cap by usage tier: $500 on Start, $1,000 on Build and $200,000 on Scale. You can set a lower limit of your own in the Claude Console."
   - "A limit can be passed slightly: Anthropic checks it before a request and counts the tokens after, so one request may go over and the next ones are blocked."
 faq:
   - q: "What does a Claude spend limit cap?"
     a: "A monthly cap on pay-as-you-go spending. On Pro, Max and Ultra it caps your usage credits; on Team and Enterprise, an admin can set one for the organization, a seat tier or a member. The Claude API has its own monthly cap. None of them changes your 5-hour or weekly plan limits."
-  - q: "How do I raise my Claude spend limit?"
+  - q: "How do I raise my spend limit in Claude?"
     a: "On Pro, Max and Ultra, open Settings ▸ Usage, find the Usage credits section and click Adjust limit, or run /usage-credits in Claude Code. On Team and Enterprise, an Owner changes it in Organization settings ▸ Usage. For the API, use Spend limits in the Claude Console."
   - q: "What does \"You've hit your monthly spend limit\" mean in Claude Code?"
     a: "Your usage credits reached the monthly spend limit you set, so a request that a plan limit would have sent to credits was refused. Raise the limit in Settings ▸ Usage. If the message also names a reset time for your plan's window, you can wait for that instead."
@@ -54,7 +54,7 @@ related:
   - /
 ---
 
-A Claude spend limit is a monthly cap on money, not on messages. On a paid plan it caps the usage credits that pay for requests after a plan limit is full. For an organization it can be set for everyone, a seat tier or one member, and in the Claude Console it caps API usage. Which one stopped you is in the message: "monthly spend limit" is your own cap on Pro, Max or Ultra, and an admin set the others.
+A Claude spend limit is a monthly cap on money, not on messages. On a paid plan it caps the usage credits that pay for requests after a plan limit is full. For an organization it can be set for everyone, a seat tier or one member, and in the Claude Console it caps API usage. Which one stopped you is in the message: the plain "You've hit your monthly spend limit" is your own cap on Pro, Max or Ultra, and the others are set by an admin, a gateway operator or your API usage tier.
 
 Everything about Claude below comes from Anthropic's help and docs pages, read on 16 November 2026 and listed at the end. Where those pages give no figure, we don't give one either. cl_audit is an independent tool, not affiliated with Anthropic.
 
@@ -68,7 +68,7 @@ Claude Code and the API word each limit differently. Anthropic's error reference
 | "You've hit your individual spend limit" | A limit your organization set for you | An admin, in Organization settings ▸ Usage |
 | "You've hit your org's monthly spend limit" | The organization-wide cap | An Owner, in Organization settings ▸ Usage |
 | "You've hit your team's shared budget" | A pooled budget an admin gave a group you're in | An admin, in Organization settings ▸ Usage |
-| "You've hit your channel's monthly spend limit" | The budget of one Slack channel | An org owner or the channel's manager |
+| "You've hit your channel's monthly spend limit" | The budget of one Slack channel | An org owner or the channel's manager, in the channel's Claude settings |
 | "spend limit reached", in lower case, through a Claude apps gateway | A cap your gateway's operator set | The gateway's operator |
 | "You have reached your specified API usage limits" (HTTP 400) | A limit you set in the Claude Console | Spend limits in the Console |
 | "…crossed its monthly API usage threshold" (HTTP 429) | The API tier's own monthly cap | A higher tier, or a request for a higher limit |
@@ -79,7 +79,7 @@ Two details from the same pages. On organizations billed by usage, the Claude Co
 
 On Pro, Max and Ultra, a spend limit caps usage credits and nothing else. Anthropic's help page says that once you've used up a plan limit (a five-hour session limit, the weekly limit, or Fable's weekly limit on Max and Ultra), your requests switch to credits and keep working until you reach your monthly spend limit or your balance runs out with auto-reload off. Your plan limits keep resetting on their schedule while credits are on. What credits are, what they cost and when they start is in [our article on Claude usage credits](/blog/claude-usage-credits/).
 
-So a spend limit never lowers what your plan includes. It only decides how far past those limits you're willing to go. If you set none, Settings ▸ Usage offers "Set to unlimited", and in Claude Code `/usage` shows "Unlimited" in place of a figure.
+So a spend limit never lowers what your plan includes. It only decides how far past those limits you're willing to go. Settings ▸ Usage also offers "Set to unlimited". With no limit set, `/usage` in Claude Code shows "Unlimited" and no spend figure.
 
 A limit can be passed slightly. Anthropic checks it before a request and counts the tokens after, so one request may go over; the next ones are blocked.
 
@@ -120,7 +120,7 @@ Custom-tier organizations have no cap, with limits arranged through their accoun
 
 You can set a limit of your own below the cap: go to Spend limits in the Console, click **Adjust limit** or **Set limit** next to the monthly spend limit, and enter a value that doesn't exceed your tier's cap. When usage reaches a limit you set, requests return HTTP 400 with an `invalid_request_error` whose message starts "You have reached your specified API usage limits", or "…workspace API usage limits" for a workspace's limit, and says when access resumes. Raising or removing the limit restores access sooner.
 
-Workspaces carry their own limits. Anthropic's workspaces page says you can't set spend limits on the default workspace, and Claude Code requests over the Claude Code workspace's limit are checked separately and can come back as a 429 with a `retry-after` header.
+Workspaces carry their own limits. Anthropic's workspaces page says you can't set spend limits on the default workspace, and its rate-limits page adds that Claude Code requests over the Claude Code workspace's limit are checked separately and can come back as a 429 with a `retry-after` header.
 
 ## Spend limit or plan limit?
 
