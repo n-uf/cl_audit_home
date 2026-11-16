@@ -111,6 +111,9 @@ function paintState(card: HTMLElement, a: (typeof accounts)[number], win: boolea
   const plan = card.querySelector(".plan");
   plan?.classList.toggle("red", st ? st.tone === "red" : full);
   plan?.classList.toggle("amber", st?.tone === "amber");
+  // no plan in a clash (26.11.52, ProfileShow.plan): the badge shows "–" over the time, as the app's PlanBadge does
+  const planName = plan?.querySelector<HTMLElement>("[data-plan]");
+  if (planName) planName.textContent = st?.noPlan ? "–" : planName.dataset.plan!;
   card.querySelector(".inuse")?.classList.toggle("out", !!st?.out);
   card.querySelector(".inuse")?.classList.toggle("unlit", !!st?.lampOff);
 }

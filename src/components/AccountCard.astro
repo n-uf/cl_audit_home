@@ -24,7 +24,7 @@ const full = !!fullLimit(a.id as AccountId);   // a limit is full: the plan badg
       <div class="acc-name"><span class="dot" style={`background:${a.color}`} />Claude {a.name}</div>
       <div class="inuse"><i></i><span class="email">{a.email}</span></div>
     </div>
-    <span class:list={["plan", { red: full }]}><b>{a.plan}</b><small>{a.updated}</small></span>
+    <span class:list={["plan", { red: full }]}><b data-plan={a.plan}>{a.plan}</b><small>{a.updated}</small></span>
   </div>
 
   <div class="chips2" role="group" aria-label={`Claude window and Dock icon of ${a.name}`}>
