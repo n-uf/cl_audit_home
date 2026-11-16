@@ -16,6 +16,7 @@ export type CardState = {
   out?: boolean;                 // signed out or expired: the account line gets a red lamp and a red address
   lampOff?: boolean;             // the sign-in can't be read, or is on another account or profile: the green lamp goes off
                                  // (26.11.41, ProfileDisplay.lamp); in the split it stays lit, the account in use's
+  noPlan?: boolean;              // the folder is on another profile's account: no plan shows (26.11.52, ProfileShow.plan)
   heading: (a: Acc) => string;
   sentence: (a: Acc) => string;
   keys: KeysSpec;
@@ -59,6 +60,7 @@ export const cardStates: Record<CardStateKey, CardState> = {
     label: "Another profile's account",   // words: SEO
     tone: "red",
     lampOff: true,
+    noPlan: true,
     heading: () => `Terminal is signed in to ${work.name}'s account`,   // words: SEO
     sentence: signInAs,
     keys: { lead: "signin", keys: ["show"], more: ["terminal"], terminalNote: `on ${work.name}'s account` },   // words: SEO
