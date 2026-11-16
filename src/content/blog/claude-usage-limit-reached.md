@@ -17,11 +17,11 @@ faq:
   - q: "Why did I hit my Claude limit after one message?"
     a: "Anthropic gives no message count: usage depends on the model, the chat's length, attached files and tools. One message can be heavy: long conversations and big attachments cost more, and Claude Code sends the whole conversation with every request. Claude, Claude Code and your IDE share one limit. Settings ▸ Usage or /usage shows where you stand."
   - q: "Does a new chat reset the Claude usage limit?"
-    a: "No. Anthropic's help page says usage limits cover all your conversations, and that claude.ai, Claude Code and Claude Desktop count toward the same limit. A new chat can cost less per message than a long one, so Anthropic suggests starting one when you're close to a limit, but it doesn't give you a new allowance."
+    a: "No. Anthropic's help page says usage limits cover all your conversations, and that claude.ai, Claude Code and Claude Desktop count toward the same limit. A new chat can cost less per message than a long one, so Anthropic suggests starting one when you're close to a limit in a long chat, but it doesn't give you a new allowance."
   - q: "Is the Claude session limit the 5-hour limit?"
     a: "Yes. Anthropic's help page describes a session limit that resets every five hours, and Current session in Settings ▸ Usage shows how much of it you've used and the time remaining. The five-hour period starts when you send your first message."
   - q: "Can I keep working after the Claude limit is reached?"
-    a: "With usage credits on, yes: requests switch to pay-as-you-go API rates until you reach your monthly spend limit or your balance runs out. Otherwise wait for the reset, use a limit reset, or upgrade. In Claude Code, an Opus or Sonnet limit blocks only that model family, so /model to another keeps you working."
+    a: "With usage credits on, yes: requests switch to pay-as-you-go API rates until you reach your monthly spend limit or your balance runs out. Otherwise wait for the reset, use a limit reset if you have one, or upgrade. In Claude Code, an Opus or Sonnet limit blocks only that family, so /model to a model outside it keeps you working."
   - q: "Is \"Context limit reached\" the same as a usage limit?"
     a: "No. It's a length limit: the conversation has outgrown the context window, and your usage allowance isn't what ran out. In Claude Code, run /compact or /clear to continue. In Claude, start a new conversation or attach fewer or smaller files."
 sources:
