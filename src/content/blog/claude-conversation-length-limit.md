@@ -71,7 +71,7 @@ Anthropic keeps a separate page for this, and it changes as models change. On 16
 | 500K tokens | Fable 5, Opus 4.8, 4.7 and 4.6, Sonnet 4.6 |
 | 200K tokens | Any other model, per the page |
 
-In Claude Code the page lists 1M tokens for each of those models, including the ones that have 500K in chat. For Opus 4.6 and Sonnet 4.6 it's the `[1m]` variant you pick with `/model`, and the page says usage credits are needed for Sonnet 4.6's, and for Opus 4.6's on Pro. Claude Cowork has its own, different table on that page. The page is about paid plans and gives no table for the Free plan, so we don't give a Free figure. The window is fixed for your plan: Anthropic says you can't increase it, only use it better.
+In Claude Code the page lists 1M tokens for each of those models, including the ones that have 500K in chat. For Opus 4.6 and Sonnet 4.6 it's the `[1m]` variant you pick with `/model`, and the page says [usage credits](/blog/claude-usage-credits/) are needed for Sonnet 4.6's, and for Opus 4.6's on Pro. Claude Cowork has its own, different table on that page. The page is about paid plans and gives no table for the Free plan, so we don't give a Free figure. The window is fixed for your plan: Anthropic says you can't increase it, only use it better.
 
 ## Why a chat hits the limit, and what Claude does first
 
@@ -123,8 +123,8 @@ For Claude Code, the docs explain why a session left open for hours can use far 
 | What fixes it | A new chat, fewer files, `/compact`, `/clear` | Waiting for the reset, a bigger plan, or usage credits |
 | Where to look | `/context` in Claude Code | Settings ▸ Usage, or `/usage` |
 
-If the message is about your allowance, [what to do when a Claude usage limit is reached](/blog/claude-usage-limit-reached/) covers each variant.
+If the message is about your allowance, [what to do when a Claude usage limit is reached](/blog/claude-usage-limit-reached/) covers each variant, and [when each limit resets](/blog/claude-limit-reset-time/) says how long the wait is. {{live:/blog/claude-spend-limit/}}A message about a spend limit is a third thing; [the Claude spend limit guide](/blog/claude-spend-limit/) covers it.{{/live}}
 
 ## Watching the usage side of a long session
 
-A length limit shows up the moment you hit it. The usage that long sessions drain is slower, and easy to miss until a limit is full. If you run Claude Code on a Mac, cl_audit, our free [Claude usage tracker](/) for macOS, shows each profile's 5-hour and weekly limits in its own Dock icon, and with alerts on it sends a notification at a level you choose and again when a full limit is back. It reads usage, not context size, so it can't tell you how full a conversation is; `/context` in Claude Code does that.
+A length limit shows up the moment you hit it. The usage that long sessions drain is slower, and easy to miss until a limit is full. If you run Claude Code on a Mac, cl_audit, our free [Claude usage tracker](/) for macOS, shows each profile's 5-hour and weekly limits in its own Dock icon, and with [alerts](/use-cases/claude-usage-limit-alerts/) on it sends a notification at a level you choose and again when a full limit is back. It reads usage, not context size, so it can't tell you how full a conversation is; `/context` in Claude Code does that.
