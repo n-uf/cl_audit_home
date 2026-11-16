@@ -19,11 +19,11 @@ faq:
   - q: "When does the Claude weekly limit reset?"
     a: "At a fixed time each week that is assigned to your account, so yours can differ from a friend's. The day and time stay the same whenever you start using Claude, and the weekly and 5-hour limits run at once, so a 5-hour reset doesn't free a full weekly limit. Your own next reset time is in Settings ▸ Usage."
   - q: "How do I see when my Claude limit resets in Claude Code?"
-    a: "Run /usage to see your plan limits and when they reset. When you hit a limit, Claude Code's message also gives the time, for example \"resets 3:45pm\". Before a window runs out, it can warn you too, with the reset time, at 85% of your session limit."
+    a: "Run /usage to see your plan limits and when they reset. When you hit a limit, Claude Code's message also gives the time, for example \"resets 3:45pm\". Before a window runs out, it can warn you too, for example \"You've used 85% of your session limit · resets 3:45pm\"."
   - q: "Can I reset my Claude weekly limit myself?"
     a: "Not on demand. The weekly limit resets at a fixed time assigned to your account, and nothing in Settings ▸ Usage moves it. The exception is a weekly limit reset: when Anthropic gives you one, \"Reset for free\" in Settings ▸ Usage puts the weekly limit back to full right away."
   - q: "Why did my Claude weekly limit reset early?"
-    a: "A limit reset is one explanation. Anthropic gives them to eligible plans now and then, and a weekly one refills the weekly limit at once. Your usual weekly reset day and time don't change. Settings ▸ Usage shows your next reset time and any limit reset you hold, with its expiry."
+    a: "A limit reset is one explanation: if you used \"Reset for free\" on a weekly reset Anthropic gave you, the weekly limit refilled at once. Your usual weekly reset day and time don't change. Settings ▸ Usage shows your next reset time; Anthropic's pages describe no other way for it to come back early."
 sources:
   - title: "How do usage and length limits work? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
@@ -114,7 +114,7 @@ Max and Ultra plans also have a separate weekly limit for Fable. Anthropic's pla
 Not on your own. The weekly limit has one reset time, fixed for your account, and no setting or command in Anthropic's help pages moves it. Only a weekly limit reset from Anthropic brings it back to full sooner. Two other things get you working again before the usual reset, and none of the three is a schedule you can plan around:
 
 - **A limit reset from Anthropic.** When your plan has been given a weekly reset, using it puts the weekly limit back to full right away. It's covered in the next section.
-- **Usage credits.** They don't reset anything, but they let your requests carry on past a full limit, billed at standard API rates. {{live:/blog/claude-usage-credits/}}What they cost and how to turn them on is in [our usage credits article](/blog/claude-usage-credits/).{{/live}}
+- **Usage credits.** They don't reset anything, but they let your requests carry on past a full limit, billed at standard API rates. What they cost and how to turn them on is in [our usage credits article](/blog/claude-usage-credits/).
 - **A bigger plan.** Anthropic's help page says that if you upgrade, the new plan's limits apply right away.
 
 If your weekly limit seems to have reset early, check Settings ▸ Usage first. It shows your next reset time, and a limit reset you used would explain the difference, since Anthropic says your usual weekly reset day and time don't change. Anthropic's pages don't describe another way for the limit to come back sooner.
