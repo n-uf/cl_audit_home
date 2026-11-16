@@ -5,7 +5,7 @@ h1: "Claude limit reset time for the 5-hour and weekly limits"
 mainKeyword: "claude limit reset time"
 kind: what-is
 published: 2026-11-02
-updated: 2026-11-08
+updated: 2026-11-16
 author: n-uf
 takeaways:
   - "The 5-hour limit resets in full five hours after you send the first message of its period."
@@ -27,7 +27,7 @@ faq:
 sources:
   - title: "How do usage and length limits work? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
-    checked: 2026-11-02
+    checked: 2026-11-16
   - title: "What is the Pro plan? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/8325606-what-is-the-pro-plan"
     checked: 2026-11-02
@@ -42,7 +42,7 @@ sources:
     checked: 2026-11-02
   - title: "What is a limit reset? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/17007452-what-is-a-limit-reset"
-    checked: 2026-11-02
+    checked: 2026-11-16
   - title: "Use Claude Code with your Pro, Max, or Ultra plan (Claude Help Center)"
     url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
     checked: 2026-11-02
@@ -62,7 +62,7 @@ related:
 
 The Claude limit reset time depends on which limit stopped you. The 5-hour limit resets five hours after you send the first message of its period. The weekly limit resets at a fixed day and time that Anthropic assigns to your account, and that time doesn't move if you start using Claude late in the week or if your subscription began on a different day. Your own exact times are in Settings ▸ Usage in Claude, and in Claude Code with `/usage`.
 
-Everything below about how Claude behaves comes from Anthropic's help and docs pages, checked on 2 November 2026 and listed at the end. Where those pages don't say something, such as which weekday your weekly limit resets, we don't either. cl_audit is an independent tool, not affiliated with Anthropic.
+Everything below about how Claude behaves comes from Anthropic's help and docs pages, checked on 2 November 2026 (the limit-reset facts again on 16 November) and listed at the end. Where those pages don't say something, such as which weekday your weekly limit resets, we don't either. cl_audit is an independent tool, not affiliated with Anthropic.
 
 ## When does the Claude limit reset? It depends on the limit
 
@@ -111,15 +111,20 @@ Max and Ultra plans also have a separate weekly limit for Fable. Anthropic's pla
 
 ## Not the same: limit resets Anthropic hands out
 
-Search for "Claude reset" and you may find something else: a limit reset. Anthropic's help page says these are given occasionally to eligible plans, and that using one sets your limit back to full right away. Depending on the reset shown, it's either your five-hour session limit or your weekly usage limit.
+Search for "Claude reset" and you may find something else: a limit reset. Anthropic's help page says these are given occasionally to eligible plans, and that using one restores your usage right away. What it restores depends on the type of reset shown:
+
+- **Five-hour reset:** your five-hour session limit goes back to full.
+- **Weekly reset:** your weekly usage limit goes back to full.
+- **Fable limit reset:** you get back the weekly usage you've spent on Fable models. Usage on other models stays where it is. If your account has a five-hour limit, that one is fully refilled, including usage spent on other models.
 
 From that page:
 
 - You don't have to wait until you hit a limit to use it, and once you use it you can't undo it.
 - Your weekly limits still reset on their usual day and time.
-- If it has an expiry, the date is shown in Settings ▸ Usage.
-- To use it, go to Settings ▸ Usage on the web or in Claude Desktop and click "Reset for free". The same button is on the message you see when you reach a limit.
-- The button isn't currently available in Claude Mobile, or in Claude Code in a terminal or IDE. Your limits are shared across your account, though, so after a reset they're back to full in Claude Code too.
+- If it has an expiry, the date is shown in Settings ▸ Usage. If you downgrade or cancel before you use it, it's no longer available.
+- To use it, go to Settings ▸ Usage in Claude on the web, in Claude Desktop or in Claude Mobile, find the Limit resets section and click "Reset for free". The same button is on the message you see when you reach a limit.
+- The button isn't currently available in Claude Code in a terminal or IDE. Your limits are shared across your account, though, so after a reset they're back to full in Claude Code too.
+- A reset doesn't refund extra usage you've already been billed for, and it doesn't change your usage credit balance.
 
 It's a bonus, not a schedule. You can't count on one, and it doesn't change your normal Claude limit reset time.
 
