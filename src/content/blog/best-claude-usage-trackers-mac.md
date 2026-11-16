@@ -19,7 +19,7 @@ faq:
   - q: "Is there a Claude usage widget for Mac?"
     a: "Two of these tools have one. cl_audit, our own, has a \"Claude usage\" widget in the widget gallery on macOS 14 or later, and SessionWatcher's page lists macOS widgets in its paid Pro tier. The others live in the menu bar, terminal or browser; ClaudeBar's README also lists a Notch view and a Touch Bar view."
   - q: "Which Claude usage trackers are on GitHub?"
-    a: "ClaudeUsageBar, Claude Usage Tracker, CodexBar, ClaudeBar, ccusage and cl_audit all publish their source on GitHub, and Claude Monitor's page says its source is there too. Usagebar's page doesn't mention a public repository."
+    a: "ClaudeUsageBar, Claude Usage Tracker, CodexBar, ClaudeBar, ccusage and cl_audit all publish their source on GitHub, and Claude Monitor's page says its source is there too. Usagebar's page doesn't mention a public repository, and SessionWatcher's pages state no licence. cl_audit's licence is source-available; the rest of those state MIT or Apache 2.0."
   - q: "Is there a free alternative to SessionWatcher for Mac?"
     a: "Yes. cl_audit, our own tool, is free and shows each profile's 5-hour and weekly limits in a Dock icon, several accounts included; it needs Apple silicon and macOS 13. Claude Monitor's page says it's free, and Usagebar lists a free tier. SessionWatcher starts at $8.99 and also runs on Intel Macs and Windows."
   - q: "Can a tracker show several Claude accounts at once?"
