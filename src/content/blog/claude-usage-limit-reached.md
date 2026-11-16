@@ -5,7 +5,7 @@ h1: "Claude usage limit reached? Which limit it is, and what you can do now"
 mainKeyword: "claude usage limit reached"
 kind: how-to
 published: 2026-11-03
-updated: 2026-11-12
+updated: 2026-11-16
 author: n-uf
 takeaways:
   - "Claude usage limit reached means you've used up your 5-hour session limit, your weekly limit or, on Max and Ultra, the separate weekly limit for Fable."
@@ -42,7 +42,7 @@ sources:
     checked: 2026-11-03
   - title: "What is a limit reset? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/17007452-what-is-a-limit-reset"
-    checked: 2026-11-03
+    checked: 2026-11-16
   - title: "Use Claude Code with your Pro, Max, or Ultra plan (Claude Help Center)"
     url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
     checked: 2026-11-03
@@ -142,7 +142,7 @@ Two other messages look similar but aren't about your plan's allowance. "You've 
 | Wait | The limit comes back in full at the time in the message ([how the reset time works](/blog/claude-limit-reset-time/)) | A weekly reset can be days away |
 | Let Claude Code wait for you | In an open interactive session, it continues the task after the reset (v2.1.234 or later, claude.ai sign-in). In the Desktop app's Code tab, tick "Auto-continue when limits reset" on the session-limit card | Keep the session open. It won't start on its own for a reset more than 24 hours away; `/rate-limit-options` lets you start it |
 | Usage credits | Requests switch to pay-as-you-go at standard API rates and keep working | Billed apart from your plan, up to your monthly spend limit or until your balance runs out. Turn on in Settings ▸ Usage, or with `/usage-credits` in Claude Code. On Team, an Owner turns them on and members ask |
-| A limit reset | Puts the session or weekly limit back to full | Only given now and then to eligible plans, and it can't be undone. The "Reset for free" button isn't in Claude Mobile or in Claude Code in a terminal or IDE |
+| A limit reset | Puts the session or weekly limit back to full, or gives back weekly Fable usage | Only given now and then to eligible plans, and it can't be undone. The "Reset for free" button isn't in Claude Code in a terminal or IDE |
 | Another model, in Claude Code | After an Opus or Sonnet limit, `/model` to a model outside that family | No help with the session or weekly limit, which cover all models |
 | A bigger plan | The new plan's limits apply right away | It costs more; [Claude Max vs Pro](/blog/claude-max-vs-pro/) compares the two |
 
