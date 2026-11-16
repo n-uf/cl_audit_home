@@ -1,15 +1,15 @@
 ---
 title: "Best Claude usage trackers for Mac (2026) | cl_audit"
-description: "The best Claude usage tracker for Mac depends on where you want to see it: menu bar, Dock, terminal or browser. Eight tools compared from their own pages."
+description: "The best Claude usage tracker for Mac depends on where you want to see it: menu bar, Dock, terminal or browser. Nine tools compared from their own pages."
 h1: "Best Claude usage trackers for Mac (2026)"
 mainKeyword: "best claude usage tracker"
 kind: best-tools
 published: 2026-11-02
-updated: 2026-11-12
+updated: 2026-11-16
 author: n-uf
 takeaways:
   - "Which Claude usage tracker suits you depends on where you want to see your usage: the menu bar, the Dock, the terminal or the browser."
-  - "Five of the eight tools here are menu bar apps (ClaudeUsageBar, Claude Usage Tracker, Usagebar, CodexBar and ClaudeBar); ccusage is a terminal tool and Claude Monitor is a browser extension."
+  - "Six of the nine tools here are menu bar apps (ClaudeUsageBar, Claude Usage Tracker, Usagebar, CodexBar, ClaudeBar and SessionWatcher); ccusage is a terminal tool and Claude Monitor is a browser extension."
   - "cl_audit shows each profile's 5-hour and weekly limits in its own Dock icon, and can add a menu bar icon per profile and a widget. It is our own tool, and mainly a Dock app."
   - "Claude Usage Tracker also handles several accounts: its README describes multiple profiles, all visible in the menu bar at once."
   - "You can check your usage without installing anything: Settings ▸ Usage on claude.ai, or /usage in Claude Code."
@@ -17,13 +17,13 @@ faq:
   - q: "What is the best Claude usage tracker for Mac?"
     a: "It depends on where you want to see your usage. A menu bar app suits a quick glance, ccusage suits terminal reports, and for several accounts there's Claude Usage Tracker in the menu bar or cl_audit in the Dock. cl_audit is our own tool, so check the others' pages too."
   - q: "Is there a Claude usage widget for Mac?"
-    a: "Only cl_audit, our own tool, has one: \"Claude usage\" in the widget gallery on macOS 14 or later. The other tools here are not desktop widgets; most live in the menu bar. ClaudeBar's README also lists a Notch view and a Touch Bar view."
+    a: "Two of these tools have one. cl_audit, our own, has a \"Claude usage\" widget in the widget gallery on macOS 14 or later, and SessionWatcher's page lists macOS widgets in its paid Pro tier. The others live in the menu bar or terminal; ClaudeBar's README also lists a Notch view and a Touch Bar view."
   - q: "Which Claude usage trackers are on GitHub?"
     a: "ClaudeUsageBar, Claude Usage Tracker, CodexBar, ClaudeBar, ccusage and cl_audit all publish their source on GitHub, and Claude Monitor's page says its source is there too. Usagebar's page doesn't mention a public repository."
-  - q: "Do I need a tracker to see my Claude usage?"
-    a: "No. Anthropic's help page says Settings ▸ Usage shows how much you have used and the time remaining, and its Claude Code docs say /usage shows plan usage bars to subscribers. A tracker saves you opening those, and some add history or alerts."
+  - q: "Is there a free alternative to SessionWatcher for Mac?"
+    a: "Yes. cl_audit, our own tool, is free: it shows each Claude profile's 5-hour and weekly limits in a Dock icon and handles several accounts without a paid tier. It needs Apple silicon and macOS 13. SessionWatcher starts at $8.99 and also runs on Intel Macs and Windows, so check which you need."
   - q: "Can a tracker show several Claude accounts at once?"
-    a: "Some can. cl_audit's README describes profiles that each hold one or more Claude accounts, and Claude Usage Tracker's README describes multiple profiles in the menu bar. ClaudeBar lists several logins for Codex; the other pages don't mention several Claude accounts."
+    a: "Some can. cl_audit's README describes profiles that each hold one or more Claude accounts, Claude Usage Tracker's README describes multiple profiles in the menu bar, and SessionWatcher's page lists several Claude accounts in its Pro tier. ClaudeBar lists several logins for Codex; the other pages don't mention several Claude accounts."
 sources:
   - title: "cl_audit README (n-uf)"
     url: "https://github.com/n-uf/cl_audit"
@@ -59,6 +59,15 @@ sources:
   - title: "Claude Monitor home page"
     url: "https://claude-monitor.com"
     checked: 2026-11-02
+  - title: "SessionWatcher home page"
+    url: "https://www.sessionwatcher.com/"
+    checked: 2026-11-16
+  - title: "SessionWatcher for Claude (SessionWatcher)"
+    url: "https://www.sessionwatcher.com/claude"
+    checked: 2026-11-16
+  - title: "SessionWatcher llms.txt (SessionWatcher)"
+    url: "https://sessionwatcher.com/llms.txt"
+    checked: 2026-11-16
   - title: "Anthropic Help Center: How do usage and length limits work?"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
     checked: 2026-11-02
@@ -82,11 +91,11 @@ related:
   - /blog/ccusage-alternative/
 ---
 
-The best Claude usage tracker for you depends on where you want to see your usage. For one account and a percentage in the menu bar, there are five menu bar apps to pick from. For reports in the terminal, there's ccusage. For several Claude accounts on one Mac, Claude Usage Tracker shows them in the menu bar, and cl_audit gives each one its own Dock icon. cl_audit is our tool, so read this list with that in mind. It is an independent tool, not affiliated with Anthropic.
+The best Claude usage tracker for you depends on where you want to see your usage. For one account and a percentage in the menu bar, there are six menu bar apps to pick from. For reports in the terminal, there's ccusage. For several Claude accounts on one Mac, Claude Usage Tracker shows them in the menu bar, and cl_audit gives each one its own Dock icon. cl_audit is our tool, so read this list with that in mind. It is an independent tool, not affiliated with Anthropic.
 
 ## How we compared
 
-We compared the tools by where and how they show usage, not by which is better. Every tool other than cl_audit is described only from its own README or home page, read on 2 November 2026 and linked below. We didn't install, test or benchmark them, and we don't rank them on accuracy or quality.
+We compared the tools by where and how they show usage, not by which is better. Every tool other than cl_audit is described only from its own README or home page, read on 2 November 2026 (SessionWatcher's on 16 November) and linked below. We didn't install, test or benchmark them, and we don't rank them on accuracy or quality.
 
 For each one we noted where it shows usage, whether its page describes more than one Claude account, whether you can look back at history, the price, the licence and the macOS version it needs. "Not stated" or "not mentioned" in the table means the page is silent on it. The tool may still do it.
 
@@ -104,6 +113,7 @@ You may not need a tracker at all. Anthropic's help page says Settings ▸ Usage
 | Usagebar | Menu bar | Not mentioned | Not mentioned | $9 one-time, with a free tier | Not stated | macOS, no minimum stated |
 | CodexBar | Menu bar | Not stated for Claude | Cost scans and a quota burndown | Not stated | MIT | macOS 14+ |
 | ClaudeBar | Menu bar (also Notch and Touch Bar) | Listed for Codex; not stated for Claude | Daily cost and tokens, today next to yesterday | Not stated | Apache 2.0 | macOS 15+ |
+| SessionWatcher | Menu bar (taskbar on Windows) | Yes, on its Pro tier | 7 days on Solo and Bundle, 90 days on Pro, with token and cost breakdown | From $8.99 one-time; Pro $79 one-time or $24 a year; 7-day free trial | Not stated | macOS 14+, Apple silicon or Intel (also Windows) |
 | ccusage | Terminal | Not mentioned | Yes: daily, weekly, monthly and session reports | Not stated | MIT | No operating system named |
 | Claude Monitor | Browser toolbar and a bar above the chat box | Not mentioned | Not mentioned | Free | MIT | Desktop Chrome, Firefox or Edge |
 
@@ -159,6 +169,14 @@ Claude Usage Tracker signs in with your Claude Code credentials if you use Claud
 
 [ClaudeBar](https://github.com/tddworks/ClaudeBar) covers Claude, Codex, Gemini, Copilot, Cursor and more from the menu bar. For Claude it lists the 5-hour and weekly limits, model limits and Extra Usage. Up to three providers fit in the menu bar. There's also a Notch view, a Touch Bar view, forecasts and webhooks, and a daily view with today's cost and tokens next to yesterday's. Separate logins with independent quotas are listed for Codex. It is Apache 2.0 licensed, needs macOS 15 or later, and installs with Homebrew or a signed DMG.
 
+### SessionWatcher
+
+[SessionWatcher](https://www.sessionwatcher.com/) is a paid app that keeps the 5-hour and weekly limits (it also lists a Fable limit), reset times, a usage-rate chart and a token and cost breakdown in the Mac menu bar, or in the taskbar on Windows. Its pages say the readout refreshes every 90 seconds and that alerts come at 70% and 90% by default and again when a limit resets. They also say it reads usage statistics locally, needs no API key, and uploads no code, prompts, conversations or project files. It calls itself an independent product, not affiliated with Anthropic.
+
+As listed on 16 November 2026, Solo is $8.99 one-time for Claude on one device, and Bundle is $19.99 for Claude, Codex and Cursor. Pro is $79 one-time or $24 a year, for up to five devices and the 22 tools its page lists. Pro is also where several Claude accounts side by side, 90 days of history and the Mac desktop widgets are. There's a free 7-day trial and a 14-day refund window. It needs macOS 14 or later, on Apple silicon or Intel, and runs on Windows 10 and 11. The pages we read state no licence.
+
+Where it makes more sense than cl_audit: you have an Intel Mac or a Windows PC, you track Codex, Cursor or other tools beside Claude, or you want the numbers in the menu bar and don't mind paying once. Where cl_audit does: it's free, several Claude accounts need no paid tier, and each profile gets its own Dock icon. We haven't installed SessionWatcher; all of this is from its own pages.
+
 ### ccusage
 
 [ccusage](https://github.com/ccusage/ccusage) is a command-line tool that, in its README's words, analyses coding-agent CLI token usage and costs from local data. Run `npx ccusage@latest` for daily, weekly, monthly and session reports. The `blocks` report covers Claude Code's 5-hour billing windows, and there's a status line for Claude Code, marked Beta. Costs are in USD, `--json` prints JSON, and it also reads Codex, OpenCode, Gemini CLI and many other tools. It is MIT licensed. The README doesn't name an operating system or describe several accounts. We compare the two more closely in [ccusage alternative](/blog/ccusage-alternative/).
@@ -171,17 +189,18 @@ Claude Usage Tracker signs in with your Claude Code credentials if you use Claud
 
 How we'd choose, including when it isn't cl_audit:
 
-- **One account, usage in the menu bar:** any of ClaudeUsageBar, Claude Usage Tracker, Usagebar, CodexBar or ClaudeBar. Decide by the macOS version you run, how the app signs in, and whether you'd pay.
+- **One account, usage in the menu bar:** any of ClaudeUsageBar, Claude Usage Tracker, Usagebar, CodexBar, ClaudeBar or SessionWatcher. Decide by the macOS version you run, how the app signs in, and whether you'd pay.
+- **An Intel Mac or a Windows PC:** SessionWatcher, whose pages list both. cl_audit needs Apple silicon.
 - **Terminal reports, scripts or cost estimates:** ccusage. Our [ccusage alternative](/blog/ccusage-alternative/) article sets it against cl_audit.
 - **Usage in the browser, no app:** Claude Monitor.
-- **Claude and other AI coding tools in one place:** CodexBar or ClaudeBar.
-- **Several accounts in the menu bar:** Claude Usage Tracker. Its README also lists usage charts, a `claude-<profile>` command for each profile and automatic profile switching.
+- **Claude and other AI coding tools in one place:** CodexBar, ClaudeBar or SessionWatcher.
+- **Several accounts in the menu bar:** Claude Usage Tracker, or SessionWatcher's Pro tier if you'd rather pay for it. Claude Usage Tracker's README also lists usage charts, a `claude-<profile>` command for each profile and automatic profile switching.
 - **Several accounts, each in its own Dock icon:** cl_audit, a [Claude usage tracker](/) built around profiles, with alerts per profile and [your Claude Code history by day](/use-cases/claude-code-usage-history/), split by project, model and surface. If that's what you want, [download cl_audit](/install/).
 - **An occasional look:** Settings ▸ Usage or `/usage`, and skip the install.
 
 ## Is there a Claude usage widget for Mac?
 
-Only cl_audit, our own tool. Its "Claude usage" widget is in the macOS widget gallery (macOS 14 or later) and shows every profile's 5-hour and weekly limits in three sizes. Its look is set in Settings ▸ General ▸ Widget. The five menu bar apps stay in the menu bar. ClaudeBar's README also lists a Notch view and a Touch Bar view. If you need a desktop widget from another tool, check each project's page, since they change. How to add it, what it draws for one profile or several, and how to set its look are on the [Claude usage widget for Mac](/use-cases/claude-usage-widget-mac/) page.
+Two of the tools here have one: cl_audit, our own, and SessionWatcher. cl_audit's "Claude usage" widget is in the macOS widget gallery (macOS 14 or later) and shows every profile's 5-hour and weekly limits in three sizes. Its look is set in Settings ▸ General ▸ Widget. SessionWatcher's pages list macOS widgets as a Mac-only part of its paid Pro tier, with a Dashboard widget in the large and extra-large sizes. The other five menu bar apps stay in the menu bar. ClaudeBar's README also lists a Notch view and a Touch Bar view. If you need a desktop widget from another tool, check each project's page, since they change. How to add it, what it draws for one profile or several, and how to set its look are on the [Claude usage widget for Mac](/use-cases/claude-usage-widget-mac/) page.
 
 ## Is there a Claude usage tracker on GitHub?
 
@@ -190,6 +209,12 @@ Yes, several. ClaudeUsageBar, Claude Usage Tracker, CodexBar, ClaudeBar and ccus
 ## What is a good ClaudeBar alternative?
 
 That depends on why you're looking. ClaudeBar needs macOS 15 or later; Claude Usage Tracker needs 14, cl_audit 13 and ClaudeUsageBar 12. ClaudeBar covers many providers, so if you only use Claude, a Claude-only app may be simpler. If you'd rather have usage in the Dock than the menu bar, cl_audit is the one here that does that.
+
+## What is a good SessionWatcher alternative?
+
+That depends on why you're looking. If it's the price, cl_audit is free, and Claude Monitor's page says it's free too. Usagebar lists $9 one-time, and the other pages above state no price. If it's the Mac you own, cl_audit needs Apple silicon and macOS 13, while SessionWatcher's pages list macOS 14 or later on Apple silicon or Intel. If you want a menu bar app, ClaudeUsageBar, Claude Usage Tracker, Usagebar, CodexBar and ClaudeBar are the other five; compare their macOS versions and how they sign in in the table.
+
+If you wanted several Claude accounts without a paid tier, cl_audit and Claude Usage Tracker are the two here whose pages describe it. If it's the number of tools, CodexBar and ClaudeBar cover several providers, as SessionWatcher does.
 
 ## Before you pick
 
