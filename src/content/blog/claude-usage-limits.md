@@ -23,7 +23,7 @@ faq:
   - q: "How many messages do I get on Claude Pro?"
     a: "Anthropic doesn't give a number. Its Pro page says the count varies with message length, attached files, the length of the conversation and the model or feature you use."
   - q: "Is the Claude Code limit per developer or shared by the team?"
-    a: "Per developer. On Team and Enterprise seats, each member's Claude Code usage draws on their own seat allowance, with five-hour and weekly windows shared with Claude chat. On the Claude Console API, limits are set for the organization instead, and one developer can briefly use more than an even share."
+    a: "Per developer. On Team and Enterprise seats, each member's Claude Code usage draws on their own seat allowance, with five-hour and weekly windows shared with Claude chat. On the Claude Console API, rate limits belong to the organization, so one developer can briefly use more than an even share. Only the Claude Code workspace can cap spend per user."
 sources:
   - title: "How do usage and length limits work? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
@@ -63,6 +63,9 @@ sources:
     checked: 2026-11-02
   - title: "Manage costs effectively, for Teams and Enterprise and the Claude Console (Claude Code Docs)"
     url: "https://code.claude.com/docs/en/costs"
+    checked: 2026-11-16
+  - title: "Workspaces, the Claude Code workspace (Claude API Docs)"
+    url: "https://platform.claude.com/docs/en/build-with-claude/workspaces"
     checked: 2026-11-16
 related:
   - /blog/claude-limit-reset-time/
@@ -159,7 +162,7 @@ On Team plans, limits are per member, not shared by the team. One person reachin
 Which Claude Code limit a developer meets depends on how they sign in. This is from Anthropic's Claude Code costs page, read on 16 November 2026.
 
 - **On a Team or Enterprise seat,** each member's Claude Code usage draws from their own seat allowance: the five-hour and weekly windows, shared with Claude chat and Cowork and sized by seat tier, Standard or Premium. It isn't a team pool. Past it, [usage credits](/blog/claude-usage-credits/) carry on if an admin turned them on, with spend limits for the organization, a group or one member.
-- **On the Claude Console (API),** there's no seat allowance. Usage is billed per token to the organization, and an admin can set spend limits per workspace. Rate limits belong to the organization, not to each developer.
+- **On the Claude Console (API),** there's no seat allowance. Usage is billed per token to the organization, and an admin can set spend limits per workspace. Rate limits belong to the organization, not to each developer, but Anthropic's workspaces page says the automatically created Claude Code workspace is the only one that supports per-user monthly spend limits.
 
 For the API case Anthropic gives rough token-per-minute and request-per-minute figures per user, by team size, to use when asking for higher organization limits:
 
@@ -172,7 +175,7 @@ For the API case Anthropic gives rough token-per-minute and request-per-minute f
 | 100-500 users | 15k-20k | 0.37-0.47 |
 | 500+ users | 10k-15k | 0.25-0.35 |
 
-Anthropic says these limits apply to the whole organization, so one developer can briefly use more than an even share while the others are idle. Where Claude Code is billed by token, its page also puts the average at about $13 per developer per active day, or $150-250 per developer per month, with 90% of users under $30 a day. Those are API figures, not what a Pro, Max or Team seat costs, and Anthropic suggests starting with a small pilot group.
+Anthropic says these limits apply to the whole organization, so one developer can briefly use more than an even share while the others are idle. Across enterprise deployments, the same page puts the average cost at about $13 per developer per active day, or $150-250 per developer per month, with 90% of users under $30 a day. Anthropic suggests starting with a small pilot group to find your own baseline.
 
 A developer who sees "You've hit your session limit" or "You've hit your weekly limit" has reached a seat window. It covers all models, so switching with `/model` doesn't help.
 
