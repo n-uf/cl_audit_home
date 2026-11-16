@@ -15,15 +15,15 @@ takeaways:
   - "Your exact figures and next reset are in Settings ▸ Usage, or in Claude Code with /usage."
 faq:
   - q: "What is the Claude 5-hour limit?"
-    a: "It's the session limit on paid plans: how much you can use Claude within a five-hour period. The period starts when you send your first message, and the limit resets in full five hours later."
+    a: "It's the session limit on paid plans: how much you can use Claude within a five-hour period. The period starts when you send your first message, and the limit resets in full five hours later. Settings ▸ Usage shows the time remaining under \"Current session\"."
   - q: "What is the Claude weekly limit?"
-    a: "It's a second cap that applies across all models and resets once a week, at a fixed time assigned to your account. Max and Ultra also have a separate weekly limit for Fable."
+    a: "It's a second cap that applies across all models and resets once a week, at a fixed time assigned to your account. Max and Ultra also have a separate weekly limit for Fable. Settings ▸ Usage shows your next reset time, and starting late in the week doesn't move it."
   - q: "Do Claude Code and claude.ai share the same limit?"
     a: "Yes. Anthropic's help page says usage on claude.ai, Claude Code and Claude Desktop counts toward the same limit, and its Claude Code page says the same for IDE use. A long Claude Code session can use up what you wanted for chat."
   - q: "How many messages do I get on Claude Pro?"
-    a: "Anthropic doesn't give a number. Its Pro page says the count varies with message length, attached files, the length of the conversation and the model or feature you use."
+    a: "Anthropic doesn't give a number. Its Pro page says the count varies with message length, attached files, the length of the conversation and the model or feature you use, so a figure quoted elsewhere isn't Anthropic's. Settings ▸ Usage shows how much of your limit you've used."
   - q: "Is the Claude Code limit per developer or shared by the team?"
-    a: "Per developer. On Team and Enterprise seats, each member's Claude Code usage draws on their own seat allowance, with five-hour and weekly windows shared with Claude chat. On the Claude Console API, rate limits belong to the organization, so one developer can briefly use more than an even share. Only the Claude Code workspace can cap spend per user."
+    a: "Per developer. On Team and Enterprise seats, each member's Claude Code usage draws on their own seat allowance, with five-hour and weekly windows shared with Claude chat. On the Claude Console API, rate limits belong to the organization, so one developer can briefly use more than an even share; there, only the Claude Code workspace caps spend per user."
 sources:
   - title: "How do usage and length limits work? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
@@ -65,7 +65,7 @@ sources:
     url: "https://code.claude.com/docs/en/costs"
     checked: 2026-11-16
   - title: "Workspaces, the Claude Code workspace (Claude API Docs)"
-    url: "https://platform.claude.com/docs/en/build-with-claude/workspaces"
+    url: "https://platform.claude.com/docs/en/manage-claude/workspaces"
     checked: 2026-11-16
 related:
   - /blog/claude-limit-reset-time/
@@ -201,6 +201,6 @@ In Claude Code, the message says when to come back: "You've hit your session lim
 
 - If you reach your session limit while Claude Code is partway through a response, it may keep working briefly to finish the step in progress, and you'll see "Usage limit reached · wrapping up". That allowance is small and capped, counts toward your weekly limit, and is rolling out gradually, so your account may not have it yet.
 - In an interactive session signed in with a claude.ai subscription, Claude Code can wait in the open session and continue the interrupted task shortly after the reset. In the Desktop app's Code tab, the session-limit card has an "Auto-continue when limits reset" checkbox.
-- Now and then Anthropic gives eligible plans a limit reset, which puts your session or weekly limit back to full when you choose to use it. That's not the same as a window's [reset time](/blog/claude-limit-reset-time/); weekly limits still reset on their usual day and time. The button is "Reset for free" in Settings ▸ Usage.
+- Now and then Anthropic gives eligible plans a limit reset, which puts your session or weekly limit back to full, or gives back weekly usage spent on Fable, when you choose to use it. That's not the same as a window's [reset time](/blog/claude-limit-reset-time/); weekly limits still reset on their usual day and time. The button is "Reset for free" in Settings ▸ Usage.
 
 If you'd rather not watch the clock, cl_audit can notify you at a level you choose and again when a profile is back (Notify when back), and while a limit is full its Dock icon turns into the countdown. [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/) shows how, and the [cl_audit](/) page covers the rest of the app.
