@@ -142,7 +142,7 @@ Claude Code sends JSON on stdin. These are the fields most scripts want, named e
 | `rate_limits.five_hour.resets_at`, `rate_limits.seven_day.resets_at` | When that window resets, in Unix epoch seconds |
 | `effort.level`, `session_name`, `version` | Reasoning effort, the session's name, the Claude Code version |
 
-The docs list more, such as pull request, worktree and prompt cache fields. Some fields aren't always there:
+The docs list more, such as pull request, worktree and prompt cache fields. {{live:/blog/claude-conversation-length-limit/}}The context fields are the ones to watch for a "Context limit reached" message; [the conversation length limit guide](/blog/claude-conversation-length-limit/) says what to do then.{{/live}} Some fields aren't always there:
 
 - `context_window.used_percentage` and `remaining_percentage` can be `null` early in a session. `current_usage` is `null` before the first API call and again right after `/compact`.
 - `rate_limits` is there only for claude.ai Pro, Max and Ultra subscribers (or behind a Claude apps gateway that sets a spend limit), and only after the first API response in a session. Each window can be missing on its own, and Claude Code drops a window once its `resets_at` has passed.
