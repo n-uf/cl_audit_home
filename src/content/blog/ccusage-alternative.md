@@ -145,7 +145,7 @@ Not according to its README, which describes a command-line tool run with `npx`,
 
 ## Is there another Claude Code usage monitor?
 
-Yes, several. Some live in the menu bar, one is a browser extension, and one covers many AI coding tools. We compared nine Claude usage trackers, ccusage and cl_audit among them, from their own pages in [the best Claude usage trackers for Mac](/blog/best-claude-usage-trackers-mac/). If you're after a Claude Code usage monitor alternative that sits in the menu bar rather than the Dock, start there.
+Yes, several. Some live in the menu bar, one is a browser extension, and some cover many AI coding tools. We compared nine Claude usage trackers, ccusage and cl_audit among them, from their own pages in [the best Claude usage trackers for Mac](/blog/best-claude-usage-trackers-mac/). If you're after a Claude Code usage monitor alternative that sits in the menu bar rather than the Dock, start there.
 
 ## Using both
 
