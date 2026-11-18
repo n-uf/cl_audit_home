@@ -7,7 +7,7 @@ kind: how-to
 published: 2026-11-18
 updated: 2026-11-18
 author: n-uf
-draft: true
+draft: false
 takeaways:
   - "A Claude Code session handoff has three parts: the old session pushes its branches and writes a note, a fresh session checks every branch head against git, and only then does the new one carry on."
   - "The note lists scope, repos and worktrees with branch and head, work in flight, unpushed work, what waits on you, child sessions, scheduled tasks and services, local-only files, MCP servers and credentials. Files and credentials appear by name, never by value."
