@@ -4,7 +4,7 @@ description: "cl_audit is a free Claude account switcher for Mac: a profile sign
 h1: "Claude account switcher: move a profile between your accounts"
 mainKeyword: "claude account switcher"
 kind: use-case
-draft: true
+draft: false
 published: 2026-11-19
 updated: 2026-11-19
 author: n-uf
