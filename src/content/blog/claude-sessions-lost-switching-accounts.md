@@ -22,7 +22,7 @@ faq:
   - q: "Can I move Claude Code sessions to another account's sidebar?"
     a: "Anthropic's docs don't describe a way to do it for sessions started in the Code tab, and a feature request for it on Claude Code's issue tracker was still open on 7 November 2026. The community tool claude-transplant moves the session records. cl_audit does it as part of a switch, which is experimental and can lose data: the Claude window's Code-tab sessions and scheduled tasks move from the account the profile is on to the one you switch to, after a backup."
   - q: "Does claude --resume work if I'm signed in to a different account?"
-    a: "One user report says it does: a Desktop-created session resumed under either login, on Windows with Claude Code 2.1.201. Anthropic's docs tie a session to its project directory and don't mention the account. The resumed conversation runs on whichever account Claude Code in that folder is signed in to, which /status shows."
+    a: "One user report says it does: a Desktop-created session resumed under either account, on Windows with Claude Code 2.1.201. Anthropic's docs tie a session to its project directory and don't mention the account. The resumed conversation runs on whichever account Claude Code in that folder is signed in to, which /status shows."
   - q: "Does cl_audit copy my sign-in when it switches a profile?"
     a: "No. A standby account has no sign-in kept anywhere. Claude Code's own sign-in opens in Terminal with the account's address filled in, you finish it in the browser, and cl_audit checks which account the folder is now signed in to. A backup never holds a sign-in, and cl_audit never signs the Claude app in or out."
 sources:
@@ -101,11 +101,36 @@ sources:
     checked: 2026-11-11
     supports: "26.11.18: a profile is one Claude Code folder and switching signs in again on it; the switch moves the Claude window's Code-tab sessions and scheduled tasks from the account in use to the one switched to, inside the one folder, the way claude-transplant does, with a backup and a receipt; Claude Code's transcripts stay in the folder; the Claude app's sign-in is yours; Undo this switch is gone and the way back is a switch the other way; the move adapts claude-transplant 4.2.1 (MIT)."
     quote: "Claude Code's transcripts stay in the folder."
-  - title: "cl_audit 26.11.18 release notes (GitHub)"
-    url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.18"
-    checked: 2026-11-11
-    supports: "Release 26.11.18 was checked with Claude Code 2.1.318 and the Claude app 5.1231.2; the same switch facts as the changelog."
-    quote: "Checked with Claude Code 2.1.318 and the Claude app 5.1231.2."
+  - title: "cl_audit 26.11.54 release notes (GitHub)"
+    url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.54"
+    checked: 2026-11-20
+    supports: "Release 26.11.54 was checked with Claude Code 2.1.318 and the Claude app 5.11492.5; a newer Claude version can change how Claude Code saves its sign-in or the usage figures."
+    quote: "Checked with Claude Code 2.1.318 and the Claude app 5.11492.5."
+  - title: "cl_audit CHANGELOG, 26.11.51"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.51/CHANGELOG.md"
+    checked: 2026-11-20
+    supports: "26.11.51: an account switch opens the profile's Claude window again once the switch is settled (Claude Code reaches the account, after Undo or Leave it as it is, or when the switch stopped before moving anything); while moved sessions wait for that, the window stays closed and the Switch page says so."
+    quote: "While moved sessions wait for that, the window stays closed"
+  - title: "cl_audit CHANGELOG, 26.11.47"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.47/CHANGELOG.md"
+    checked: 2026-11-20
+    supports: "26.11.47: the Switch page says “Will stay with ann: …” before you press Switch, and keeps “Left with ann: …” for after a switch."
+    quote: "The Switch page now says \"Will stay with ann: …\" before you press Switch"
+  - title: "cl_audit CHANGELOG, 26.11.44"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.44/CHANGELOG.md"
+    checked: 2026-11-20
+    supports: "26.11.44: the Switch page says before you press Switch which files named like a Code-tab session will stay with the old account."
+    quote: "which files named like a Code-tab session will stay with the old account"
+  - title: "cl_audit CHANGELOG, 26.11.33"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
+    checked: 2026-11-20
+    supports: "26.11.33: after a switch the waiting line reads “Switching to … : one step left. Sign the Claude app in to … to finish.” instead of “Switched to …”."
+    quote: "After a switch, the waiting line now reads"
+  - title: "cl_audit source at v26.11.33, Sources/AccountResolver.swift (switchWaits)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/Sources/AccountResolver.swift#L72-L78"
+    checked: 2026-11-20
+    supports: "A switch waiting for the Claude app (the one-step-left state) lasts 24 hours after the switch linked; a switch linked more than a day ago waits no more."
+    quote: "a switch linked more than a day ago waits no more"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
     checked: 2026-11-12
@@ -144,7 +169,7 @@ So the rest of this section is what users report on Claude Code's issue tracker,
 | Issue (Claude Code tracker) | Title as shown on 7 Nov 2026 | State | What it reports |
 |---|---|---|---|
 | #48511 | Desktop app: session history lost when switching accounts | Closed, not planned, by the bot after inactivity (24 May 2026) | Previous sessions disappear after switching accounts, in Code (local) mode too |
-| #60544 | Desktop app: switching accounts loses all conversations and sidebar state | Closed by the bot as a duplicate of #48511 (23 May 2026) | After logout and login with another account, the conversations are gone and the sidebar is reset |
+| #60544 | Desktop app: switching accounts loses all conversations and sidebar state | Closed by the bot as a duplicate of #48511 (23 May 2026) | After signing out and in with another account, the conversations are gone and the sidebar is reset |
 | #74662 | Claude Desktop: allow opening/resuming local sessions not present in the account's sidebar (multi-account support) | Open, enhancement (opened 6 Jul 2026) | The sidebar list is per account; transcripts are on disk; `claude --resume` opens them |
 | #94507 | [BUG] Desktop: switching organization on ONE account drops running Code sessions — session records are org-scoped but ~/.claude.json and the live connection are not | Open, bug (opened 15 Sep 2026) | Switching organization, not account, also empties the sidebar and drops a running session; switching back restores it |
 
@@ -152,7 +177,7 @@ Read together, they say the transcripts are one flat set of files that doesn't d
 
 ## Resume a session by hand with claude --resume
 
-Anthropic's docs tie a session to its project directory and don't mention the account. On `claude --resume` after switching account, the one data point is the report in #74662: `claude --resume <session-id>` resumed a Desktop-created session under either login (Windows, Claude Code 2.1.201).
+Anthropic's docs tie a session to its project directory and don't mention the account. On `claude --resume` after switching account, the one data point is the report in #74662: `claude --resume <session-id>` resumed a Desktop-created session under either account (Windows, Claude Code 2.1.201).
 
 1. Open Terminal and `cd` into the project folder the session ran in. The picker starts with the sessions of the folder you're in.
 2. Run `claude --resume`. You can search the list, press Space to preview a session and Enter to resume it. `Ctrl+A` widens the list to every project on the Mac; `Ctrl+W` widens it to the repository's other worktrees.
@@ -168,7 +193,7 @@ This won't put the session back in the sidebar. The reporter in #74662 says a re
 ## What not to do
 
 - **Don't delete `~/.claude/projects`** to clear things up. Anthropic's docs list what you lose: resume, continue and rewind for past sessions, and auto memory for every project. `claude purge` does the same for one project, after a confirmation that says it can't be undone.
-- **Don't copy sign-ins between folders.** Your sessions aren't in them. On a Mac, Anthropic's docs say the login sits in the Keychain, keyed to the Claude Code folder, and `~/.claude.json` holds account details. Neither is part of `projects`, so copying one does nothing for your sessions.
+- **Don't copy sign-ins between folders.** Your sessions aren't in them. On a Mac, Anthropic's docs say the sign-in sits in the Keychain, keyed to the Claude Code folder, and `~/.claude.json` holds account details. Neither is part of `projects`, so copying one does nothing for your sessions.
 - **Don't copy a transcript to make a spare.** Anthropic's docs say a hand-copied duplicate makes the lookup by ID across projects report not-found instead of resuming either copy. `--fork-session` is the supported way to get a copy.
 - **Don't edit the Code-tab record files by hand.** Anthropic doesn't document their format, and the report above shows they are keyed by account and organization.
 - **Don't switch again without a copy.** Quit the Claude app, then copy `~/.claude` and `~/Library/Application Support/Claude` somewhere outside them. cl_audit's README gives the same advice before a manual move (leave out the app's caches). Transcripts are plain text files, so a plain copy is enough to start from.
@@ -185,20 +210,22 @@ The move goes one way: from the account the profile is on to the account you swi
 
 ![The Switch page for Work, with What changes and the steps](/img/guides/switch-page.webp "cl_audit's site demo: the Switch page for its sample Work profile (team-1 to team-2), with What changes and the steps.")
 
-Here is what happens when you switch Work from `ultra-1@example.com` to `ultra-2@example.com` in cl_audit 26.11.18.
+Here is what happens when you switch Work from `ultra-1@example.com` to `ultra-2@example.com` in cl_audit 26.11.54.
 
 1. **Find the account.** In Settings ▸ the profile ▸ Claude Code ▸ **Accounts**, the account in use is marked IN USE and the others STANDBY. cl_audit finds your accounts on this Mac by itself, from the Claude window's session folders, Claude Code's records and the transcripts. **Sign in with another account…** is for one that isn't there yet.
 2. **Open the Switch page** with the standby account's **Switch account** key. Under What changes it says that Claude Code on that folder moves to ultra-2, running sessions included, and how many of the window's Code-tab sessions and scheduled tasks move from ultra-1 to ultra-2. The window closes for the move, and you sign it in to ultra-2 yourself afterwards. The transcripts, the profile's name, Dock icon, folder and settings stay.
 3. **Switch to ultra-2.** The profile's Claude window closes, and cl_audit makes a backup first. It's an APFS clone, so it takes seconds. It holds the Code-tab list with its scheduled tasks and their prompts, the sidebar records, cl_audit's own records and, by default, Claude Code's transcripts and setup, with `settings.json`'s env values blank. It never holds a sign-in or the Claude window's MCP settings. If the backup can't be made, nothing moves.
 4. **The sessions move.** Each session record is written for ultra-2 and checked, and only then is the original set aside in cl_audit's folder, not deleted at that step. Scheduled tasks follow with their skips and retries. A session that a running Claude Code has open stays with ultra-1 until a later switch. A receipt notes every step.
 5. **Claude Code signs in again.** Its own sign-in opens in Terminal for the profile's folder with ultra-2's address filled in. You finish it in the browser, and cl_audit watches the folder for up to 10 minutes. When it worked, the page says "Now on ultra-2 · ultra-1 on standby". It never copies a sign-in.
-6. **Sign the window in yourself.** cl_audit never signs the Claude app in or out. When you open the window again, sign it in to ultra-2, and the moved sessions show there.
+6. **Sign the window in yourself.** cl_audit opens the profile's Claude window again once Claude Code is on ultra-2, but never signs the Claude app in or out: sign it in to ultra-2 there, and the moved sessions show. Until you do, the card says "Switching to ultra-2@example.com: one step left", for up to 24 hours.
 
-If the browser signs in as another account, or nothing signs in within the 10 minutes, the page says where the sessions are and offers **Undo the move**. It puts back what got done, as long as Claude Code isn't on the new account yet, though it may not bring everything back; once the switch has finished, the way back is a switch the other way. A switch that stopped half way shows on the profile's Sessions card, with how many sessions sit under which account and **Undo it**. Backups are listed there too, and **Restore…** shows a preview before it writes anything. Chats and Projects on claude.ai don't move; they belong to each account. The [FAQ](/faq/) has the switch in short.
+If the old account's folder holds files named like a Code-tab session that aren't one, the Switch page says "Will stay with ultra-1: …" before you press Switch; they never move.
 
-Each account's limits stay its own, and cl_audit doesn't pool them or switch by itself. Whether one person may hold more than one Claude account is up to Anthropic's terms. On 7 November 2026, Anthropic's Usage Policy (headed "Effective Nov 12, 2026") listed, among things not to do, coordinating malicious activity across multiple accounts, creating accounts to avoid detection or get around product guardrails, and using a different account to get around a ban. cl_audit can't say how that applies to you. The Code-tab files are the Claude app's own, so the 26.11.18 release notes name the versions it was checked with: Claude Code 2.1.318 and the Claude app 5.1231.2.
+If the browser signs in as another account, or nothing signs in within the 10 minutes, the page says where the sessions are and offers **Undo the move**. It puts back what got done, as long as Claude Code isn't on the new account yet, though it may not bring everything back; once the switch has finished, the way back is a switch the other way. While moved sessions wait, the window stays closed and the Switch page says so. A switch that stopped half way shows on the profile's Sessions card, with how many sessions sit under which account and **Undo it** or **Leave it as it is**. Backups are listed there too, and **Restore…** shows a preview before it writes anything. Chats and Projects on claude.ai don't move; they belong to each account. The [FAQ](/faq/) has the switch in short.
 
-| | By hand | cl_audit switch (26.11.18) |
+Each account's limits stay its own, and cl_audit doesn't pool them or switch by itself. Whether one person may hold more than one Claude account is up to Anthropic's terms. On 7 November 2026, Anthropic's Usage Policy (headed "Effective Nov 12, 2026") listed, among things not to do, coordinating malicious activity across multiple accounts, creating accounts to avoid detection or get around product guardrails, and using a different account to get around a ban. cl_audit can't say how that applies to you. The Code-tab files are the Claude app's own, so the 26.11.54 release notes name the versions it was checked with: Claude Code 2.1.318 and the Claude app 5.11492.5.
+
+| | By hand | cl_audit switch (26.11.54) |
 |---|---|---|
 | Conversation back | Yes, in Terminal with `claude --resume` | Meant to be, in the profile's Claude window |
 | Back in the new account's sidebar | Not documented for Code-tab sessions; user reports differ | Meant to be, once the window is signed in to the new account; a session a running Claude Code has open stays until a later switch |
