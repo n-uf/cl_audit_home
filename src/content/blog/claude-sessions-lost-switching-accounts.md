@@ -16,14 +16,14 @@ takeaways:
   - "A cl_audit switch is experimental and can lose data. It moves a profile's Code sessions and scheduled tasks to another of your accounts before Claude Code signs in again: a backup first, a receipt, and Undo the move until Claude Code is on the new account, which may not bring everything back."
 faq:
   - q: "Are my Claude Code sessions deleted when I sign in to another account?"
-    a: "Not by signing in, as far as Anthropic's docs go: they say transcripts are files under ~/.claude/projects, and nothing there says a sign-in removes them. Claude Code does delete transcripts older than cleanupPeriodDays (30 days by default), but from v2.1.248 it keeps sessions started or last continued in Claude Desktop, unless settings or the HIPAA configuration override that."
+    a: "Not by signing in, as far as Anthropic's docs go: they say transcripts are files under ~/.claude/projects, and nothing there says a sign-in removes them. Claude Code does delete transcripts older than cleanupPeriodDays (30 days by default). From v2.1.248 it keeps sessions started or last continued in Claude Desktop, unless desktopSessionCleanupPeriodDays, managed settings or the HIPAA configuration say otherwise."
   - q: "How do I resume a Claude Code session after switching account?"
     a: "Open Terminal, cd into the project folder and run claude --resume to pick from the list. Press Ctrl+A in the picker to see sessions from every project on the Mac, or run claude --resume with a session ID from any directory. If the sessions lived in a Claude Code folder other than ~/.claude, set CLAUDE_CONFIG_DIR to that folder first."
   - q: "Can I move Claude Code sessions to another account's sidebar?"
     a: "Anthropic's docs don't describe a way for sessions started in the Code tab, and a feature request was open on 7 November 2026. The community tool claude-transplant moves the records. cl_audit does it as part of a switch, which is experimental and can lose data: after a backup, Code-tab sessions and scheduled tasks move to the new account."
   - q: "Does claude --resume work if I'm signed in to a different account?"
     a: "One user report says it does: a Desktop-created session resumed under either account, on Windows with Claude Code 2.1.201. Anthropic's docs tie a session to its project directory and don't mention the account. The resumed conversation runs on whichever account Claude Code in that folder is signed in to, which /status shows."
-  - q: "What happens to a session that was open when the switch started?"
+  - q: "What happens to a session Claude Code is running when I switch?"
     a: "It stays with the old account until a later switch. cl_audit leaves a session that a running Claude Code has open where it is and moves the rest, after a backup. Its transcript stays on disk either way, so claude --resume, started in the session's project folder, still opens it from Terminal."
 sources:
   - title: "Claude Code docs: Manage sessions"
