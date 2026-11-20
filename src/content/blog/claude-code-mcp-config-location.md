@@ -136,6 +136,11 @@ sources:
     checked: 2026-11-12
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
+  - title: "cl_audit CHANGELOG, 26.11.64"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.64/CHANGELOG.md"
+    checked: 2026-11-20
+    supports: "26.11.64 (20 November 2026): exports carry only the Claude window's MCP settings; exports made by earlier versions also hold the window's other settings, and restoring or importing them now adds only the MCP settings and ignores the rest; Import and Restore list each MCP server's whole command line and the names of its env variables (never a value) and flag a server that runs a shell, interpreter or launcher, sets a variable that changes what a program loads, or holds an argument that looks like a key."
+    quote: "Exports now carry only the Claude window's MCP settings"
 related:
   - /blog/move-claude-code-to-new-computer/
   - /blog/back-up-claude-code-sessions/
@@ -287,7 +292,7 @@ The rest of a new-Mac setup, such as `CLAUDE.md`, settings and skills, is in [ho
 
 {{experimental: export, import, move}}
 
-cl_audit's **Move to another Mac** and its **Export…** carry the Claude window's MCP settings only in the password-protected disk image, and its backups have left them out since 26.11.9 (see [cl_audit's settings](/settings/)). On the new Mac, **Import…** adds them only if you pick **Add them** and the profile has no `claude_desktop_config.json` yet. Since 26.11.13 a move also carries the local-scope servers that `~/.claude.json` holds for your sessions' own project folders, in the image only, and they start left out on import. The file itself is still never in an export, so user-scope servers are yours to add again as above.
+cl_audit's **Move to another Mac** and its **Export…** carry the Claude window's MCP settings only in the password-protected disk image, and its backups have left them out since 26.11.9 (see [cl_audit's settings](/settings/)). Since 26.11.64 an export carries only the window's MCP settings, and a restore or import of an older export adds only those, ignoring the rest. On the new Mac, **Import…** adds them only if you pick **Add them** and the profile has no `claude_desktop_config.json` yet. Import and Restore show each MCP server's whole command line and the names of its env variables, never their values, and flag a server that runs a shell, an interpreter or a launcher, sets a variable that changes what a program loads, or has an argument that looks like a key. Since 26.11.13 a move also carries the local-scope servers that `~/.claude.json` holds for your sessions' own project folders, in the image only, and they start left out on import. The file itself is still never in an export, so user-scope servers are yours to add again as above.
 
 ## About cl_audit
 
