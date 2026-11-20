@@ -302,7 +302,7 @@ Your Claude Code history lives in that folder, so a switch isn't meant to change
 
 Anthropic's help page says all activity in Claude and Claude Code counts against the same limits. A profile's Claude window and its Claude Code usually sit on the same account, so they share that account's limits.
 
-cl_audit reads only the account in use and doesn't pool or add limits. A switch changes which account the profile works on. It doesn't change any account's limits, and it doesn't happen unless you start it.
+cl_audit reads only the account in use and doesn't pool or add limits. A switch changes which account the profile works on. It doesn't change any account's limits, and it doesn't happen unless you start it. A Team seat and a personal plan on the same email are two accounts, each with its own limits; the guide to a [Claude team and personal account](/blog/claude-team-and-personal-account/) goes through what Anthropic keeps separate.
 
 Whether you may hold more than one Claude account is up to Anthropic's terms. When we checked on 7 November 2026, Anthropic's Usage Policy page read "Effective Nov 12, 2026" and listed, among things not to do: coordinating malicious activity across multiple accounts, creating multiple accounts to avoid detection or get around product guardrails, and using a different account to get around a ban. This page is about moving one profile between accounts that are yours, for example a personal account and a second seat. If you're unsure how the terms apply to you, read them or ask Anthropic.
 
