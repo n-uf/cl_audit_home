@@ -15,7 +15,7 @@ takeaways:
   - "When the old account keeps showing, look for an ANTHROPIC_API_KEY or other credential that outranks the sign-in, a different CLAUDE_CONFIG_DIR, or a session that takes its sign-in from the Claude app or an IDE."
   - "If you change account often, keep one folder per account instead; in cl_audit each profile is such a folder, opened in Terminal with ⌘↩."
 faq:
-  - q: "How do I switch accounts in Claude Code?"
+  - q: "How do I change which account Claude Code uses?"
     a: "Type /logout at the prompt, start claude again and sign in with the other account, then check /status. From the shell, claude auth logout and claude auth login do the same. It replaces the saved sign-in rather than adding a second one."
   - q: "Can I switch account in the middle of a Claude Code session?"
     a: "You can run /login in a running session, but Anthropic's pages don't describe what a conversation in progress does when the account changes, so finish the task first. They do say that a Remote Control session stops when the signed-in account changes, and the local session keeps running. Other windows on the same configuration folder share the saved sign-in."
