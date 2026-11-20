@@ -5,7 +5,7 @@ h1: "Claude limit reset time for the 5-hour and weekly limits"
 mainKeyword: "claude limit reset time"
 kind: what-is
 published: 2026-11-02
-updated: 2026-11-16
+updated: 2026-11-20
 author: n-uf
 takeaways:
   - "The 5-hour limit resets in full five hours after you send the first message of its period."
@@ -93,9 +93,9 @@ Two exceptions:
 
 What the limit is and what counts toward it is in our explainer on [Claude usage limits](/blog/claude-usage-limits/).
 
-## When the weekly limit resets
+## When does the Claude weekly limit reset?
 
-Anthropic's help page says weekly limits reset at a fixed time each week that is assigned to your account. Your reset day and time stay the same regardless of when you start using Claude or when your subscription begins, and you get your full weekly allowance each cycle. Your next reset time is in Settings ▸ Usage.
+The Claude weekly limit resets once a week, at a fixed time. Anthropic's help page says weekly limits reset at a fixed time each week that is assigned to your account. Your reset day and time stay the same regardless of when you start using Claude or when your subscription begins, and you get your full weekly allowance each cycle. Your next reset time is in Settings ▸ Usage.
 
 In practice:
 
