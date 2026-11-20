@@ -5,7 +5,7 @@ h1: "Claude usage limits explained: the 5-hour and weekly limits"
 mainKeyword: "claude usage limits"
 kind: what-is
 published: 2026-11-02
-updated: 2026-11-16
+updated: 2026-11-20
 author: n-uf
 takeaways:
   - "Paid Claude plans have two usage limits: a session limit that resets every five hours and a weekly limit that resets once a week."
@@ -18,55 +18,58 @@ faq:
     a: "It's the session limit on paid plans: how much you can use Claude within a five-hour period. The period starts when you send your first message, and the limit resets in full five hours later. Settings ▸ Usage shows the time remaining under \"Current session\"."
   - q: "What is the Claude weekly limit?"
     a: "It's a second cap that applies across all models and resets once a week, at a fixed time assigned to your account. Max and Ultra also have a separate weekly limit for Fable. Settings ▸ Usage shows your next reset time, and starting late in the week doesn't move it."
-  - q: "Do Claude Code and claude.ai share the same limit?"
-    a: "Yes. Anthropic's help page says usage on claude.ai, Claude Code and Claude Desktop counts toward the same limit, and its Claude Code page says the same for IDE use. A long Claude Code session can use up what you wanted for chat."
-  - q: "How many messages do I get on Claude Pro?"
-    a: "Anthropic doesn't give a number. Its Pro page says the count varies with message length, attached files, the length of the conversation and the model or feature you use, so a figure quoted elsewhere isn't Anthropic's. Settings ▸ Usage shows how much of your limit you've used."
+  - q: "Is there a daily Claude limit?"
+    a: "No. Anthropic's help pages describe a 5-hour session limit and a weekly limit, not a daily one; its usage-limits page never says daily. It adds that it may apply weekly or monthly caps, and usage credits have their own monthly spend limit. Settings ▸ Usage shows your current session and next weekly reset."
+  - q: "How many tokens do I get per 5 hours on Claude Pro?"
+    a: "Anthropic gives no token number, and no message count either. Its Pro page says the number of messages varies with message length, attached files, conversation length and the model or feature you use, and its Max page gives only a multiple of Pro. A figure quoted elsewhere isn't Anthropic's. Settings ▸ Usage shows how much you've used."
   - q: "Is the Claude Code limit per developer or shared by the team?"
     a: "Per developer. On Team and Enterprise seats, each member's Claude Code usage draws on their own seat allowance, with five-hour and weekly windows shared with Claude chat. On the Claude Console API, rate limits belong to the organization, so one developer can briefly use more than an even share; there, only the Claude Code workspace caps spend per user."
 sources:
   - title: "How do usage and length limits work? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "Usage limit best practices (Claude Help Center)"
     url: "https://support.claude.com/en/articles/9797557-usage-limit-best-practices"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "Get started with Claude, Free plan limits (Claude Help Center)"
     url: "https://support.claude.com/en/articles/8114491-get-started-with-claude"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "What is the Pro plan? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/8325606-what-is-the-pro-plan"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "What is the Max plan? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/11049741-what-is-the-max-plan"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "What is the Ultra plan? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "What is the Team plan? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/9266767-what-is-the-team-plan"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "Use Claude Code with your Pro, Max, or Ultra plan (Claude Help Center)"
     url: "https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-max-or-ultra-plan"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "Manage usage credits for paid Claude plans (Claude Help Center)"
     url: "https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans"
-    checked: 2026-11-02
+    checked: 2026-11-20
+  - title: "Claude Fable models on your plan (Claude Help Center)"
+    url: "https://support.claude.com/en/articles/15424964-claude-fable-models-on-your-plan"
+    checked: 2026-11-20
   - title: "What is a limit reset? (Claude Help Center)"
     url: "https://support.claude.com/en/articles/17007452-what-is-a-limit-reset"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "Commands (Claude Code Docs)"
     url: "https://code.claude.com/docs/en/commands"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "Error reference, Usage limits (Claude Code Docs)"
     url: "https://code.claude.com/docs/en/errors"
-    checked: 2026-11-02
+    checked: 2026-11-20
   - title: "Manage costs effectively, for Teams and Enterprise and the Claude Console (Claude Code Docs)"
     url: "https://code.claude.com/docs/en/costs"
-    checked: 2026-11-16
+    checked: 2026-11-20
   - title: "Workspaces, the Claude Code workspace (Claude API Docs)"
     url: "https://platform.claude.com/docs/en/manage-claude/workspaces"
-    checked: 2026-11-16
+    checked: 2026-11-20
 related:
   - /blog/claude-limit-reset-time/
   - /blog/check-claude-usage-mac/
@@ -141,6 +144,10 @@ Anthropic doesn't publish message counts. Its plan pages say which kinds of limi
 
 Enterprise isn't in the table. Anthropic's usage page splits it in two: seat-based Enterprise plans can buy usage credits like other paid plans, and usage-based Enterprise plans are billed by consumption.
 
+### Claude Free plan limits
+
+Anthropic's getting-started page says the Free plan has a session-based usage limit that resets every five hours. It gives no message count, only that the number varies with demand, and it doesn't mention a weekly limit. The page adds that Anthropic may apply other kinds of limits to keep access fair, and that Claude tells you when you reach one. That is why the table says "not stated" for Free's weekly limit.
+
 ### Claude Pro usage limits
 
 Anthropic's Pro page says Pro gives more usage per session than Free, and that the number of messages you can send varies with message length (attached files included), the length of the current conversation, and the model or feature you use. Pro has a five-hour limit and a weekly limit across all models. The page gives no message count, so a "Pro gets N messages" figure you see elsewhere isn't Anthropic's.
@@ -151,15 +158,17 @@ Max is set as a multiple: five times Pro's usage every five hours and every week
 
 The names have changed. Anthropic's Ultra page says the Max 20x plan is now called Ultra, and existing Max 20x subscribers moved to it automatically with no price change. An older guide that talks about "Max 5x and Max 20x" means today's Max and Ultra. For prices, Fable and how to tell which plan your own usage needs, see [Claude Max vs Pro](/blog/claude-max-vs-pro/).
 
-### Ultra and Team
+### Ultra: no 5-hour limit once verified
 
 Ultra includes ten times Pro's usage every week. Verified accounts have no five-hour limit. Anthropic verifies Ultra accounts automatically, and until then a temporary limit applies. To check yours, open Settings ▸ Usage: no "Current session" bar means you're verified.
 
-On Team plans, limits are per member, not shared by the team. One person reaching their limit doesn't affect anyone else, and usage can't be moved between members, because each seat is for one named person.
+### Claude Team: the 5-hour and weekly limits, per member
+
+On Team plans, limits are per member, not shared by the team. Anthropic's Claude Code costs page says each member draws on their own seat allowance, which resets on a rolling five-hour window and a weekly window, is shared with chat and Cowork, and is sized by seat tier, Standard or Premium. One person reaching their limit doesn't affect anyone else, and usage can't be moved between members, because each seat is for one named person. A Team seat and a personal plan on one email are two separate accounts with their own limits; [Claude team and personal account on one Mac](/blog/claude-team-and-personal-account/) shows how to keep them apart.
 
 ### Claude Code limits per developer, on Team and the API
 
-Which Claude Code limit a developer meets depends on how they sign in. This is from Anthropic's Claude Code costs page, read on 16 November 2026.
+Which Claude Code limit a developer meets depends on how they sign in. This is from Anthropic's Claude Code costs page, read again on 20 November 2026. {{live:/blog/claude-code-usage-limits/}}Plan by plan, with what happens at the limit, it is in [Claude Code usage limits](/blog/claude-code-usage-limits/).{{/live}}
 
 - **On a Team or Enterprise seat,** each member's Claude Code usage draws from their own seat allowance: the five-hour and weekly windows, shared with Claude chat and Cowork and sized by seat tier, Standard or Premium. It isn't a team pool. Past it, [usage credits](/blog/claude-usage-credits/) carry on if an admin turned them on, with spend limits for the organization, a group or one member.
 - **On the Claude Console (API),** there's no seat allowance. Usage is billed per token to the organization, and an admin can set spend limits per workspace. Rate limits belong to the organization, not to each developer, but Anthropic's workspaces page says the automatically created Claude Code workspace is the only one that supports per-user monthly spend limits.
@@ -175,8 +184,7 @@ For the API case Anthropic gives rough token-per-minute and request-per-minute f
 | 100-500 users | 15k-20k | 0.37-0.47 |
 | 500+ users | 10k-15k | 0.25-0.35 |
 
-Anthropic says these limits apply to the whole organization, so one developer can briefly use more than an even share while the others are idle. Across enterprise deployments, the same page puts the average cost at about $13 per developer per active day, or $150-250 per developer per month, with 90% of users under $30 a day. Anthropic suggests starting with a small pilot group to find your own baseline.
-
+Anthropic says these limits apply to the whole organization, so one developer can briefly use more than an even share while the others are idle.
 A developer who sees "You've hit your session limit" or "You've hit your weekly limit" has reached a seat window. It covers all models, so switching with `/model` doesn't help.
 
 ## How to see your usage
@@ -195,7 +203,13 @@ Anthropic's help page gives two choices: wait for the reset, or upgrade. If you 
 
 ![Dashboard card with a full 5-hour Claude limit](/img/guides/card-limit-full.webp "In cl_audit, a full 5-hour limit shows how long until it's back, and at what time. Sample data.")
 
-Paid plans have a third. With usage credits enabled, your requests switch to pay-as-you-go pricing when you use up a limit, and your work continues. Anthropic says that usage is billed at standard API pricing rates, separately from your subscription, until you reach your monthly spend limit or your balance runs out. Session limits still reset every five hours and weekly limits once a week. You turn credits on in Settings ▸ Usage. {{live:/blog/claude-usage-credits/}}Some models, such as Fable on Pro, bill to credits from the first request; [usage credits explained](/blog/claude-usage-credits/) has the details.{{/live}}
+Paid plans have a third. With usage credits enabled, your requests switch to pay-as-you-go pricing when you use up a limit, and your work continues. Anthropic says that usage is billed at standard API pricing rates, separately from your subscription, until you reach your monthly spend limit or your balance runs out. Session limits still reset every five hours and weekly limits once a week. You turn credits on in Settings ▸ Usage. {{live:/blog/claude-usage-credits/}}Some models, such as Fable on Pro, bill to credits from the first request; [usage credits explained](/blog/claude-usage-credits/) has the details.{{/live}} {{live:/blog/claude-spend-limit/}}A monthly spend limit caps what credits can bill, and [the Claude spend limit](/blog/claude-spend-limit/) explains the messages and how to raise it.{{/live}}
+
+### MTD spend: your usage credits this month
+
+MTD spend is month-to-date spend: what usage credits have cost so far this month, not your subscription fee. Anthropic's usage-credits help page says Settings ▸ Usage shows current spending as month-to-date usage credit costs. Team admins meet the same term in their spend limits and spend report; [what MTD spend means in Claude](/blog/claude-usage-credits/#what-is-mtd-spend-in-claude) goes through both.
+
+### At the limit in Claude Code
 
 In Claude Code, the message says when to come back: "You've hit your session limit · resets 3:45pm", for example. The error reference says Claude Code blocks further requests until then. A few more details from Anthropic's pages:
 
