@@ -16,7 +16,7 @@ takeaways:
 faq:
   - q: "What is the best Claude usage tracker for Mac?"
     a: "It depends on where you want to see your usage. A menu bar app suits a quick glance, ccusage suits terminal reports, and for several accounts there's Claude Usage Tracker in the menu bar or cl_audit in the Dock. cl_audit is our own tool, so check the others' pages too."
-  - q: "Is there a Claude usage widget for Mac?"
+  - q: "Which of these Claude usage trackers has a Mac widget?"
     a: "Two of these tools have one. cl_audit, our own, has a \"Claude usage\" widget in the widget gallery on macOS 14 or later, and SessionWatcher's page lists macOS widgets in its paid Pro tier. The others live in the menu bar, terminal or browser; ClaudeBar's README also lists a Notch view and a Touch Bar view."
   - q: "Which Claude usage trackers are on GitHub?"
     a: "ClaudeUsageBar, Claude Usage Tracker, CodexBar, ClaudeBar, ccusage and cl_audit all publish their source on GitHub, and Claude Monitor's page says its source is there too. Usagebar's page doesn't mention a public repository, and SessionWatcher's pages state no licence. cl_audit's licence is source-available; the rest of those state MIT or Apache 2.0."
