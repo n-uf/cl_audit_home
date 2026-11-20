@@ -6,7 +6,7 @@ mainKeyword: "claude account switcher"
 kind: use-case
 draft: false
 published: 2026-11-19
-updated: 2026-11-19
+updated: 2026-11-20
 author: n-uf
 order: 6
 takeaways:
@@ -23,10 +23,30 @@ faq:
   - q: "Is my sign-in copied between accounts?"
     a: "No. A standby account has no sign-in kept anywhere. Switching opens Claude Code's own sign-in in Terminal with the address filled in, you finish it in the browser, and cl_audit checks which account the folder is now signed in to."
   - q: "What happens to the Claude app when I switch?"
-    a: "The profile's Claude window closes for the move. cl_audit never signs it in or out: when you open it again, you sign it in to the new account yourself. Until then, the account box shows the app's account, says the switch waits for the app's sign-in, and shows no numbers."
+    a: "The profile's Claude window closes for the move, and cl_audit opens it again once the switch is settled. cl_audit never signs it in or out: you sign it in to the new account yourself. Until then, the account box shows the app's account, says the switch waits for the app's sign-in, and shows no numbers."
   - q: "Can I undo a switch?"
     a: "Until Claude Code is on the new account, Undo the move puts back what was moved, though it may not bring everything back. After that, the way back is a switch the other way. A switch that stopped half way offers Undo it on the profile's Sessions card."
 sources:
+  - title: "cl_audit CHANGELOG, 26.11.52"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.52/CHANGELOG.md"
+    checked: 2026-11-20
+    supports: "26.11.52: quick chat's header names Claude Code's account, the one it answers on, when the Claude app and Claude Code in Terminal are on different accounts; when Claude Code's folder is signed in to another profile's account (Work, say), the Dock icon's panel says “No usage: Terminal is on Work's account”, no plan shows for it any more, and the Switch page says “Move Claude Code back to …” only before the move starts."
+    quote: "No usage: Terminal is on Work's account"
+  - title: "cl_audit CHANGELOG, 26.11.51"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.51/CHANGELOG.md"
+    checked: 2026-11-20
+    supports: "26.11.51: an account switch opens the profile's Claude window again once the switch is settled (Claude Code reaches the account, after Undo or Leave it as it is, or when the switch stopped before moving anything); while moved sessions wait, the window stays closed, the Dock icon, the menu bar and the card open that switch's page, and the Switch page says so."
+    quote: "An account switch now opens the profile's Claude window again once the switch is settled"
+  - title: "cl_audit CHANGELOG, 26.11.48"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.48/CHANGELOG.md"
+    checked: 2026-11-20
+    supports: "26.11.48: when Claude Code's folder is signed in to another profile's account and you move it back to the profile's own account, the Switch page says the other account stays with the profile it belongs to."
+    quote: "the other account stays with the profile it belongs to"
+  - title: "cl_audit README at tag v26.11.54 (Show emails)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.54/README.md"
+    checked: 2026-11-20
+    supports: "Show emails (General settings) off leaves email addresses out of the launcher, the dashboard's account lines and the panels, and masks them in menus and sentences."
+    quote: "masks them like y•••@example.com in menus and sentences"
   - title: "cl_audit CHANGELOG, 26.11.47"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.47/CHANGELOG.md"
     checked: 2026-11-15
@@ -185,7 +205,7 @@ Then come the steps and **Switch to ultra-2**.
 
 ## What happens when you switch, step by step
 
-1. The profile's Claude window closes, with the app's own quit, and stays closed until the sign-in ends.
+1. The profile's Claude window closes, with the app's own quit. cl_audit opens it again once the switch is settled: Claude Code reached the account, you chose Undo or Leave it as it is, or nothing moved. While moved sessions wait, it stays closed, and the Dock icon, the menu bar and the card open the Switch page instead.
 2. A backup is made. If it can't be made, the switch stops and nothing moves.
 3. The Code-tab sessions and scheduled tasks move to ultra-2. Each one is written for the new account and checked before its original is set aside in cl_audit's own folder, not deleted at that step. Scheduled tasks keep their skips and retries. A session that a running Claude Code has open is held: it stays with ultra-1 until a later switch.
 4. Claude Code's own sign-in opens in Terminal for the profile's folder, with ultra-2's address filled in, and you finish it in the browser. Anthropic's CLI reference describes the `--email` option that fills it in.
@@ -217,10 +237,13 @@ You can also switch without the Switch page: run `claude auth login` yourself fo
 
 ## What the card says when it shows no numbers
 
-A profile's card shows numbers only when Claude Code in Terminal, on the profile's folder, is signed in to the same account as the Claude app. Otherwise it shows a bold heading about Terminal's sign-in and one sentence on what to do. Red means the sign-in is on the wrong account or gone. Amber means it can't be read yet, or a switch is under way.
+A profile's card shows numbers only when Claude Code in Terminal, on the profile's folder, is signed in to the same account as the Claude app. Otherwise it shows a bold heading about Terminal's sign-in and one sentence on what to do. Red means the sign-in is on the wrong account or gone. Amber means it can't be read yet, or a switch is under way. With **Show emails** off in General settings, addresses in menus and sentences read like a•••@example.com.
+
 ### Terminal is signed in to ben@example.com
 
 The Claude app is on ann@example.com, but Claude Code in Terminal is signed in to ben@example.com, so the card shows no numbers and turns red. Its sentence reads "Sign in as ann@example.com to read Main's usage." Press **Sign in…** and sign Terminal in as ann@example.com. Terminal moves into the ⋯ menu, where it says which account it is on.
+
+Quick chat answers on ben@example.com, Claude Code's account, and its header names it.
 
 ### Terminal is signed out
 
@@ -232,9 +255,9 @@ The folder had a sign-in, but it ran out. The card is red and gives the same sen
 
 ### Terminal is signed in to Work's account
 
-Terminal on Main's folder is signed in to ben@example.com, the account in use on your Work profile. Its numbers show only on Work's card. Main's card is red and names Main's own account: "Sign in as ann@example.com to read Main's usage." With no account of its own, it says "Sign in to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says it is on Work's account.
+Terminal on Main's folder is signed in to ben@example.com, the account in use on your Work profile. Its numbers show only on Work's card. Main's card shows no plan, is red and names Main's own account: "Sign in as ann@example.com to read Main's usage." With no account of its own, it says "Sign in to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says it is on Work's account, and the Dock icon's panel says "No usage: Terminal is on Work's account".
 
-If ann@example.com is also on Main's standby list, the switch menus list it once, ticked, as "ann · move Claude Code back here" (the card's Switch account menu spells out ann@example.com). Choosing it still switches to it, which moves Claude Code back; **Sign in…** is the lighter way: it signs Claude Code in as ann@example.com again and moves nothing.
+If ann@example.com is also on Main's standby list, the switch menus list it once, ticked, as "ann · move Claude Code back here" (the card's Switch account menu spells out ann@example.com). Choosing it still switches to it, which moves Claude Code back; the Switch page says "Move Claude Code back to ann" until the move starts, and says ben@example.com stays with Work, the profile it belongs to. **Sign in…** is the lighter way: it signs Claude Code in as ann@example.com again and moves nothing.
 
 ### Terminal is signed in to another account
 
@@ -250,7 +273,7 @@ Claude Code saved its sign-in in a form cl_audit doesn't know, so the card says 
 
 ### Switching to ben@example.com: one step left
 
-A switch to ben@example.com has moved Claude Code in Terminal and waits for the Claude app. The card is amber and says "Sign the Claude app in to ben@example.com to finish." It has no **Sign in…** key, because cl_audit can't sign the app in: open it with Show window and sign in there. After 24 hours, the card falls back to the red message.
+A switch to ben@example.com has moved Claude Code in Terminal and waits for the Claude app. The card is amber and says "Sign the Claude app in to ben@example.com to finish." It has no **Sign in…** key, because cl_audit can't sign the app in: cl_audit opens the window again once Claude Code is on ben@example.com (or use Show window), and you sign in there. After 24 hours, the card falls back to the red message.
 
 ## Cancel it, or undo it
 
