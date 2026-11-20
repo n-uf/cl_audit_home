@@ -5,7 +5,7 @@ h1: "Best Claude usage trackers for Mac (2026)"
 mainKeyword: "best claude usage tracker"
 kind: best-tools
 published: 2026-11-02
-updated: 2026-11-16
+updated: 2026-11-20
 author: n-uf
 takeaways:
   - "Which Claude usage tracker suits you depends on where you want to see your usage: the menu bar, the Dock, the terminal or the browser."
@@ -212,7 +212,7 @@ That depends on why you're looking. ClaudeBar needs macOS 15 or later; Claude Us
 
 ## What is a good SessionWatcher alternative?
 
-That depends on why you're looking. If it's the price, cl_audit is free, and Claude Monitor's page says it's free too. Usagebar lists a free tier and $9 one-time, and the other pages above state no price. If it's the Mac you own, cl_audit needs Apple silicon and macOS 13, while SessionWatcher's pages list macOS 14 or later on Apple silicon or Intel. If you want a menu bar app, ClaudeUsageBar, Claude Usage Tracker, Usagebar, CodexBar and ClaudeBar are the other five; compare their macOS versions and how they sign in in the table.
+A free SessionWatcher alternative for Mac is cl_audit, which needs Apple silicon and macOS 13; SessionWatcher starts at $8.99 and also runs on Intel Macs and Windows. Which one fits depends on why you're looking. If it's the price, Claude Monitor's page says it's free too, Usagebar lists a free tier and $9 one-time, and the other pages above state no price. If it's the Mac you own, cl_audit needs Apple silicon and macOS 13, while SessionWatcher's pages list macOS 14 or later on Apple silicon or Intel. If you want a menu bar app, ClaudeUsageBar, Claude Usage Tracker, Usagebar, CodexBar and ClaudeBar are the other five; compare their macOS versions and how they sign in in the table.
 
 If you wanted several Claude accounts without a paid tier, cl_audit and Claude Usage Tracker are the two here whose pages describe it. If it's the number of tools, CodexBar and ClaudeBar cover several providers, as SessionWatcher does.
 
