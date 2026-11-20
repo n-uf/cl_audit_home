@@ -27,6 +27,11 @@ faq:
   - q: "Can I undo a switch?"
     a: "Until Claude Code is on the new account, Undo the move puts back what moved, though maybe not all. After that, the way back is a switch the other way. A switch that stopped half way shows two choices on the Sessions card: Undo it puts the sessions back, and Leave it as it is keeps them where they are."
 sources:
+  - title: "cl_audit CHANGELOG, 26.11.55"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.55/CHANGELOG.md"
+    checked: 2026-11-20
+    supports: "26.11.55: when Claude Code's folder is signed in to another profile's account, quick chat's header names the profile's own account and that other account's limit no longer shows it as full or holds what you type; when Claude Code hits a limit there, or while the Claude app and Claude Code are on different accounts, quick chat says “Claude Code's account here has hit its limit.”, and in the clash also whose account the folder is on and to move it back to the profile's own account on the Switch page (or to pick one there when the profile has none)."
+    quote: "quick chat's header now names the profile's own account"
   - title: "cl_audit CHANGELOG, 26.11.52"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.52/CHANGELOG.md"
     checked: 2026-11-20
@@ -243,7 +248,7 @@ A profile's card shows numbers only when Claude Code in Terminal, on the profile
 
 The Claude app is on ann@example.com, but Claude Code in Terminal is signed in to ben@example.com, so the card shows no numbers and turns red. Its sentence reads "Sign in as ann@example.com to read Main's usage." Press **Sign in…** and sign Terminal in as ann@example.com. Terminal moves into the ⋯ menu, where it says which account it is on.
 
-Quick chat answers on ben@example.com, Claude Code's account, and its header names it.
+Quick chat answers on ben@example.com, Claude Code's account, and its header names it. If Claude Code hits a limit there, quick chat says "Claude Code's account here has hit its limit."
 
 ### Terminal is signed out
 
@@ -255,7 +260,7 @@ The folder had a sign-in, but it ran out. The card is red and gives the same sen
 
 ### Terminal is signed in to Work's account
 
-Terminal on Main's folder is signed in to ben@example.com, the account in use on your Work profile. Its numbers show only on Work's card. Main's card shows no plan, is red and names Main's own account: "Sign in as ann@example.com to read Main's usage." With no account of its own, it says "Sign in to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says it is on Work's account, and the Dock icon's panel says "No usage: Terminal is on Work's account".
+Terminal on Main's folder is signed in to ben@example.com, the account in use on your Work profile. Its numbers show only on Work's card. Main's card shows no plan, is red and names Main's own account: "Sign in as ann@example.com to read Main's usage." With no account of its own, it says "Sign in to read Main's usage." Press **Sign in…**. In the ⋯ menu, Terminal says it is on Work's account, and the Dock icon's panel says "No usage: Terminal is on Work's account". Quick chat's header names Main's own account. If Claude Code hits a limit there, quick chat says whose account the folder is on and to move it back to Main's own account on the Switch page, or to pick an account for Main there when it has none.
 
 If ann@example.com is also on Main's standby list, the switch menus list it once, ticked, as "ann · move Claude Code back here" (the card's Switch account menu spells out ann@example.com). Choosing it still switches to it, which moves Claude Code back; the Switch page says "Move Claude Code back to ann" until the move starts, and says ben@example.com stays with Work, the profile it belongs to. **Sign in…** is the lighter way: it signs Claude Code in as ann@example.com again and moves nothing.
 
