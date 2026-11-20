@@ -176,6 +176,11 @@ sources:
     checked: 2026-11-13
     supports: "26.11.24: Restore… on a backup puts back what is missing, merged, and is built not to overwrite anything; its preview reads \"Preview · nothing written yet · built not to overwrite\"; Undo this restore is meant to take back what it put back and may not bring everything back."
     quote: "puts back what is missing, merged, and is built not to overwrite anything"
+  - title: "cl_audit 26.11.59 release notes"
+    url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.59"
+    checked: 2026-11-20
+    supports: "Release 26.11.59: importing an export or restoring a backup no longer refuses the whole file when a project's folder is named like a sign-in (a repo called oauth-proxy); among the sessions the rule is the files' rule, so a file named like a sign-in still refuses the whole file."
+    quote: "a file named like a sign-in still refuses the whole file"
 related:
   - /use-cases/claude-code-usage-history/
   - /blog/claude-sessions-lost-switching-accounts/
@@ -325,7 +330,7 @@ Backups are APFS clones, so they take seconds and share space with the originals
 
 Then **Close and restore N** closes only that profile's Claude window and writes what is missing, keeping a receipt as it goes. **Stop, keep what's back** halts it.
 
-**Merge-only, by design.** Restore is built to only create files, not to write over a name that already exists or through a link. A backup that holds anything other than plain files, or anything named like a sign-in, is refused whole.
+**Merge-only, by design.** Restore is built to only create files, not to write over a name that already exists or through a link. A backup that holds anything other than plain files, or a file named like a sign-in, is refused whole. Since 26.11.59 a project folder with such a name, like a repo called oauth-proxy, no longer counts.
 
 **Undo this restore** is meant to take back what the restore put back, and only files unchanged since. It may not bring everything back.
 
