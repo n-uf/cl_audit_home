@@ -308,7 +308,7 @@ Other switchers do a related job for Claude Code alone. By their READMEs, checke
 | Tool | What it swaps | Where it makes more sense |
 |---|---|---|
 | cl_audit | The profile's account. Claude Code signs in again on the same folder, on Anthropic's own screen, and no sign-in is copied. The Claude window's Code sessions and scheduled tasks move too, after a backup | You use the Claude app and Claude Code in one profile and want the sessions to go with the account |
-| claude-swap | The account-specific Claude login for Claude Code, in the CLI and the VS Code extension. It has an optional automatic mode and an optional macOS menu bar app | You work in the terminal, on macOS, Linux or Windows, and want a command to swap logins |
+| claude-swap | The account-specific Claude sign-in for Claude Code, in the CLI and the VS Code extension. It has an optional automatic mode and an optional macOS menu bar app | You work in the terminal, on macOS, Linux or Windows, and want a command to swap sign-ins |
 | CCSwitcher | A menu bar app (macOS 14 or later) that keeps a backup of each Claude Code account's credentials and swaps the Keychain entry and `~/.claude.json` | You want a small menu bar switcher for Claude Code alone |
 
 The two READMEs don't mention the Claude app's Code tab or sidebar. For a wider comparison of tools that keep several Claude setups apart, see [Claude profile switchers for Mac](/blog/claude-profile-switchers-mac/).
