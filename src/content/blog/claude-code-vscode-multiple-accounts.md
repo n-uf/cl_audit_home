@@ -5,7 +5,7 @@ h1: "Claude Code in VS Code with multiple accounts"
 mainKeyword: "claude code vscode multiple accounts"
 kind: how-to
 published: 2026-11-03
-updated: 2026-11-12
+updated: 2026-11-20
 author: n-uf
 takeaways:
   - "Out of the box, changing account in the Claude Code panel means signing out (Sign out, or /logout) and signing in again."
@@ -87,6 +87,8 @@ related:
   - /use-cases/claude-code-usage-history/
   - /install/
 ---
+
+To switch Claude Code accounts in VS Code, sign out in the panel (or run `/logout`) and sign in with the other account; to skip that each time, give each account its own VS Code profile. {{live:/blog/claude-code-switch-account/}}Outside VS Code, [how to switch accounts in Claude Code](/blog/claude-code-switch-account/) covers the terminal and the desktop app.{{/live}}
 
 The setup this guide walks through for Claude Code VSCode multiple accounts is one VS Code profile per Claude account. In each profile's user settings you point the extension's `claudeCode.environmentVariables` setting at that account's `CLAUDE_CONFIG_DIR` folder, written as an absolute path such as `/Users/you/.claude-work`, and you open each project in its profile. Without it, changing account in the Claude Code panel means signing out and signing in again.
 
