@@ -152,7 +152,7 @@ A spend limit can be passed slightly. Anthropic checks the limit before a reques
 
 ## What is MTD spend in Claude?
 
-MTD spend is month-to-date spend: what usage credits have cost so far this month, and it isn't your subscription fee. It's an admin's term. Anthropic's help pages use it in two places, both for Team and Enterprise organizations, and neither means your subscription fee:
+MTD spend is month-to-date spend: what usage credits have cost so far this month, not your subscription fee. It's an admin's term. Anthropic's help pages use it in two places, both for Team and Enterprise organizations:
 
 - **Spend limits by user.** Anthropic's help page on usage credits for Team and seat-based Enterprise plans says this section of Organization settings ▸ Usage has an "MTD Spend" column, so Owners can track members' usage patterns and adjust seat assignments. It's the table where per-member spend limits are set. Those limits aren't available to every Team organization: if usage credits are on and the page shows "Spend by org member" instead, yours doesn't have them.
 - **The spend report.** The analytics help page lists "MTD" first among the periods you can pick when you export the spend report from Settings ▸ Analytics, under "How much is Claude costing?". Total spend and Spend by model on the same page also run month-to-date, quarter-to-date, year-to-date and over one year. The report gives estimated spend per person and per model, updated daily, with data up to yesterday.
