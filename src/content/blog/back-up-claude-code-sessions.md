@@ -179,7 +179,7 @@ sources:
   - title: "cl_audit 26.11.59 release notes"
     url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.59"
     checked: 2026-11-20
-    supports: "Release 26.11.59: importing an export or restoring a backup no longer refuses the whole file when a project's folder is named like a sign-in (a repo called oauth-proxy); among the sessions the rule is the files' rule, so a file named like a sign-in still refuses the whole file."
+    supports: "Release 26.11.59: importing an export or restoring a backup no longer refuses the whole file when a project's folder is named like a sign-in (a repo called oauth-proxy); among the sessions the rule is the files' rule, so a file named like a sign-in still refuses the whole file, and so does a folder named like one outside the sessions; Claude Code's setup keeps its own rule (only the excluded names)."
     quote: "a file named like a sign-in still refuses the whole file"
 related:
   - /use-cases/claude-code-usage-history/
@@ -330,7 +330,7 @@ Backups are APFS clones, so they take seconds and share space with the originals
 
 Then **Close and restore N** closes only that profile's Claude window and writes what is missing, keeping a receipt as it goes. **Stop, keep what's back** halts it.
 
-**Merge-only, by design.** Restore is built to only create files, not to write over a name that already exists or through a link. A backup that holds anything other than plain files, or a file named like a sign-in, is refused whole. Since 26.11.59 a project folder with such a name, like a repo called oauth-proxy, no longer counts.
+**Merge-only, by design.** Restore is built to only create files, not to write over a name that already exists or through a link. A backup is refused whole if it holds anything other than plain files, a file named like a sign-in, or a folder named like one outside the sessions. Since 26.11.59 a folder among the sessions no longer counts: Claude Code names a project's folder after its path, so a repo called oauth-proxy used to stop every restore. Claude Code's setup keeps its own, narrower rule.
 
 **Undo this restore** is meant to take back what the restore put back, and only files unchanged since. It may not bring everything back.
 
