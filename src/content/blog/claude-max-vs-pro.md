@@ -5,7 +5,7 @@ h1: "Claude Max vs Pro: price, usage limits and how to choose"
 mainKeyword: "claude max vs pro"
 kind: comparison
 published: 2026-11-03
-updated: 2026-11-05
+updated: 2026-11-20
 author: n-uf
 takeaways:
   - "Anthropic's Max page says Max gives five times the Pro plan's usage every five hours and every week, at $100 a month on the web."
@@ -40,6 +40,9 @@ sources:
   - title: "Claude Fable models on your plan (Claude Help Center)"
     url: "https://support.claude.com/en/articles/15424964-claude-fable-models-on-your-plan"
     checked: 2026-11-05
+  - title: "What is the Team plan? (Claude Help Center)"
+    url: "https://support.claude.com/en/articles/9266767-what-is-the-team-plan"
+    checked: 2026-11-20
   - title: "Claude pricing (claude.com)"
     url: "https://claude.com/pricing"
     checked: 2026-11-02
@@ -141,3 +144,5 @@ What you'd spend on credits depends on how far past the limits you go. Anthropic
 ## Watching either plan
 
 On Pro or Max, the 5-hour and weekly limits are the two numbers to watch. cl_audit is a free [Claude usage tracker](/) for the Mac that shows both for every profile; the [Claude usage dashboard](/dashboard/) demo shows what its cards look like. It works with plans that have usage limits and needs Claude Code signed in for each profile. If you want to try it, [install cl_audit](/install/).
+
+A Team seat from work is separate from either plan. Anthropic's Team page says its limits are per member and can't be shared or transferred, so a seat next to a personal Max plan is two accounts with two sets of limits; [a Team seat and a personal Claude account](/blog/claude-team-and-personal-account/) explains how they stay apart.
