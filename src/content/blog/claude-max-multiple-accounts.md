@@ -11,12 +11,12 @@ author: n-uf
 takeaways:
   - "Anthropic's Max page gives each Max plan five times Pro's usage every five hours and every week. It says nothing about holding more than one Max plan or about combining their limits (checked 20 November 2026)."
   - "Two Max plans are two separate meters: each account has its own 5-hour limit, weekly limit and reset time, and nothing is pooled."
-  - "Anthropic's Consumer Terms say you may not share your login or make your account available to anyone else, and its Usage Policy bars creating multiple accounts to avoid detection or get around its guardrails. Read both for your own case."
+  - "Anthropic's Consumer Terms say you may not share your login or make your account available to anyone else, and its Usage Policy bars creating multiple accounts to avoid detection or get around its guardrails, and intentionally bypassing restrictions in its products. Read both for your own case."
   - "Anthropic's own routes to more usage than Max are Ultra, at ten times Pro's usage every week, and usage credits at API rates."
   - "On one Mac, cl_audit gives each Max account its own profile and shows its limits in its own Dock icon. It doesn't pool limits, and it isn't affiliated with Anthropic."
 faq:
   - q: "Can you have two Claude Max accounts?"
-    a: "Anthropic's pages don't say. Its Max page describes one plan and is silent on holding two or combining their limits. Its Consumer Terms bar sharing your login, and its Usage Policy bars creating multiple accounts to avoid detection or get around guardrails. Read both, because cl_audit can't tell you how they apply to you."
+    a: "Anthropic's pages don't say yes or no. Its Max page describes one plan and is silent on holding two or combining their limits. Its Consumer Terms bar sharing your login. Its Usage Policy bars creating multiple accounts to get around guardrails, and intentionally bypassing restrictions in its products. Read both, or ask Anthropic, before you rely on a second plan."
   - q: "Do two Claude Max plans add up to double the usage?"
     a: "No. Each account has its own 5-hour limit, weekly limit and reset time, and usage on claude.ai, Claude Code and Claude Desktop counts toward the limit of the account you're signed in to. Anthropic's Max page gives no way to combine two plans, and cl_audit doesn't pool them either."
   - q: "Is there a plan with more usage than Claude Max?"
@@ -83,19 +83,19 @@ Anthropic's pages don't give a yes or a no, and the three that matter say differ
 |---|---|---|
 | Max plan help page | Five times the Pro plan's usage every five hours and every week; a 5-hour limit, a weekly limit across all models, and a separate weekly limit for Fable | Anything about holding more than one Max plan, or about combining or stacking limits |
 | Consumer Terms | You may not share your account login or credentials with anyone else, or make your account available to anyone else | A rule that limits you to one account, or a rule about usage limits |
-| Usage Policy (effective 12 November 2026) | Among things not to do: creating multiple accounts to avoid detection, to get around product guardrails or to send inputs that break the policy; using another account to get around a ban | Anything about usage limits |
+| Usage Policy (effective 12 November 2026) | Among things not to do: creating multiple accounts to avoid detection, to get around product guardrails or to send inputs that break the policy; using another account to get around a ban; intentionally bypassing capabilities, restrictions or guardrails in Anthropic's products without its authorization | Usage limits by name |
 
 *Source: the Anthropic pages listed under sources, read on 20 November 2026.*
 
-Silence on the Max page is neither permission nor a ban. The rules sit in the terms, and the sentence that matters is the purpose clause in the Usage Policy: the multiple accounts it lists are ones created to avoid detection or to get around guardrails. Whether that touches a personal Max plan next to a second one is for Anthropic's terms to answer, not for a monitoring tool.
+Silence on the Max page is neither permission nor a ban. The rules sit in the terms. The multiple-accounts line in the Usage Policy is about purpose: accounts created to avoid detection or to get around guardrails. A few lines further down, the same list bars intentionally bypassing restrictions in Anthropic's products without its authorization. Usage limits aren't named there, but if the point of a second Max plan is to get past the first one's limits, read that clause first or ask Anthropic. How the terms apply to you is for Anthropic to answer, not a monitoring tool.
 
-Two more details from the Consumer Terms. The page says an account may be linked to an employer's enterprise account, whose administrator may be able to monitor and control it. And Anthropic reserves the right to change its capacity limits. The Usage Policy adds that Anthropic may respond to suspected violations by warning users, or by throttling, limiting, suspending or ending access, so it's worth reading before you rely on a second account. The [multiple Claude accounts](/use-cases/multiple-claude-accounts/) guide has a [short section on whether it is allowed](/use-cases/multiple-claude-accounts/#is-it-allowed-to-have-multiple-claude-accounts), which is the same material from the work-and-personal side.
+Two more details from the Consumer Terms. If you sign up with an email address your employer owns, the account may be linked to the employer's enterprise account, whose administrator may be able to monitor and control it. And Anthropic reserves the right to change its capacity limits. The Usage Policy adds that Anthropic may respond to suspected violations by warning users, or by throttling, limiting, suspending or ending access, so it's worth reading before you rely on a second account. The [multiple Claude accounts](/use-cases/multiple-claude-accounts/) guide has a [short section on whether it is allowed](/use-cases/multiple-claude-accounts/#is-it-allowed-to-have-multiple-claude-accounts), which is the same material from the work-and-personal side.
 
 ## Do two Claude Max plans add up to double the limits?
 
-No, and nothing on Anthropic's pages suggests they would. A limit belongs to an account. Anthropic's usage-limits page says usage on claude.ai, Claude Code and Claude Desktop counts toward the same usage limit, the one for the account you're signed in to, and that each account's weekly limit resets at a fixed time assigned to that account. Settings ▸ Usage shows the current session and the next reset for the account you have open.
+No, and nothing on Anthropic's pages suggests they would. A limit belongs to an account. Anthropic's usage-limits page says usage on claude.ai, Claude Code and Claude Desktop counts toward the same usage limit, and that weekly limits reset at a fixed time assigned to your account. That limit is the signed-in account's. Settings ▸ Usage shows the current session and the next reset for the account you have open.
 
-So two Max accounts are two meters. When one is full, the other doesn't move, and nothing carries work from the first to the second. Anthropic's Team page states the same idea for seats: limits can't be transferred or shared between members. For Max it's the absence of any combining feature that tells you: the Max page has none to describe.
+So two Max accounts are two meters. When one is full, the other doesn't move, and nothing carries work from the first to the second. Anthropic's Team page states the same idea for seats: limits can't be transferred or shared between members. The Max page describes no way to combine plans at all.
 
 Each Max plan also has its own Fable weekly limit. Anthropic's Fable page says Max can use up to 50% of the weekly limit on Fable models at no extra cost, and that this comes out of the same weekly limit rather than on top of it. [Claude usage limits explained](/blog/claude-usage-limits/) has the plan-by-plan table.
 
@@ -113,7 +113,7 @@ You turn credits on in Settings ▸ Usage, and you can cap them with a monthly s
 
 ## How do you run two Claude Max accounts on one Mac?
 
-Say you hold two Max accounts for different reasons: a plan of your own and one that belongs to a client or a second business. Anthropic's account menu switches one active account at a time, so keeping both open takes more than the menu. For Claude Code, Anthropic's documentation says the `CLAUDE_CONFIG_DIR` variable moves its settings, session history and plugins to another folder, so one folder per account keeps two sign-ins apart. Doing that by hand is covered in [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/).
+Say both Max accounts are yours, on two email addresses, kept for two separate lines of work. An account someone else pays for and lends you is a different matter: the Consumer Terms bar making an account available to anyone else. Anthropic's account menu switches one active account at a time, so keeping both open takes more than the menu. For Claude Code, Anthropic's documentation says the `CLAUDE_CONFIG_DIR` variable moves its settings, session history and plugins to another folder, so one folder per account keeps two sign-ins apart. Doing that by hand is covered in [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/).
 
 In cl_audit, a **profile** is one Claude setup: a Claude Code folder with its own sign-in and, if you want them, a Claude window and a Dock icon. To add the second Max account:
 
@@ -137,6 +137,6 @@ While a profile is spending usage credits, its card says "Using usage credits" a
 
 ## What cl_audit doesn't do
 
-It doesn't pool or add the limits of two accounts, and it doesn't move work from a full account to another one. It doesn't decide whether you may hold two accounts, since that is Anthropic's terms. It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile; the Claude app is only needed for Claude windows. A profile that uses an API key has no limits to show.
+It doesn't pool or add the limits of two accounts, and it doesn't move work from a full account to another one. It doesn't decide whether you may hold two accounts, since that is Anthropic's terms. It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile; the Claude app is only needed for Claude windows. An account used through an API key has no plan limits to show.
 
 If your second account is a work seat, not another Max plan, the setup is the same, but Team limits work differently: they are per member, and [a Claude Team and personal account](/blog/claude-team-and-personal-account/) covers what Anthropic keeps separate. If you want to try cl_audit, [install it from here](/install/).
