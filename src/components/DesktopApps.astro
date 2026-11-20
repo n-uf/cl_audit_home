@@ -28,7 +28,7 @@ import { accounts, chats } from "../data/demo";
               <span class="hide-sm">Claude Code <code>{a.dir}</code></span>
             </div>
             <div class="chat" data-chat>
-              <h3 class="chat-title">{c.title}</h3>
+              <div class="chat-title">{c.title}</div>
               {c.turns.slice(0, 2).map(([who, text]) => (
                 <div class:list={["msg", who]} data-step>{text}</div>
               ))}
