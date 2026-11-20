@@ -17,9 +17,9 @@ takeaways:
   - "One account needs none of this. Two accounts open at once are two profiles instead."
 faq:
   - q: "Will I lose my sessions when I switch Claude accounts?"
-    a: "It can happen: switching is experimental and can lose data, so don't rely on it for sessions you can't afford to lose. A switch is meant to move the Claude window's Code-tab sessions and scheduled tasks to the new account, after a backup, and Claude Code's transcripts stay in the profile's folder. A session that a running Claude Code has open stays with the old account until a later switch."
+    a: "It can happen: switching is experimental and can lose data, so don't rely on it for sessions you can't afford to lose. A switch is meant to move the window's Code-tab sessions and scheduled tasks to the new account after a backup. Transcripts stay in the folder, and a session a running Claude Code has open stays behind."
   - q: "Does cl_audit pool the limits of my accounts?"
-    a: "No. Each account's limits are its own, and cl_audit reads only the account in use. A standby account shows its plan and when it was last in use, never limits. A switch happens only when you start it."
+    a: "No. Each account's limits are its own, and cl_audit reads only the account in use, so nothing is added up or shared. A standby account shows its plan and when it was last in use, never limits. A switch happens only when you start it, never by itself."
   - q: "Is my sign-in copied between accounts?"
     a: "No. A standby account has no sign-in kept anywhere. Switching opens Claude Code's own sign-in in Terminal with the address filled in, you finish it in the browser, and cl_audit checks which account the folder is now signed in to."
   - q: "What happens to the Claude app when I switch?"
@@ -194,7 +194,7 @@ The page shows the account in use under NOW, with its limits, and the account yo
 
 - Claude Code in Terminal and editors using the profile's folder moves to ultra-2, sessions running now included.
 - The Claude window's Code-tab sessions and scheduled tasks on ultra-1 move to ultra-2 inside the folder. The page says how many, and a backup comes first.
-- The window closes for the move. When you open it again, you sign it in to ultra-2 yourself.
+- The window closes for the move. cl_audit opens it again once the switch is settled, and you sign it in to ultra-2 there.
 - Claude Code's transcripts stay in the folder. So do the profile's name, Dock icon, look and settings, and ultra-1 stays on the profile as a standby account.
 
 If the old account's folder holds files named like a Code-tab session that aren't one, the page also says so before you press Switch: "Will stay with ultra-1: 2 files named like a Code-tab session that aren't one (a link, a file not named by an id)." It keeps saying so until something has moved, also after a Cancel. Once something has moved, the line reads "Left with ultra-1: …" instead. Those files are never moved.
@@ -231,7 +231,7 @@ Chats and Projects on claude.ai don't move. They belong to each account, and so 
 
 ## The Claude app's sign-in stays yours
 
-cl_audit never signs the Claude app in or out. The Switch page tells you to sign the window in to the new account when you open it. Until you do, the Switch page's account box shows the app's account and says "Switching to ultra-2@example.com: one step left. Sign the Claude app in to ultra-2@example.com to finish." The dashboard card says the same, in amber, as a heading ("Switching to ultra-2@example.com: one step left") and a sentence ("Sign the Claude app in to ultra-2@example.com to finish."), with no Sign in… key and no numbers. Settings, the menu bar, the widget, the Dock panel and quick chat say it too, in one line, or only "Switching to ultra-2@example.com: one step left" where space is short. It says so for up to 24 hours after the switch; after that the card falls back to the red message about Terminal's sign-in. In Settings ▸ Accounts, the account in use says "In use until the switch to ultra-2@example.com finishes.", and the account you are switching to is lit SWITCHING TO. For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it.
+cl_audit never signs the Claude app in or out. cl_audit opens the window again once the switch is settled, and you sign it in to the new account there. Until you do, the Switch page's account box shows the app's account and says "Switching to ultra-2@example.com: one step left. Sign the Claude app in to ultra-2@example.com to finish." The dashboard card says the same, in amber, as a heading ("Switching to ultra-2@example.com: one step left") and a sentence ("Sign the Claude app in to ultra-2@example.com to finish."), with no Sign in… key and no numbers. Settings, the menu bar, the widget, the Dock panel and quick chat say it too, in one line, or only "Switching to ultra-2@example.com: one step left" where space is short. It says so for up to 24 hours after the switch; after that the card falls back to the red message about Terminal's sign-in. In Settings ▸ Accounts, the account in use says "In use until the switch to ultra-2@example.com finishes.", and the account you are switching to is lit SWITCHING TO. For a week after a switch, the line under Accounts says when it happened, which account it was and what stays with it.
 
 You can also switch without the Switch page: run `claude auth login` yourself for the profile's folder. Within a second the profile works on the account that signed in, and the one before stands by. cl_audit moves the window's sessions as part of its own switch, not for a sign-in you run yourself. An account that another profile works on is refused.
 
