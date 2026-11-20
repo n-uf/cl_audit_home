@@ -41,13 +41,13 @@ const homeFaq: [string, string][] = [
   ["How do I check my Claude usage on a Mac?",
    "Claude shows it in Settings ▸ Usage, and Claude Code shows it with <code>/usage</code>, one account at a time. cl_audit shows the 5-hour and weekly limits of every profile's account at once: on each profile's Dock icon, in the launcher and on one dashboard, with the exact reset times."],
   ["Can cl_audit track several Claude accounts?",
-   "Yes. Each profile has its own accounts and can have its own Dock icon, and the dashboard shows every profile. A profile works on one account at a time and can keep others on standby, signed out and with no limits shown, to switch to when a limit is full; switching is experimental and can lose data. A personal plan and a Team seat on the same email count as two accounts."],
+   "Yes. Each profile has its own accounts and an optional Dock icon; the dashboard shows every profile. A profile works on one account at a time and can keep others on standby, signed out, for when a limit is full (experimental, can lose data). A personal plan and a Team seat on one email are two accounts."],
   ["Is cl_audit a menu bar app?",
    "Mostly a Dock app: every profile with Usage in the Dock on gets its own Dock icon, so several accounts sit side by side. A profile can also have a menu bar icon of its own (off by default). The “Claude usage” widget shows every profile on the desktop or in Notification Center (macOS 14 or later)."],
   ["Which Claude plans does it work with?",
-   "Plans with usage limits, such as Pro, Max, Ultra and Team, signed in to Claude Code. A profile that uses an API key has no limits to show."],
+   "Plans with usage limits: Pro, Max, Ultra and Team, signed in to Claude Code. A verified Ultra account has no 5-hour limit, so its profile shows the week alone. A profile that uses an API key has no limits to show, so cl_audit has nothing to read for it."],
   ["Is cl_audit free?",
-   "Yes. It's free and source-available under PolyForm Perimeter 1.0.1, with no sign-up, server or analytics. It isn't made by Anthropic and isn't affiliated with it."],
+   "Yes. It's free and source-available under PolyForm Perimeter 1.0.1, with no sign-up, no server and no analytics. Nothing is uploaded: usage history is read from Claude Code's session files on your Mac. It isn't made by Anthropic and isn't affiliated with it."],
 ];
 const plain = (html: string) => html.replace(/<[^>]+>/g, "");
 
@@ -334,10 +334,9 @@ const jsonLd = [orgNode, {
     )}
 
     <section class="card home-faq" aria-labelledby="hfaq-title">
-      <h4>Questions</h4>
-      <h2 id="hfaq-title" class="h3">Questions about tracking Claude usage</h2>
+      <h2 id="hfaq-title" class="h3">Questions</h2>
       <div class="list">
-        {homeFaq.map(([q, a]) => <div><h3 class="q">{q}</h3><span set:html={a} /></div>)}
+        {homeFaq.map(([q, a]) => <div><h3 class="q">{q}</h3><p set:html={a} /></div>)}
       </div>
       <a class="more" href="/faq/">All questions ›</a>
     </section>
