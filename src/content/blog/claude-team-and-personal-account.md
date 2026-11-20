@@ -23,7 +23,7 @@ faq:
   - q: "Can you share a Claude subscription with family?"
     a: "Not on a family plan. Anthropic's pricing page lists Free, Pro, Max, Ultra, Team and Enterprise, and no family or household plan. Each Pro, Max or Ultra plan is its own subscription. The nearest shared option is Team, priced per seat for groups of 2 to 150, and each seat is for one named individual."
   - q: "Does cl_audit show my whole team's usage?"
-    a: "No. cl_audit shows the profiles on the Mac it runs on, one per seat, each with its own limits; it has no team-wide view. Anthropic's help page says Team Owners can open Analytics, which includes a spend report with estimated spend per person and per model, updated daily. Admins use that, not cl_audit, to see everyone."
+    a: "No. cl_audit shows the profiles on the Mac it runs on, each with its own account's limits; it has no team-wide view. Team Owners have Anthropic's Analytics instead, with members' activity and a spend report per person and per model. That report covers usage-credit spend, not usage inside each seat's allowance."
 sources:
   - title: "cl_audit source at v26.11.36, Sources/Privacy.swift (Show emails)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/Privacy.swift#L44-L83"
@@ -72,6 +72,9 @@ sources:
     checked: 2026-11-20
   - title: "View usage analytics for Team and Enterprise plans (Claude Help Center)"
     url: "https://support.claude.com/en/articles/12883420-view-usage-analytics-for-team-and-enterprise-plans"
+    checked: 2026-11-20
+  - title: "Manage costs effectively, for Teams and Enterprise (Claude Code Docs)"
+    url: "https://code.claude.com/docs/en/costs"
     checked: 2026-11-20
   - title: "Consumer Terms of Service (Anthropic)"
     url: "https://www.anthropic.com/legal/consumer-terms"
@@ -122,7 +125,7 @@ Seats differ in size, too. As of 20 November 2026, the Team page says Standard s
 
 **Who manages the data.** On a Team plan, Anthropic's help page says the organization's Primary Owner manages the account and its data. That includes requesting data exports, which may contain your conversations with Claude, uploaded files and usage patterns. The same page says Anthropic's Consumer Terms and Privacy Policy don't apply where Anthropic acts as the data processor; the account is governed by the agreement between Anthropic and your organization, which may also have its own policies. Keep private things out of the Team seat.
 
-**Seeing the team's usage.** Per-member limits don't give an owner a team-wide view, and cl_audit doesn't either: it shows the profiles on one Mac. Anthropic's analytics help page says Team Owners and Primary Owners open Analytics from their initials in the lower left. Its spend report gives estimated spend per person and per model, updated daily, and can be exported as a CSV for a period such as month to date. [What MTD spend means in Claude](/blog/claude-usage-credits/#what-is-mtd-spend-in-claude) explains that term.
+**Seeing the team's usage.** Per-member limits don't give an owner a team-wide view, and cl_audit doesn't either: it shows the profiles on one Mac. Anthropic's analytics help page says Team Owners and Primary Owners open Analytics from their initials in the lower left. Its spend report gives estimated spend per person and per model, updated daily, and can be exported as a CSV for a period such as month to date. Anthropic's Claude Code costs page adds that the report covers usage-credit spend and appears once usage credits are on; usage inside a seat's allowance isn't metered in dollars. [What MTD spend means in Claude](/blog/claude-usage-credits/#what-is-mtd-spend-in-claude) explains that term.
 
 | | Personal plan (Pro, Max) | Team seat |
 |---|---|---|
@@ -153,11 +156,11 @@ In cl_audit, a **profile** is one Claude setup: a Claude Code folder with its si
 
 No, not under Anthropic's terms. Its Consumer Terms, as read on 20 November 2026, say you may not share your account login information or credentials with anyone else, and may not make your account available to anyone else. A Team seat follows the same idea: Anthropic's Team page says each seat is for one named individual, and limits can't be transferred or shared between members.
 
-There is no family plan to fall back on. Anthropic's pricing page lists Free, Pro, Max, Ultra, Team and Enterprise, and says nothing about a family or household plan. Two people who both want Claude each have their own plan, or seats on a Team plan, which the pricing page describes as for teams of 2 to 150. One person using one account on several devices is a different case, and Anthropic's login page describes it. cl_audit doesn't change any of this: a profile belongs to one seat, and one profile is one person's setup.
+There is no family plan to fall back on. Anthropic's pricing page lists Free, Pro, Max, Ultra, Team and Enterprise, and says nothing about a family or household plan. Two people who both want Claude each have their own plan, or seats on a Team plan, which the pricing page describes as for teams of 2 to 150. One person using one account on several devices is a different case, and Anthropic's login page describes it. cl_audit doesn't change any of this: it shows the accounts of the person using the Mac, and an account belongs to one profile.
 
 ## Two Claude accounts on one machine, open at once
 
-To run two Claude accounts on one machine at once, the account menu alone won't do. Anthropic's account menu switches: one account is active and the other waits. So the menu alone won't let you run a Claude Team and personal account at the same time. That's what [anthropics/claude-code#18435](https://github.com/anthropics/claude-code/issues/18435) is about. It asks for multiple accounts in the Claude app, and several commenters want both open at once, not only switchable.
+Anthropic's account menu switches: one account is active and the other waits. So the menu alone won't run two Claude accounts on one machine at once, a Claude Team and personal account included. That's what [anthropics/claude-code#18435](https://github.com/anthropics/claude-code/issues/18435) is about. It asks for multiple accounts in the Claude app, and several commenters want both open at once, not only switchable.
 
 ![cl_audit launcher with three Claude profiles and limits](/img/guides/launcher-profiles.webp "A work and a personal profile side by side in cl_audit's launcher, each with its own limits. Sample data.")
 
@@ -186,7 +189,7 @@ You need a Mac with Apple silicon and macOS 13 or later, and Claude Code signed 
 
 ## Keeping a Claude Team and personal account apart
 
-In the GitHub request above, separation comes up far more than capacity. On 20 November 2026 it was still open, with more than 1,000 thumbs-up reactions on the original post; it was opened on 15 January. When we ran a rough keyword count over the comments on 2 November, "work" and "personal" turned up in far more of them than usage or limits did. We haven't recounted since, so we give no figures. A keyword count isn't a survey of who uses Claude.
+In the GitHub request above, separation comes up far more than capacity. Opened on 15 January, it was still open on 20 November 2026, with more than 1,000 thumbs-up reactions. On 2 November, when it had 229 comments, we ran a rough keyword count over all of them: 103 contained the word "work" (also a verb, so that number runs high), 88 "personal" and 73 both. Only 18 mentioned usage or limits. That's a rough count of words in comments, not a survey of who uses Claude.
 
 Commenters give their reasons. One wants a hard wall between work and personal for billing, privacy and legal reasons. Another wants separate folder permissions for each account, so personal files and confidential work files never meet. The original post describes using the Claude app for the work account and claude.ai in a browser for the personal one.
 
