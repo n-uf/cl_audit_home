@@ -5,7 +5,7 @@ h1: "How to check Claude usage on a Mac"
 mainKeyword: "how to check claude usage"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-12
+updated: 2026-11-20
 author: n-uf
 takeaways:
   - "On a Pro, Max, Ultra, Team or seat-based Enterprise plan, Settings > Usage shows the weekly limits and, except on a verified Ultra account, the current 5-hour session, with reset times."
@@ -157,7 +157,7 @@ Status lines run in Terminal. cl_audit's README notes that the Claude app's Code
 
 Go to claude.ai/settings/usage. It's the same page as in the app, and it shows only the account you're signed in to, so sign in to the right one first.
 
-Team and Enterprise owners have a second view. The Claude Code docs describe a spend report in organization analytics and, for usage credits, **Organization settings > Usage**. Those are for admins and cover spend and adoption, not your seat's 5-hour bar. Members see their own seat in Settings > Usage like everyone else.
+Team and Enterprise owners have a second view. The Claude Code docs describe a spend report in organization analytics and, for usage credits, **Organization settings > Usage**. Those are for admins and cover spend and adoption, not your seat's 5-hour bar. Members see their own seat in Settings > Usage like everyone else, and a personal plan on the same email has its own limits, as the guide to [Team and personal Claude accounts](/blog/claude-team-and-personal-account/) explains.
 
 ## With a usage tracker in the Dock or the menu bar
 
