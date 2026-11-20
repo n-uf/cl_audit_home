@@ -141,7 +141,7 @@ A few things can soften the stop, according to Anthropic's pages:
 
 Not every "limiting" message is your quota. "Server is temporarily limiting requests (not your usage limit)" is a server-side throttle that Claude Code retries by itself, and a "Request rejected (429)" is the rate limit set for your API key or cloud project, not your subscription. A context or auto-compact warning isn't a usage limit either: it means the conversation is close to the context window.
 
-## What are the Claude Code limits per developer on a team?
+## Claude Code on a Team seat or the Console
 
 On a Team or Enterprise seat, each member draws on their own seat allowance. Limits are per member: one developer reaching theirs doesn't stop the others, and usage can't be moved between members. Past it, usage credits carry on if an admin turned them on, with spend limits for the organization, a group or one member. On the Console, an admin sets spend limits per workspace, and Anthropic's workspaces page says the automatically created Claude Code workspace is the only one with per-user monthly spend limits.
 
@@ -149,4 +149,4 @@ The per-user token and request figures Anthropic recommends when you ask for hig
 
 ## Keeping an eye on it
 
-The honest summary is that Anthropic gives you the plan, the two windows and the messages, and leaves the numbers to Settings ▸ Usage and `/usage`. cl_audit doesn't change any limit and doesn't raise one; it reads the same figures from Anthropic and puts them where you'll see them, for each of your accounts. It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. If you want to try it, [install cl_audit](/install/), or look at the [demo dashboard](/dashboard/) first.
+Anthropic gives you the plan, the two windows and the messages, and leaves the numbers to Settings ▸ Usage and `/usage`. cl_audit doesn't change any limit and doesn't raise one; it reads the same figures from Anthropic and puts them where you'll see them, for each of your accounts. It needs a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. If you want to try it, [install cl_audit](/install/), or look at the [demo dashboard](/dashboard/) first.
