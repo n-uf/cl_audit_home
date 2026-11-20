@@ -180,12 +180,12 @@ const jsonLd = [orgNode, {
       <div class="trust-head">
         <!-- a two-part display window: LOGIN dim, SECURITY lit (sketch V4) -->
         <span class="disp trust-disp" aria-hidden="true"><em>Login</em>Security</span>
-        <h2 id="trust-title" class="trust-title">How does cl_audit handle your Claude login?</h2>
+        <h2 id="trust-title" class="trust-title">How does cl_audit handle your Claude sign-in?</h2>
         <span class="trust-note">Source-available · runs locally · no account or server</span>
         <ExtLink class="trust-more" href={`${repo}#security-how-cl_audit-handles-the-claude-login`}>Details ›</ExtLink>
       </div>
       <!-- the tabs as on the production site: a dark track, plain-text tabs, one raised highlight that slides -->
-      <div class="seg" role="tablist" aria-label="How cl_audit handles the Claude login">
+      <div class="seg" role="tablist" aria-label="How cl_audit handles the Claude sign-in">
         <span class="seg-ind" aria-hidden="true"></span>
         {trustFacts.map((f, i) => <button type="button" class="stab" role="tab" id={`tf-tab-${i}`} aria-controls="tf-pane" aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-i={i}>{f.tab}</button>)}
       </div>
