@@ -279,7 +279,7 @@ A switch to ben@example.com has moved Claude Code in Terminal and waits for the 
 
 **Cancel** stops the waiting. Sessions that already moved stay where they went until you undo the move. **Undo the move** puts them back as long as Claude Code isn't on the new account yet. Once the switch has finished there's no undo: the way back is a switch the other way, and the Reached screen offers **Switch back…**, whose hover text says "Switch back to ultra-1@example.com".
 
-A switch that stopped half way, now or in 26.11.16 and earlier, shows on the profile's Sessions card: how many sessions sit under which account, with two choices: **Undo it** puts the sessions back, and **Leave it as it is** keeps them where they are. Its backup isn't pruned meanwhile.
+A switch that stopped half way, now or in 26.11.16 and earlier, shows on the profile's Sessions card: how many sessions sit under which account. **Undo it** puts them back, and **Leave it as it is** keeps them where they are. Its backup isn't pruned meanwhile.
 
 ## Folders from before
 
