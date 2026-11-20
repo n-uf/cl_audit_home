@@ -19,7 +19,7 @@ faq:
   - q: "What is the Claude weekly limit?"
     a: "It's a second cap that applies across all models and resets once a week, at a fixed time assigned to your account. Max and Ultra also have a separate weekly limit for Fable. Settings ▸ Usage shows your next reset time, and starting late in the week doesn't move it."
   - q: "Is there a daily Claude limit?"
-    a: "No. Anthropic's help pages describe a 5-hour session limit and a weekly limit, not a daily one; its usage-limits page never says daily. It adds that it may apply weekly or monthly caps, and usage credits have their own monthly spend limit. Settings ▸ Usage shows your current session and next weekly reset."
+    a: "No. Anthropic's usage-limits page and plan pages describe a 5-hour session limit and a weekly limit, and none of them mentions a daily one. The usage-limits page adds that Anthropic may also apply weekly or monthly caps, and usage credits have a monthly spend limit of their own. Settings ▸ Usage shows your current session and next weekly reset."
   - q: "How many tokens do I get per 5 hours on Claude Pro?"
     a: "Anthropic gives no token number, and no message count either. Its Pro page says the number of messages varies with message length, attached files, conversation length and the model or feature you use, and its Max page gives only a multiple of Pro. A figure quoted elsewhere isn't Anthropic's. Settings ▸ Usage shows how much you've used."
   - q: "Is the Claude Code limit per developer or shared by the team?"
@@ -168,7 +168,7 @@ On Team plans, limits are per member, not shared by the team. Anthropic's Claude
 
 ### Claude Code limits per developer, on Team and the API
 
-Which Claude Code limit a developer meets depends on how they sign in. This is from Anthropic's Claude Code costs page, read again on 20 November 2026. {{live:/blog/claude-code-usage-limits/}}Plan by plan, with what happens at the limit, it is in [Claude Code usage limits](/blog/claude-code-usage-limits/).{{/live}}
+Which Claude Code limit a developer meets depends on how they sign in. This is from Anthropic's Claude Code costs page, read again on 20 November 2026. {{live:/blog/claude-code-usage-limits/}}[Claude Code usage limits](/blog/claude-code-usage-limits/) goes through it plan by plan, with what happens at the limit.{{/live}}
 
 - **On a Team or Enterprise seat,** each member's Claude Code usage draws from their own seat allowance: the five-hour and weekly windows, shared with Claude chat and Cowork and sized by seat tier, Standard or Premium. It isn't a team pool. Past it, [usage credits](/blog/claude-usage-credits/) carry on if an admin turned them on, with spend limits for the organization, a group or one member.
 - **On the Claude Console (API),** there's no seat allowance. Usage is billed per token to the organization, and an admin can set spend limits per workspace. Rate limits belong to the organization, not to each developer, but Anthropic's workspaces page says the automatically created Claude Code workspace is the only one that supports per-user monthly spend limits.
@@ -185,6 +185,7 @@ For the API case Anthropic gives rough token-per-minute and request-per-minute f
 | 500+ users | 10k-15k | 0.25-0.35 |
 
 Anthropic says these limits apply to the whole organization, so one developer can briefly use more than an even share while the others are idle.
+
 A developer who sees "You've hit your session limit" or "You've hit your weekly limit" has reached a seat window. It covers all models, so switching with `/model` doesn't help.
 
 ## How to see your usage
