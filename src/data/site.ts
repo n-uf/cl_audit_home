@@ -4,14 +4,14 @@ export const site = "https://cl-audit.n-uf.com";
 
 // The current cl_audit release. Update on each cl_audit release (version from the app's VERSION file,
 // date from its CHANGELOG.md); the footer, the Install page and the structured data read these.
-export const version = "26.11.54";
-export const released = "2026-11-15";
-export const build = "1050";   // the release's build number (About shows "26.11.54 · build 1050")
+export const version = "26.11.55";
+export const released = "2026-11-19";
+export const build = "1069";   // the release's build number (About shows "26.11.55 · build 1069")
 /** SHA-256 of this release's cl_audit.dmg and cl_audit.zip (GitHub's asset digests; the hub's release note gives the
  *  same). Every release ships both: the same app with the same code signature. */
 export const sha256 = {
-  dmg: "f444be10560b45d302d49fd9a1e2a88caba7e9bec6d8c1119121f7748f7c85ae",
-  zip: "087f916d6d046aa6b657dceb0ee372e9e51a9ab02b76b3e407c9971163632b26",
+  dmg: "65a0a14bcc2f0da81e662ebd88dbb6df8db52ce5a7f73e481210956fda4c98d1",
+  zip: "4deeac10ab0f96a21f413b583afe7d65fc2cce8a07025e028863b5c82ac9bd22",
 };
 export const changelog = `${repo}/blob/main/CHANGELOG.md`;
 /** The release stage the site shows next to the version (Overview display and At a glance, Install). Set to ""
@@ -26,7 +26,7 @@ export const requires = "Apple silicon · macOS 13 or later";
 /** The Claude versions this release was checked with (the app's release notes list them too). cl_audit relies on
  *  how Claude Code saves its login and on Anthropic's usage figures, neither a public interface, so newer Claude
  *  versions can change them. Update with each release. */
-export const checkedWith = { claudeCode: "2.1.318", claudeApp: "5.11492.5" };
+export const checkedWith = { claudeCode: "2.1.326", claudeApp: "6.6395.1" };
 export const driftNote = "cl_audit relies on how Claude Code saves its login and on Anthropic's usage figures, which aren't public interfaces. A newer Claude version can change them; if something stops working, update cl_audit.";
 
 /** "2026-10-24" -> "24 Oct 2026". */
