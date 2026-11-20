@@ -25,7 +25,7 @@ faq:
   - q: "What happens to the Claude app when I switch?"
     a: "The profile's Claude window closes for the move, and cl_audit opens it again once the switch is settled. cl_audit never signs it in or out: you sign it in to the new account yourself. Until then, the account box shows the app's account, says the switch waits for the app's sign-in, and shows no numbers."
   - q: "Can I undo a switch?"
-    a: "Until Claude Code is on the new account, Undo the move puts back what was moved, though it may not bring everything back. After that, the way back is a switch the other way. A switch that stopped half way offers Undo it on the profile's Sessions card."
+    a: "Until Claude Code is on the new account, Undo the move puts back what moved, though maybe not all. After that, the way back is a switch the other way. A switch that stopped half way shows two choices on the Sessions card: Undo it puts the sessions back, and Leave it as it is keeps them where they are."
 sources:
   - title: "cl_audit CHANGELOG, 26.11.52"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.52/CHANGELOG.md"
@@ -279,7 +279,7 @@ A switch to ben@example.com has moved Claude Code in Terminal and waits for the 
 
 **Cancel** stops the waiting. Sessions that already moved stay where they went until you undo the move. **Undo the move** puts them back as long as Claude Code isn't on the new account yet. Once the switch has finished there's no undo: the way back is a switch the other way, and the Reached screen offers **Switch back…**, whose hover text says "Switch back to ultra-1@example.com".
 
-A switch that stopped half way, now or in 26.11.16 and earlier, shows on the profile's Sessions card: how many sessions sit under which account, with **Undo it**. Its backup isn't pruned meanwhile.
+A switch that stopped half way, now or in 26.11.16 and earlier, shows on the profile's Sessions card: how many sessions sit under which account, with two choices: **Undo it** puts the sessions back, and **Leave it as it is** keeps them where they are. Its backup isn't pruned meanwhile.
 
 ## Folders from before
 
