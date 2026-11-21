@@ -5,7 +5,7 @@ h1: "A Claude usage menu bar icon for each profile"
 mainKeyword: "claude usage menu bar"
 kind: use-case
 published: 2026-11-05
-updated: 2026-11-15
+updated: 2026-11-21
 author: n-uf
 order: 5
 takeaways:
@@ -85,6 +85,11 @@ sources:
     checked: 2026-11-12
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
+  - title: "cl_audit CHANGELOG, 26.11.76"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.76/CHANGELOG.md"
+    checked: 2026-11-21
+    supports: "26.11.76: the Dock draws each profile's usage itself, so a Dock icon has no running dot and no ⌘-Tab entry until you click it; if the Dock can't draw it (Dock Tiles turned off under Login Items & Extensions in System Settings, say), the Dock icon app runs as before, about two minutes after cl_audit starts."
+    quote: "the Dock now draws each profile's usage itself"
 related:
   - /
   - /use-cases/multiple-claude-accounts/
@@ -175,7 +180,7 @@ Give each one a different label or colour. Two identical rings are hard to tell 
 
 ## With or without Dock icons
 
-The agent draws the menu bar icons, not the Dock icon apps. So a profile can have a menu bar icon and no Dock icon, a Dock icon and no menu bar icon, or both. Quitting a Dock icon never stops the usage or the alerts.
+The agent draws the menu bar icons. The Dock draws the Dock icons, so a Dock icon has no running dot and no ⌘-Tab entry until you click it. A profile can have a menu bar icon and no Dock icon, a Dock icon and no menu bar icon, or both. Quitting a Dock icon never stops the usage or the alerts. If the Dock can't draw a Dock icon (Dock Tiles turned off under System Settings ▸ Login Items & Extensions, say), its Dock icon app runs as before, about two minutes after cl_audit starts.
 
 You can also go menu bar only. Turn Usage in the Dock off for a profile (Settings ▸ the profile ▸ Dock icon) and its Dock icon quits and is unpinned, which restarts the Dock once. The profile keeps its usage, its alerts and its menu bar icon.
 
