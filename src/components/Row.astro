@@ -12,7 +12,7 @@ const full = acc && acc.five >= 100 ? countdownWords(acc.fiveLeftMin) : null;
 <div class:list={["row", { sel: r.sel }]} data-open-desktop={r.id} role={r.id ? "button" : undefined} tabindex={r.id ? 0 : undefined}>
   <AccIcon id={r.id!} src={r.icon} size={42} loading="lazy" />
   <div class="meta">
-    <div class="nm"><span class="dot" style={`background:${r.color};width:7px;height:7px`} />{r.name}<span class="badge" data-win-badge={r.id} hidden={!r.open}>open</span>{full && <span class="lfull" title="5-hour full">{full}</span>}</div>
+    <div class="nm"><i class="pled" style={`--c:${r.color}`} aria-hidden="true"></i>{r.name}<span class="badge" data-win-badge={r.id} hidden={!r.open}>open</span>{full && <span class="lfull" title="5-hour full">{full}</span>}</div>
     {[["5h", r.five], ["wk", r.week]].map(([tag, p]) => (
       <div class="mini"><span class="tag">{tag}</span><span class="track"><i style={`width:${p}%;background:${levelColor(p as number)};box-shadow:0 0 6px ${levelColor(p as number)}`} /></span><span class="p" style={`color:${levelColor(p as number)}`}>{p}%</span></div>
     ))}

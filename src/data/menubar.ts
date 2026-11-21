@@ -75,7 +75,8 @@ export function menuHTML(id: AccountId, name: string) {
       `<div class="mbm-subm" hidden><div class="mbm-it cur"><span class="ck">✓</span>${shortName(a.email)}<span class="r">week ${a.week}%</span></div>` +
       sb.map((s) => sw(s, `<span class="ck"></span>${shortName(s.email)}…`)).join("") + "</div><hr>"
     : "";
-  return `<div class="mbm-head"><i style="background:${a.hex}"></i><b>Claude ${name}</b><span>${a.plan}</span></div>` +
+  // the profile's light before its name (26.11.81, ProfileLED), in its colour as set in Settings
+  return `<div class="mbm-head"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b><span>${a.plan}</span></div>` +
     (sb.length ? `<div class="mbm-acc"><i></i>${shortName(a.email)}</div>` : "") +
     (a.five >= 100 ? `<div class="mbm-sub hot">5-hour full · in ${countdownWords(a.fiveLeftMin)}</div>` : "") +
     row("5-hour", a.five, a.five >= 100 ? "full" : `resets ${when(a.fiveLeftMin)}`, a.five >= 100) +

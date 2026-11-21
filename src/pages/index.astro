@@ -239,7 +239,7 @@ const jsonLd = [orgNode, {
         <div class="mcards">
           {accounts.map((a) => (
             <div class="mcard">
-              <div class="mh"><span class="dot" style={`background:${a.color};width:7px;height:7px`}></span><b>{a.name}</b></div>
+              <div class="mh"><i class="pled" style={`--c:${a.color}`} aria-hidden="true"></i><b>{a.name}</b></div>
               <Fragment set:html={cardLimitsHTML(a.id, "segments")} />
             </div>
           ))}
