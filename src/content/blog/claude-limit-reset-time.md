@@ -166,6 +166,6 @@ Those carry on your work. They don't reach you while you're away from the screen
 
 For that, cl_audit's background agent sends macOS notifications. In each profile's settings, under Alerts, you pick a level to be notified at, and Notify when back (on by default) sends one more alert when a full limit resets, such as "Claude Work is back · The 5-hour limit reset at 15:28". If the other limit is still full, it waits for that one. You get one alert per limit and reset, and at the reset the agent reads the profile again at once, so the card and the Dock icon update straight away.
 
-Setting those up is covered on the page about [getting an alert before a limit is full](/use-cases/claude-usage-limit-alerts/). They run for every profile, which matters if you switch between a personal plan and a work seat during the day.
+Setting those up is covered on the page about [getting an alert before a limit is full](/use-cases/claude-usage-limit-alerts/). They run for every profile, which matters if you switch between a [personal plan and a work seat](/blog/claude-team-and-personal-account/) during the day.
 
 With one Claude account, Settings ▸ Usage may be all you need (background in [the 5-hour and weekly limits explained](/blog/claude-usage-limits/)). With several, you can [track Claude usage on your Mac](/) with every reset time in one place.
