@@ -11,7 +11,7 @@ author: n-uf
 order: 6
 takeaways:
   - "A cl_audit profile is one Claude Code folder, signed in to one account at a time: the one in use. Your other accounts wait on standby, signed out, and show no limits."
-  - "A switch is Claude Code's own sign-in again on the same folder. cl_audit checks which account came back. It never copies or moves a sign-in, and a standby account has none kept."
+  - "A switch is Claude Code's own sign-in again on the same folder, unless Claude Code is already on that account. cl_audit checks which account came back. It never copies or moves a sign-in, and a standby account has none kept."
   - "Before the sign-in, the profile's Claude window closes, a backup is made, and the window's Code sessions and scheduled tasks move to the new account, with a receipt and Undo the move."
   - "You sign the Claude app in to the new account yourself. cl_audit doesn't pool limits, and it never switches by itself."
   - "One account needs none of this. Two accounts open at once are two profiles instead."
@@ -30,7 +30,7 @@ sources:
   - title: "cl_audit CHANGELOG, 26.11.76"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.76/CHANGELOG.md"
     checked: 2026-11-21
-    supports: "26.11.76: a switch settles the scheduled tasks before any session moves; when they can't move (the new account got a differing copy since you pressed Switch, its tasks file can't be written, or the old account's file changed), they stay together with their sessions, the other sessions move, and the switch goes on to the sign-in and says why the tasks stayed."
+    supports: "26.11.76: a switch settles the scheduled tasks before any session moves; when they can't move (the new account got a differing copy since you pressed Switch, its tasks file can't be written, or the old account's file changed), they stay together with their sessions, the other sessions move, and the switch goes on to the sign-in and says why the tasks stayed; in Settings ▸ Accounts, the row of the account Claude Code in Terminal is signed in to also selects when that account isn't on the standby list, and Switch account then moves the sessions to it and opens no sign-in."
     quote: "A switch now settles the scheduled tasks before any session moves."
   - title: "cl_audit CHANGELOG, 26.11.61"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.61/CHANGELOG.md"
@@ -183,7 +183,7 @@ You find them in Settings ▸ Main ▸ Claude Code ▸ **Accounts**. The account
 
 ![Accounts in a profile's Claude Code card](/img/guides/accounts-card.webp "The site's demo, with its own sample profile Work and team accounts: one in use, two on standby, and two folders from before.")
 
-The IN USE box shows the account the profile's Claude app is signed in to, or Claude Code's while the app is signed out or can't be read. Every screen shows that same account. The numbers always come through Claude Code's sign-in, so when Claude Code is on another account than the app, they aren't shown as the profile's. The profile's dashboard card then shows no numbers. In red it says "Terminal is signed in to ben@example.com" and "Sign in as ann@example.com to read Main's usage.", with a **Sign in…** key first in the row. Settings ▸ Accounts still shows Claude Code's own numbers for the account Terminal is on.
+The IN USE box shows the account the profile's Claude app is signed in to, or Claude Code's while the app is signed out or can't be read. Every screen shows that same account. The numbers always come through Claude Code's sign-in, so when Claude Code is on another account than the app, they aren't shown as the profile's. The profile's dashboard card then shows no numbers. In red it says "Terminal is signed in to ben@example.com" and "Sign in as ann@example.com to read Main's usage.", with a **Sign in…** key first in the row. Settings ▸ Accounts still shows Claude Code's own numbers for the account Terminal is on. Its row also selects when that account isn't on the standby list (Claude Code was switched to it elsewhere, for example in cl_quick), and Switch account then moves the sessions to it with no sign-in.
 
 ## Where the accounts come from
 
