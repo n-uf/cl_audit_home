@@ -23,7 +23,13 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   const windowWords = `${name}'s own window, opened from its Dock icon`;
   const list = offerOrder(standby.work);
   let to = list[0].email, phase: Phase = "ready", fail: "window" | "half" = "window", shown: Case | "" = "", timer = 0, until = "";
-  const T = () => shortName(to), target = () => list.find((s) => s.email === to)!;
+  // The finish line (26.11.76): Claude Code was switched to an account the profile doesn't list (in cl_quick, say) while
+  // the Claude app stays on the account in use. Switch account then closes the window, moves the sessions from the app's
+  // account and opens no sign-in (Claude Code is on it already); the window opens again with only its own sign-in left.
+  // A finished move of this kind has no Undo (the backup made first keeps a copy). SwitchPage.swift's finishLine.
+  let fin: Standby | null = null;
+  const isFin = () => !!fin && to === fin.email;
+  const T = () => shortName(to), target = () => (isFin() ? fin! : list.find((s) => s.email === to)!);
   /** The address the switch is moving to, for a sentence: masked and blurred while Show emails is off (this page is part of Settings). */
   const E = () => emailHTML(to);
   /** Switch back…'s hover text: the address it goes back to, masked while Show emails is off (redraw keeps it current). */
@@ -57,7 +63,11 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   const nowBox = (line = "") => inUse(work.email, work.plan, `<div class="abox-limits">${limitsHTML("work", loadCardStyle(), false)}</div>${line ? note(line) : ""}`);
   /** A standby account: address, plan and when it was last in use. No limits: it isn't read. */
   const sbBox = (s: Standby, selected: boolean, badge: string, attr = "") =>
-    `<div class="abox unlit${selected ? " sel" : ""}"${attr}><div class="abox-head">${lamp(false)}<span class="abox-t"><b>${emailHTML(s.email)}</b><small>${s.plan}</small></span>${badge}</div>${note(`Last in use ${s.lastInUse}.`)}</div>`;
+    `<div class="abox unlit${selected ? " sel" : ""}"${attr}><div class="abox-head">${lamp(false)}<span class="abox-t"><b>${emailHTML(s.email)}</b><small>${s.plan}</small></span>${badge}</div>${note(s.lastInUse ? `Last in use ${s.lastInUse}.` : `Not in use on ${name} yet.`)}</div>`;   // words: SEO (SwitchPage.boxWords)
+  /** In the split (the finish line's start): the Claude app's account in use, its numbers not shown as the profile's, the
+   *  line naming Claude Code's account and what gives the numbers (AccountResolver's line, SplitUsage.numbersHint). */
+  const splitNowBox = () => inUse(work.email, work.plan,
+    note(`Usage: Claude Code on ${emailHTML(fin!.email)}`) + note(`Sign Claude Code in Terminal in to ${emailHTML(work.email)} to see its numbers.`));   // words: SEO (the app's)
   const K = (a: string, t: string) => `<button type="button" class="key k" ${a}>${t}</button>`;
   const GO = (a: string, t: string) => `<button type="button" class="pill small tint t-green" ${a}>${t}</button>`;
   const STOP = (a: string, t: string) => `<button type="button" class="pill small tint t-red" ${a}>${t}</button>`;
@@ -85,7 +95,8 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       case "moving": case "undoing": return bar(`<span class="b">Switching</span> <em>· moving sessions</em>`);
       case "waiting": return bar(`<span class="b">Switching</span> <em>· waiting · until ${until}</em>`, STOP("data-sw-cancel", "Cancel"));
       // Claude Code is on the new account; the Claude app (the account in use follows it) is still on the old one
-      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, K(`data-sw-backswitch title="${backSwitchTitle()}"`, "Switch back…"), GO(backTitle, "‹ Back"));   // words: SEO
+      // (the finish line came from the Claude app's own account, which isn't on standby: no Switch back…, as the app's cameFrom)
+      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, ...(isFin() ? [] : [K(`data-sw-backswitch title="${backSwitchTitle()}"`, "Switch back…")]), GO(backTitle, "‹ Back"));   // words: SEO
       case "other": return bar(`<span class="a">Signed in as ${O()}</span> <em>· not ${T()}</em>`, GO("data-sw-retry", `Sign in as ${T()} again`), K("data-sw-undo", "Undo the move"));
       case "timedOut": return bar(`<span class="a">No sign-in</span> <em>· sessions on ${T()}</em>`, GO("data-sw-retry", "Try again"), K("data-sw-undo", "Undo the move"), back);
       case "failed": return fail === "half"
@@ -100,12 +111,14 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     const wanted = (badge: string) => `<div class="acc-pick">${sbBox(target(), true, badge)}</div>`;
     switch (phase) {
       case "ready": {
-        const pick = `<div class="acc-pick" role="radiogroup" aria-label="Switch to">${list.map((s) => sbBox(s, s.email === to, s.email === to ? B.to : B.sb,
+        // the finish line's account isn't on the standby list: it comes first, then the standby ones (the app's pickList)
+        const all = fin ? [fin, ...list] : list;
+        const pick = `<div class="acc-pick" role="radiogroup" aria-label="Switch to">${all.map((s) => sbBox(s, s.email === to, s.email === to ? B.to : B.sb,
           ` data-sw-to="${s.email}" role="radio" tabindex="0" aria-checked="${s.email === to}" aria-label="${emailText(s.email)}"`)).join("")}</div>`;
-        return row("Now", nowBox()) + row("To", pick) + (list.length > 1 ? '<p class="g-note sub pick-note">The one offered first is on top. Click another to switch to it instead.</p>' : "");
+        return row("Now", fin ? splitNowBox() : nowBox()) + row("To", pick) + (all.length > 1 ? '<p class="g-note sub pick-note">The one offered first is on top. Click another to switch to it instead.</p>' : "");
       }
       // the lit "Switching to" badge only while it is waited for ("Next"), as the app's `going`
-      case "closing": case "moving": case "undoing": return row("Now", nowBox()) + row("Wanted", wanted(B.sb));
+      case "closing": case "moving": case "undoing": return row("Now", fin ? splitNowBox() : nowBox()) + row("Wanted", wanted(B.sb));
       case "waiting": return row("Now", nowBox()) + row("Next", wanted(B.to));
       // the Claude app is still on the account in use, and Claude Code is on the new one (cl_audit 26.11.25, AccountResolver's
       // SplitUsage): nothing shows Claude Code's numbers as the profile's, so the box says the switch waits for the app's
@@ -141,7 +154,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       default: return ["What changes", [
         srow("Claude Code", `Terminal and editors using ${dir} move to ${E()}, sessions running now included; the Claude app keeps its own sign-in. Finish the sign-in in Terminal and the browser as that account.`),
         srow("Sessions", `${SES} move from ${from} to ${T()}, inside ${name}'s folder, with a backup made first. A session Claude Code is running stays with ${from} until a later switch. Transcripts stay in ${dir}.`),
-        srow("Claude window", `It closes for the move (${windowWords}). Sign it in to ${T()} yourself when you open it again: cl_audit never signs it in or out.`),
+        srow("Claude window", `It closes for the move (${windowWords}) and opens again when the switch is done. Sign it in to ${T()} yourself there: cl_audit never signs it in or out.`),   // words: SEO (the app's, 26.11.76)
         stays,
         line(`${from} stays on ${name} as a standby account: nothing read, switch back any time.`),
       ].join("")];
@@ -169,7 +182,15 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     : phase === "other" ? chk("a", `Claude Code · ${O()} · not ${T()}`)
     : phase === "waiting" ? em(`Claude Code · ${from} now`) : "";
   const stepsHTML = () => {
-    const rows: [string, string][] = [
+    // the finish line's steps (SwitchPage.swift, finishLine): the window opens again after the move, no sign-in opens, and a
+    // finished move stays (no Undo; the backup keeps a copy)
+    const rows: [string, string][] = isFin() ? [
+      [`${name}'s Claude window closes`, "Only that window, by its own quit; it opens again once the sessions have moved."],
+      [`Its sessions move to ${T()}`, `A backup first, then ${SES}, each checked. Undo only if the move stops part way: Claude Code is on ${T()} already, so a finished move stays (the backup keeps a copy).`],
+      [`Claude Code is on ${T()} already`, `It signed in elsewhere, so no sign-in opens for ${dir}.`],
+      [`Sign the Claude app in to ${T()}`, `In ${name}'s Claude window, once it opens again: its sessions are there.`],
+      ["cl_audit checks the account", "At once: Claude Code is on it already."],
+    ] : [   // words: SEO (the app's, both lists)
       [`${name}'s Claude window closes`, "Only that window, by its own quit; it stays closed until the sign-in ends."],
       [`Its sessions move to ${T()}`, `A backup first, then ${SES}, each checked; a receipt keeps Undo possible.`],
       ["Claude Code's sign-in opens in Terminal", `For ${dir}, with ${E()} filled in.`],
@@ -237,7 +258,8 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     q("[data-sw-head]").textContent = title();
     const t = top(), runEl = q("[data-sw-run]");
     runEl.hidden = !t; runEl.innerHTML = t;
-    q("[data-sw-demo]").hidden = running();
+    // (the finish line opens no sign-in, so the sign-in's cases don't apply to it)
+    q("[data-sw-demo]").hidden = running() || isFin();
     page.querySelectorAll<HTMLElement>("[data-sw-fail]").forEach((b) => b.classList.toggle("on", b.dataset.swFail === shown));
     q("[data-sw-acc-flow]").innerHTML = accountsHTML();
     const [ct, ch] = changes();
@@ -258,7 +280,8 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     clearTimeout(timer); phase = p;
     if (p === "waiting") until = new Date(Date.now() + 10 * 60000).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
     draw();
-    const nx = NEXT[phase];
+    // the finish line: once the sessions have moved it is reached at once (Claude Code is on the account already)
+    const nx: [Phase, number] | undefined = phase === "moving" && isFin() ? ["reached", 1800] : NEXT[phase];
     if (nx) timer = window.setTimeout(() => go(nx[0]), nx[1]);
   };
   /** A "what can go wrong" key: the page as the app shows it after that case; the same key again goes back to the start. */
@@ -297,9 +320,14 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   return {
     /** Show emails changed: Switch back…'s hover title shows the address as it reads now. */
     refreshTitles() { page.querySelectorAll<HTMLElement>("[data-sw-backswitch]").forEach((b) => (b.title = backSwitchTitle())); },
-    /** Opens the page with an account picked (a standby address, or the one a full limit offers first). */
-    open(pickEmail?: string) {
-      if (!running()) { phase = "ready"; shown = ""; to = pickEmail && list.some((s) => s.email === pickEmail) ? pickEmail : list[0].email; }
+    /** Opens the page with an account picked (a standby address, or the one a full limit offers first); `finish`: Claude
+     *  Code's own account, not on the standby list, as the target (the finish line). */
+    open(pickEmail?: string, finish?: { email: string; plan: string }) {
+      if (!running()) {
+        phase = "ready"; shown = "";
+        fin = finish ? { email: finish.email, plan: finish.plan, lastInUse: "", lastWeek: 0 } : null;
+        to = fin ? fin.email : pickEmail && list.some((s) => s.email === pickEmail) ? pickEmail : list[0].email;
+      }
       if (NEXT[phase]) go(phase); else draw();   // a run paused by closing the page goes on
     },
     /** Takes the tile's display away (the page closed): it shows only while the page is open; a run pauses. */

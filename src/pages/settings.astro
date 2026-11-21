@@ -90,9 +90,9 @@ const jsonLd = [
       tile: () => root.querySelector<HTMLElement>('.strip [data-select-acc="work"]'),
     });
     // "Switch account" (Settings, the dashboard card, the menus): the Switch page with that account picked
-    (window as any).clOpenSwitch = (id: string, email?: string) => {
+    (window as any).clOpenSwitch = (id: string, email?: string, finish?: { email: string; plan: string }) => {
       if (id !== "work") return;
-      general = false; acc = "work"; page = "switch"; show(); swi.open(email);
+      general = false; acc = "work"; page = "switch"; show(); swi.open(email, finish);
     };
     // "Profile settings…" on a dashboard card lands here with that profile selected
     try {
@@ -285,9 +285,14 @@ const jsonLd = [
     // The split (the "Demo: other states" key, 26.11.75): Claude Code in Terminal signed in to the profile's first offered
     // standby account while the Claude app stays on the account in use. That account leaves the standby list for its own
     // row under the IN USE box (AccountSettings.codeBox), with its numbers; a click selects it like every standby row.
-    const splitOn = new Set<AccountId>();
+    // "Switched elsewhere" (26.11.76): Claude Code was switched to an account that isn't on the standby list (in cl_quick,
+    // say). Its row selects like a standby row too, and its Switch account is the finish line (EXTRA: sample data only).
+    type SplitKind = "standby" | "elsewhere";
+    const splitOn = new Map<AccountId, SplitKind>();
+    const EXTRA: Standby = { email: "team-4@work.example", plan: "Team", lastInUse: "", lastWeek: 0 };
     const listed = (): Standby[] => offerOrder(standby[acc]).filter((s) => !removedSb.has(`${acc}:${s.email}`));
-    const codeAcc = (): Standby | undefined => (splitOn.has(acc) ? listed()[0] : undefined);
+    const codeAcc = (): Standby | undefined =>
+      splitOn.get(acc) === "elsewhere" ? EXTRA : splitOn.get(acc) === "standby" ? listed()[0] : undefined;
     const boxes = (): Standby[] => listed().filter((s) => s !== codeAcc());
     const pickable = (): Standby[] => [...(codeAcc() ? [codeAcc()!] : []), ...boxes()];
     // Laid out like a display: the lamp and Standby level with the address, the details in full on a second line.
@@ -322,10 +327,12 @@ const jsonLd = [
       $("[data-mk-term]")!.classList.toggle("off", !!code);
       $("[data-abox-badge]")!.className = code ? "r" : "g";
       $("[data-abox-inuse]")!.classList.toggle("alert", !!code);
-      const demo = $("[data-split-demo]")!, key = $("[data-split-key]")!;
-      demo.hidden = !listed().length;
-      key.setAttribute("aria-pressed", String(!!code));
-      key.classList.toggle("on", !!code);
+      $("[data-split-demo]")!.hidden = !listed().length;
+      $$<HTMLElement>("[data-split-key]").forEach((k) => {
+        const on = splitOn.get(acc) === k.dataset.splitKey;
+        k.setAttribute("aria-pressed", String(on));
+        k.classList.toggle("on", on);
+      });
     };
     // Two shades only: the box in focus is dark (the account in use, or the selected standby account) and every other
     // box is unlit, the account in use too while a standby account is picked (not while it is red: the split keeps it lit).
@@ -651,10 +658,17 @@ const jsonLd = [
       }
       // Settings ▸ Accounts: click a standby account to select it (again to deselect); its Switch account key opens the
       // Switch page with it picked
-      if ((b = pick("[data-sw-acc]"))) { (window as any).clOpenSwitch?.(acc, b.dataset.swAcc); return; }
-      // the demo's Split key: Terminal on the first offered standby account, again to put it back
-      if (pick("[data-split-key]")) {
-        if (splitOn.has(acc)) splitOn.delete(acc); else splitOn.add(acc);
+      // (Claude Code's own account with no standby entry: the Switch page's finish line, as the app's codeTarget)
+      if ((b = pick("[data-sw-acc]"))) {
+        const finish = splitOn.get(acc) === "elsewhere" && b.dataset.swAcc === EXTRA.email ? { email: EXTRA.email, plan: EXTRA.plan } : undefined;
+        (window as any).clOpenSwitch?.(acc, b.dataset.swAcc, finish);
+        return;
+      }
+      // the demo's split keys: Terminal on the first offered standby account (Split) or on an account the profile doesn't
+      // list (Switched elsewhere); the same key again puts it back
+      if ((b = pick("[data-split-key]"))) {
+        const kind = b.dataset.splitKey as SplitKind;
+        if (splitOn.get(acc) === kind) splitOn.delete(acc); else splitOn.set(acc, kind);
         picked = "";
         show();
         return;
