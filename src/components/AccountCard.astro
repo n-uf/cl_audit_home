@@ -33,10 +33,11 @@ const full = !!fullLimit(a.id as AccountId);   // a limit is full: the plan badg
       <span class="pchip-text"><span class="pchip-title">Claude window</span><span class="pchip-sub" data-sub><b>{open ? "open" : "closed"}</b></span></span>
       <button type="button" class:list={["cswitch", { on: open }]} role="switch" aria-checked={open ? "true" : "false"} aria-label={`Claude window of ${a.name}`} data-win-switch={a.id}><i></i></button>
     </div>
-    <div class="pchip chip-d" data-chip-d>
+    <!-- stopped until started (26.11.76: the Dock draws the usage, so the Dock icon app runs only once clicked) -->
+    <div class="pchip chip-d off" data-chip-d>
       <span class="chip-glyph chip-glyph-d" aria-hidden="true"></span>
-      <span class="pchip-text"><span class="pchip-title">Dock icon</span><span class="pchip-sub" data-sub><b>running</b></span></span>
-      <button type="button" class="cswitch on" role="switch" aria-checked="true" aria-label={`Dock icon of ${a.name}`} data-dock-switch={a.id}><i></i></button>
+      <span class="pchip-text"><span class="pchip-title">Dock icon</span><span class="pchip-sub" data-sub><b>stopped</b></span></span>
+      <button type="button" class="cswitch" role="switch" aria-checked="false" aria-label={`Dock icon of ${a.name}`} data-dock-switch={a.id}><i></i></button>
     </div>
   </div>
 
