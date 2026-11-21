@@ -335,6 +335,28 @@ const jsonLd = [
         k.classList.toggle("on", on);
       });
     };
+    // Sign in… (26.11.79): Claude Code's sign-in window is followed to its end, as the app's signInAgainLine says it in the
+    // account in use's box: "Signing in: finish it in Terminal and the browser." with Cancel while it is open, then how it
+    // ended. The demo's sign-in ends on the profile's own account, so a split ends too (Terminal is on the app's account
+    // again); the line goes after a while. Sample timings; nothing opens.
+    let signIn: { acc: AccountId; phase: "waiting" | "signedIn"; t: number } | null = null;
+    const paintSignIn = () => {
+      const el = $("[data-signin-line]")!, s = signIn && signIn.acc === acc ? signIn : null;
+      el.hidden = !s;
+      el.innerHTML = !s ? "" : s.phase === "waiting"
+        ? '<small class="abox-note caution">Signing in: finish it in Terminal and the browser.</small><button type="button" class="key k sm" data-signin-cancel>Cancel</button>'   // words: SEO (the app's)
+        : '<small class="abox-note">Signed in.</small>';   // words: SEO (the app's)
+    };
+    const startSignIn = () => {
+      if (signIn) clearTimeout(signIn.t);
+      const id = acc;
+      signIn = { acc: id, phase: "waiting", t: window.setTimeout(() => {
+        splitOn.delete(id);
+        signIn = { acc: id, phase: "signedIn", t: window.setTimeout(() => { signIn = null; paintSignIn(); }, 8000) };
+        show();
+      }, 4000) };
+      paintSignIn();
+    };
     // Two shades only: the box in focus is dark (the account in use, or the selected standby account) and every other
     // box is unlit, the account in use too while a standby account is picked (not while it is red: the split keeps it lit).
     const paintPick = () => {
@@ -514,6 +536,7 @@ const jsonLd = [
       $("[data-abox-limits]")!.innerHTML = limitsHTML(acc, loadCardStyle(), false);
       $("[data-standby-boxes]")!.innerHTML = (codeAcc() ? codeBoxHTML(codeAcc()!) : "") + boxes().map(boxHTML).join("");
       paintSplit();
+      paintSignIn();
       // "Claude app" is where the profile's Claude window is signed in: none without a window
       $("[data-mk-app]")!.classList.toggle("on", p().win);
       $("[data-mk-app]")!.classList.toggle("off", !p().win);
@@ -655,8 +678,10 @@ const jsonLd = [
         const own = accounts.find((x) => x.id === acc)!;
         closeMenus();
         showWhatNow("Sign in…", "", signInNote(own.dir, own.email));
+        startSignIn();
         return;
       }
+      if (pick("[data-signin-cancel]")) { if (signIn) clearTimeout(signIn.t); signIn = null; paintSignIn(); return; }
       // Settings ▸ Accounts: click a standby account to select it (again to deselect); its Switch account key opens the
       // Switch page with it picked
       // (Claude Code's own account with no standby entry: the Switch page's finish line, as the app's codeTarget)

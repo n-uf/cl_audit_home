@@ -1699,6 +1699,11 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .face-silver .appwin .abox-why .redline { color: #8a2a20; }
 .face-silver .appwin .abox-why .redline b { color: #b3261e; }
 .abox-why .acc-actions { margin: 0; }
+/* Sign in…'s line (26.11.79): amber while the sign-in window is open, with Cancel at the right; then how it ended */
+.abox-signin { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
+.abox-signin .abox-note { min-width: 0; }
+.abox-signin .caution { color: #ffb24a; }
+.face-silver .appwin .abox-signin .caution { color: #9a5b00; }
 /* the Terminal account's own row: its address is no pop-up, the whole row is the click */
 .abox.code-row .abox-title { cursor: inherit; }
 .abox.code-row { cursor: pointer; }
