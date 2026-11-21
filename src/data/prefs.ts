@@ -175,11 +175,11 @@ export function applyPrefs(p = loadPrefs()) {
   document.querySelectorAll<HTMLImageElement>("[data-front-app] img").forEach((img) => (img.src = appIconSrc(loadAppIcon())));
   for (const a of accounts) {
     const pr = p[a.id];
-    root.style.setProperty(`--acc-${a.id}`, colors[pr.color] ?? pr.color);
+    const c = colors[pr.color] ?? pr.color;
+    root.style.setProperty(`--acc-${a.id}`, c);
     // the same colour as "r, g, b", for the keys' lit LED (.pill.tint): the card's Show window and the panel's Claude
     // key take the profile's own colour (26.11.85, ProfileLED.keyTint)
-    const hex = /^#[0-9a-f]{6}$/i.test(colors[pr.color] ?? pr.color) ? (colors[pr.color] ?? pr.color) : a.hex;
-    root.style.setProperty(`--acc-${a.id}-rgb`, rgbOf(hex));
+    root.style.setProperty(`--acc-${a.id}-rgb`, rgbOf(/^#[0-9a-f]{6}$/i.test(c) ? c : a.hex));
     root.classList.toggle(`dot-${a.id}`, pr.dot && pr.win);   // no window, no Claude open dot
     root.style.setProperty(`--frame-${a.id}`, a.five >= 100 ? "transparent" : pr.frame ? (pr.frame === "usage" ? levelHex(a.five) : tileColors[pr.frame] ?? "transparent") : "transparent");
     // the two switches in Profile: without a Claude window a card has no window switch and no Open/Show window;
