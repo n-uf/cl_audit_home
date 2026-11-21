@@ -43,7 +43,8 @@ const sw = (key: string, label: string, on = true) => `<span class="ctl-pair"><b
     {accounts.map((x, i) => (
       <button type="button" class:list={["tile", { sel: i === 0 }]} data-select-acc={x.id} draggable="true" title="Drag left or right to change the profiles' order">
         <AccIcon id={x.id} src={x.icon} size={34} />
-        <span class="tile-text"><b data-acc-name={x.id}>{x.name}</b><span class="sub" data-tile-sub={x.id}>{x.dir}</span></span>
+        <!-- the profile's own light before its name (26.11.78, ProfileLED): lit in its colour -->
+        <span class="tile-text"><span class="tile-name"><i class="pled" style={`--c:${x.color}`} aria-hidden="true"></i><b data-acc-name={x.id}>{x.name}</b></span><span class="sub" data-tile-sub={x.id}>{x.dir}</span></span>
       </button>
     ))}
     <a class="tile tile-plus" href="/install/" title="New profile (see Install)" aria-label="New profile">+</a>
