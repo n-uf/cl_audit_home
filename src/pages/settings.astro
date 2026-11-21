@@ -282,7 +282,14 @@ const jsonLd = [
     // standby account is remembered signed out, so nothing reads it. Forget… takes one off this page's list only.
     const removedSb = new Set<string>();
     let picked = "";   // the standby account selected in Settings ▸ Accounts ("" = none)
-    const boxes = (): Standby[] => offerOrder(standby[acc]).filter((s) => !removedSb.has(`${acc}:${s.email}`));
+    // The split (the "Demo: other states" key, 26.11.75): Claude Code in Terminal signed in to the profile's first offered
+    // standby account while the Claude app stays on the account in use. That account leaves the standby list for its own
+    // row under the IN USE box (AccountSettings.codeBox), with its numbers; a click selects it like every standby row.
+    const splitOn = new Set<AccountId>();
+    const listed = (): Standby[] => offerOrder(standby[acc]).filter((s) => !removedSb.has(`${acc}:${s.email}`));
+    const codeAcc = (): Standby | undefined => (splitOn.has(acc) ? listed()[0] : undefined);
+    const boxes = (): Standby[] => listed().filter((s) => s !== codeAcc());
+    const pickable = (): Standby[] => [...(codeAcc() ? [codeAcc()!] : []), ...boxes()];
     // Laid out like a display: the lamp and Standby level with the address, the details in full on a second line.
     const boxHTML = (s: Standby) =>
       `<div class="abox unlit sbx${picked === s.email ? " sel" : ""}" data-pick="${s.email}" tabindex="0" role="group" aria-label="${emailText(s.email)}, standby"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
@@ -291,11 +298,40 @@ const jsonLd = [
       `<span class="rest2">${s.plan} · signed out · last in use on ${who()} ${s.lastInUse}</span></span>` +   // words: SEO
       // the key takes the Standby display's place while the box is selected
       `<span class="disp xs abox-badge"><em>Standby</em></span><button type="button" class="disp xs trustlike sw-acc" data-sw-acc="${s.email}"><em>Switch</em> account</button></div></div>`;
+    // The Terminal account's row in the split (AccountSettings.codeBox): unlit, STANDBY, its plan, signed in only to Claude
+    // Code in Terminal, and the numbers (read through Terminal's sign-in, so they are its). No pop-up on its address. Since
+    // 26.11.75 a click anywhere selects it like every standby row, and its lit Switch account key opens the Switch page.
+    const codeBoxHTML = (s: Standby) =>
+      `<div class="abox unlit sbx code-row${picked === s.email ? " sel" : ""}" data-pick="${s.email}" tabindex="0" role="group" aria-label="${emailText(s.email)}, standby, signed in to Claude Code in Terminal"><div class="abox-head"><i class="abox-lamp"></i><span class="abox-t">` +
+      `<span class="abox-title">${emailHTML(s.email)}</span><small>${s.plan}</small></span>` +
+      `<span class="disp xs abox-badge"><em>Standby</em></span><button type="button" class="disp xs trustlike sw-acc" data-sw-acc="${s.email}"><em>Switch</em> account</button></div>` +
+      `<div class="where"><span class="mk off">Claude app</span><span class="mk on">Claude Code in Terminal</span></div>` +   // words: SEO
+      `<div class="abox-limits">${limitsHTML("sample", loadCardStyle(), false)}</div></div>`;
+    // The IN USE box in the split (AccountSettings.inUseBox): the Claude app's account, lamp still lit, the Terminal mark
+    // struck, a red In use, and the card's split notice (UsageNotice: heading and sentence) with the reddish Sign in… in
+    // place of the numbers.
+    const paintSplit = () => {
+      const code = codeAcc(), why = $("[data-abox-why]")!, a = accounts.find((x) => x.id === acc)!;
+      why.hidden = !code;
+      why.innerHTML = code
+        ? `<p class="redline"><b>${emailsHTML(`Terminal is signed in to ${code.email}`)}</b><span>${emailsHTML(`Sign in as ${a.email} to read ${who()}'s usage.`)}</span></p>` +   // words: SEO (the app's UsageNotice)
+          `<div class="acc-actions"><button type="button" class="pill small signin" data-login-again>Sign in…</button></div>`   // words: SEO
+        : "";
+      $("[data-abox-limits]")!.hidden = !!code;
+      $("[data-mk-term]")!.classList.toggle("on", !code);
+      $("[data-mk-term]")!.classList.toggle("off", !!code);
+      $("[data-abox-badge]")!.className = code ? "r" : "g";
+      $("[data-abox-inuse]")!.classList.toggle("alert", !!code);
+      const demo = $("[data-split-demo]")!, key = $("[data-split-key]")!;
+      demo.hidden = !listed().length;
+      key.setAttribute("aria-pressed", String(!!code));
+      key.classList.toggle("on", !!code);
+    };
     // Two shades only: the box in focus is dark (the account in use, or the selected standby account) and every other
-    // box is unlit, the account in use too while a standby account is picked.
+    // box is unlit, the account in use too while a standby account is picked (not while it is red: the split keeps it lit).
     const paintPick = () => {
       $$<HTMLElement>("[data-standby-boxes] .abox").forEach((x) => x.classList.toggle("sel", !!picked && x.dataset.pick === picked));
-      $("[data-abox-inuse]")!.classList.toggle("rest", !!picked);
+      $("[data-abox-inuse]")!.classList.toggle("rest", !!picked && !codeAcc());
       $("[data-pick-hint]")!.hidden = !boxes().length || !!picked;
     };
     // Folders from before (Leftovers.swift): the per-account folders 26.11.16 and earlier made for this profile's accounts.
@@ -466,9 +502,10 @@ const jsonLd = [
       // then the standby ones (no limits), then the folders from before
       closeMenus();
       $("[data-abox-detail]")!.textContent = a.plan;
-      if (!boxes().some((x) => x.email === picked)) picked = "";
+      if (!pickable().some((x) => x.email === picked)) picked = "";
       $("[data-abox-limits]")!.innerHTML = limitsHTML(acc, loadCardStyle(), false);
-      $("[data-standby-boxes]")!.innerHTML = boxes().map(boxHTML).join("");
+      $("[data-standby-boxes]")!.innerHTML = (codeAcc() ? codeBoxHTML(codeAcc()!) : "") + boxes().map(boxHTML).join("");
+      paintSplit();
       // "Claude app" is where the profile's Claude window is signed in: none without a window
       $("[data-mk-app]")!.classList.toggle("on", p().win);
       $("[data-mk-app]")!.classList.toggle("off", !p().win);
@@ -615,6 +652,13 @@ const jsonLd = [
       // Settings ▸ Accounts: click a standby account to select it (again to deselect); its Switch account key opens the
       // Switch page with it picked
       if ((b = pick("[data-sw-acc]"))) { (window as any).clOpenSwitch?.(acc, b.dataset.swAcc); return; }
+      // the demo's Split key: Terminal on the first offered standby account, again to put it back
+      if (pick("[data-split-key]")) {
+        if (splitOn.has(acc)) splitOn.delete(acc); else splitOn.add(acc);
+        picked = "";
+        show();
+        return;
+      }
       if ((b = pick("[data-pick]")) && b.dataset.pick && !pick("button")) {
         picked = picked === b.dataset.pick ? "" : b.dataset.pick;
         paintPick();
