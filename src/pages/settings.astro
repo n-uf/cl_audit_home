@@ -344,10 +344,12 @@ const jsonLd = [
       const el = $("[data-signin-line]")!, s = signIn && signIn.acc === acc ? signIn : null;
       el.hidden = !s;
       el.innerHTML = !s ? "" : s.phase === "waiting"
-        ? '<small class="abox-note caution">Signing in: finish it in Terminal and the browser.</small><button type="button" class="key k sm" data-signin-cancel>Cancel</button>'   // words: SEO (the app's)
+        ? '<small class="abox-note si-wait">Signing in: finish it in Terminal and the browser.</small><button type="button" class="key k sm" data-signin-cancel>Cancel</button>'   // words: SEO (the app's)
         : '<small class="abox-note">Signed in.</small>';   // words: SEO (the app's)
     };
     const startSignIn = () => {
+      // one sign-in at a time on a folder: while this profile's waits, another Sign in… adds nothing (the app refuses it)
+      if (signIn?.phase === "waiting" && signIn.acc === acc) return;
       if (signIn) clearTimeout(signIn.t);
       const id = acc;
       signIn = { acc: id, phase: "waiting", t: window.setTimeout(() => {
