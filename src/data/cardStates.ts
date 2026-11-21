@@ -9,7 +9,7 @@ import { emailsHTML } from "./emails";
 import { usualKeys, type KeysSpec } from "./cardKeys";
 
 type Acc = (typeof accounts)[number];
-export type CardStateKey = "split" | "out" | "expired" | "clash" | "mismatch" | "denied" | "unreadable" | "switching";
+export type CardStateKey = "split" | "out" | "expired" | "clash" | "clashOut" | "mismatch" | "denied" | "unreadable" | "switching";
 export type CardState = {
   label: string;                 // the demo row's key
   tone: "red" | "amber";         // the plan badge takes it
@@ -62,6 +62,17 @@ export const cardStates: Record<CardStateKey, CardState> = {
     lampOff: true,
     noPlan: true,
     heading: () => `Terminal is signed in to ${work.name}'s account`,   // words: SEO
+    sentence: signInAs,
+    keys: { lead: "signin", keys: ["show"], more: ["terminal"], terminalNote: `on ${work.name}'s account` },   // words: SEO
+  },
+  // 26.11.77: the same clash with Terminal signed out, the folder's record still naming the account it was last on: the
+  // heading never says "signed in to" then (UsageNotice: "Terminal is signed out, last on …'s account")
+  clashOut: {
+    label: "Signed out, last on another profile's",   // words: SEO
+    tone: "red",
+    lampOff: true,
+    noPlan: true,
+    heading: () => `Terminal is signed out, last on ${work.name}'s account`,   // words: SEO (the app's)
     sentence: signInAs,
     keys: { lead: "signin", keys: ["show"], more: ["terminal"], terminalNote: `on ${work.name}'s account` },   // words: SEO
   },
