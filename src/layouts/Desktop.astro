@@ -31,7 +31,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       <a class="mb-brand" href="/"><img src="/favicon.png" alt="" width="16" height="16" />cl_audit</a>
       <nav class="mb-links" aria-label="Site">{nav.map(([, label, href]) => <a href={href}>{label}</a>)}</nav>
       <span class="spacer"></span>
-      <ExtLink class:list={["mb-dl", { dim: page === "overview" || page === "install" }]} href={download} title={`cl_audit ${version} for Mac`}><span aria-hidden="true">↓ </span>Download for Mac</ExtLink>
+      <ExtLink class="mb-dl" href={download} title={`cl_audit ${version} for Mac`}><span aria-hidden="true">↓ </span>Download for Mac</ExtLink>
       <span class="mb-na">Mac only</span>
       <ExtLink class="mb-gh" href={repo}>GitHub</ExtLink>
       <!-- the profiles' menu bar icons (cl_audit 26.11.0): one for each profile with "In the menu bar" on, each with its
@@ -164,7 +164,6 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
   new MutationObserver(() => w_.clMenuBar()).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
   import { initCards } from "../data/cardState";
   import { initWhatNow } from "../data/whatNow";
-  import { initDownloadFocus } from "../data/downloadFocus";
   import { initDockLamps } from "../data/dockLamps";
   // On a computer that isn't a Mac (see Base.astro) the Download keys can't be pressed: no link, out of the tab order.
   const lockDownloads = () => {
@@ -174,7 +173,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       if (!off && a.dataset.href) { a.setAttribute("href", a.dataset.href); a.removeAttribute("aria-disabled"); }
     });
   };
-  document.addEventListener("astro:page-load", () => { applyPrefs(); initCards(); initWhatNow(); initDownloadFocus(); lockDownloads(); initDockLamps(); });
+  document.addEventListener("astro:page-load", () => { applyPrefs(); initCards(); initWhatNow(); lockDownloads(); initDockLamps(); });
   document.addEventListener("cl:platform", lockDownloads);
 
   // The faceplate switch: shows which one is on and changes it (Base.astro applies the saved one before the first paint).

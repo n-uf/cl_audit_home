@@ -38,9 +38,6 @@
   --key-up: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -1px 0 rgba(0,0,0,.35), 0 0 0 1px #2e2e2c, 0 2px 0 #121211, 0 3px 7px rgba(0,0,0,.45);
   --key-down: inset 0 1px 0 rgba(255,255,255,.2), inset 0 -1px 0 rgba(0,0,0,.3), 0 0 0 1px #2e2e2c, 0 1px 0 #121211, 0 2px 4px rgba(0,0,0,.45);
   --legend: #f1f1f0;
-  --alu-light: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.035) 1px 2px), linear-gradient(180deg, #e4e4e0, #bdbdb8);   /* brushed aluminium */
-  --alu-light-up: inset 0 1px 0 rgba(255,255,255,.8), inset 0 -1px 0 rgba(0,0,0,.25), 0 0 0 1px #1a1a1a, 0 2px 0 #111;
-  --alu-light-down: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -1px 0 rgba(0,0,0,.2), 0 0 0 1px #1a1a1a, 0 1px 0 #111;
   --well: inset 0 1px 3px rgba(0,0,0,.75), 0 1px 0 rgba(255,255,255,.05);   /* a recess in the plate */
   /* parts the faceplates (faces.css) restyle through these tokens */
   --win-bg: rgba(0,0,0,.27);           /* content windows: launcher, meters, switch panels, steps, explanations */
@@ -109,24 +106,22 @@ code, kbd { font-family: var(--mono); }
 /* Download: every Download key is the warm orange keycap of cl_quick's primary key (ridges, bevel, dark legend), on every
    page and in every faceplate. The colours are fixed here, not tokens, so a face never turns the key grey. The legend
    #1d0b04 on the face (#f4a075 at the top, #e47b4c at the bottom) is 9.2:1 to 6.6:1, above AA's 4.5:1 for small text.
-   The key stays orange whether or not it is the prominent one (data/downloadFocus.ts still toggles .dim; only the menu
-   bar's text link uses it now). */
+   There is one state: it is orange wherever it stands, and the menu bar's key too. */
 .key:not(.on):not([aria-selected="true"]) > .led, .switch a:not(.on)::before, .switch button:not(.on)::before { display: none; }
-.pill.dl, .pill.dl.dim {
+.pill.dl {
   flex: none; color: #1d0b04; text-shadow: none;
   background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #f4a075, #e47b4c);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(110,40,10,.35), 0 0 0 1px #5e240d, 0 2px 0 #3d1707, 0 3px 7px rgba(0,0,0,.45);
-  transition: transform .06s, box-shadow .06s, filter .15s;
 }
-.pill.dl:hover, .pill.dl.dim:hover { filter: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(110,40,10,.35), 0 0 0 1px #5e240d, 0 2px 0 #3d1707, 0 0 16px rgba(255,122,61,.6), 0 3px 7px rgba(0,0,0,.45); }
-.pill.dl:active, .pill.dl.dim:active { box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 0 0 1px #5e240d, 0 1px 0 #3d1707, 0 0 10px rgba(255,122,61,.45); }
-.pill.dl:focus-visible, .pill.dl.dim:focus-visible { outline: 2px solid #fff4ea; outline-offset: 3px; }   /* a light ring, visible against the orange and the dark plate */
-/* On a computer that isn't a Mac: every Download key is an unlit "Mac only" key that can't be pressed (dark face,
-   dim legend, its slot dark); the menu bar says "Mac only" as plain text. */
+.pill.dl:hover, .pill.dl:focus-visible { filter: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(110,40,10,.35), 0 0 0 1px #5e240d, 0 2px 0 #3d1707, 0 0 16px rgba(255,122,61,.6), 0 3px 7px rgba(0,0,0,.45); }
+.pill.dl:active { box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 0 0 1px #5e240d, 0 1px 0 #3d1707, 0 0 10px rgba(255,122,61,.45); }
+.pill.dl:focus-visible { outline: 2px solid #fff4ea; outline-offset: 3px; }   /* a light ring, visible against the orange and the dark plate (Silver: faces.css) */
+/* On a computer that isn't a Mac: every Download key is a dark "Mac only" key that can't be pressed (dim legend); the
+   menu bar says "Mac only" as plain text. */
 .pill.dl .dl-na, .mb-na { display: none; }
 .not-mac .pill.dl .dl-l { display: none; }
 .not-mac .pill.dl .dl-na { display: inline; }
-.not-mac .pill.dl, .not-mac .pill.dl.dim {
+.not-mac .pill.dl {
   cursor: not-allowed; pointer-events: none; transform: none; color: rgba(241,241,240,.45); text-shadow: none;
   background: repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #3a3a3c, #2a2a2c);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -1px 0 rgba(0,0,0,.4), 0 0 0 1px #151515, 0 1px 0 #0a0a0a; }
