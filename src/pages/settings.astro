@@ -327,7 +327,8 @@ const jsonLd = [
       $("[data-mk-term]")!.classList.toggle("off", !!code);
       $("[data-abox-badge]")!.className = code ? "r" : "g";
       $("[data-abox-inuse]")!.classList.toggle("alert", !!code);
-      $("[data-split-demo]")!.hidden = !listed().length;
+      // (shown while a split is on, so it can always be put back, even with every standby account forgotten)
+      $("[data-split-demo]")!.hidden = !listed().length && !splitOn.has(acc);
       $$<HTMLElement>("[data-split-key]").forEach((k) => {
         const on = splitOn.get(acc) === k.dataset.splitKey;
         k.setAttribute("aria-pressed", String(on));
