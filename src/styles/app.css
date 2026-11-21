@@ -1679,6 +1679,18 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .abox.in-use.rest { background: rgba(0,0,0,.24); box-shadow: var(--well); }
 .abox.in-use.rest .abox-title { color: var(--soft); }
 .face-silver .appwin .abox.in-use.rest { background: rgba(0,0,0,.08); box-shadow: inset 0 1px 3px rgba(0,0,0,.25); }
+/* the split (Claude Code in Terminal on another account): the box's glow turns red, and the card's notice (heading and
+   sentence) with the reddish Sign in… takes the numbers' place, as the app's inUseBox with alert */
+.abox.in-use.alert { box-shadow: inset 0 0 12px rgba(255,107,94,.10), inset 0 1px 1.5px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.05); }
+.abox-why { display: grid; gap: 7px; justify-items: start; }
+.abox-why .redline { margin: 0; display: grid; gap: 2px; font-size: 12px; line-height: 1.35; color: #e9b3ad; }
+.abox-why .redline b { font-weight: 600; font-size: 12.5px; color: #ff8a80; overflow-wrap: anywhere; }
+.face-silver .appwin .abox-why .redline { color: #8a2a20; }
+.face-silver .appwin .abox-why .redline b { color: #b3261e; }
+.abox-why .acc-actions { margin: 0; }
+/* the Terminal account's own row: its address is no pop-up, the whole row is the click */
+.abox.code-row .abox-title { cursor: inherit; }
+.abox.code-row { cursor: pointer; }
 /* where an account is signed in: the Claude app (its Code tab included) and Claude Code in Terminal, the folder's
    sign-in that usage is read through; a marker is lit where it is, struck through where it isn't */
 .where { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 0 15px; }
@@ -1943,10 +1955,10 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* the sign-in can't be read, or is on another account or profile: the lamp is off (26.11.41), an unlit dot like an
    account box's */
 .inuse.unlit i { background: #3a3532; box-shadow: inset 0 1px 1px rgba(0,0,0,.55); }
-.card .acc-actions .pill.small.signin { border: 0; color: #1f0705; text-shadow: none;
+:is(.card, .abox-why) .acc-actions .pill.small.signin { border: 0; color: #1f0705; text-shadow: none;
   background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #f4907f, #dc5a4b);
   box-shadow: inset 0 1px rgba(255,255,255,.55), inset 0 -1px rgba(110,26,10,.35), 0 0 0 1px #5e170d, 0 2px #3d0e07, 0 3px 7px rgba(0,0,0,.45); }
-.card .acc-actions .pill.small.signin::before, .card .acc-actions .pill.small.signin::after { display: none; }
+:is(.card, .abox-why) .acc-actions .pill.small.signin::before, :is(.card, .abox-why) .acc-actions .pill.small.signin::after { display: none; }
 .more-menu small { font-size: 11px; color: var(--muted); }
 
 /* ── Upright phones: text and touch targets ───────────────────────────────────────────────────────────────────────

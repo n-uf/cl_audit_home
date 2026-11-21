@@ -17,6 +17,7 @@ import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices, dockRunsC
 import { limitsHTML, designs } from "../data/panelView";
 import { chevronHTML } from "../data/chevron";
 import { maskEmail } from "../data/emails";
+import { cardStates } from "../data/cardStates";
 import { lane as mbLane } from "../data/menubar";
 import { version, build, changelog } from "../data/site";
 import AccIcon from "./AccIcon.astro";
@@ -82,9 +83,13 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
                   <span class="login-menu" data-login-menu role="menu" hidden></span>
                   <small data-abox-detail>{a.plan}</small>
                 </span>
-                <span class="disp xs abox-badge"><span class="g">In use</span></span></div>
+                <span class="disp xs abox-badge"><span class="g" data-abox-badge>In use</span></span></div>
               <!-- words: SEO -->
-              <div class="where"><span class="mk on" data-mk-app>Claude app</span><span class="mk on">Claude Code in Terminal</span></div>
+              <div class="where"><span class="mk on" data-mk-app>Claude app</span><span class="mk on" data-mk-term>Claude Code in Terminal</span></div>
+              <!-- the split (26.11.75 demo): Claude Code in Terminal on another account than the Claude app. As the app's
+                   inUseBox: the card's red heading and sentence, the reddish Sign in…, no numbers; they are on the
+                   Terminal account's own row below (data-standby-boxes) -->
+              <div class="abox-why" data-abox-why hidden></div>
               <div class="abox-limits" data-abox-limits></div>
             </div>
             <!-- the standby accounts, unlit, in the order a full limit offers them: each is laid out like a display (lamp and
@@ -93,6 +98,12 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
                  becomes a Switch account key, which opens the Switch page with it picked -->
             <div class="acc-pick" data-standby-boxes></div>
             <p class="g-note sub" data-pick-hint hidden>Click a standby account to select it, then Switch account.</p>
+            <!-- demo only, like the dashboard's: on a profile with standby accounts, Split signs Claude Code in Terminal in to
+                 the first one it offers while the Claude app stays on the account in use; the same key puts it back -->
+            <div class="sw-demo" data-split-demo hidden><span class="sub">Demo: other states</span><!-- words: SEO -->
+              <span class="switch small-switch" role="group" aria-label="Other states"><!-- words: SEO -->
+                <button type="button" data-split-key aria-pressed="false">{cardStates.split.label}</button>
+              </span></div>
             <!-- the accounts found on this Mac are listed by themselves; a brand-new one signs in from here -->
             <div class="add-acc">
               <!-- words: SEO -->
