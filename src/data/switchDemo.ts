@@ -33,8 +33,9 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   const O = () => shortName(other().email);
   const SES = "14 Code-tab sessions and 2 scheduled tasks";
   // what the switch's receipt still has moved after it stopped (SwitchRunner.movedWords): all of it once the move
-  // finished (no sign-in), part of it when it stopped half way (the sessions go first, then the tasks)
-  const MOVED = { all: "14 sessions, 2 tasks", half: "9 sessions" };
+  // finished (no sign-in), part of it when it stopped half way. Since 26.11.76 the scheduled tasks are settled before
+  // any session moves, so a switch stopped part way has moved its tasks already, then some of the sessions
+  const MOVED = { all: "14 sessions, 2 tasks", half: "9 sessions, 2 tasks" };
   const w = window as any;
   /** A run holds the profile's Claude window (closing, moving, waiting for the sign-in): a Restore waits for it. */
   const running = () => phase === "closing" || phase === "moving" || phase === "undoing" || phase === "waiting";
