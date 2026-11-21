@@ -2,6 +2,7 @@
 import "../styles/app.css";
 import "../styles/faces.css";
 import { ClientRouter } from "astro:transitions";
+import Analytics from "@vercel/analytics/astro";
 
 interface Props {
   title: string;
@@ -89,6 +90,15 @@ const ogImage = new URL(ogPath, Astro.site);
         document.addEventListener("astro:after-swap", apply);
       })();
     </script>
+    <!-- Vercel Web Analytics: cookieless, production only (the component skips dev). The Astro component takes no
+         beforeSend prop; it reads window.webAnalyticsBeforeSend, so this strips the query string from every event's URL
+         (a query can carry ids or tokens). -->
+    <script is:inline>
+      window.webAnalyticsBeforeSend = function (e) {
+        try { var u = new URL(e.url); u.search = ""; return Object.assign({}, e, { url: u.toString() }); } catch (err) { return e; }
+      };
+    </script>
+    <Analytics />
   </head>
   <body>
     <slot />
