@@ -106,25 +106,21 @@ code, kbd { font-family: var(--mono); }
 .led.lit, .key.on .led, .key[aria-selected="true"] .led {
   background: rgb(var(--led)); box-shadow: 0 0 6px rgba(var(--led), .9), 0 0 0 1px rgba(120,40,0,.25);
 }
-/* Download: the key with the orange light slot along its top edge, as on the production site. Only one is
-   lit at a time (data/downloadFocus.ts dims the others; a dimmed slot is unlit). */
+/* Download: every Download key is the warm orange keycap of cl_quick's primary key (ridges, bevel, dark legend), on every
+   page and in every faceplate. The colours are fixed here, not tokens, so a face never turns the key grey. The legend
+   #1d0b04 on the face (#f4a075 at the top, #e47b4c at the bottom) is 9.2:1 to 6.6:1, above AA's 4.5:1 for small text.
+   The key stays orange whether or not it is the prominent one (data/downloadFocus.ts still toggles .dim; only the menu
+   bar's text link uses it now). */
 .key:not(.on):not([aria-selected="true"]) > .led, .switch a:not(.on)::before, .switch button:not(.on)::before { display: none; }
-.pill.dl { flex: none; padding-top: 4px; color: #232323; transition: background .25s, color .25s, box-shadow .25s; text-shadow: none; background: var(--alu-light); box-shadow: var(--alu-light-up); }
-.pill.dl:active { box-shadow: var(--alu-light-down); }
-/* a Download that isn't the prominent one: a plain gunmetal key with an unlit slot */
-.pill.dl.dim { color: var(--legend); text-shadow: 0 -1px 0 rgba(0,0,0,.35); background: var(--alu); box-shadow: var(--key-up); }
-.pill.dl::before {
-  content: ""; position: absolute; left: 6px; right: 6px; top: 4px; height: 3px; border-radius: 3px;
-  background: linear-gradient(180deg, #ffb08a, #ff7a3d 60%, #f0612a);
-  box-shadow: 0 0 3px rgba(255,122,61,.8), 0 0 9px rgba(255,122,61,.5), 0 2px 12px rgba(255,122,61,.25), inset 0 1px 0 rgba(255,255,255,.45);
-  transition: background .25s, box-shadow .25s;
+.pill.dl, .pill.dl.dim {
+  flex: none; color: #1d0b04; font-weight: 700; text-shadow: none;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #f4a075, #e47b4c);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(110,40,10,.35), 0 0 0 1px #5e240d, 0 2px 0 #3d1707, 0 3px 7px rgba(0,0,0,.45);
+  transition: transform .06s, box-shadow .06s, filter .15s;
 }
-.pill.dl::after {   /* the slot's glow on the key face */
-  content: ""; position: absolute; left: 12%; right: 12%; top: 7px; height: 12px; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(ellipse at top, rgba(255,140,80,.28), rgba(255,140,80,0) 70%); transition: opacity .25s;
-}
-.pill.dl.dim::before { background: #7a5a4c; box-shadow: inset 0 1px 1px rgba(0,0,0,.4); }
-.pill.dl.dim::after { opacity: 0; }
+.pill.dl:hover, .pill.dl.dim:hover { filter: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(110,40,10,.35), 0 0 0 1px #5e240d, 0 2px 0 #3d1707, 0 0 16px rgba(255,122,61,.6), 0 3px 7px rgba(0,0,0,.45); }
+.pill.dl:active, .pill.dl.dim:active { box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 0 0 1px #5e240d, 0 1px 0 #3d1707, 0 0 10px rgba(255,122,61,.45); }
+.pill.dl:focus-visible, .pill.dl.dim:focus-visible { outline: 2px solid #fff4ea; outline-offset: 3px; }   /* a light ring, visible against the orange and the dark plate */
 /* On a computer that isn't a Mac: every Download key is an unlit "Mac only" key that can't be pressed (dark face,
    dim legend, its slot dark); the menu bar says "Mac only" as plain text. */
 .pill.dl .dl-na, .mb-na { display: none; }
@@ -134,8 +130,6 @@ code, kbd { font-family: var(--mono); }
   cursor: not-allowed; pointer-events: none; transform: none; color: rgba(241,241,240,.45); text-shadow: none;
   background: repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #3a3a3c, #2a2a2c);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -1px 0 rgba(0,0,0,.4), 0 0 0 1px #151515, 0 1px 0 #0a0a0a; }
-.not-mac .pill.dl::before { background: #4a3a33; box-shadow: inset 0 1px 1px rgba(0,0,0,.5); }
-.not-mac .pill.dl::after { opacity: 0; }
 .not-mac .mb-dl { display: none; }
 .not-mac .mb-na { display: inline; color: #8e8e93; }
 
@@ -179,8 +173,7 @@ code, kbd { font-family: var(--mono); }
 .login-note b { color: var(--text); }
 .login-note a { color: #e8a07f; }
 
-/* the menu bar's Download: while it is the prominent one, a solid orange key (matte, no glow); otherwise plain
-   menu-bar text */
+/* the menu bar's Download: a solid orange key (matte, no glow), always, like the page Download keys */
 .mb-dl { position: relative; display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 12px; border-radius: 4px; white-space: nowrap; text-decoration: none;
   font: 700 10.5px/1 var(--font); letter-spacing: .12em; text-transform: uppercase; color: #2a1004 !important;
   background: linear-gradient(180deg, #f08a55, #e06b33);
@@ -190,10 +183,6 @@ code, kbd { font-family: var(--mono); }
 .mb-dl:hover { filter: brightness(1.05); }
 .mb-dl:active { transform: translateY(1px); }
 .mb-dl > span:not(.sr-only) { display: none; }   /* the ↓ arrow span; the screen-reader note (ExtLink) stays */
-.mb-dl.dim { padding: 0; height: auto; background: none; box-shadow: none; color: #e8e8ea !important; font: 500 13.5px/1 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; letter-spacing: -.005em; text-transform: none; }
-.mb-dl.dim::before { display: none; }
-.mb-dl.dim > span:not(.sr-only) { display: inline; }
-.mb-dl.dim:hover { color: #fff !important; }
 
 .kbd {
   display: inline-block; padding: 1px 6px; border-radius: 3px;
@@ -1198,7 +1187,6 @@ html.dot-side .settings .ico[data-ico="side"]::after { display: block; }
 /* a key with a note printed beside it, after a divider (Install card, Install page, 404) */
 .key-note { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .key-note > .pill, .key-note > .key { flex: none; height: 32px; padding: 0 16px; }
-.key-note > .pill.dl { padding-top: 4px; }
 .key-note > .divider { width: 1px; align-self: stretch; flex: none; background: rgba(0,0,0,.45); box-shadow: 1px 0 0 rgba(255,255,255,.08); }
 .key-note > .note { min-width: 0; color: var(--muted); font-size: 12.5px; line-height: 1.35; }
 .key-note > .note a { color: var(--link); }
