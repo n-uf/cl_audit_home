@@ -1,6 +1,6 @@
 ---
-title: "Claude team and personal account on one Mac | cl_audit"
-description: "A Claude Team and personal account on one Mac: what Anthropic keeps separate, why one email can mean two seats, and how to use both at once."
+title: "Claude work and personal account: Team vs personal"
+description: "Claude Team and personal account on one Mac: what Anthropic keeps separate, whether you can share an account, and how to use both at once."
 h1: "A Claude Team and personal account on one Mac"
 mainKeyword: "claude team and personal account"
 kind: how-to
