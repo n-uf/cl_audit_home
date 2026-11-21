@@ -90,7 +90,7 @@ const ogImage = new URL(ogPath, Astro.site);
         document.addEventListener("astro:after-swap", apply);
       })();
     </script>
-    <!-- Vercel Web Analytics: cookieless, production only (the component skips dev). The Astro component takes no
+    <!-- Vercel Web Analytics: cookieless; in dev it loads Vercel's debug script, which sends nothing. The Astro component takes no
          beforeSend prop; it reads window.webAnalyticsBeforeSend, so this strips the query string from every event's URL
          (a query can carry ids or tokens). -->
     <script is:inline>
@@ -98,9 +98,11 @@ const ogImage = new URL(ogPath, Astro.site);
         try { var u = new URL(e.url); u.search = ""; return Object.assign({}, e, { url: u.toString() }); } catch (err) { return e; }
       };
     </script>
-    <Analytics />
   </head>
   <body>
     <slot />
+    <!-- last in the body: the component renders a custom element, and an unknown element in <head> would end the head
+         early and push the page's styles into <body> -->
+    <Analytics />
   </body>
 </html>
