@@ -27,6 +27,11 @@ faq:
   - q: "Can I undo a switch?"
     a: "Until Claude Code is on the new account, Undo the move puts back what moved, though maybe not all. After that, the way back is a switch the other way. A switch that stopped half way shows two choices on the Sessions card: Undo it puts the sessions back, and Leave it as it is keeps them where they are."
 sources:
+  - title: "cl_audit CHANGELOG, 26.11.80"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.80/CHANGELOG.md"
+    checked: 2026-11-21
+    supports: "26.11.80: Switch account keeps the scheduled tasks (and their sessions) with the old account, and says why, when the new account's tasks file, or the old one's while it has tasks to move, holds task state it can't read, or when the new account has the same task with enabled set to anything but false."
+    quote: "Switch account keeps the scheduled tasks (and their sessions) with the old account, and says why"
   - title: "cl_audit CHANGELOG, 26.11.76"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.76/CHANGELOG.md"
     checked: 2026-11-21
@@ -222,7 +227,7 @@ Then come the steps and **Switch to ultra-2**.
 
 1. The profile's Claude window closes, with the app's own quit. cl_audit opens it again once the switch is settled: Claude Code reached the account, you chose Undo or Leave it as it is, or nothing moved. While moved sessions wait, it stays closed, and the Dock icon, the menu bar and the card open the Switch page instead.
 2. A backup is made. If it can't be made, the switch stops and nothing moves.
-3. The scheduled tasks move to ultra-2 first, then the Code-tab sessions. If the tasks can't move just then, they stay on ultra-1 together with their sessions. That happens when ultra-2 got a differing copy since you pressed Switch, when ultra-2's tasks file can't be written, or when ultra-1's file changed. The other sessions still move, and the switch goes on to the sign-in and says why the tasks stayed. Each session or task that moves is written for the new account and checked before its original is set aside in cl_audit's own folder, not deleted at that step. Scheduled tasks keep their skips and retries. A session that a running Claude Code has open is held: it stays with ultra-1 until a later switch.
+3. The scheduled tasks move to ultra-2 first, then the Code-tab sessions. If the tasks can't move just then, they stay on ultra-1 together with their sessions. That happens, for example, when ultra-2 got a differing copy since you pressed Switch, when ultra-2 already has the same task switched on, or when a tasks file can't be read or written. The other sessions still move, and the switch goes on to the sign-in and says why the tasks stayed. Each session or task that moves is written for the new account and checked before its original is set aside in cl_audit's own folder, not deleted at that step. Scheduled tasks keep their skips and retries. A session that a running Claude Code has open is held: it stays with ultra-1 until a later switch.
 4. Claude Code's own sign-in opens in Terminal for the profile's folder, with ultra-2's address filled in, and you finish it in the browser. Anthropic's CLI reference describes the `--email` option that fills it in.
 5. cl_audit watches the folder for up to 10 minutes and says how it ended.
 
