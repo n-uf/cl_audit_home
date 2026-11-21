@@ -68,7 +68,7 @@ export const cardStates: Record<CardStateKey, CardState> = {
   // 26.11.77: the same clash with Terminal signed out, the folder's record still naming the account it was last on: the
   // heading never says "signed in to" then (UsageNotice: "Terminal is signed out, last on …'s account")
   clashOut: {
-    label: "Signed out, last on another profile's",   // words: SEO
+    label: "Signed out (other profile)",   // words: SEO
     tone: "red",
     lampOff: true,
     noPlan: true,
