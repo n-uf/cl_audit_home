@@ -157,10 +157,10 @@ const jsonLd = [
       }
     };
 
-    // ── the grey line under Dock icon ▸ Runs follows the choice (the app's words) ──
-    const runsLine = (pr: Prefs) => pr.dockRuns === "login" ? "Always there, from when you log in."
-      : pr.dockRuns === "window" ? (pr.win ? "Starts with the Claude window, quits 10 s after it." : "No Claude window, so it runs only when you start it.")
-      : "Only when you start it: its Dock tile, or its switch on the dashboard.";
+    // ── the grey line under Dock icon ▸ Runs: what runs now (26.11.80, AccountSettings.runsWords). The demo's Dock draws
+    // every icon itself, so no app needs to run whatever Runs says; Runs applies only where the Dock can't draw it, and
+    // then the line names the choice ("The Dock isn't drawing the icon (yet), so Runs applies: …") ──
+    const runsLine = (_pr: Prefs) => "The Dock draws the icon itself, so its app needn't run: a click starts it.";   // words: SEO (the app's)
     // Dock icon ▸ Click: a click may open the Claude window only with one, and with Opens from ▸ Dock click too.
     // Otherwise the Claude choices are off and a click shows the usage only (the stored choice comes back later).
     const opens = (pr: Prefs) => pr.win && pr.opensFromDock;
