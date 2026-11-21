@@ -113,7 +113,7 @@ code, kbd { font-family: var(--mono); }
    bar's text link uses it now). */
 .key:not(.on):not([aria-selected="true"]) > .led, .switch a:not(.on)::before, .switch button:not(.on)::before { display: none; }
 .pill.dl, .pill.dl.dim {
-  flex: none; color: #1d0b04; font-weight: 700; text-shadow: none;
+  flex: none; color: #1d0b04; text-shadow: none;
   background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #f4a075, #e47b4c);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(110,40,10,.35), 0 0 0 1px #5e240d, 0 2px 0 #3d1707, 0 3px 7px rgba(0,0,0,.45);
   transition: transform .06s, box-shadow .06s, filter .15s;
