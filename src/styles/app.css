@@ -1702,8 +1702,9 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* Sign in…'s line (26.11.79): amber while the sign-in window is open, with Cancel at the right; then how it ended */
 .abox-signin { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
 .abox-signin .abox-note { min-width: 0; }
-.abox-signin .caution { color: #ffb24a; }
-.face-silver .appwin .abox-signin .caution { color: #9a5b00; }
+/* one line, as the app's (lineLimit 1): it ends in "…" where the box is narrow */
+.abox-signin .si-wait { color: #ffb24a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.face-silver .appwin .abox-signin .si-wait { color: #9a5b00; }
 /* the Terminal account's own row: its address is no pop-up, the whole row is the click */
 .abox.code-row .abox-title { cursor: inherit; }
 .abox.code-row { cursor: pointer; }
