@@ -100,6 +100,9 @@
 .face-silver :is(.acc-actions .pill:active, .acc-actions .pill[aria-expanded="true"], .cswitch.on, .mswitch.on, .plate.pages .key.on, .plate.pages .key:active, .fk[aria-pressed="true"]) {
   color: #111; background: var(--alu-down); box-shadow: var(--key-down); }
 .face-silver .tile .sub { color: rgba(30,30,30,.6); }
+/* the orange Download key keeps its fixed face on Silver: no white text shadow, a dark focus ring on the light plate */
+.face-silver .pill.dl { text-shadow: none; }
+.face-silver .pill.dl:focus-visible { outline-color: #5e240d; }
 .face-silver .pill.quiet { color: rgba(30,30,30,.65); }
 .face-silver :is(.cswitch i, .mswitch::after) { background: #8c8c88; box-shadow: inset 0 1px 1px rgba(0,0,0,.4); }
 .face-silver :is(.cswitch.on i, .mswitch.on::after) { background: rgb(var(--led-on)); box-shadow: 0 0 5px rgba(var(--led-on), .7), 0 0 0 1px rgba(0,60,30,.35); }
