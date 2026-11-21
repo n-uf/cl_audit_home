@@ -22,8 +22,9 @@ const w = window as any;
 // The Dock icon app starts stopped (26.11.76): the Dock draws each profile's usage itself, so the app runs only once it is
 // started, by a click on its Dock tile or its switch here (the card's chip says "stopped" until then, as the app's dockChip)
 const state: Record<string, S> = (w.__clState ??= Object.fromEntries(accounts.map((a) => [a.id, { win: !!a.winOpen, dock: false }])));
-/** A click on a profile's Dock tile starts its Dock icon app (the Dock bar calls this; it persists across pages). */
-w.clDockStarted = (id: string) => { const s = state[id]; if (s && !s.dock && !s.dockBusy) { s.dock = true; s.quitAt = undefined; renderCards(); } };
+/** A click on a profile's Dock tile starts its Dock icon app, as its card switch does (With Dock icon included); the Dock
+ *  bar calls this, and renderCards draws the Dock's running dot from the state. */
+w.clDockStarted = (id: string) => setDock(id, true);
 let ticker = 0;
 // the state each card is shown in ("" = its own, with numbers), kept on window like the switches'
 const shown: Record<string, CardStateKey | ""> = (w.__clCardShown ??= {});

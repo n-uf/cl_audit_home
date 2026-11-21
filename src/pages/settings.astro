@@ -234,7 +234,7 @@ const jsonLd = [
     // profile is doing (its Dock icon as the dashboard's switch left it); General keeps "Saved · as you change"
     const stateHTML = () => {
       if (general) return idle;
-      const pr = p(), running = (window as any).__clState?.[acc]?.dock ?? true;
+      const pr = p(), running = (window as any).__clState?.[acc]?.dock ?? false;   // stopped until started (26.11.76)
       if (pr.showInDock) return running ? '<span class="g">Running</span> <em>· in the Dock</em>' : 'Stopped <em>· in the Dock</em>';
       return running ? `<span class="g">Reading usage</span> <em>· every ${pr.refresh}</em>` : '<span class="a">Stopped</span> <em>· not reading</em>';
     };
