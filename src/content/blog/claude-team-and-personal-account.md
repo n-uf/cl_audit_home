@@ -1,5 +1,5 @@
 ---
-title: "Claude work and personal account: Team vs personal"
+title: "Claude Team and personal account: can you share one?"
 description: "Claude Team and personal account on one Mac: what Anthropic keeps separate, whether you can share an account, and how to use both at once."
 h1: "A Claude Team and personal account on one Mac"
 mainKeyword: "claude team and personal account"
