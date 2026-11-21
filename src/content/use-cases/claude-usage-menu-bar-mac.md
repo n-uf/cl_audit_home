@@ -88,7 +88,7 @@ sources:
   - title: "cl_audit CHANGELOG, 26.11.76"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.76/CHANGELOG.md"
     checked: 2026-11-21
-    supports: "26.11.76: the Dock draws each profile's usage itself, so a Dock icon has no running dot and no ⌘-Tab entry until you click it; if the Dock can't draw it (Dock Tiles turned off under Login Items & Extensions in System Settings, say), the Dock icon app runs as before, about two minutes after cl_audit starts."
+    supports: "26.11.76: the Dock draws each profile's usage itself, so a Dock icon has no running dot and no ⌘-Tab entry until you click it; if the Dock can't draw it (Dock Tiles turned off under Login Items & Extensions in System Settings, say), the Dock icon app runs as before, about two minutes after cl_audit starts, until the Dock draws it again; after an update, or for a new profile, a Dock icon app may start once for about a minute so the Dock can use it."
     quote: "the Dock now draws each profile's usage itself"
 related:
   - /
@@ -180,7 +180,9 @@ Give each one a different label or colour. Two identical rings are hard to tell 
 
 ## With or without Dock icons
 
-The agent draws the menu bar icons. The Dock draws the Dock icons, so a Dock icon has no running dot and no ⌘-Tab entry until you click it. A profile can have a menu bar icon and no Dock icon, a Dock icon and no menu bar icon, or both. Quitting a Dock icon never stops the usage or the alerts. If the Dock can't draw a Dock icon (Dock Tiles turned off under System Settings ▸ Login Items & Extensions, say), its Dock icon app runs as before, about two minutes after cl_audit starts.
+The agent draws the menu bar icons. The Dock draws the usage on each Dock icon itself, so a Dock icon has no running dot and no ⌘-Tab entry until you click it. After an update, or for a new profile, a Dock icon app may start once for about a minute so the Dock can use it. A profile can have a menu bar icon and no Dock icon, a Dock icon and no menu bar icon, or both. Quitting a Dock icon never stops the usage or the alerts.
+
+If the Dock can't draw the usage (Dock Tiles turned off under Login Items & Extensions in System Settings, say), the Dock icon app runs instead, about two minutes after cl_audit starts, until the Dock can draw it again.
 
 You can also go menu bar only. Turn Usage in the Dock off for a profile (Settings ▸ the profile ▸ Dock icon) and its Dock icon quits and is unpinned, which restarts the Dock once. The profile keeps its usage, its alerts and its menu bar icon.
 

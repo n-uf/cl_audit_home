@@ -89,7 +89,7 @@ sources:
   - title: "cl_audit CHANGELOG, 26.11.76"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.76/CHANGELOG.md"
     checked: 2026-11-21
-    supports: "26.11.76: the Dock draws each profile's usage itself, so a Dock icon has no running dot and no ⌘-Tab entry until you click it, and a click opens it as before; if the Dock can't draw it (Dock Tiles turned off under Login Items & Extensions in System Settings, say), the Dock icon app runs as before, about two minutes after cl_audit starts."
+    supports: "26.11.76: the Dock draws each profile's usage itself, so a Dock icon has no running dot and no ⌘-Tab entry until you click it, and a click opens it as before; if the Dock can't draw it (Dock Tiles turned off under Login Items & Extensions in System Settings, say), the Dock icon app runs as before, about two minutes after cl_audit starts, until the Dock draws it again; after an update, or for a new profile, a Dock icon app may start once for about a minute so the Dock can use it."
     quote: "a Dock icon has no running dot and no ⌘-Tab entry until you click it"
 related:
   - /
@@ -120,7 +120,7 @@ In cl_audit the unit is a profile: one Claude setup. A profile has a Claude Code
 
 - **Claude Code folder.** Claude Code keeps its settings and session history in one folder, `~/.claude` by default. Anthropic's docs say that if you set `CLAUDE_CONFIG_DIR`, Claude Code stores them in that folder instead. Each profile has its own folder and sign-in: `~/.claude` for the first, and one such as `~/.claude-work` for each you add.
 - **Claude window.** The profile that uses `~/.claude` opens the usual Claude app. Every other profile gets its own Claude window, with its own sign-in, chats and settings. Each of those windows runs with its own `--user-data-dir`, and that's how cl_audit tells them apart.
-- **Dock icon.** An icon named `cl_audit <profile name>` that shows the profile's 5-hour and weekly usage, drawn by the Dock itself. It has no running dot and no ⌘-Tab entry until you click it. By default a click shows the usage for 3 seconds while the profile's Claude window opens. If the Dock can't draw it (Dock Tiles turned off under System Settings ▸ Login Items & Extensions, say), the Dock icon app runs as before, about two minutes after cl_audit starts.
+- **Dock icon.** A small app named `cl_audit <profile name>` whose icon shows the profile's 5-hour and weekly usage. The Dock draws that usage itself, so the icon has no running dot and no ⌘-Tab entry until you click it. By default a click shows the usage for 3 seconds while the profile's Claude window opens. For a new profile, or after an update, the app may start once for about a minute so the Dock can use it. If the Dock can't draw the usage (Dock Tiles turned off under Login Items & Extensions in System Settings, say), the app runs instead, about two minutes after cl_audit starts, until the Dock can draw it again.
 
 A profile has two switches, **Usage in the Dock** and **Claude window**. With both off it's "usage only". Its limits still show on the [Claude usage dashboard](/dashboard/), in the launcher and in alerts, but nothing sits in the Dock and no window opens. That suits an account you only want to keep an eye on.
 
