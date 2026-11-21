@@ -102,7 +102,10 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
                  the first one it offers while the Claude app stays on the account in use; the same key puts it back -->
             <div class="sw-demo" data-split-demo hidden><span class="sub">Demo: other states</span><!-- words: SEO -->
               <span class="switch small-switch" role="group" aria-label="Other states"><!-- words: SEO -->
-                <button type="button" data-split-key aria-pressed="false">{cardStates.split.label}</button>
+                <button type="button" data-split-key="standby" aria-pressed="false">{cardStates.split.label}</button>
+                <!-- 26.11.76: Terminal on an account that isn't on the standby list (Claude Code switched to it elsewhere,
+                     cl_quick say); its Switch account is the finish line -->
+                <button type="button" data-split-key="elsewhere" aria-pressed="false">Switched elsewhere</button><!-- words: SEO -->
               </span></div>
             <!-- the accounts found on this Mac are listed by themselves; a brand-new one signs in from here -->
             <div class="add-acc">
