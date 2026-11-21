@@ -47,9 +47,8 @@ import AccIcon from "./AccIcon.astro";
   bar.querySelectorAll<HTMLButtonElement>("[data-pop]").forEach((b) =>
     b.addEventListener("click", (e) => {
       e.stopPropagation();
-      // the click starts the profile's Dock icon app: its running dot shows, and its card's Dock icon chip says running
-      // (data/cardState.ts keeps that state across pages; the class is the fallback where no card script runs)
-      b.classList.add("launched");
+      // the click starts the profile's Dock icon app: data/cardState.ts keeps that state across pages and draws the running
+      // dot from it, and the card's Dock icon chip says running
       (window as any).clDockStarted?.(b.dataset.pop);
       const pop = bar.querySelector<HTMLElement>(`[data-popup="${b.dataset.pop}"]`)!;
       // the compact panel, in the design chosen for this profile in Settings
