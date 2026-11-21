@@ -1,6 +1,6 @@
 // The keys row of a dashboard card: Show window, Terminal, ⋯ and, while a limit is full, Switch account. Drawn from
 // one spec, so the page (AccountCard.astro) and the script that changes a card's state use the same markup.
-import { accounts, standby, offerOrder } from "./demo";
+import { accounts, standby, offerOrder, rgbOf } from "./demo";
 import { chevronHTML } from "./chevron";
 import { emailsHTML, emailHTML, emailText } from "./emails";
 
@@ -40,7 +40,8 @@ function switchMenuHTML(a: Acc) {
 
 /** The row's markup. `open`: the profile's Claude window is open (the demo's starting state; cardState.ts keeps it up to date). */
 export function cardKeysHTML(a: Acc, spec: KeysSpec, open = !!a.winOpen) {
-  const show = `<button type="button" class="pill small tint ${a.tint}${open ? "" : " unlit"}" data-open-desktop="${a.id}" data-open-label>${open ? "Show window" : "Open window"}</button>`;
+  // its LED in the profile's own colour (26.11.85), lit while the window is open; the default colour until prefs apply
+  const show = `<button type="button" class="pill small tint ${a.tint}${open ? "" : " unlit"}" style="--tint:var(--acc-${a.id}-rgb, ${rgbOf(a.hex)})" data-open-desktop="${a.id}" data-open-label>${open ? "Show window" : "Open window"}</button>`;
   const terminal = `<button type="button" class="pill small" data-open-terminal="${a.id}">Terminal</button>`;
   // what stepped out of the row comes first, with its divider; a usage-only profile has neither a window nor Terminal,
   // so the group is hidden whole (app.css) and no divider is left behind

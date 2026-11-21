@@ -31,6 +31,8 @@ export const offerOrder = (list: Standby[]) =>
   list.map((s, i) => [s, i] as const).sort(([a, i], [b, j]) => Number(knownFull(a)) - Number(knownFull(b)) || a.lastWeek - b.lastWeek || i - j).map(([s]) => s);
 /** The one a full limit offers first (AccountBook.best): the first in that order not known to be full, or none. */
 export const bestOffer = (list: Standby[]) => offerOrder(list).find((s) => !knownFull(s));
+/** "217, 119, 87": a "#rrggbb" colour as the r, g, b a key's LED (--tint) takes. */
+export const rgbOf = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(", ");
 /** "team-2": an account's short name, its address before the @ (AccountNames.short). */
 export const shortName = (email: string) => email.split("@")[0];
 
@@ -152,7 +154,8 @@ function add(a: Counts, b: Counts): Counts {
 }
 
 function tokens(c: Counts) {
-  return accounts.map((a) => ({ id: a.id, hex: a.hex, tokens: (c[a.id] ?? 0) * TOKENS_PER_REPLY[a.id] })).filter((p) => p.tokens > 0);
+  // each profile's series in its own colour as set in Settings (26.11.85, ProfileLED.seriesColors)
+  return accounts.map((a) => ({ id: a.id, hex: a.color, tokens: (c[a.id] ?? 0) * TOKENS_PER_REPLY[a.id] })).filter((p) => p.tokens > 0);
 }
 
 /** A round axis top: 1, 2, 2.5 or 5 × 10^n, with three steps. */
@@ -168,17 +171,17 @@ type Share = [string, number, string];
 export const modelShares = (id: AccountId): [string, number][] => perAccount[id].models.map(([m, s]) => [m, s]);
 const perAccount: Record<AccountId, { projects: Share[]; models: Share[]; surfaces: Share[] }> = {
   home: {
-    projects: [["recipe-site", 0.6, "#d97757"], ["notes", 0.25, "#d97757"], ["other", 0.15, "#8e8e93"]],
+    projects: [["recipe-site", 0.6, "var(--acc-home)"], ["notes", 0.25, "var(--acc-home)"], ["other", 0.15, "#8e8e93"]],
     models: [["Opus", 0.6, "#c026d3"], ["Sonnet", 0.35, "#3b82f6"], ["Haiku", 0.05, "#22c55e"]],
     surfaces: [["Desktop Code tab", 0.55, "#f59e0b"], ["Terminal", 0.35, "#3b82f6"], ["VS Code", 0.1, "#8e8e93"]],
   },
   work: {
-    projects: [["web-app", 0.45, "#14b8a6"], ["api", 0.35, "#14b8a6"], ["infra", 0.2, "#14b8a6"]],
+    projects: [["web-app", 0.45, "var(--acc-work)"], ["api", 0.35, "var(--acc-work)"], ["infra", 0.2, "var(--acc-work)"]],
     models: [["Opus", 0.8, "#c026d3"], ["Sonnet", 0.18, "#3b82f6"], ["Haiku", 0.02, "#22c55e"]],
     surfaces: [["Terminal", 0.45, "#3b82f6"], ["Desktop Code tab", 0.35, "#f59e0b"], ["VS Code", 0.15, "#8e8e93"], ["SDK apps", 0.05, "#14b8a6"]],
   },
   side: {
-    projects: [["plant-app", 0.7, "#8b5cf6"], ["landing-page", 0.2, "#8b5cf6"], ["other", 0.1, "#8e8e93"]],
+    projects: [["plant-app", 0.7, "var(--acc-side)"], ["landing-page", 0.2, "var(--acc-side)"], ["other", 0.1, "#8e8e93"]],
     models: [["Sonnet", 0.6, "#3b82f6"], ["Opus", 0.3, "#c026d3"], ["Haiku", 0.1, "#22c55e"]],
     surfaces: [["Desktop Code tab", 0.6, "#f59e0b"], ["Terminal", 0.4, "#3b82f6"]],
   },

@@ -1,7 +1,7 @@
 // The app's usage panel in its five designs (Glow bars, Twin rings, Big numbers, Segmented, Pace bars),
 // drawn from a profile's figures. "large" is the full panel (Settings preview); otherwise the compact one
 // the Dock shows on a click. Same layout rules as the app's PanelDesigns.swift.
-import { accounts, type AccountId } from "./demo";
+import { accounts, rgbOf, type AccountId } from "./demo";
 
 export type Design = "glow" | "rings" | "numbers" | "segments" | "pace";
 
@@ -148,7 +148,7 @@ export function panelHTML(id: AccountId, design: Design, opts: { large: boolean;
     ? `<div class="pn-head"><span class="ico" data-ico="${id}"><img src="${opts.icon ?? a.icon}" data-acc-icon="${id}" alt="" width="56" height="56"></span><div class="pn-who"><div class="pn-title"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i>Claude ${name}</div><div class="pn-sub email">${a.email}</div><span class="pn-plan">${a.plan} plan</span></div><span class="pn-close" aria-hidden="true">✕</span></div>`
     : `<div class="pn-head small"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b><span class="pn-plan">${a.plan}</span></div>`;   // the profile's light (26.11.81, ProfileLED)
   const foot = opts.large
-    ? `<div class="pn-foot"><span class="pill small tint ${a.tint}">Claude</span><span class="pill small">Dashboard</span><span class="spacer"></span><span class="pn-sub">Updated just now</span><span class="pn-gear" aria-hidden="true">⚙︎</span></div>`
+    ? `<div class="pn-foot"><span class="pill small tint ${a.tint}" style="--tint:var(--acc-${a.id}-rgb, ${rgbOf(a.hex)})">Claude</span><span class="pill small">Dashboard</span><span class="spacer"></span><span class="pn-sub">Updated just now</span><span class="pn-gear" aria-hidden="true">⚙︎</span></div>`
     : `<div class="pn-sub pn-note">${opts.note ?? ""}</div>`;
   return `<div class="pn${opts.large ? " large" : ""}">${head}${limitsHTML(id, design, opts.large)}${creditsHTML(id)}${foot}</div>`;
 }
