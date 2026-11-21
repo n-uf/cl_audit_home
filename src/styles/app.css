@@ -1836,6 +1836,9 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* the line at the top of a running switch, restore or import: a display and its keys */
 .sw-run { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .sw-run .disp { flex: 0 1 auto; }
+/* on a phone the switch's one-line display ("Claude Code on … · the Claude app still on …") would set the page's width
+   and push its keys off the screen: it wraps there instead (the app narrows its dim part, DisplayWindow.narrowed) */
+@media (max-width: 560px) { .sw-run .disp { white-space: normal; height: auto; min-height: 24px; padding: 6px 10px; line-height: 1.45; } }
 .sw-run .spacer { flex: 1; }
 .t-red { --tint: 242, 101, 90; }
 .pill.dimmed { opacity: .45; pointer-events: none; }
