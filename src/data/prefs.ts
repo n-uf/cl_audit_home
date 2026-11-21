@@ -2,7 +2,7 @@
 // to the visitor). Applied on every page: icon style and colour (Dock, cards, strip, launcher), profile colour, the card style, the
 // Claude open dot, how long a Dock click shows the usage before opening Claude, and what a profile includes
 // (Usage in the Dock, Claude window).
-import { accounts, type AccountId } from "./demo";
+import { accounts, rgbOf, type AccountId } from "./demo";
 import { limitsHTML, backWords, creditsHTML, type Design } from "./panelView";
 import manifest from "./icon-manifest.json";   // written by scripts/render-icons.sh
 
@@ -176,6 +176,10 @@ export function applyPrefs(p = loadPrefs()) {
   for (const a of accounts) {
     const pr = p[a.id];
     root.style.setProperty(`--acc-${a.id}`, colors[pr.color] ?? pr.color);
+    // the same colour as "r, g, b", for the keys' lit LED (.pill.tint): the card's Show window and the panel's Claude
+    // key take the profile's own colour (26.11.85, ProfileLED.keyTint)
+    const hex = /^#[0-9a-f]{6}$/i.test(colors[pr.color] ?? pr.color) ? (colors[pr.color] ?? pr.color) : a.hex;
+    root.style.setProperty(`--acc-${a.id}-rgb`, rgbOf(hex));
     root.classList.toggle(`dot-${a.id}`, pr.dot && pr.win);   // no window, no Claude open dot
     root.style.setProperty(`--frame-${a.id}`, a.five >= 100 ? "transparent" : pr.frame ? (pr.frame === "usage" ? levelHex(a.five) : tileColors[pr.frame] ?? "transparent") : "transparent");
     // the two switches in Profile: without a Claude window a card has no window switch and no Open/Show window;

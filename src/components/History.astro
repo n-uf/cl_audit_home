@@ -36,7 +36,7 @@ const kinds: Range[] = ["24h", "7d", "30d"];
   </div>
 
   <div class="legend sub">
-    {accounts.map((a) => <span class="legend-item" data-account={a.id}><i style={`background:${a.hex}`} />{a.name}</span>)}
+    {accounts.map((a) => <span class="legend-item" data-account={a.id}><i style={`background:${a.color}`} />{a.name}</span>)}
     <span class="spacer"></span>
     <span class="hide-sm">From the session files on this Mac (terminal, desktop Code tab, VS Code, SDK apps).</span>
   </div>
