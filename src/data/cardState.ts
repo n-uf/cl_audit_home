@@ -19,7 +19,11 @@ const BUSY_MS = 1200;
 const QUIT_AFTER_S = 10;   // the Dock icon quits this long after its Claude window
 
 const w = window as any;
-const state: Record<string, S> = (w.__clState ??= Object.fromEntries(accounts.map((a) => [a.id, { win: !!a.winOpen, dock: true }])));
+// The Dock icon app starts stopped (26.11.76): the Dock draws each profile's usage itself, so the app runs only once it is
+// started, by a click on its Dock tile or its switch here (the card's chip says "stopped" until then, as the app's dockChip)
+const state: Record<string, S> = (w.__clState ??= Object.fromEntries(accounts.map((a) => [a.id, { win: !!a.winOpen, dock: false }])));
+/** A click on a profile's Dock tile starts its Dock icon app (the Dock bar calls this; it persists across pages). */
+w.clDockStarted = (id: string) => { const s = state[id]; if (s && !s.dock && !s.dockBusy) { s.dock = true; s.quitAt = undefined; renderCards(); } };
 let ticker = 0;
 // the state each card is shown in ("" = its own, with numbers), kept on window like the switches'
 const shown: Record<string, CardStateKey | ""> = (w.__clCardShown ??= {});
@@ -135,6 +139,8 @@ export function renderCards() {
       b?.classList.toggle("unlit", !s.win);   // a lit LED means running: dark while the window is closed (26.11.0)
     });
     document.querySelectorAll<HTMLElement>(`[data-win-badge="${a.id}"]`).forEach((b) => (b.hidden = !(s.win && !s.winBusy)));
+    // the Dock's running dot under the profile's Dock tile: only while its Dock icon app runs
+    document.querySelectorAll<HTMLElement>(`.dock-item[data-pop="${a.id}"]`).forEach((b) => b.classList.toggle("launched", s.dock && !s.dockBusy));
   }
   // the demo row's keys: lit while their state is shown
   document.querySelectorAll<HTMLElement>("[data-card-state]").forEach((b) => {
