@@ -95,8 +95,9 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       case "moving": case "undoing": return bar(`<span class="b">Switching</span> <em>· moving sessions</em>`);
       case "waiting": return bar(`<span class="b">Switching</span> <em>· waiting · until ${until}</em>`, STOP("data-sw-cancel", "Cancel"));
       // Claude Code is on the new account; the Claude app (the account in use follows it) is still on the old one
-      // (the finish line came from the Claude app's own account, which isn't on standby: no Switch back…, as the app's cameFrom)
-      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, ...(isFin() ? [] : [K(`data-sw-backswitch title="${backSwitchTitle()}"`, "Switch back…")]), GO(backTitle, "‹ Back"));   // words: SEO
+      // (the finish line too: it came from the Claude app's account, which is one of the profile's standby entries, the active
+      // one (Switch.swift appSeat), so the app's cameFrom finds it and Switch back… shows)
+      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, K(`data-sw-backswitch title="${backSwitchTitle()}"`, "Switch back…"), GO(backTitle, "‹ Back"));   // words: SEO
       case "other": return bar(`<span class="a">Signed in as ${O()}</span> <em>· not ${T()}</em>`, GO("data-sw-retry", `Sign in as ${T()} again`), K("data-sw-undo", "Undo the move"));
       case "timedOut": return bar(`<span class="a">No sign-in</span> <em>· sessions on ${T()}</em>`, GO("data-sw-retry", "Try again"), K("data-sw-undo", "Undo the move"), back);
       case "failed": return fail === "half"
@@ -115,20 +116,22 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
         const all = fin ? [fin, ...list] : list;
         const pick = `<div class="acc-pick" role="radiogroup" aria-label="Switch to">${all.map((s) => sbBox(s, s.email === to, s.email === to ? B.to : B.sb,
           ` data-sw-to="${s.email}" role="radio" tabindex="0" aria-checked="${s.email === to}" aria-label="${emailText(s.email)}"`)).join("")}</div>`;
-        return row("Now", fin ? splitNowBox() : nowBox()) + row("To", pick) + (all.length > 1 ? '<p class="g-note sub pick-note">The one offered first is on top. Click another to switch to it instead.</p>' : "");
+        return row("Now", now()) + row("To", pick) + (all.length > 1 ? '<p class="g-note sub pick-note">The one offered first is on top. Click another to switch to it instead.</p>' : "");
       }
       // the lit "Switching to" badge only while it is waited for ("Next"), as the app's `going`
-      case "closing": case "moving": case "undoing": return row("Now", fin ? splitNowBox() : nowBox()) + row("Wanted", wanted(B.sb));
-      case "waiting": return row("Now", nowBox()) + row("Next", wanted(B.to));
+      case "closing": case "moving": case "undoing": return row("Now", now()) + row("Wanted", wanted(B.sb));
+      case "waiting": return row("Now", now()) + row("Next", wanted(B.to));
       // the Claude app is still on the account in use, and Claude Code is on the new one (cl_audit 26.11.25, AccountResolver's
       // SplitUsage): nothing shows Claude Code's numbers as the profile's, so the box says the switch waits for the app's
       // sign-in. No numbers (the old account's are gone; the plan goes with them) and no key to sign Claude Code in.
       case "reached": return row("Now", inUse(work.email, "", note(`Switching to ${E()}: one step left. Sign the Claude app in to ${E()} to finish.`) + note("No numbers yet: the agent reads them within a few minutes.")));
       // the folder is on another of the profile's accounts now, and that is the one in use (no numbers read yet)
       case "other": return row("Now", inUse(other().email, other().plan, note("No numbers yet: the agent reads them within a few minutes."))) + row("Wanted", wanted(B.sb));
-      default: return row("Now", nowBox()) + row("Wanted", wanted(B.sb));
+      default: return row("Now", now()) + row("Wanted", wanted(B.sb));
     }
   };
+  /** The account in use until the switch is reached: the split's box while the profile is split (`fin`), else its limits. */
+  function now() { return fin ? splitNowBox() : nowBox(); }
 
   // ── What changes (before and while it runs), What changed (after) ──
   const srow = (label: string, text: string) => `<div class="srow"><span>${label}</span><span class="v-soft">${text}</span></div>`;
