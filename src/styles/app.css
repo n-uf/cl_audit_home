@@ -401,6 +401,8 @@ code, kbd { font-family: var(--mono); }
 .dock-item img { width: 56px; height: 56px; transition: transform .16s; }
 .dock-item:hover img { transform: translateY(-8px) scale(1.12); }
 .run { position: absolute; left: 50%; bottom: 2px; width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.75); transform: translateX(-50%); }
+/* a profile's Dock icon (26.11.76): the Dock draws its usage, so no running dot until a click starts its app */
+.dock-item[data-pop]:not(.launched) .run { display: none; }
 .tip {
   position: absolute; bottom: calc(100% + 16px); left: 50%; transform: translateX(-50%);
   padding: 3px 10px; border-radius: 7px; background: rgba(30,30,32,.92); box-shadow: 0 0 0 1px rgba(255,255,255,.12);

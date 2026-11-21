@@ -1,6 +1,8 @@
 ---
 // A macOS Dock with the cl_audit icons. Like the app: click a profile's Dock icon for a quick look at its
 // limits, a Claude tile for its Claude window, the cl_audit icon to bring cl_audit to the front.
+// Since 26.11.76 the Dock draws each profile's usage itself (its Dock tile plug-in), so a profile's Dock icon has no
+// running dot until it is clicked: the click starts its app, which then keeps running. The Claude window's open dot stays.
 import { panelHTML, type Design } from "../data/panelView";
 import { accounts } from "../data/demo";
 import AccIcon from "./AccIcon.astro";
@@ -45,6 +47,8 @@ import AccIcon from "./AccIcon.astro";
   bar.querySelectorAll<HTMLButtonElement>("[data-pop]").forEach((b) =>
     b.addEventListener("click", (e) => {
       e.stopPropagation();
+      // the click starts the profile's Dock icon app: its running dot shows from now on (the Dock bar persists across pages)
+      b.classList.add("launched");
       const pop = bar.querySelector<HTMLElement>(`[data-popup="${b.dataset.pop}"]`)!;
       // the compact panel, in the design chosen for this profile in Settings
       const pr = loadPrefs()[b.dataset.pop as "home"];
