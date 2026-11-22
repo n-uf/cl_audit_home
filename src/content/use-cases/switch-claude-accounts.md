@@ -6,7 +6,7 @@ mainKeyword: "claude account switcher"
 kind: use-case
 draft: false
 published: 2026-11-19
-updated: 2026-11-21
+updated: 2026-11-22
 author: n-uf
 order: 6
 takeaways:
@@ -62,11 +62,11 @@ sources:
     checked: 2026-11-20
     supports: "26.11.48: when Claude Code's folder is signed in to another profile's account and you move it back to the profile's own account, the Switch page says the other account stays with the profile it belongs to."
     quote: "the other account stays with the profile it belongs to"
-  - title: "cl_audit README at tag v26.11.54 (Show emails)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.54/README.md"
-    checked: 2026-11-20
-    supports: "Show emails (General settings) off leaves email addresses out of the launcher, the dashboard's account lines and the panels, and masks them in menus and sentences."
-    quote: "masks them like y•••@example.com in menus and sentences"
+  - title: "cl_audit README at tag v26.11.87 (Show emails)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.87/README.md"
+    checked: 2026-11-22
+    supports: "Show emails (General settings) off leaves email addresses out of the launcher, the dashboard's account lines and the panels, writes \"hidden address\" in their place in menus and sentences, and draws one fixed blurred stand-in in Settings, the address only while the pointer is on it."
+    quote: "writes \"hidden address\" in their place in menus and sentences"
   - title: "cl_audit CHANGELOG, 26.11.47"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.47/CHANGELOG.md"
     checked: 2026-11-15
@@ -257,7 +257,7 @@ You can also switch without the Switch page: run `claude auth login` yourself fo
 
 ## What the card says when it shows no numbers
 
-A profile's card shows numbers only when Claude Code in Terminal, on the profile's folder, is signed in to the same account as the Claude app. Otherwise it shows a bold heading about Terminal's sign-in and one sentence on what to do. Red means the sign-in is on the wrong account or gone. Amber means it can't be read yet, or a switch is under way. With **Show emails** off in General settings, addresses in menus and sentences read like a•••@example.com.
+A profile's card shows numbers only when Claude Code in Terminal, on the profile's folder, is signed in to the same account as the Claude app. Otherwise it shows a bold heading about Terminal's sign-in and one sentence on what to do. Red means the sign-in is on the wrong account or gone. Amber means it can't be read yet, or a switch is under way. With **Show emails** off in General settings, addresses in menus and sentences read "hidden address".
 
 ### Terminal is signed in to ben@example.com
 
