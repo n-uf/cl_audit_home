@@ -221,8 +221,9 @@ export function applyPrefs(p = loadPrefs()) {
   document.querySelectorAll<HTMLElement>("[data-back-min]").forEach((el) => (el.textContent = backWords(+el.dataset.backMin!)));
   (window as any).clPeekMs = (id: AccountId) => Math.round((p[id]?.peek ?? 0.75) * 1000) + 400;
   (window as any).clClick = (id: AccountId) => p[id]?.click ?? "Usage, then Claude";
-  let showEmails = true;
-  try { showEmails = localStorage.getItem("cl_audit.showEmails") !== "0"; } catch {}
+  // Show emails: off unless the visitor turned it on (26.11.87: a fresh install starts with addresses hidden)
+  let showEmails = false;
+  try { showEmails = localStorage.getItem("cl_audit.showEmails") === "1"; } catch {}
   root.classList.toggle("hide-emails", !showEmails);
   // General ▸ Privacy ▸ Usage history (26.11.0): off, no session file is read, so the dashboard's history is hidden
   let history = true;
