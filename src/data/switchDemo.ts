@@ -32,9 +32,9 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   let fin: Standby | null = null;
   const isFin = () => !!fin && to === fin.email;
   const T = () => shortText(to), target = () => (isFin() ? fin! : list.find((s) => s.email === to)!);
-  /** The address the switch is moving to, for a sentence: masked and blurred while Show emails is off (this page is part of Settings). */
+  /** The address the switch is moving to, for a sentence: "hidden address" while Show emails is off (this page is part of Settings). */
   const E = () => emailHTML(to);
-  /** Switch back…'s hover text: the address it goes back to, masked while Show emails is off (redraw keeps it current). */
+  /** Switch back…'s hover text: the address it goes back to, "hidden address" while Show emails is off (redraw keeps it current). */
   const backSwitchTitle = () => `Switch back to ${emailText(work.email)}`;
   /** The account the browser signs in as in "Wrong account": another of the profile's standby accounts. */
   const other = () => list.find((s) => s.email !== to)!;
