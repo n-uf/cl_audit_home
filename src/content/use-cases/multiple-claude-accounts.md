@@ -69,7 +69,7 @@ sources:
   - title: "cl_audit CHANGELOG, 26.11.87"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.87/CHANGELOG.md"
     checked: 2026-11-22
-    supports: "26.11.87: with Show emails off, an address in a sentence, a menu row, an alert or a tooltip reads \"hidden address\"; where Settings draws one (an account's title, the Account pop-up, the Switch page, first run) it draws one fixed blurred stand-in, the same for every account, and the address itself only while the pointer is on it; a fresh install starts hidden."
+    supports: "26.11.87: with Show emails off, an address in a sentence, a menu row, an alert or a tooltip reads \"hidden address\"; where Settings draws one (an account's title, the Account pop-up, the Switch page, first run) it draws one fixed blurred stand-in, the same for every account, and the address itself only while the pointer is on it; the Switch account menus draw the stand-in per row and show the address only while the row is highlighted; an unset setting means hidden, except that the first time 26.11.87 starts on a Mac where cl_audit was already set up and neither setting is stored, it stores Show emails on, once; a fresh install starts hidden and stays so."
     quote: "the address itself only while the pointer is on it"
   - title: "cl_audit source at v26.11.36, Sources/IconApp.swift (the Dock icon's menu)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/IconApp.swift#L498-L500"
@@ -184,7 +184,7 @@ Each profile keeps its own:
 
 When you create a new folder, you can copy some Claude Code setup into it from another folder you pick: instructions, agents, skills, commands or memory. That way a new profile starts with your usual `CLAUDE.md` and skills.
 
-Email addresses show in the launcher and on cards. If you share your screen, turn off **Show emails** in Settings ▸ General ▸ Privacy, and an address that stands alone is left out of the launcher, the dashboard and the panels (the Dock's folder warning says only "a different account"). An address inside a menu, a message or a tooltip reads "hidden address" instead. Where Settings draws one, such as an account's title, it draws a fixed blurred stand-in that is the same for every account, and shows the real address only while your pointer is on it. A fresh install starts with emails hidden.
+cl_audit can show each account's email address in the launcher, on the cards and in the menus, and **Show emails** in Settings ▸ General ▸ Privacy decides whether it does. A fresh install starts with it off. A Mac already set up with an earlier version, where the setting was never changed, keeps addresses shown until you turn it off. While it's off, the launcher, the dashboard's account lines and the panels leave addresses out, and the Dock's folder warning says only "a different account". An address in a sentence, an alert or a tooltip reads "hidden address" instead. In Settings and in the Switch account menus, each address is the same blurred stand-in for every account, and the real one shows only while your pointer is on it. Nothing of a hidden address shows when you share your screen.
 
 ## Is it allowed to have multiple Claude accounts?
 
