@@ -262,7 +262,7 @@ You can also switch without the Switch page: run `claude auth login` yourself fo
 
 ## What the card says when it shows no numbers
 
-A profile's card shows numbers only when Claude Code in Terminal, on the profile's folder, is signed in to the same account as the Claude app. Otherwise it shows a bold heading about Terminal's sign-in and one sentence on what to do. Red means the sign-in is on the wrong account or gone. Amber means it can't be read yet, or a switch is under way. With **Show emails** off in General settings, as on a fresh install and in this page's demo, addresses in menus and sentences read "hidden address". The examples below spell them out as they read with it on.
+A profile's card shows numbers only when Claude Code in Terminal, on the profile's folder, is signed in to the same account as the Claude app. Otherwise it shows a bold heading about Terminal's sign-in and one sentence on what to do. Red means the sign-in is on the wrong account or gone. Amber means it can't be read yet, or a switch is under way. With **Show emails** off in General settings, as on a fresh install and in the site's [demo](/settings/), addresses in menus and sentences read "hidden address". The examples and pictures on this page spell them out as they read with it on.
 
 ### Terminal is signed in to ben@example.com
 
