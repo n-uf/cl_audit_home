@@ -277,10 +277,11 @@ code, kbd { font-family: var(--mono); }
 .hide-emails .email { display: none; }
 .email-m, .email-s { display: none; }
 .hide-emails .email-m { display: inline; }
-.hide-emails .settings :is(.abox-title, .abox-t > b) .email-m { display: none; }
-.hide-emails .settings :is(.abox-title, .abox-t > b) .email-s { display: inline; filter: blur(3.5px); }
-.hide-emails .settings :is(.abox-title, .abox-t > b):hover .email-s { display: none; }
-.hide-emails .settings :is(.abox-title, .abox-t > b):hover .email { display: inline; }
+.hide-emails .settings :is(.abox-title, .abox-t > b, .login-menu .lm-row) .email-m { display: none; }
+.hide-emails .settings :is(.abox-title, .abox-t > b, .login-menu .lm-row) .email-s { display: inline; filter: blur(3.5px); }
+/* (the pointer on the title's whole line, which keeps its width, so the swap never moves the title from under it) */
+.hide-emails .settings :is(.abox-t:hover :is(.abox-title, b), .login-menu .lm-row:hover) .email-s { display: none; }
+.hide-emails .settings :is(.abox-t:hover :is(.abox-title, b), .login-menu .lm-row:hover) .email { display: inline; }
 /* a Switch account menu row (.arow): its short name while shown; hidden, the blurred stand-in, and the address only
    while the row is highlighted (SwitchMenu.accountItem, AddressMenuRow) */
 .as-stand, .as-real { display: none; }
@@ -1980,7 +1981,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   .content :is(p, li, summary) { font-size: 16px; }
   .content p.t { font-size: 16px; }
   .settings :is(p, li), .dash :is(p, li) { font-size: 14px; }   /* the demo panels' own notes */
-  .content :is(td, th, figcaption, small, code, kbd, .sub, .note, .legal, .email, .email-m, .email-s, .trust-note, .fl-back, .sg-k1, .sg-k2, .tf-text code) { font-size: 14px; }
+  .content :is(td, th, figcaption, small, code, kbd, .sub, .note, .legal, .email, .email-m, .email-s, .as-short, .as-stand, .as-real, .trust-note, .fl-back, .sg-k1, .sg-k2, .tf-text code) { font-size: 14px; }
   .content :is(.srow > span, .pn-name, .pn-row .pn-pct, .fl-row .pn-pct, .mh b, .gk-row > span, .gk-title, .gk-btn, .pchip-text, .stab, .start-box, .hist-mini b, .abox-t :is(.email, .email-m, .email-s), .fl-box .fl-back, .sha-list, b.pn-pct) { font-size: 14px; }
   .faq-list details p { font-size: 16px; }
   .menubar { font-size: 14px; }

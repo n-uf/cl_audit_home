@@ -21,7 +21,7 @@ const jsonLd = [
 <script>
   import { accounts, standby, offerOrder, type AccountId, type Standby } from "../data/demo";
   import { chevronHTML } from "../data/chevron";
-  import { emailHTML, emailsHTML, emailText } from "../data/emails";
+  import { emailHTML, emailsHTML, emailText, shortText } from "../data/emails";
   import { applyPrefs, loadPrefs, savePrefs, loadOrder, saveOrder, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
   import { glyphHTML, lane as mbLane } from "../data/menubar";
   import { widgetHTML } from "../data/widgetView";
@@ -57,7 +57,8 @@ const jsonLd = [
     const bkKeep = { last: 3, days: 30 };   // General ▸ Backups
     const backupsOf = (id: AccountId) => [
       ...(madeNow[id] ?? []).map((n) => [n, "17 sessions · 2 tasks · sidebar · 40 MB"]),
-      ...(standby[id].length ? [[`Before switch to ${offerOrder(standby[id])[0].email.split("@")[0]} · 5 Nov 18:40`, "17 sessions · 2 tasks · sidebar · transcripts · 5.5 GB, sharing space with the originals"]] : []),
+      // (the name built when it's shown, as 26.11.87 does: "hidden address" while Show emails is off)
+      ...(standby[id].length ? [[`Before switch to ${shortText(offerOrder(standby[id])[0].email)} · 5 Nov 18:40`, "17 sessions · 2 tasks · sidebar · transcripts · 5.5 GB, sharing space with the originals"]] : []),
       ["Manual · 2 Nov 09:12", "15 sessions · 2 tasks · sidebar · 40 MB"],
     ];
     const showPage = () => {
@@ -896,6 +897,7 @@ const jsonLd = [
         document.documentElement.classList.toggle("hide-emails", !on);
         swi.refreshTitles();   // the Switch page's hover title with an address follows the setting
         if (!general && page === "switch") swi.redraw();   // and its short names ("hidden address" while hidden)
+        else show();   // the rest (a backup's "Before switch to …", the account boxes) as the setting says now
         try { localStorage.setItem("cl_audit.showEmails", on ? "1" : "0"); } catch {}
         syncEmails();
         showWhatNow("Show emails", on ? "on" : "off", on

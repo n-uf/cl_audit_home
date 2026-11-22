@@ -5,7 +5,7 @@
 // the icon ("1h 42m"), or only turns red; in System it's never red (the countdown shows it).
 import { accounts, standby, offerOrder, bestOffer, type AccountId } from "./demo";
 import { countdownWords, fableShown } from "./panelView";
-import { addressRowHTML, shortHTML } from "./emails";
+import { addressRowHTML, shortText } from "./emails";
 import type { MenuBarLook } from "./prefs";
 
 const level = (p: number) => (p >= 95 ? "#eb445b" : p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
@@ -76,12 +76,13 @@ export function menuHTML(id: AccountId, name: string) {
   const switching = sb.length
     ? (best ? sw(best, `Switch to ${addressRowHTML(best.email)}…`) : "") +
       `<button type="button" class="mbm-it" data-mbm="submenu" aria-expanded="false">Switch account<span class="chev">›</span></button>` +
-      `<div class="mbm-subm" hidden><div class="mbm-it cur"><span class="ck">✓</span>${shortHTML(a.email)}<span class="r">week ${a.week}%</span></div>` +
+      `<div class="mbm-subm" hidden><div class="mbm-it cur"><span class="ck">✓</span>${shortText(a.email)}<span class="r">week ${a.week}%</span></div>` +
       sb.map((s) => sw(s, `<span class="ck"></span><span>${addressRowHTML(s.email)}…</span>`)).join("") + "</div><hr>"
     : "";
   // the profile's light before its name (26.11.81, ProfileLED), in its colour as set in Settings
   return `<div class="mbm-head"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b><span>${a.plan}</span></div>` +
-    (sb.length ? `<div class="mbm-acc"><i></i>${shortHTML(a.email)}</div>` : "") +
+    // (plain text: the menu is built each time it opens, so the short name reads as the setting says then)
+    (sb.length ? `<div class="mbm-acc"><i></i>${shortText(a.email)}</div>` : "") +
     (a.five >= 100 ? `<div class="mbm-sub hot">5-hour full · in ${countdownWords(a.fiveLeftMin)}</div>` : "") +
     row("5-hour", a.five, a.five >= 100 ? "full" : `resets ${when(a.fiveLeftMin)}`, a.five >= 100) +
     row("Week", a.week, `resets ${when(a.weekLeftMin)}`, false) +
