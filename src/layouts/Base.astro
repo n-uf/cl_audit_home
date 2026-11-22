@@ -73,6 +73,18 @@ const ogImage = new URL(ogPath, Astro.site);
         apply();
         document.addEventListener("astro:after-swap", apply);
       })();
+      // Show emails, before the first paint so no address shows for a moment: off unless the visitor turned it on (as a
+      // fresh cl_audit 26.11.87 install starts); data/prefs.ts keeps it after each page swap
+      (function () {
+        var root = document.documentElement, on = false;
+        try { on = localStorage.getItem("cl_audit.showEmails") === "1"; } catch (e) {}
+        root.classList.toggle("hide-emails", !on);
+        document.addEventListener("astro:after-swap", function () {
+          var s = false;
+          try { s = localStorage.getItem("cl_audit.showEmails") === "1"; } catch (e) {}
+          root.classList.toggle("hide-emails", !s);
+        });
+      })();
       // the panels' faceplate (standard, black or silver), chosen in the window's title bar; a per-browser convenience
       (function () {
         var w = window, root = document.documentElement, KEY = "cl_audit.face";
