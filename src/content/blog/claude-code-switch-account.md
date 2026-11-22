@@ -6,7 +6,7 @@ mainKeyword: "claude code switch account"
 kind: how-to
 published: 2026-11-22
 updated: 2026-11-22
-draft: true
+draft: false
 author: n-uf
 takeaways:
   - "To switch account in Claude Code, type /logout, start claude again and sign in with the other account; claude auth logout and claude auth login do the same from the shell."
