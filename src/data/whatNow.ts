@@ -34,7 +34,7 @@ function arm() {
 export function showWhatNow(setting: string, value: string, text: string) {
   const c = card();
   if (!c) return;
-  // an address in either line is masked while Show emails is off
+  // an address in either line reads "hidden address" while Show emails is off
   c.querySelector(".wn-t")!.innerHTML = emailsHTML(value ? `${setting} · ${value}` : setting);
   c.querySelector(".wn-d")!.innerHTML = emailsHTML(text);
   c.classList.add("show");
