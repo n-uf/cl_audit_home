@@ -67,6 +67,11 @@ sources:
     checked: 2026-11-22
     supports: "Show emails (General settings) off leaves email addresses out of the launcher, the dashboard's account lines and the panels, writes \"hidden address\" in their place in menus and sentences, and draws one fixed blurred stand-in in Settings, the address only while the pointer is on it."
     quote: "writes \"hidden address\" in their place in menus and sentences"
+  - title: "cl_audit CHANGELOG, 26.11.87"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.87/CHANGELOG.md"
+    checked: 2026-11-22
+    supports: "26.11.87: with Show emails off, an address in a sentence, a menu row, an alert or a tooltip reads \"hidden address\"; a fresh install starts hidden and stays so."
+    quote: "a fresh install starts hidden and stays so"
   - title: "cl_audit CHANGELOG, 26.11.47"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.47/CHANGELOG.md"
     checked: 2026-11-15
@@ -257,7 +262,7 @@ You can also switch without the Switch page: run `claude auth login` yourself fo
 
 ## What the card says when it shows no numbers
 
-A profile's card shows numbers only when Claude Code in Terminal, on the profile's folder, is signed in to the same account as the Claude app. Otherwise it shows a bold heading about Terminal's sign-in and one sentence on what to do. Red means the sign-in is on the wrong account or gone. Amber means it can't be read yet, or a switch is under way. With **Show emails** off in General settings, addresses in menus and sentences read "hidden address".
+A profile's card shows numbers only when Claude Code in Terminal, on the profile's folder, is signed in to the same account as the Claude app. Otherwise it shows a bold heading about Terminal's sign-in and one sentence on what to do. Red means the sign-in is on the wrong account or gone. Amber means it can't be read yet, or a switch is under way. With **Show emails** off in General settings, as on a fresh install and in this page's demo, addresses in menus and sentences read "hidden address". The examples below spell them out as they read with it on.
 
 ### Terminal is signed in to ben@example.com
 
