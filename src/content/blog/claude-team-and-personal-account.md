@@ -5,7 +5,7 @@ h1: "A Claude Team and personal account on one Mac"
 mainKeyword: "claude team and personal account"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-20
+updated: 2026-11-22
 author: n-uf
 takeaways:
   - "Anthropic's help pages treat a personal account and a Team account as separate accounts, with their own usage limits, billing, chats and projects (checked 20 November 2026)."
@@ -25,16 +25,16 @@ faq:
   - q: "Does cl_audit show my whole team's usage?"
     a: "No. cl_audit shows the profiles on the Mac it runs on, each with its own account's limits; it has no team-wide view. Team Owners have Anthropic's Analytics instead, with members' activity and a spend report per person and per model. That report covers usage-credit spend, not usage inside each seat's allowance."
 sources:
-  - title: "cl_audit source at v26.11.36, Sources/Privacy.swift (Show emails)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/Privacy.swift#L44-L83"
-    checked: 2026-11-15
-    supports: "26.11.36: with Show emails off, an address that stands alone is left out of the launcher, dashboard and panels (HiddenEmail) and of the Dock menus (IconApp), and an address in a menu or a sentence is shown masked, as y•••@example.com (Privacy.masked), in Settings too; there, account titles and pickers are also blurred (SettingsEmail), and hovering lifts only the blur."
-    quote: "Settings text that can't blur (menus, sentences): masked while emails are hidden."
-  - title: "cl_audit source at v26.11.36, Sources/AccountsView.swift (AccountBoxTitle)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/AccountsView.swift#L173-L186"
-    checked: 2026-11-15
-    supports: "26.11.36: an account box's title in Settings is blurred while emails are hidden (settingsEmail)."
-    quote: ".settingsEmail(text.contains(\"@\"))"
+  - title: "cl_kit source at v26.11.3, Privacy/AddressText.swift (hidden addresses)"
+    url: "https://github.com/n-uf/cl_kit/blob/v26.11.3/Privacy/AddressText.swift#L20-L58"
+    checked: 2026-11-22
+    supports: "cl_kit 26.11.3, the module cl_audit 26.11.87 vendors: a hidden address is never drawn from the real one but as one fixed stand-in, the same for every address, and in running text, a tooltip, an alert or a pop-up row it reads \"hidden address\"; a short name for a compact row is \"hidden address\" too, with no part of the address."
+    quote: "public static let hidden = \"hidden address\""
+  - title: "cl_audit CHANGELOG, 26.11.87"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.87/CHANGELOG.md"
+    checked: 2026-11-22
+    supports: "26.11.87: with Show emails off, an address in a sentence, a menu row, an alert or a tooltip reads \"hidden address\"; where Settings draws one (an account's title, the Account pop-up, the Switch page, first run) it draws one fixed blurred stand-in, the same for every account, and the address itself only while the pointer is on it."
+    quote: "the address itself only while the pointer is on it"
   - title: "cl_audit source at v26.11.36, Sources/IconApp.swift (the Dock icon's menu)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/IconApp.swift#L498-L500"
     checked: 2026-11-15
@@ -195,7 +195,7 @@ Commenters give their reasons. One wants a hard wall between work and personal f
 
 Some habits that help, whatever tool you use:
 
-- **Name and colour each profile differently.** In cl_audit a profile has a name, an icon label of up to six letters and its own colour, so you can tell the windows apart. Turning **Show emails** off (Settings ▸ General ▸ Privacy) leaves an address that stands alone out of the launcher, the dashboard, the panels and the Dock menus (the Dock's folder warning says only "a different account"), shows one inside a menu or a message masked, such as y•••@example.com, and in Settings masks it everywhere and also blurs it in account titles and pickers (hovering lifts the blur, not the mask), which helps when you share your screen.
+- **Name and colour each profile differently.** In cl_audit a profile has a name, an icon label of up to six letters and its own colour, so you can tell the windows apart. Turning **Show emails** off (Settings ▸ General ▸ Privacy) leaves an address that stands alone out of the launcher, the dashboard and the panels (the Dock's folder warning says only "a different account"), writes "hidden address" in place of one inside a menu or a message, and in Settings draws one fixed blurred stand-in, the same for every account, that shows the real address only while your pointer is on it, which helps when you share your screen.
 - **Separate Claude Code folders.** Give each profile its own folder, so each keeps its own sign-in. cl_audit can share items such as `CLAUDE.md`, agents, skills, commands or memory from one folder with a new profile; sign-ins and usage stay separate. Share only what belongs on both sides (the [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) guide shows how the folders work). A personal notes file doesn't belong in a work folder.
 - **Check for an API key.** Anthropic's help page for Claude Code says that if an `ANTHROPIC_API_KEY` environment variable is set, Claude Code uses the key instead of your subscription, and you get API charges rather than the plan's included usage. A profile that uses an API key has no usage limits for cl_audit to show.
 - **Keep personal work out of the Team seat.** The Primary Owner can request data exports, and your organization may have its own policies. Ask your Primary Owner what applies to you.
