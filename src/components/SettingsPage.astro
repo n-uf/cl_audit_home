@@ -16,7 +16,7 @@ import { accounts } from "../data/demo";
 import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices, dockRunsChoices, menuBarFamilies, appIconStyles, appIconSrc, appIconDefault } from "../data/prefs";
 import { limitsHTML, designs } from "../data/panelView";
 import { chevronHTML } from "../data/chevron";
-import { maskEmail } from "../data/emails";
+import { HIDDEN, STAND_IN } from "../data/emails";
 import { cardStates } from "../data/cardStates";
 import { lane as mbLane } from "../data/menubar";
 import { version, build, changelog } from "../data/site";
@@ -80,7 +80,7 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
             <div class="abox in-use" data-abox-inuse>
               <div class="abox-head"><i class="abox-lamp on"></i>
                 <span class="abox-t login-ctl">
-                  <button type="button" class="abox-title" data-login-btn aria-haspopup="menu" aria-expanded="false"><span class="email" data-text="email">{a.email}</span><span class="email-m" data-text="email-m">{maskEmail(a.email)}</span><Fragment set:html={chevronHTML} /></button>
+                  <button type="button" class="abox-title" data-login-btn aria-haspopup="menu" aria-expanded="false"><span class="email" data-text="email">{a.email}</span><span class="email-m">{HIDDEN}</span><span class="email-s" aria-hidden="true">{STAND_IN}</span><Fragment set:html={chevronHTML} /></button>
                   <span class="login-menu" data-login-menu role="menu" hidden></span>
                   <small data-abox-detail>{a.plan}</small>
                 </span>
@@ -248,8 +248,8 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
         <div class="srow"><span>Last read</span><span class="v-soft">1 min ago</span></div>
       </div>
       <div class="card"><h4>Privacy <i class="idot" title="What cl_audit shows and what it reads on this Mac.">i</i></h4>
-        <!-- words: SEO (the app's own hover text, Dashboard.swift:169 at v26.11.36; its note is SettingNotes.swift:98-100) -->
-        <div class="srow"><span>Show emails <i class="idot" title="Off: email addresses are left out of the dashboard's account lines, the launcher and the usage panels, masked like y•••@example.com in menus and sentences, and blurred in Settings (hover one to see it). For screen sharing and screenshots.">i</i></span><span class="ctl-pair"><button type="button" class="mswitch on" role="switch" aria-checked="true" data-toggle-emails aria-label="Show emails"></button><span class="sw-t" data-emails-t>shown</span></span></div>
+        <!-- words: SEO (the app's own hover text, Dashboard.swift:170 at v26.11.87; its note is SettingNotes.swift) -->
+        <div class="srow"><span>Show emails <i class="idot" title="Off: email addresses are left out of the dashboard's account lines, the launcher and the usage panels, written as “hidden address” in menus and sentences, and drawn as one fixed blurred stand-in in Settings (point at one to see it). For screen sharing and screenshots.">i</i></span><span class="ctl-pair"><button type="button" class="mswitch on" role="switch" aria-checked="true" data-toggle-emails aria-label="Show emails"></button><span class="sw-t" data-emails-t>shown</span></span></div>
         <!-- 26.11.0: whether cl_audit reads Claude Code's session files at all (off: the dashboard's history is hidden) -->
         <div class="srow"><span>Usage history <i class="idot" title="The dashboard's history (when you use Claude, tokens per day, where they go), the cost estimate, the CSV export and the launcher's 7-day row. Read from the session files Claude Code keeps on this Mac: only the time, model, token counts, project folder and surface of each reply, never the messages. Off: no session file is read, and those are hidden. The limits come from Anthropic either way.">i</i></span><span class="ctl-pair"><button type="button" class="mswitch on" role="switch" aria-checked="true" data-toggle-history aria-label="Usage history"></button><span class="sw-t" data-history-t>tokens, cost, CSV</span></span></div>
       </div>

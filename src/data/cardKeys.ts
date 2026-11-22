@@ -2,7 +2,7 @@
 // one spec, so the page (AccountCard.astro) and the script that changes a card's state use the same markup.
 import { accounts, standby, offerOrder, rgbOf } from "./demo";
 import { chevronHTML } from "./chevron";
-import { emailsHTML, emailHTML, emailText } from "./emails";
+import { emailsHTML, emailText, addressRowHTML, shortHTML } from "./emails";
 
 type Acc = (typeof accounts)[number];
 export type KeysSpec = {
@@ -28,11 +28,12 @@ export const fullKeys: KeysSpec = { keys: ["show"], more: ["terminal"], switchMe
 function switchMenuHTML(a: Acc) {
   const list = offerOrder(standby[a.id]);
   const sb = list.map((s) =>
-    `<button type="button" role="menuitem" class="ni" data-card-switch="${a.id}" data-to="${s.email}"><span class="ck"></span><span class="nl">${emailHTML(s.email)}</span><span class="nd"></span></button>`).join("");
+    // (26.11.87, SwitchMenu: a standby row by its short name; hidden, the blurred stand-in, its address while highlighted)
+    `<button type="button" role="menuitem" class="ni arow" data-card-switch="${a.id}" data-to="${s.email}"><span class="ck"></span><span class="nl">${addressRowHTML(s.email)}…</span><span class="nd"></span></button>`).join("");
   const title = list.length ? `Switch ${a.name} to another account` : `Sign in to another account for ${a.name}`;   // words: SEO
   return `<span class="offer2 under"><button type="button" class="disp xs trustlike sw-acc orangek" data-switch-menu aria-haspopup="menu" aria-expanded="false" title="${title}">Switch&nbsp;account&nbsp;${chevronHTML}</button>` +
     `<span class="nmenu" role="menu" hidden>` +
-    `<div class="ni cur" role="menuitemradio" aria-checked="true"><span class="ck">✓</span><span class="nl">${emailHTML(a.email)}</span><span class="nd">${a.plan}</span></div>` +
+    `<div class="ni cur" role="menuitemradio" aria-checked="true"><span class="ck">✓</span><span class="nl">${shortHTML(a.email)}</span><span class="nd">${a.plan}</span></div>` +
     `<hr>${sb}${sb ? "<hr>" : ""}` +
     `<button type="button" role="menuitem" class="ni" data-card-signin-other="${a.id}"><span class="ck"></span><span class="nl">Sign in to another account…</span><span class="nd"></span></button>` +   // words: SEO
     `</span></span>`;

@@ -5,11 +5,11 @@
 // and the folder is watched for up to 10 minutes. The sessions always move (there is no question), and the Claude app's
 // sign-in is the person's: until they sign it in to the new account, the page says both plainly. Nothing on this Mac
 // changes. settings.astro owns the page state (it hides the profile's settings while this page is open).
-import { accounts, standby, offerOrder, shortName, type Standby } from "./demo";
+import { accounts, standby, offerOrder, type Standby } from "./demo";
 import { limitsHTML } from "./panelView";
 import { loadCardStyle } from "./prefs";
 import { showWhatNow } from "./whatNow";
-import { emailHTML, emailText } from "./emails";
+import { emailHTML, emailText, shortText } from "./emails";
 
 // "undoing": Undo the move putting the sessions back (the app's .moving phase, with a receipt)
 type Phase = "ready" | "closing" | "moving" | "undoing" | "waiting" | "reached" | "other" | "timedOut" | "failed" | "undone";
@@ -19,7 +19,9 @@ type Step = "pending" | "now" | "waiting" | "done" | "failed";
 export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: () => HTMLElement | null }) {
   const q = <T extends HTMLElement = HTMLElement>(s: string) => page.querySelector<T>(s)!;
   const work = accounts.find((x) => x.id === "work")!;
-  const name = work.name, from = shortName(work.email), dir = work.dir;
+  // short names follow Show emails ("hidden address" while hidden, 26.11.87): read again on every draw
+  const name = work.name, dir = work.dir;
+  let from = shortText(work.email);
   const windowWords = `${name}'s own window, opened from its Dock icon`;
   const list = offerOrder(standby.work);
   let to = list[0].email, phase: Phase = "ready", fail: "window" | "half" = "window", shown: Case | "" = "", timer = 0, until = "";
@@ -29,14 +31,14 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   // A finished move of this kind has no Undo (the backup made first keeps a copy). SwitchPage.swift's finishLine.
   let fin: Standby | null = null;
   const isFin = () => !!fin && to === fin.email;
-  const T = () => shortName(to), target = () => (isFin() ? fin! : list.find((s) => s.email === to)!);
+  const T = () => shortText(to), target = () => (isFin() ? fin! : list.find((s) => s.email === to)!);
   /** The address the switch is moving to, for a sentence: masked and blurred while Show emails is off (this page is part of Settings). */
   const E = () => emailHTML(to);
   /** Switch back…'s hover text: the address it goes back to, masked while Show emails is off (redraw keeps it current). */
   const backSwitchTitle = () => `Switch back to ${emailText(work.email)}`;
   /** The account the browser signs in as in "Wrong account": another of the profile's standby accounts. */
   const other = () => list.find((s) => s.email !== to)!;
-  const O = () => shortName(other().email);
+  const O = () => shortText(other().email);
   const SES = "14 Code-tab sessions and 2 scheduled tasks";
   // what the switch's receipt still has moved after it stopped (SwitchRunner.movedWords): all of it once the move
   // finished (no sign-in), part of it when it stopped half way. Since 26.11.76 the scheduled tasks are settled before
@@ -257,6 +259,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
 
   // ── drawing ──
   const draw = () => {
+    from = shortText(work.email);
     w.clSwitchPending = { work: running() };
     q("[data-sw-head]").textContent = title();
     const t = top(), runEl = q("[data-sw-run]");
@@ -323,6 +326,8 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   return {
     /** Show emails changed: Switch back…'s hover title shows the address as it reads now. */
     refreshTitles() { page.querySelectorAll<HTMLElement>("[data-sw-backswitch]").forEach((b) => (b.title = backSwitchTitle())); },
+    /** Show emails changed while the page is open: every short name and sentence reads as the setting says now. */
+    redraw() { draw(); },
     /** Opens the page with an account picked (a standby address, or the one a full limit offers first); `finish`: Claude
      *  Code's own account, not on the standby list, as the target (the finish line). */
     open(pickEmail?: string, finish?: { email: string; plan: string }) {

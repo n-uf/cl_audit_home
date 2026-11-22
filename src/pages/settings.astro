@@ -21,7 +21,7 @@ const jsonLd = [
 <script>
   import { accounts, standby, offerOrder, type AccountId, type Standby } from "../data/demo";
   import { chevronHTML } from "../data/chevron";
-  import { emailHTML, emailsHTML, emailText, maskEmail } from "../data/emails";
+  import { emailHTML, emailsHTML, emailText } from "../data/emails";
   import { applyPrefs, loadPrefs, savePrefs, loadOrder, saveOrder, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
   import { glyphHTML, lane as mbLane } from "../data/menubar";
   import { widgetHTML } from "../data/widgetView";
@@ -510,7 +510,6 @@ const jsonLd = [
       $$<HTMLElement>("[data-frame]").forEach((b) => b.classList.toggle("on", b.dataset.frame === pr.frame));
       $$<HTMLElement>('[data-text="dir"]').forEach((e) => (e.textContent = a.dir));
       $$<HTMLElement>('[data-text="email"]').forEach((e) => (e.textContent = a.email));
-      $$<HTMLElement>('[data-text="email-m"]').forEach((e) => (e.textContent = maskEmail(a.email)));
       $$<HTMLElement>('[data-text="name"]').forEach((e) => (e.textContent = who()));
       $<HTMLSelectElement>('[data-field="refresh"]')!.value = pr.refresh;
       $<HTMLSelectElement>('[data-field="dockRuns"]')!.value = pr.dockRuns;
@@ -896,11 +895,12 @@ const jsonLd = [
       pulse(sw, $("[data-emails-t]"), on, 600, () => {
         document.documentElement.classList.toggle("hide-emails", !on);
         swi.refreshTitles();   // the Switch page's hover title with an address follows the setting
+        if (!general && page === "switch") swi.redraw();   // and its short names ("hidden address" while hidden)
         try { localStorage.setItem("cl_audit.showEmails", on ? "1" : "0"); } catch {}
         syncEmails();
         showWhatNow("Show emails", on ? "on" : "off", on
           ? "Email addresses show everywhere in cl_audit."
-          : "Email addresses are left out of the launcher, dashboard, panels and Dock menus, and blurred in Settings, for screen sharing.");   // words: SEO
+          : "Email addresses are left out of the launcher, dashboard, panels and Dock menus. In Settings and the Switch menus each one is a blurred stand-in, and sentences say “hidden address”, for screen sharing.");   // words: SEO (the app's, SettingNotes.emails at v26.11.87)
       });
     }));
     // Privacy ▸ Usage history (26.11.0), shared with the dashboard: off, its history (charts, totals, CSV) is hidden
