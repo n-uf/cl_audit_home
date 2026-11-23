@@ -3,8 +3,8 @@
 // 5-hour inside), Ring + number, Number (the fuller limit), Two numbers. Colours: the level colours, System (the menu
 // bar's own colour), Accent (the Mac's accent colour) or the profile's colour. A full limit shows the countdown beside
 // the icon ("1h 42m"), or only turns red; in System it's never red (the countdown shows it).
-import { accounts, standby, offerOrder, bestOffer, type AccountId } from "./demo";
-import { countdownWords, fableShown } from "./panelView";
+import { accounts, standby, offerOrder, type AccountId } from "./demo";
+import { backWords, countdownWords, fableShown } from "./panelView";
 import { addressRowHTML, shortText } from "./emails";
 import { TERMINAL, SPLIT_WORDS, windowLineHTML } from "./split";
 import type { MenuBarLook } from "./prefs";
@@ -58,45 +58,44 @@ export const lane: [string, number | null, number | null, string | undefined][] 
   ["at limit", 88, 72, undefined], ["full", 100, 64, "1h 42m"],
 ];
 
-/** The profile's own menu, opened from its menu bar icon: its limits, Fable's, usage credits, then the items. `open`: its
- *  Claude window is open; `win`: the profile has one (Claude window on); `split`: the split by hand (data/split.ts). */
+/** The profile's own menu, opened from its menu bar icon (26.11.88, MenuBar.swift): its row (name, the account in use,
+ *  the limits), then the accounts and the actions, as the Dock icon's menu has them. `open`: its Claude window is open;
+ *  `win`: the profile has one (Claude window on); `split`: the split by hand (data/split.ts). */
 export function menuHTML(id: AccountId, name: string, o: { open?: boolean; win?: boolean; split?: boolean } = {}) {
   const a0 = accounts.find((x) => x.id === id)!;
   // in the split the numbers are Terminal's account's (the sample figures), read through Terminal's sign-in
   const a = o.split ? { ...a0, five: 34, week: 61, fiveLeftMin: 192, weekLeftMin: 3 * 1440, credits: null } : a0;
-  const row = (n: string, p: number, sub: string, hot: boolean) =>
-    `<div class="mbm-row"><span>${n}</span><span class="mbm-bar"><i style="width:${Math.min(100, p)}%;background:${level(p)}"></i></span><b style="color:${level(p)}">${p}%</b></div><div class="mbm-sub${hot ? " hot" : ""}">${sub}</div>`;
-  const when = (m: number) => (m >= 1440 ? (Math.round(m / 1440) === 1 ? "in 1 day" : `in ${Math.round(m / 1440)} days`) : m >= 60 ? `in ${Math.floor(m / 60)} h ${m % 60} min` : `in ${m} min`);
-  // a profile with other accounts (26.11.18): the account in use under its name with its lamp and no label, then "Switch
-  // account ›", a submenu with the account in use ticked ("ultra-1 · week 61%", the only account read, still enabled) and
-  // every standby account in the order a full limit offers them, by address only (26.11.33; no "in use", no "2 days
-  // ago"). While a limit is full, the one offered first also sits on the top level, right under the full line.
-  const sb = offerOrder(standby[id]), full = a.five >= 100 || a.week >= 100;
-  const best = full ? bestOffer(standby[id]) : undefined;
-  // (26.11.87, SwitchMenu: a row naming a standby account shows its short name; while addresses are hidden the blurred
-  // stand-in, and the address only while the row is highlighted (.arow). The ticked row, the account in use, reads
-  // "hidden address" while hidden.)
-  const sw = (s: { email: string }, label: string, words = "") => `<button type="button" class="mbm-it arow" data-mbm="switch" data-to="${s.email}">${label}${words ? `<span class="r">${words}</span>` : ""}</button>`;
-  const switching = sb.length
-    ? (best ? sw(best, `Switch to ${addressRowHTML(best.email)}…`) : "") +
-      `<button type="button" class="mbm-it" data-mbm="submenu" aria-expanded="false">Switch account<span class="chev">›</span></button>` +
-      `<div class="mbm-subm" hidden><div class="mbm-it cur"><span class="ck">✓</span>${shortText(a.email)}<span class="r">week ${a.week}%</span></div>` +
-      sb.map((s) => sw(s, `<span class="ck"></span><span>${addressRowHTML(s.email)}…</span>`)).join("") + "</div><hr>"
-    : "";
-  // the profile's light before its name (26.11.81, ProfileLED), in its colour as set in Settings
-  return `<div class="mbm-head"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b><span>${o.split ? TERMINAL.plan : a.plan}</span></div>` +
-    // the split by hand (26.11.88, MenuBarRow): the lamp, Terminal's account by its short name, " · Terminal"; the amber
-    // line, a link to Settings ▸ Accounts, comes under the numbers (they are that account's)
-    (o.split ? `<div class="mbm-acc split"><i></i>${shortText(TERMINAL.email)} · ${SPLIT_WORDS.terminal}</div>` : "") +   // words: SEO (v26.11.88)
-    // (plain text: the menu is built each time it opens, so the short name reads as the setting says then)
-    (sb.length && !o.split ? `<div class="mbm-acc"><i></i>${shortText(a.email)}</div>` : "") +
-    (a.five >= 100 ? `<div class="mbm-sub hot">5-hour full · in ${countdownWords(a.fiveLeftMin)}</div>` : "") +
-    row("5-hour", a.five, a.five >= 100 ? "full" : `resets ${when(a.fiveLeftMin)}`, a.five >= 100) +
-    row("Week", a.week, `resets ${when(a.weekLeftMin)}`, false) +
-    (fableShown(id) ? row("Fable", a.fable!, `resets ${when(a.fableLeftMin)}`, false) : "") +
+  // a limit's line (MenuBarRow): its name, its bar, its share and when it resets, "in 1h 42m", or "back at 15:28" when full
+  const row = (n: string, p: number, minLeft: number) =>
+    `<div class="mbm-row"><span>${n}</span><span class="mbm-bar"><i style="width:${Math.min(100, p)}%;background:${level(p)}"></i></span><b style="color:${level(p)}">${p}%</b>` +
+    `<span class="mbm-when">${p >= 100 ? backWords(minLeft) : `in ${countdownWords(minLeft)}`}</span></div>`;
+  // (26.11.87, SwitchMenu: a row naming an account shows its short name; while addresses are hidden the blurred
+  // stand-in, and the address only while the row is highlighted (.arow))
+  const sw = (s: { email: string }) => `<button type="button" class="mbm-it arow" data-mbm="switch" data-to="${s.email}">${addressRowHTML(s.email)}</button>`;
+  // the accounts (DockTileMenu.accounts): the account in use ticked, each standby account in the order a full limit offers
+  // them (a click opens the Switch page with it picked), Sign in to another account…. In the split, the key: Claude Code's
+  // own sign-in in Terminal with the app's account filled in ("Sign Terminal in to …"). Terminal's account in the
+  // demo's split is one the profile doesn't list, so it has no row of its own.
+  const accountRows =
+    `<div class="mbm-it cur arow"><span class="ck">✓</span><span>${addressRowHTML(a.email)}</span></div>` +
+    (o.split ? `<button type="button" class="mbm-it arow lined" data-mbm="signin"><span>${SPLIT_WORDS.terminalKey} to</span><span class="ad">${addressRowHTML(a.email)}</span><span>…</span></button>` : "") +   // words: SEO (v26.11.88, DockMenu.swift)
+    offerOrder(standby[id]).map(sw).join("") +
+    `<button type="button" class="mbm-it" data-mbm="addaccount">Sign in to another account…</button><hr>`;   // words: SEO (v26.11.88)
+  const full = a.five >= 100;
+  // the profile's light before its name (26.11.81, ProfileLED), in its colour as set in Settings; a full limit at the
+  // right, in crimson, with the time to its reset (no plan here)
+  return `<div class="mbm-head"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b>${full ? `<span class="hot">5-hour full · in ${countdownWords(a.fiveLeftMin)}</span>` : ""}</div>` +
+    // the account in use under the name, with its lamp and its short name (plain text: the menu is built each time it
+    // opens, so the short name reads as the setting says then); in the split by hand Terminal's account, " · Terminal",
+    // and the amber line, a link to Settings ▸ Accounts, under the numbers (they are that account's)
+    (o.split ? `<div class="mbm-acc split"><i></i>${shortText(TERMINAL.email)} · ${SPLIT_WORDS.terminal}</div>`   // words: SEO (v26.11.88)
+      : `<div class="mbm-acc"><i></i>${shortText(a.email)}</div>`) +
+    row("5-hour", a.five, a.fiveLeftMin) +
+    row("Week", a.week, a.weekLeftMin) +
+    (fableShown(id) ? row("Fable", a.fable!, a.fableLeftMin) : "") +
     (a.credits != null ? `<div class="mbm-sub credit">Using usage credits · $${a.credits.toFixed(2)} spent</div>` : "") +
     (o.split ? `<div class="mbm-split">${windowLineHTML(id)}</div>` : "") +
-    `<div class="mbm-sub">Read ${a.updated}</div><hr>` + switching +
+    `<hr>` + accountRows +
     // the actions, as the Dock icon's menu has them (DockTileMenu.actions): Claude window ▸ (Open while it's closed;
     // Show and Quit while it's open), Quick chat (cl_quick's: it opens cl_quick, here its site), Refresh now
     (o.win !== false ? `<button type="button" class="mbm-it" data-mbm="winsub" aria-expanded="false">Claude window<span class="chev">›</span></button>` +

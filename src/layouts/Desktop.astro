@@ -104,8 +104,9 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
   import { profileGlyph, menuHTML } from "../data/menubar";
   import { accounts, type AccountId } from "../data/demo";
   import { isWindowOpen, setWin } from "../data/cardState";
-  import { isSplit } from "../data/split";
+  import { isSplit, SPLIT_WORDS } from "../data/split";
   import { showWhatNow } from "../data/whatNow";
+  import { signInNote, signInOtherNote } from "../data/signInNotes";
   // The profiles' menu bar icons: drawn for the menu bar's look (dark, or light on the Silver face); a click opens that
   // profile's own menu. applyPrefs calls this whenever the settings change.
   const w_ = window as any;
@@ -137,8 +138,8 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     const item = t.closest<HTMLElement>("[data-mbm]");
     if (item && openId) {
       const id = openId as AccountId, what = item.dataset.mbm;
-      // Switch account › and Claude window ›: the submenu opens under it (the menu stays open)
-      if (what === "submenu" || what === "winsub") {
+      // Claude window ›: the submenu opens under it (the menu stays open)
+      if (what === "winsub") {
         const sub = item.nextElementSibling as HTMLElement | null;
         if (sub) { sub.hidden = !sub.hidden; item.classList.toggle("open", !sub.hidden); item.setAttribute("aria-expanded", String(!sub.hidden)); }
         return;
@@ -156,6 +157,10 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
         if (location.pathname.startsWith("/settings") && w_.clOpenSwitch) w_.clOpenSwitch(id, to);
         else location.href = `/settings/?switch=${id}&to=${encodeURIComponent(to)}`;
       }
+      // the split's key: Claude Code's own sign-in in Terminal, the app's account filled in; Sign in to another account…:
+      // Settings ▸ Accounts' sign-in with another account (both say what they'd do: the demo signs nothing in)
+      else if (what === "signin") { const a = accounts.find((x) => x.id === id)!; showWhatNow(`${SPLIT_WORDS.terminalKey}`, "", signInNote(a.dir, a.email)); }
+      else if (what === "addaccount") { const a = accounts.find((x) => x.id === id)!; showWhatNow("Sign in to another account…", "", signInOtherNote(a.dir, loadPrefs()[id].name.trim() || "this profile")); }
       else if (what === "Profile settings…") { try { sessionStorage.setItem("cl_audit.settingsProfile", id); } catch {} location.href = "/settings/"; }
       else if (what === "hide") { const p = loadPrefs(); p[id].mb.on = false; savePrefs(p); applyPrefs(p); }
       return;

@@ -1547,19 +1547,22 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .mb-icon { display: inline-flex; align-items: center; height: 20px; padding: 0 5px; border: 0; border-radius: 4px; background: none; cursor: pointer; }
 .mb-icon.open, .mb-icon:hover { background: rgba(255,255,255,.18); }
 .face-silver .mb-icon.open, .face-silver .mb-icon:hover { background: rgba(0,0,0,.1); }
-.mb-menu { position: fixed; top: 28px; z-index: 80; width: 286px; padding: 6px; border-radius: 9px; color: #eee; font-size: 12.5px;
+.mb-menu { position: fixed; top: 28px; z-index: 80; width: 316px; max-width: calc(100vw - 16px); box-sizing: border-box; padding: 6px; border-radius: 9px; color: #eee; font-size: 12.5px;
   background: rgba(40,40,44,.94); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 0 .5px rgba(255,255,255,.2); }
 .face-silver .mb-menu { color: #1d1d1f; background: rgba(246,246,246,.95); box-shadow: 0 10px 30px rgba(0,0,0,.25), 0 0 0 .5px rgba(0,0,0,.2); }
 .mbm-head { display: flex; align-items: center; gap: 6px; padding: 4px 8px 6px; font-weight: 600; }
-.mbm-head span { margin-left: auto; font-weight: 400; opacity: .6; }
-.mbm-row { display: grid; grid-template-columns: 56px minmax(0, 1fr) 40px; align-items: center; gap: 8px; padding: 3px 8px 0; font-size: 11.5px; }
+/* a full limit at the header's right, in crimson (MenuBarRow) */
+.mbm-head span.hot { margin-left: auto; font-size: 11px; color: #eb445b; white-space: nowrap; }
+.face-silver .mbm-head span.hot { color: #b42318; }
+/* a limit's line: its name, its bar, its share, when it resets ("in 1h 42m", "back at 15:28") */
+.mbm-row { display: grid; grid-template-columns: 46px minmax(0, 1fr) 36px 78px; align-items: center; gap: 8px; padding: 3px 8px; font-size: 11.5px; }
 .mbm-row b { text-align: right; font: 700 11px var(--mono); }
+.mbm-when { font-size: 11px; opacity: .65; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mbm-bar { position: relative; height: 5px; border-radius: 3px; background: rgba(127,127,127,.25); overflow: hidden; }
 .mbm-bar i { position: absolute; inset: 0 auto 0 0; }
 .mbm-sub { padding: 1px 8px 3px; font-size: 11px; opacity: .65; }
-.mbm-sub.hot { color: #ff7b6e; opacity: 1; }
 .mbm-sub.credit { color: #f59e0b; opacity: 1; }
-.face-silver .mbm-sub.hot { color: #b42318; } .face-silver .mbm-sub.credit { color: #8a4f00; }
+.face-silver .mbm-sub.credit { color: #8a4f00; }
 .mb-menu hr { border: 0; border-top: 1px solid rgba(127,127,127,.3); margin: 5px 4px; }
 .mbm-it { display: block; width: 100%; padding: 3px 8px; border: 0; border-radius: 4px; background: none; color: inherit; font: inherit; text-align: left; cursor: default; }
 .mbm-it:hover { background: #0a64d6; color: #fff; }
@@ -1870,18 +1873,21 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .v-soft b { color: var(--text); font-family: var(--mono); font-weight: 700; }
 .settings .s-cols .c-c .srow.stk.stk > .v-soft { display: block; text-align: left; }
 .settings .s-cols .c-c .srow.stk.stk > .bk-list { display: grid; gap: 6px; align-items: stretch; }
-/* menus: the account in use under the profile's name, and the Switch account submenu */
+/* menus: the account in use under the profile's name, and the accounts' rows (the one in use ticked) */
 .mbm-acc { display: flex; align-items: center; gap: 6px; padding: 0 8px 5px; font-size: 11.5px; }
 .mbm-acc i { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 4px rgba(34,197,94,.85); }
 .mbm-acc span { opacity: .55; }
-.mbm-it .r { margin-left: auto; padding-left: 10px; opacity: .5; font-size: 11.5px; white-space: nowrap; }
 .mbm-it .chev { margin-left: auto; font-size: 13px; line-height: 1; opacity: .7; }
-.mbm-it .ck { width: 11px; flex: none; font-size: 11px; }
+/* as macOS lays out a menu with a ticked item: every item leaves the tick's column, the tick sits in it */
+.mb-menu .mbm-it { position: relative; padding-left: 22px; }
+.mbm-it .ck { position: absolute; left: 8px; font-size: 11px; }
+/* a row with an address inside words ("Sign Terminal in to … …"): one line, the address inline */
+.mbm-it.lined { display: flex; align-items: center; gap: .3em; white-space: nowrap; overflow: hidden; }
+.mbm-it.lined > span { flex: none; }
+.mbm-it.lined > .ad { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .mbm-it.open { background: #0a64d6; color: #fff; }
-.mbm-it:has(.r, .chev, .ck) { display: flex; align-items: center; gap: 6px; }
+.mbm-it:has(.chev, .ck) { display: flex; align-items: center; gap: 6px; }
 .mbm-it.cur, .mbm-it.cur:hover { background: none; color: inherit; }
-/* the site's menus drop down, so the Switch account submenu opens under its item, indented */
-.mbm-subm { margin: 2px 0 4px 10px; padding-left: 4px; border-left: 1px solid rgba(255,255,255,.12); }
 /* the tile whose Switch page is open: its display flush on its right (settings strip) */
 .settings .strip .tile.sw-host { border-top-right-radius: 0; border-bottom-right-radius: 0; margin-right: -8px; }
 .settings .strip .sw-disp.two { height: auto; align-self: stretch; padding: 0 16px; font-size: 11px; border-radius: 0 5px 5px 0; transform: translateY(1px); }
