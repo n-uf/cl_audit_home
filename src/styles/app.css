@@ -1655,7 +1655,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .c-c .share-v.mono, .c-c select.mono { font-family: var(--mono); font-size: 12px; }
 .c-c .folder-btn { cursor: default; }
 /* Claude Code ▸ Accounts (app build 238, 26.11.18): one box per account in a lit window, a lamp, the address as a pop-up,
-   its plan, IN USE (the limits in the dashboard's card style) or STANDBY (when it was last in use, no limits); under
+   its plan, IN USE (the limits in the dashboard's card style) or STANDBY (when it was last used, no limits); under
    them the key for a new account and the folders from before */
 .settings .s-cols .c-c .srow.stk.stk > .acc-list { display: grid; gap: 8px; align-items: stretch; }
 .abox { display: grid; gap: 8px; padding: 9px 11px 10px; border-radius: 8px; background: var(--win-bg); box-shadow: var(--win-shadow); min-width: 0; }
