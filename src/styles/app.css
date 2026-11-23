@@ -2060,6 +2060,11 @@ button.pn-close { flex: none; padding: 0; border: 0; cursor: pointer; font: inhe
 .dock-menu.dm-sub.left { left: auto; right: calc(100% + 4px); }
 .dock-menu.dm-sub.over { left: 28px; right: auto; bottom: calc(100% + 2px); }
 .dock-item.menu-open img, .dock-item.menu-open .app-tile { filter: brightness(.7); }
+/* a phone: every item a 44 px tap target, as the page's other keys and links */
+@media (max-width: 600px) {
+  .dm-it { min-height: 44px; font-size: 16px; }
+  .dock-menu hr { margin: 3px 6px; }
+}
 
 /* ── Upright phones: text and touch targets ───────────────────────────────────────────────────────────────────────
    Running text is 16 px; the lines around it (notes, table cells, captions, code) 14 px; the printed labels on the
