@@ -68,7 +68,7 @@ export function menuHTML(id: AccountId, name: string, o: { open?: boolean; win?:
   // a limit's line (MenuBarRow): its name, its bar, its share and when it resets, "in 1h 42m", or "back at 15:28" when full
   const row = (n: string, p: number, minLeft: number) =>
     `<div class="mbm-row"><span>${n}</span><span class="mbm-bar"><i style="width:${Math.min(100, p)}%;background:${level(p)}"></i></span><b style="color:${level(p)}">${p}%</b>` +
-    `<span class="mbm-when">${p >= 100 ? backWords(minLeft) : `in ${countdownWords(minLeft)}`}</span></div>`;
+    `<span class="mbm-when">${p >= 100 ? backWords(minLeft) : `in ${countdownWords(minLeft)}`}</span></div>`;   // words: SEO (the app's, TimeWords)
   // (26.11.87, SwitchMenu: a row naming an account shows its short name; while addresses are hidden the blurred
   // stand-in, and the address only while the row is highlighted (.arow))
   const sw = (s: { email: string }) => `<button type="button" class="mbm-it arow" data-mbm="switch" data-to="${s.email}">${addressRowHTML(s.email)}</button>`;
@@ -84,7 +84,7 @@ export function menuHTML(id: AccountId, name: string, o: { open?: boolean; win?:
   const full = a.five >= 100;
   // the profile's light before its name (26.11.81, ProfileLED), in its colour as set in Settings; a full limit at the
   // right, in crimson, with the time to its reset (no plan here)
-  return `<div class="mbm-head"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b>${full ? `<span class="hot">5-hour full · in ${countdownWords(a.fiveLeftMin)}</span>` : ""}</div>` +
+  return `<div class="mbm-head"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b>${full ? `<span class="hot">5-hour full · in ${countdownWords(a.fiveLeftMin)}</span>` : ""}</div>` +   // words: SEO (the app's, FullLimit.title)
     // the account in use under the name, with its lamp and its short name (plain text: the menu is built each time it
     // opens, so the short name reads as the setting says then); in the split by hand Terminal's account, " · Terminal",
     // and the amber line, a link to Settings ▸ Accounts, under the numbers (they are that account's)
@@ -98,7 +98,7 @@ export function menuHTML(id: AccountId, name: string, o: { open?: boolean; win?:
     `<hr>` + accountRows +
     // the actions, as the Dock icon's menu has them (DockTileMenu.actions): Claude window ▸ (Open while it's closed;
     // Show and Quit while it's open), Quick chat (cl_quick's: it opens cl_quick, here its site), Refresh now
-    (o.win !== false ? `<button type="button" class="mbm-it" data-mbm="winsub" aria-expanded="false">Claude window<span class="chev">›</span></button>` +
+    (o.win !== false ? `<button type="button" class="mbm-it" data-mbm="winsub" aria-expanded="false">Claude window<span class="chev">›</span></button>` +   // words: SEO (the app's)
       `<div class="mbm-wsub" hidden>${(o.open ? [["win-show", "Show"], ["win-quit", "Quit"]] : [["win-open", "Open"]]).map(([k, t]) => `<button type="button" class="mbm-it" data-mbm="${k}">${t}</button>`).join("")}</div>` : "") +   // words: SEO (the app's)
     `<a class="mbm-it" data-mbm="quickchat" href="https://cl-quick.n-uf.com/" target="_blank" rel="noopener">Quick chat<span class="sr-only"> (opens in a new tab)</span></a>` +   // words: SEO (the app's)
     `<button type="button" class="mbm-it" data-mbm="Refresh now">Refresh now</button><hr>` +

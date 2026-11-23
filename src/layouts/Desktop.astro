@@ -159,8 +159,8 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       }
       // the split's key: Claude Code's own sign-in in Terminal, the app's account filled in; Sign in to another account…:
       // Settings ▸ Accounts' sign-in with another account (both say what they'd do: the demo signs nothing in)
-      else if (what === "signin") { const a = accounts.find((x) => x.id === id)!; showWhatNow(`${SPLIT_WORDS.terminalKey}`, "", signInNote(a.dir, a.email)); }
-      else if (what === "addaccount") { const a = accounts.find((x) => x.id === id)!; showWhatNow("Sign in to another account…", "", signInOtherNote(a.dir, loadPrefs()[id].name.trim() || "this profile")); }
+      else if (what === "signin") { const a = accounts.find((x) => x.id === id)!; showWhatNow(SPLIT_WORDS.terminalKey, "", signInNote(a.dir, a.email)); }   // words: SEO
+      else if (what === "addaccount") { const a = accounts.find((x) => x.id === id)!; showWhatNow("Sign in to another account…", "", signInOtherNote(a.dir, loadPrefs()[id].name.trim() || "this profile")); }   // words: SEO (the app's)
       else if (what === "Profile settings…") { try { sessionStorage.setItem("cl_audit.settingsProfile", id); } catch {} location.href = "/settings/"; }
       else if (what === "hide") { const p = loadPrefs(); p[id].mb.on = false; savePrefs(p); applyPrefs(p); }
       return;
