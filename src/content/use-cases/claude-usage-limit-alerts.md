@@ -115,7 +115,7 @@ You'll see the same countdown in a few more places:
 - the details panel, which has the same box;
 - the launcher, next to the profile;
 - the Dock icon itself: the time in large figures, "5H FULL" under it, and a crimson frame;
-- the profile's menu bar icon, if you turned one on (profile settings ▸ Menu bar, off by default): the countdown beside the icon ("1h 42m"), or just crimson, as you choose;
+- the profile's menu bar icon, if you turned one on (profile settings ▸ Menu bar, off by default): the countdown beside the icon ("1h 42m"), or crimson only, as you choose;
 - the "Claude usage" widget (macOS 14 or later), which shows when a full limit is back.
 
 With nothing full, the cards look as usual. At the reset, the agent reads that profile again straight away and the card goes back to its normal layout.
