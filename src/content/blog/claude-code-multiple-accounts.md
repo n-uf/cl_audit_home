@@ -5,14 +5,14 @@ h1: "Claude Code multiple accounts with CLAUDE_CONFIG_DIR"
 mainKeyword: "claude code multiple accounts"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-12
+updated: 2026-11-22
 author: n-uf
 takeaways:
   - "Anthropic's docs give one way to stay signed in to several Claude Code accounts: a separate configuration directory per account, chosen with CLAUDE_CONFIG_DIR."
   - "Each directory has its own settings, session history and login; on macOS Claude Code keys the Keychain entry to the directory."
   - "A zsh alias per account is the whole switch: claude-work and claude-personal can run in two Terminal windows at once."
   - "A new folder starts empty, so CLAUDE.md, agents and skills have to be copied or shared."
-  - "cl_audit builds the folders for you as profiles and shows each profile's 5-hour and weekly limits; an account belongs to one profile, and it doesn't pool limits."
+  - "cl_audit builds the folders for you as profiles and shows each profile's 5-hour and weekly limits; two profiles can share an account, and it doesn't pool limits."
 faq:
   - q: "Can Claude Code use two accounts at the same time?"
     a: "Yes, with one configuration folder per account. Anthropic's authentication docs say to set CLAUDE_CONFIG_DIR to the directory of the account you want when you start claude. Each directory has its own settings, session history and login, so two Terminal windows can run two accounts."
@@ -162,11 +162,11 @@ A profile in cl_audit is one Claude setup: a Claude Code folder with its sign-in
 
 On a Mac with no profile, cl_audit first opens **Set up cl_audit** and makes the default profile on `~/.claude`. **New profile** takes you through each profile after it, on one page:
 
-1. The account. The **Account** pop-up in the Claude Code card lists accounts already signed in to a Claude Code folder no profile uses yet, such as the `~/.claude-work` you made by hand. Picking one connects that folder as it is: its sign-in, settings and history stay. Other profiles' accounts are dimmed. For a new account, choose **Sign in to another account…**: cl_audit makes the folder and opens Claude Code's own sign-in in Terminal with the address filled in. The address only fills in the sign-in; the account your browser is signed in to at claude.ai decides, so switch it there first.
+1. The account. The **Account** pop-up in the Claude Code card lists accounts already signed in to a Claude Code folder no profile uses yet, such as the `~/.claude-work` you made by hand. Picking one connects that folder as it is: its sign-in, settings and history stay. Other profiles' accounts are listed too: picking one signs in to it in the new profile's own folder. For a new account, choose **Sign in to another account…**: cl_audit makes the folder and opens Claude Code's own sign-in in Terminal with the address filled in. The address only fills in the sign-in; the account your browser is signed in to at claude.ai decides, so switch it there first.
 2. The two switches. **Claude window** gives the profile a Claude app window signed in to the same account (quit the Claude app first; this step is only for profiles with a Claude window). **Usage in the Dock** gives it a Dock icon with its usage. With both off, the profile is usage only: its limits show on the dashboard and in alerts, with nothing in the Dock.
 3. Sign in. Claude's own sign-in does the work, and cl_audit never sees the password. With a Claude window, you then sign that window in to the same account; its Code sidebar starts empty. Last, add the Dock icon or choose Start reading usage.
 
-An account another profile already has is refused: an account belongs to one profile (account plus organisation, checked by their ids). A personal plan and a Team seat on one email are two accounts, so they can be two profiles. A profile only shows the limits its own accounts already have.
+An account another profile already has is taken: each profile keeps its own folder, and both show that account's numbers. cl_audit tells accounts apart by account plus organisation, checked by their ids. A personal plan and a Team seat on one email are two accounts, so they can be two profiles. A profile only shows the limits its own accounts already have.
 
 After setup, the pieces you'd otherwise script yourself are in the app (see [your Claude Code history by day](/use-cases/claude-code-usage-history/) for the numbers):
 
@@ -190,6 +190,6 @@ Each of these comes from Anthropic's docs, cl_audit's README or a linked issue.
 - **VS Code doesn't use your aliases.** An alias only changes the `claude` you type in a terminal. The VS Code extension's panel can take the folder from its own `claudeCode.environmentVariables` setting instead, written as an absolute path, because the extension doesn't expand `~`. [Claude Code in VS Code with multiple accounts](/blog/claude-code-vscode-multiple-accounts/) has the steps, with one VS Code profile per account.
 - **Some files have lived outside the folder.** Commenters on #20131 pointed to issues about `~/.claude.json` and config temp files in `~/`; both are now closed as completed. If two accounts seem to share something, check both folders before assuming.
 - **Updates can change things.** cl_audit relies on how Claude Code saves its login and on Anthropic's usage figures, which aren't public interfaces. Its README lists the Claude Code version each release was checked with, and says that if something stops working after a Claude update, you should update cl_audit.
-- **Deleting a folder deletes that account's history and settings.** In cl_audit, **Remove profile…** keeps the folder unless you choose **Delete its folders too**, which signs the folder out first (its Keychain login goes) and never touches `~/.claude`.
+- **Deleting a folder deletes that account's history and settings.** In cl_audit, **Remove profile** keeps the folder unless you choose **Delete its folders too**, which signs the folder out first (its Keychain login goes) and never touches `~/.claude`.
 
 So for two accounts: two folders, two aliases, and, if you want both sets of limits in one place, a [Claude usage tracker](/).
