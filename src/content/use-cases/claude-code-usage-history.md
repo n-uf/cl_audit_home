@@ -5,7 +5,7 @@ h1: "Claude Code usage history on your Mac"
 mainKeyword: "claude code usage history"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-09
+updated: 2026-11-22
 author: n-uf
 order: 3
 takeaways:
@@ -24,7 +24,7 @@ faq:
   - q: "Can I export the history?"
     a: "Yes. The CSV key next to the period saves one row per day, profile and model, with each kind of token and the cost estimate, and it can split rows by project."
   - q: "Is anything uploaded?"
-    a: "Not the history: it is read from files on your Mac. cl_audit has no server and no analytics. It asks Anthropic for each profile's limits and which account it is signed in to, and what you type in its optional Quick chat goes to Anthropic through Claude Code."
+    a: "Not the history: it is read from files on your Mac. cl_audit has no server and no analytics. It asks Anthropic only for each profile's limits and which account it is signed in to."
 sources:
   - title: "Claude Code docs: Explore the .claude directory (Cleaned up automatically)"
     url: "https://code.claude.com/docs/en/claude-directory"
@@ -146,9 +146,9 @@ Nothing stops you using two of them, or all three.
 
 ## What stays on your Mac
 
-The history is read on your Mac and stays there. cl_audit has no server, no analytics and no sign-up. It makes two kinds of request, both to Anthropic's own server: each profile's usage limits, and which account the profile is signed in to. Besides those, what you type in its optional Quick chat goes to Anthropic through Claude Code, like any Claude Code prompt. Session files aren't sent anywhere.
+The history is read on your Mac and stays there. cl_audit has no server, no analytics and no sign-up. It makes two kinds of request, both to Anthropic's own server: each profile's usage limits, and which account the profile is signed in to. Session files aren't sent anywhere.
 
-Those files are plain text and hold whatever passed through a session, so Anthropic's docs suggest lowering `cleanupPeriodDays` if you want them kept for less time, and setting `desktopSessionCleanupPeriodDays` to limit Claude Desktop and Cowork sessions too. cl_audit reads only the five fields above. It saves the resulting usage figures per profile, and **Remove profile…** deletes them with the profile.
+Those files are plain text and hold whatever passed through a session, so Anthropic's docs suggest lowering `cleanupPeriodDays` if you want them kept for less time, and setting `desktopSessionCleanupPeriodDays` to limit Claude Desktop and Cowork sessions too. cl_audit reads only the five fields above. It saves the resulting usage figures per profile, and **Remove profile** deletes them with the profile.
 
 If you'd rather it didn't read the session files at all, turn off Settings ▸ General ▸ Privacy ▸ **Usage history**. cl_audit then opens none of them, and the dashboard shows the limits only. The limits come from Anthropic either way.
 
