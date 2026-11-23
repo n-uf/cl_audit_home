@@ -23,6 +23,7 @@ const jsonLd = [
 
 <script>
   import { accounts, standby, offerOrder, type AccountId, type Standby } from "../data/demo";
+  import { repo } from "../data/site";
   import { chevronHTML } from "../data/chevron";
   import { emailHTML, emailsHTML, emailText, shortText, shortHTML } from "../data/emails";
   import { applyPrefs, loadPrefs, savePrefs, loadOrder, saveOrder, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
@@ -347,7 +348,7 @@ const jsonLd = [
         const at = new Date(Date.now() - 2 * 86400000); at.setHours(18, 40, 0, 0);
         const when = `${at.toLocaleString("en-GB", { weekday: "short" })} 18:40`;   // Settings.when: "EEE HH:mm" (not today)
         linked.innerHTML = emailsHTML(`Switched ${when} · was ${was.email}, now on standby. Stays with ${was.email}: a CI token from claude setup-token, connectors, cloud sessions, and the sessions it ran (`) +   // words: SEO (the app's)
-          `<a href="https://github.com/n-uf/cl_audit#moving-a-profile-to-another-account" target="_blank" rel="noopener">how-to<span class="sr-only"> (opens in a new tab)</span></a>).`;
+          `<a href="${repo}#moving-a-profile-to-another-account" target="_blank" rel="noopener">how-to<span class="sr-only"> (opens in a new tab)</span></a>).`;   // (the repo's address from site.ts, opened as ExtLink does)
       }
       const note = $("[data-shared-note]")!;
       note.hidden = !sharedOn.has(acc) || on;
