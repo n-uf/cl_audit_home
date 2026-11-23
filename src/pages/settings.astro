@@ -433,7 +433,7 @@ const jsonLd = [
       $$<HTMLElement>("[data-mb-label]").forEach((b) => b.classList.toggle("on", (b.dataset.mbLabel === "1") === pr.mb.label));
       const sys = pr.mb.colours === "system";
       $$<HTMLElement>("[data-mb-fglyph]").forEach((el) => (el.innerHTML = g({ ...pr.mb, whenFull: el.dataset.mbFglyph as MenuBarLook["whenFull"] }, 100, 64, true, "1h 42m")));
-      // with System colours a full limit is never red, so "Red only" is greyed out and the countdown shows it
+      // with System colours a full limit is never crimson, so "Crimson only" is greyed out and the countdown shows it
       $$<HTMLElement>("[data-mb-full]").forEach((b) => {
         b.classList.toggle("on", (sys ? "countdown" : pr.mb.whenFull) === b.dataset.mbFull);
         b.classList.toggle("dis", sys && b.dataset.mbFull === "red");
