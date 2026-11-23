@@ -5,19 +5,19 @@ h1: "A Claude usage menu bar icon for each profile"
 mainKeyword: "claude usage menu bar"
 kind: use-case
 published: 2026-11-05
-updated: 2026-11-21
+updated: 2026-11-22
 author: n-uf
 order: 5
 takeaways:
   - "cl_audit can give each Claude profile its own icon in the Mac menu bar. It's off by default: you switch it on per profile in profile settings ▸ Menu bar."
   - "Each icon has six styles (two bars, bars + number, ring, ring + number, number, two numbers) and four colour choices: levels, System, Accent or the profile's colour."
-  - "A click opens the profile's own menu: its limits and reset times, Quick chat, Open Claude window, Refresh now, Dashboard, Profile settings… and Hide from the menu bar."
+  - "A click opens the profile's own menu: its limits and reset times, Claude window ›, Quick chat (which opens cl_quick), Refresh now, Dashboard, Profile settings… and Hide from the menu bar."
   - "cl_audit's background agent draws the icons, so they work with or without Dock icons. The Dock icons are still the main way cl_audit shows usage."
 faq:
   - q: "Can I see my Claude usage in the Mac menu bar?"
     a: "Yes, with cl_audit. Switch on In the menu bar in a profile's settings and that profile gets its own icon with its 5-hour and weekly limits. It's off by default, because cl_audit mainly shows usage in the Dock."
   - q: "Does each Claude account get its own menu bar icon?"
-    a: "Each profile does, and an account belongs to one profile. A profile with several accounts still has one icon, showing the account in use. Style, colours and label are set per profile, and a short label such as WORK or MAIN before an icon tells them apart."
+    a: "Each profile does. Two profiles on the same account each have their own icon, with the same numbers. A profile with several accounts still has one icon, showing the account in use. Style, colours and label are set per profile, and a short label such as WORK or MAIN before an icon tells them apart."
   - q: "Do I need the Dock icons to use the menu bar icons?"
     a: "No. cl_audit's background agent draws the menu bar icon, not the Dock icon app, so it works with the Dock icon on or off. A usage only profile, with Usage in the Dock and Claude window both off, can still have one."
   - q: "What does the menu bar icon show when a limit is full?"
@@ -160,8 +160,9 @@ A click opens that profile's own menu:
 - its limits and when each resets, Fable's weekly limit included when the plan has one;
 - usage credits, while the profile is spending them;
 - when the figures were read. When the usage is old (three missed reads, 30 minutes at the usual setting), the icon and the bars at the top of the menu turn grey, the same moment the Dock icon does;
-- **Quick chat**, a floating chat over any app, answered by Claude Code on that profile's account in use (the [FAQ](/faq/) says more);
-- **Open Claude window**, **Refresh now**, **Dashboard** and **Profile settings…**;
+- **Claude window ›**, with **Open** while the window is closed, and **Show** and **Quit** while it's open;
+- **Quick chat**, which opens [cl_quick](https://cl-quick.n-uf.com/) on that profile's Claude Code folder (without cl_quick on the Mac it reads **Get cl_quick…**);
+- **Refresh now**, **Dashboard** and **Profile settings…**;
 - **Hide from the menu bar**, which takes that profile's icon away.
 
 In the menu bar, in the profile's settings, puts it back.
