@@ -118,7 +118,7 @@ Say both Max accounts are yours, on two email addresses, kept for two separate l
 In cl_audit, a **profile** is one Claude setup: a Claude Code folder with its own sign-in and, if you want them, a Claude window and a Dock icon. To add the second Max account:
 
 1. Open cl_audit and choose **＋ (New profile)** in Settings. Name it, for example "client".
-2. In the **Account** pop-up of the Claude Code card, pick an account that's already signed in in a Claude Code folder no profile uses, or choose **Sign in to another account…**.
+2. In the pop-up of the **Account** card, pick an account that's already signed in in a Claude Code folder no profile uses, or choose **Sign in to another account…**.
 3. For a new account, cl_audit makes a folder such as `~/.claude-client` and Terminal runs Claude Code's own sign-in for it. The address you type only fills in the form; the account the browser is signed in to at claude.ai decides, so switch it there first.
 4. Choose the two switches, **Usage in the Dock** and **Claude window**. With both off, the profile is "usage only": its limits still show on the dashboard and in alerts.
 
