@@ -152,10 +152,10 @@ export function panelHTML(id: AccountId, design: Design, opts: { name?: string; 
 }
 
 /** The details panel (Details.swift DetailsView: double-click or ⌥-click on the Dock icon, or a click with Click set to
- *  Details panel), as the approved sketch draws it (97ebf0a, "the card's language, compact keys only"): the icon, the
- *  profile's light and name, the account line (the account in use with its lamp; the address is the blurred stand-in
- *  while Show emails is off, AccountValue), the limits, then the card's keys: the window key, Dashboard and the gear,
- *  with the age under them. In the split (data/split.ts) the TERMINAL | APP badge sits beside the name, the account line
+ *  Details panel), as the app draws it today: the icon, the profile's light and name, the account line (the account in
+ *  use with its lamp; the address is the blurred stand-in while Show emails is off, AccountValue), the "<Plan> plan"
+ *  capsule, the limits, then the keys: Claude, Dashboard and the gear, with the age under them. In the split (data/split.ts,
+ *  as the approved sketch 97ebf0a draws it, "the card's language, compact keys only") the TERMINAL | APP badge sits beside the name, the account line
  *  names whose numbers they are (Terminal's account · Terminal), the amber line links to Settings ▸ Accounts, the window
  *  key is the card's amber Show window and a compact Sign in signs Terminal in to the window's account. */
 export function detailsHTML(id: AccountId, design: Design, opts: { name?: string; icon?: string; open: boolean; split: boolean }) {
@@ -166,9 +166,16 @@ export function detailsHTML(id: AccountId, design: Design, opts: { name?: string
     : `<i class="lamp"></i><span class="addr">${emailHTML(a.email)}</span>`;
   const head = `<div class="pn-head"><span class="ico" data-ico="${id}"><img src="${opts.icon ?? a.icon}" data-acc-icon="${id}" alt="" width="52" height="52"></span>` +
     `<div class="pn-who"><div class="pn-title"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><span>Claude ${name}</span>${split ? twoNamesBadgeHTML("terminal") : ""}</div>` +
-    `<div class="pn-acc">${line}</div></div>` +
+    `<div class="pn-acc">${line}</div>` +
+    // the plan capsule under the account line, as the app draws it today (Details.swift); the sketch's split has none
+    (split ? "" : `<span class="pn-plan">${a.plan} plan</span>`) + `</div>` +
     `<button type="button" class="pn-close" data-details-close aria-label="Close" title="Close">✕</button></div>`;
-  const win = `<button type="button" class="pill small tint ${a.tint}${opts.open ? "" : " unlit"}${split ? " amberk" : ""}" style="--tint:var(--acc-${a.id}-rgb, ${rgbOf(a.hex)})" data-open-desktop="${id}" data-open-label>${opts.open ? "Show window" : "Open window"}</button>`;
+  // the window key: outside the split the app's "Claude" key, its LED in the profile's colour (Details.swift on main and
+  // feat/two-names); in the split the sketch's amber Show window / Open window, its lamp lit while the window is open
+  const tint = `style="--tint:var(--acc-${a.id}-rgb, ${rgbOf(a.hex)})" data-open-desktop="${id}" title="Open Claude for this profile"`;
+  const win = split
+    ? `<button type="button" class="pill small tint ${a.tint}${opts.open ? "" : " unlit"} amberk" ${tint}>${opts.open ? "Show window" : "Open window"}</button>`
+    : `<button type="button" class="pill small tint ${a.tint}" ${tint}>Claude</button>`;   // words: SEO (the app's)
   const keys = `<div class="acc-actions pn-keys">${win}` +
     (split ? `<button type="button" class="pill small" data-details-signin="${id}" title="Sign Terminal in to the Claude app's account">${SPLIT_WORDS.panelKey}</button>` : "") +   // words: SEO (sketch 97ebf0a)
     `<a class="pill small" href="/dashboard/">Dashboard</a><span class="spacer"></span>` +
