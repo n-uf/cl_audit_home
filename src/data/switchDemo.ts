@@ -63,9 +63,9 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
   const inUse = (email: string, plan: string, content: string) =>
     `<div class="abox"><div class="abox-head">${lamp(true)}<span class="abox-t"><b>${emailHTML(email)}</b><small>${plan}</small></span>${B.use}</div>${content}</div>`;
   const nowBox = (line = "") => inUse(work.email, work.plan, `<div class="abox-limits">${limitsHTML("work", loadCardStyle(), false)}</div>${line ? note(line) : ""}`);
-  /** A standby account: address, plan and when it was last in use. No limits: it isn't read. */
+  /** A standby account: address, plan and when it was last used. No limits: it isn't read. */
   const sbBox = (s: Standby, selected: boolean, badge: string, attr = "") =>
-    `<div class="abox unlit${selected ? " sel" : ""}"${attr}><div class="abox-head">${lamp(false)}<span class="abox-t"><b>${emailHTML(s.email)}</b><small>${s.plan}</small></span>${badge}</div>${note(s.lastInUse ? `Last in use ${s.lastInUse}.` : `Not in use on ${name} yet.`)}</div>`;   // words: SEO (SwitchPage.boxWords)
+    `<div class="abox unlit${selected ? " sel" : ""}"${attr}><div class="abox-head">${lamp(false)}<span class="abox-t"><b>${emailHTML(s.email)}</b><small>${s.plan}</small></span>${badge}</div>${note(s.lastInUse ? `Last used ${s.lastInUse}.` : `Not used on ${name} yet.`)}</div>`;   // words: SEO (SwitchPage.boxWords)
   /** In the split (the finish line's start): the Claude app's account in use, its numbers not shown as the profile's, the
    *  line naming Claude Code's account and what gives the numbers (AccountResolver's line, SplitUsage.numbersHint). */
   const splitNowBox = () => inUse(work.email, work.plan,

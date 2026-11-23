@@ -10,7 +10,7 @@ export type AccountId = "home" | "work" | "side";
 
 /** A profile's other accounts (26.11.18, "one-folder switching"): STANDBY. A profile is one Claude Code folder holding one
  *  signed-in account, the one in use, and the only one read. A standby account is remembered signed out, with no folder
- *  or sign-in of its own, so it has no limits to show anywhere: only its address, its plan and when it was last in use
+ *  or sign-in of its own, so it has no limits to show anywhere: only its address, its plan and when it was last used
  *  on the profile (`lastInUse`, as AccountBook.ago says it). `lastWeek` is its week as last read when it left: kept
  *  only to order the offers (`offerOrder`), never shown. The demo's "work" has one with room, so while its own 5-hour
  *  limit is full its card's Switch account menu and the menu bar's offer team-2 first. */
