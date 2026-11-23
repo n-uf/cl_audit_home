@@ -179,6 +179,7 @@ A click opens that profile's own menu:
 
 - its limits and when each resets, Fable's weekly limit included when the plan has one;
 - usage credits, while the profile is spending them;
+- while the Claude app and Terminal are signed in to different accounts, Terminal's account by its short name and " · Terminal" ("ultra-3 · Terminal", or "hidden address · Terminal" while addresses are hidden), then that account's numbers, and under them an amber **Claude window on another account ›** line that opens Settings ▸ Accounts;
 - when the figures were read. When the usage is old (three missed reads, 30 minutes at the usual setting), the icon and the bars at the top of the menu turn grey, the same moment the Dock icon does;
 - **Claude window ›**, with **Open** while the window is closed, and **Show** and **Quit** while it's open;
 - **Quick chat**, which opens [cl_quick](https://cl-quick.n-uf.com/) on that profile's Claude Code folder (without cl_quick on the Mac it reads **Get cl_quick…**);
