@@ -74,7 +74,7 @@ sources:
   - title: "cl_audit source at v26.11.88, Sources/DockMenu.swift (the Dock menus)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/DockMenu.swift#L1-L14"
     checked: 2026-11-23
-    supports: "Both Dock menus (the Dock icon app's and the tile plug-in's) hold only the profile and its light, Claude window ▸ (Open while it's closed; Show, Quit), Quick chat, Refresh now, Dashboard and Profile settings…; the menu bar icon's menu draws its own views, so under its row it also lists the accounts (cl_audit commit 3844813, 23 November 2026)."
+    supports: "Both Dock menus (the Dock icon app's and the tile plug-in's) hold only the profile and its light, Claude window ▸ (Open while it's closed; Show, Quit), Quick chat, Refresh now, Dashboard and Profile settings…; the menu bar icon's menu draws its own views, so under its row it also lists the accounts (cl_audit commit 3844813, 22 November 2026)."
     quote: "are short, since the Dock icon's own panel"
   - title: "cl_audit source at v26.11.88, Sources/MenuBar.swift (the split's row)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/MenuBar.swift#L429-L436"
