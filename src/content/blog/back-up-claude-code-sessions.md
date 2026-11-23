@@ -13,7 +13,7 @@ takeaways:
   - "Transcripts are plain files at ~/.claude/projects/<project>/<session-id>.jsonl (under your CLAUDE_CONFIG_DIR folder if you set one), so a copy of that folder is a working backup."
   - "Raising cleanupPeriodDays keeps sessions longer, but it can't bring back a session the sweep has already deleted."
   - "A copy of the transcripts doesn't include the Claude app's Code-tab list, its groups and pins, or any sign-in."
-  - "cl_audit 26.11.1 backs up a profile's sessions before every switch that moves them and with Back up now in its Sessions card, which also has Keep for. Restore, export, import and switching are experimental and can lose data; Restore… shows a preview first and is built not to overwrite anything."
+  - "cl_audit 26.11.1 backs up a profile's sessions before every switch that moves them and with Back up now in its Sessions card, which also has Keep for. Restore, export, import and switching are experimental and can lose data; Restore shows a preview first and is built not to overwrite anything."
 faq:
   - q: "Where does Claude Code store sessions?"
     a: "As JSONL files at ~/.claude/projects/<project>/<session-id>.jsonl, where <project> is the working directory's path with every non-alphanumeric character replaced by a dash. If you set CLAUDE_CONFIG_DIR, everything lives under that folder instead. Anthropic's docs say the entry format is internal and changes between versions."
@@ -306,7 +306,7 @@ The picker shows the current worktree's sessions by default; `Ctrl+A` widens it 
 
 ## Back up Claude Code sessions with cl_audit's Sessions card
 
-Since 26.11.1 a cl_audit profile's settings have a **Sessions** card after the Claude Code card. The app is free and needs a Mac with Apple silicon and macOS 13 or later; the [install steps](/install/) are short.
+Since 26.11.1 a cl_audit profile's settings have a **Sessions** card. The app is free and needs a Mac with Apple silicon and macOS 13 or later; the [install steps](/install/) are short.
 
 {{experimental}}
 
@@ -314,11 +314,11 @@ Since 26.11.1 a cl_audit profile's settings have a **Sessions** card after the C
 
 **Back up now.** A backup is a copy of a profile's sessions on this Mac. It holds Claude Code's transcripts (on by default), the Claude window's Code-tab list with its scheduled tasks and their prompts, the sidebar records (since 26.11.9, never the app's MCP settings) and cl_audit's own records. Since 26.11.8 it also holds Claude Code's setup: `CLAUDE.md` and the files it includes, skills, agents, commands, output styles, keybindings, `settings.json` with the scripts its hooks run, and the plugin list. Since 26.11.9 a backup's `settings.json` keeps the names under `env` with blank values; the values, like the MCP settings, travel only in an encrypted export. Since 26.11.11 a backup also leaves out the keys it finds in `settings.json`, the scripts your hooks run and the plugin marketplaces file: a hook or permission rule found to hold a key stays out whole, another value that looks like a key is blanked with its name kept, and a script or skill holding one stays out. Restore says which. It knows common key shapes (GitHub, AWS, `sk-` keys, JWTs), not every token, and doesn't check `CLAUDE.md` or skills no hook runs. So before a reinstall a backup keeps your setup, but not those values or the parts that held a key. A backup made by 26.11.8 isn't listed by an older cl_audit, and 26.11.8 can't open one that holds a task's prompt. It never holds a sign-in. With the Claude window open, **Back up now** leaves out the Code-tab list and sidebar records and says to close the window first.
 
-Backups are APFS clones, so they take seconds and share space with the originals. On the same disk that protects you from the sweep and from mistakes, not from a dead disk. **General ▸ Backups** sets where they go (**Change…** picks a folder) and how many are kept: by default the last 3 of each profile, plus any made in the last 30 days. On another volume it's a full copy, and the list says so.
+Backups are APFS clones, so they take seconds and share space with the originals. On the same disk that protects you from the sweep and from mistakes, not from a dead disk. **General ▸ Backups** sets where they go (**Change** picks a folder) and how many are kept: by default the last 3 of each profile, plus any made in the last 30 days. On another volume it's a full copy, and the list says so.
 
 **A backup before every switch that moves sessions.** When you switch a profile to another of your own accounts, the Claude window's sessions move with it, so cl_audit closes that window and makes a backup first; if it can't, nothing moves. The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers the switch, and [Claude Code sessions lost after switching accounts](/blog/claude-sessions-lost-switching-accounts/) covers signing in to another account by hand. Whether you may hold more than one Claude account is up to Anthropic's terms.
 
-**Restore…, with a preview.** **Restore…** on a backup opens a page that says "Preview · nothing written yet · built not to overwrite". It counts what would happen, by session ID for the Code-tab list and by path for transcripts:
+**Restore, with a preview.** **Restore** on a backup opens a page that says "Preview · nothing written yet · built not to overwrite". It counts what would happen, by session ID for the Code-tab list and by path for transcripts:
 
 - back where it was, unchanged since;
 - missing, restored;
@@ -334,7 +334,7 @@ Then **Close and restore N** closes only that profile's Claude window and writes
 
 **Undo this restore** is meant to take back what the restore put back, and only files unchanged since. It may not bring everything back.
 
-To keep a copy somewhere other than this Mac, **Export…** writes a profile's sessions as one file, saved where you choose: a zip, or an encrypted disk image with a password. Sessions that hold keys stay out unless you keep them, which needs the password. **Import…** adds such a file back after a preview and is built not to overwrite anything; **Undo last import** is meant to take back what it added. For a new Mac, 26.11.10 adds **Move to another Mac**, a key on the Export page that also takes cl_audit's own profiles and settings, always in a password-protected disk image. Sign-ins don't travel, and neither does your code. Since 26.11.12 a move brings a checklist of the projects to clone, and on the new Mac you can pick the folder for any moved session whose folder isn't there. Since 26.11.13 it also carries each session's task list, plan, typed prompts and its project folder's trust and allowed tools, and Rewind's copies of the files the sessions edited if you include them.
+To keep a copy somewhere other than this Mac, **Export** writes a profile's sessions as one file, saved where you choose: a zip, or an encrypted disk image with a password. Sessions that hold keys stay out unless you keep them, which needs the password. **Import** adds such a file back after a preview and is built not to overwrite anything; **Undo last import** is meant to take back what it added. For a new Mac, 26.11.10 adds **Move to another Mac**, a key on the Export page that also takes cl_audit's own profiles and settings, always in a password-protected disk image. Sign-ins don't travel, and neither does your code. Since 26.11.12 a move brings a checklist of the projects to clone, and on the new Mac you can pick the folder for any moved session whose folder isn't there. Since 26.11.13 it also carries each session's task list, plan, typed prompts and its project folder's trust and allowed tools, and Rewind's copies of the files the sessions edited if you include them.
 
 cl_audit relies on how Claude Code lays out its folder, and the 26.11.18 release notes say it was checked with Claude Code 2.1.318. If a newer Claude Code stops a backup or restore working, update cl_audit.
 
