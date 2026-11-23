@@ -193,7 +193,7 @@ You find them in Settings ▸ Main ▸ **Accounts**. The account in use gets a l
 
 ![A profile's Accounts card](/img/guides/accounts-card.webp "The site's demo, with its own sample profile Work and team accounts: one in use, two on standby, and two folders from before.")
 
-IN USE is the account Claude Code's folder is signed in to, the only one whose limits cl_audit reads, and every screen shows that same account. When the Claude app and Terminal are signed in to different accounts, the Accounts card turns amber and says "The Claude app and Terminal are signed in to different accounts." and "cl_audit can read usage only through Terminal's sign-in, so the Claude app's account shows no numbers." Both accounts show, marked Terminal and App. Terminal's account has **Sign the app in**, the app's has **Sign Terminal in**: "Use the key on either account to put both on the same account." The dashboard card, the menu bar menu and the Dock icon's panel show the split too, with a "Claude window on another account ›" line that leads to the Accounts card.
+IN USE is the account Claude Code's folder is signed in to, the only one whose limits cl_audit reads. When the Claude app and Terminal are signed in to different accounts, the Accounts card turns amber and says "The Claude app and Terminal are signed in to different accounts." and "cl_audit can read usage only through Terminal's sign-in, so the Claude app's account shows no numbers." Both accounts show, marked Terminal and App. Terminal's account has **Sign the app in**, the app's has **Sign Terminal in**: "Use the key on either account to put both on the same account." The dashboard card, the menu bar menu and the Dock icon's panel show the split too, with a "Claude window on another account ›" line that leads to the Accounts card.
 
 ## Where the accounts come from
 
@@ -266,7 +266,7 @@ A profile's card shows numbers when cl_audit can read the sign-in of Claude Code
 
 ### The Claude app and Terminal on different accounts
 
-The Claude app is on ann@example.com, but Claude Code in Terminal is signed in to ben@example.com. That's a warning in amber, not an error: the card still shows numbers, but they are ben@example.com's, read through Terminal's sign-in, and a line under them reads "Claude window on another account ›". It leads to the Accounts card, which says "The Claude app and Terminal are signed in to different accounts." **Sign the app in** puts the Claude app on ben@example.com; **Sign Terminal in** puts Terminal on ann@example.com. The Dock icon's panel has a **Sign in** key for Terminal.
+The Claude app is on ann@example.com, but Claude Code in Terminal is signed in to ben@example.com. Amber, not red: the card still shows numbers, but they are ben@example.com's, read through Terminal's sign-in, and a line under them reads "Claude window on another account ›". It leads to the Accounts card, which says "The Claude app and Terminal are signed in to different accounts." **Sign the app in** puts the Claude app on ben@example.com; **Sign Terminal in** puts Terminal on ann@example.com. The Dock icon's panel has a **Sign in** key for Terminal.
 
 ### Terminal is signed out
 

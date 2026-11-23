@@ -31,7 +31,7 @@ const glance: [string, string][] = [
   ["Free", "Source-available (PolyForm Perimeter 1.0.1). No sign-up, server or analytics."],
   ["Mac", "Apple silicon, macOS 13 or later. Claude Code signed in for each profile."],
   ["Plans", "Plans with usage limits, such as Pro, Max, Ultra and Team."],
-  ["Accounts", "A profile per account seat, so work and personal sit side by side."],
+  ["Accounts", "Work and personal accounts side by side, each in its own profile."],
   ...(stage ? [["Alpha", "First released October 2026. A Claude update can break it until cl_audit updates."] as [string, string]] : []),
   ["Independent", "Not affiliated with Anthropic."],
 ];
@@ -307,7 +307,7 @@ const jsonLd = [orgNode, {
         <div class="list">
           <div><b>Settings ▸ ＋ (New profile)</b><span>Pick its account: one already signed in to a Claude Code folder on this Mac, or sign in to another one in a new folder. Then switch Claude window and Usage in the Dock on or off.</span></div>
           <div><b>Quit the Claude app first</b><span>Only for a profile with a Claude window, and only until its folder exists. While it's open, the app writes its own sign-in and settings.</span></div>
-          <div><b>Sign in</b><span>Claude Code first, then the profile's Claude window, both to the same claude.ai account. One profile per folder; an account can be in more than one.</span></div>
+          <div><b>Sign in</b><span>Claude Code first, then the profile's Claude window, both to the same claude.ai account. An account can be in more than one profile.</span></div>
           <div><b>Dock icon</b><span>cl_audit installs it and puts it in the Dock. A profile without one still has its usage read.</span></div>
         </div>
       </div>
