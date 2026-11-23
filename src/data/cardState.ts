@@ -27,9 +27,12 @@ const state: Record<string, S> = (w.__clState ??= Object.fromEntries(accounts.ma
 export const dockState = (id: string) => ({ win: !!state[id]?.win, dock: !!state[id]?.dock });
 
 // 26.11.82: a Dock icon app the visitor starts with a click on its Dock tile quits by itself a minute or two after they
-// leave it (its panel closed), while the Dock draws its icon; its Claude window is left as it is. Never while its panel
-// is open, and not one started from the card's switch. The demo waits AUTO_QUIT_MS (window.__clAutoQuitMs overrides it,
-// for the tries), then the chip and the Dock's running dot go back to stopped.
+// leave it, while the Dock draws its icon; its Claude window is left as it is. The app's rule (DockTile.quitsWhenIdle,
+// IconApp.quitIfLeft): not started by the agent, the tile drawn, not the app in front, none of its own windows shown
+// (its usage panels: the Claude window is another app's and doesn't count) for idleQuitAfter (60 s), checked on 30 s
+// ticks. Here: never while its panel is open, not one started from the card's switch (the agent's to quit), and an open
+// Claude window doesn't hold it. The demo waits AUTO_QUIT_MS (60 s plus a tick; window.__clAutoQuitMs overrides it, for
+// the tries), then the chip and the Dock's running dot go back to stopped.
 const AUTO_QUIT_MS = 90_000;
 const byDock: Record<string, boolean> = (w.__clByDock ??= {});
 const quitTimers: Record<string, number> = (w.__clQuitTimers ??= {});
