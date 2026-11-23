@@ -80,7 +80,8 @@
 .prose pre { margin: 0 0 14px; padding: 11px 14px; border-radius: 6px; overflow-x: auto; max-width: 100%;
   background: var(--code-bg); color: var(--code-text); box-shadow: var(--code-shadow); font-size: 12.5px; line-height: 1.75; }
 .prose pre code { padding: 0; background: none; font-size: inherit; overflow-wrap: normal; }
-.prose blockquote { margin: 0 0 14px; padding: 4px 0 4px 16px; border-left: 3px solid rgba(var(--led), .65); color: var(--soft); }
+/* a quote: a light neutral background, no coloured stripe on its edge (house rule) */
+.prose blockquote { margin: 0 0 14px; padding: 8px 14px; border-radius: 6px; background: rgba(127,127,127,.10); color: var(--soft); }
 .prose hr { border: 0; height: 1px; margin: 26px 0; background: rgba(0,0,0,.5); box-shadow: 0 1px 0 rgba(255,255,255,.05); }
 .prose kbd { padding: 1px 6px; border-radius: 3px; background: var(--chip); font-size: .86em; }
 
