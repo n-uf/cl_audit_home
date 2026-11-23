@@ -2,7 +2,8 @@
 // one spec, so the page (AccountCard.astro) and the script that changes a card's state use the same markup.
 import { accounts, standby, offerOrder, rgbOf } from "./demo";
 import { chevronHTML } from "./chevron";
-import { emailsHTML, emailText, addressRowHTML, shortHTML } from "./emails";
+import { emailHTML, emailsHTML, emailText, addressRowHTML, shortHTML } from "./emails";
+import { SPLIT_WORDS } from "./split";
 
 type Acc = (typeof accounts)[number];
 export type KeysSpec = {
@@ -39,10 +40,16 @@ function switchMenuHTML(a: Acc) {
     `</span></span>`;
 }
 
-/** The row's markup. `open`: the profile's Claude window is open (the demo's starting state; cardState.ts keeps it up to date). */
-export function cardKeysHTML(a: Acc, spec: KeysSpec, open = !!a.winOpen) {
+/** The card's account line: the lamp and the address (the stand-in while hidden: `.addr`); in the split, Terminal's
+ *  account, named as whose the numbers are ("· Terminal", sketch 97ebf0a). */
+export const inuseHTML = (email: string, terminal = false) =>
+  `<i></i><span class="addr">${emailHTML(email)}</span>${terminal ? `<span class="inuse-tag">· ${SPLIT_WORDS.terminal}</span>` : ""}`;   // words: SEO (sketch 97ebf0a)
+
+/** The row's markup. `open`: the profile's Claude window is open (the demo's starting state; cardState.ts keeps it up to
+ *  date). `split`: the split by hand (data/split.ts): the window key is amber, since the window is what's out of line. */
+export function cardKeysHTML(a: Acc, spec: KeysSpec, open = !!a.winOpen, split = false) {
   // its LED in the profile's own colour (26.11.85), lit while the window is open; the default colour until prefs apply
-  const show = `<button type="button" class="pill small tint ${a.tint}${open ? "" : " unlit"}" style="--tint:var(--acc-${a.id}-rgb, ${rgbOf(a.hex)})" data-open-desktop="${a.id}" data-open-label>${open ? "Show window" : "Open window"}</button>`;
+  const show = `<button type="button" class="pill small tint ${a.tint}${open ? "" : " unlit"}${split ? " amberk" : ""}" style="--tint:var(--acc-${a.id}-rgb, ${rgbOf(a.hex)})" data-open-desktop="${a.id}" data-open-label>${open ? "Show window" : "Open window"}</button>`;
   const terminal = `<button type="button" class="pill small" data-open-terminal="${a.id}">Terminal</button>`;
   // what stepped out of the row comes first, with its divider; a usage-only profile has neither a window nor Terminal,
   // so the group is hidden whole (app.css) and no divider is left behind

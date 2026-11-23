@@ -5,7 +5,8 @@
 // the icon ("1h 42m"), or only turns red; in System it's never red (the countdown shows it).
 import { accounts, standby, offerOrder, bestOffer, type AccountId } from "./demo";
 import { countdownWords, fableShown } from "./panelView";
-import { addressRowHTML, shortText } from "./emails";
+import { addressRowHTML, shortText, emailHTML } from "./emails";
+import { TERMINAL, SPLIT_WORDS, windowLineHTML } from "./split";
 import type { MenuBarLook } from "./prefs";
 
 const level = (p: number) => (p >= 95 ? "#eb445b" : p >= 80 ? "#ef4444" : p >= 50 ? "#f59e0b" : "#22c55e");
@@ -57,9 +58,12 @@ export const lane: [string, number | null, number | null, string | undefined][] 
   ["at limit", 88, 72, undefined], ["full", 100, 64, "1h 42m"],
 ];
 
-/** The profile's own menu, opened from its menu bar icon: its limits, Fable's, usage credits, then the items. */
-export function menuHTML(id: AccountId, name: string) {
-  const a = accounts.find((x) => x.id === id)!;
+/** The profile's own menu, opened from its menu bar icon: its limits, Fable's, usage credits, then the items. `open`: its
+ *  Claude window is open; `win`: the profile has one (Claude window on); `split`: the split by hand (data/split.ts). */
+export function menuHTML(id: AccountId, name: string, o: { open?: boolean; win?: boolean; split?: boolean } = {}) {
+  const a0 = accounts.find((x) => x.id === id)!;
+  // in the split the numbers are Terminal's account's (the sample figures), read through Terminal's sign-in
+  const a = o.split ? { ...a0, five: 34, week: 61, fiveLeftMin: 192, weekLeftMin: 3 * 1440, credits: null } : a0;
   const row = (n: string, p: number, sub: string, hot: boolean) =>
     `<div class="mbm-row"><span>${n}</span><span class="mbm-bar"><i style="width:${Math.min(100, p)}%;background:${level(p)}"></i></span><b style="color:${level(p)}">${p}%</b></div><div class="mbm-sub${hot ? " hot" : ""}">${sub}</div>`;
   const when = (m: number) => (m >= 1440 ? (Math.round(m / 1440) === 1 ? "in 1 day" : `in ${Math.round(m / 1440)} days`) : m >= 60 ? `in ${Math.floor(m / 60)} h ${m % 60} min` : `in ${m} min`);
@@ -80,16 +84,24 @@ export function menuHTML(id: AccountId, name: string) {
       sb.map((s) => sw(s, `<span class="ck"></span><span>${addressRowHTML(s.email)}…</span>`)).join("") + "</div><hr>"
     : "";
   // the profile's light before its name (26.11.81, ProfileLED), in its colour as set in Settings
-  return `<div class="mbm-head"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b><span>${a.plan}</span></div>` +
+  return `<div class="mbm-head"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b><span>${o.split ? TERMINAL.plan : a.plan}</span></div>` +
+    // the split by hand (sketch 97ebf0a): a view with the lamp, Terminal's address (blurred while hidden) · Terminal, and
+    // the amber line, a link to Settings ▸ Accounts
+    (o.split ? `<div class="mbm-acc split"><i></i><span class="addr">${emailHTML(TERMINAL.email)}</span><span class="r">· ${SPLIT_WORDS.terminal}</span></div><div class="mbm-split">${windowLineHTML(id)}</div>` : "") +   // words: SEO (sketch 97ebf0a)
     // (plain text: the menu is built each time it opens, so the short name reads as the setting says then)
-    (sb.length ? `<div class="mbm-acc"><i></i>${shortText(a.email)}</div>` : "") +
+    (sb.length && !o.split ? `<div class="mbm-acc"><i></i>${shortText(a.email)}</div>` : "") +
     (a.five >= 100 ? `<div class="mbm-sub hot">5-hour full · in ${countdownWords(a.fiveLeftMin)}</div>` : "") +
     row("5-hour", a.five, a.five >= 100 ? "full" : `resets ${when(a.fiveLeftMin)}`, a.five >= 100) +
     row("Week", a.week, `resets ${when(a.weekLeftMin)}`, false) +
     (fableShown(id) ? row("Fable", a.fable!, `resets ${when(a.fableLeftMin)}`, false) : "") +
     (a.credits != null ? `<div class="mbm-sub credit">Using usage credits · $${a.credits.toFixed(2)} spent</div>` : "") +
     `<div class="mbm-sub">Read ${a.updated}</div><hr>` + switching +
-    ["Open Claude window", "Refresh now"].map((t) => `<button type="button" class="mbm-it" data-mbm="${t}">${t}</button>`).join("") + "<hr>" +
+    // the actions, as the Dock icon's menu has them (DockTileMenu.actions): Claude window ▸ (Open while it's closed;
+    // Show and Quit while it's open), Quick chat (cl_quick's: it opens cl_quick, here its site), Refresh now
+    (o.win !== false ? `<button type="button" class="mbm-it" data-mbm="winsub" aria-expanded="false">Claude window<span class="chev">›</span></button>` +
+      `<div class="mbm-wsub" hidden>${(o.open ? [["win-show", "Show"], ["win-quit", "Quit"]] : [["win-open", "Open"]]).map(([k, t]) => `<button type="button" class="mbm-it" data-mbm="${k}">${t}</button>`).join("")}</div>` : "") +   // words: SEO (the app's)
+    `<a class="mbm-it" data-mbm="quickchat" href="https://cl-quick.n-uf.com/" target="_blank" rel="noopener">Quick chat<span class="sr-only"> (opens in a new tab)</span></a>` +   // words: SEO (the app's)
+    `<button type="button" class="mbm-it" data-mbm="Refresh now">Refresh now</button><hr>` +
     ["Dashboard", "Profile settings…"].map((t) => `<button type="button" class="mbm-it" data-mbm="${t}">${t}</button>`).join("") +
     `<hr><button type="button" class="mbm-it" data-mbm="hide">Hide from the menu bar</button>`;
 }

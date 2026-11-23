@@ -1,9 +1,9 @@
 // Show emails (Settings ▸ General), as cl_audit 26.11.87 does it (cl_kit's AddressText). A hidden address shows nothing of
 // itself: never the real address under a blur, never a first letter, a length or a domain. Off, an address is shown:
-//  - left out: the card's standalone address line, the launcher and panels (a plain `.email`, hidden everywhere);
 //  - "hidden address": inside a sentence, a menu, a toast or a hover text (the `.email-m` twin emailHTML writes);
-//  - one fixed blurred stand-in, the same for every account: where Settings draws an address (an account box's title,
-//    the Switch page), the `.email-s` twin, and the address itself only while the pointer is on it;
+//  - one fixed blurred stand-in, the same for every account: where a view draws an address as a value (Settings' account
+//    box titles, the Switch page; since cl_audit e95e181 and 2f1fa08 the dashboard card's account line and the Dock
+//    icon's details panel too, `.addr`), the `.email-s` twin, and the address itself only while the pointer is on it;
 //  - in the Switch account menus, a row draws the stand-in and its address only while the row is highlighted
 //    (addressRowHTML); a short name ("Switch to …") is "hidden address" (shortText, shortHTML).
 // app.css has the rules.

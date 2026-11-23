@@ -17,7 +17,7 @@ import { colors, tileColors, styles, iconSrc, laneSrc, refreshChoices, dockRunsC
 import { limitsHTML, designs } from "../data/panelView";
 import { chevronHTML } from "../data/chevron";
 import { HIDDEN, STAND_IN } from "../data/emails";
-import { cardStates } from "../data/cardStates";
+import { SPLIT_WORDS } from "../data/split";
 import { lane as mbLane } from "../data/menubar";
 import { version, build, changelog } from "../data/site";
 import AccIcon from "./AccIcon.astro";
@@ -64,19 +64,29 @@ const sw = (key: string, label: string, on = true) => `<span class="ctl-pair"><b
         <div class="srow end"><button type="button" class="danger linkish" data-remove>Remove profile</button></div>
       </div>
 
-      <div class="card c-c"><h4>Claude Code <i class="idot" title="The Claude Code folder this profile uses and its sign-in. Its Claude window comes with it: the usual Claude app for the profile using ~/.claude, its own Claude window (own sign-in, chats and settings) for any other.">i</i></h4>
-        <!-- As the app (26.11.18): Accounts first, one box per account (IN USE, STANDBY: no limits), the key Sign in with
-             another account… (accounts aren't added by hand: those found on this Mac list themselves), Folders from before; then
-             Folder and (any folder but ~/.claude) Share from and Shared, read-only. Every row stacks, label above and
-             the value whole below, so long addresses and paths are never cut. -->
-        <div class="srow vcol stk"><span>Accounts <i class="idot" title="The claude.ai accounts this profile has. Its Claude Code folder holds one sign-in at a time: IN USE is the account signed in there, and the only one whose limits cl_audit reads. The others are STANDBY: signed out, with no folder of their own, so they show no limits, only when they were last used. They are found on this Mac by themselves: the Claude window's sessions folders, Claude Code's records and their backups, and the transcripts; Forget… takes one off. Switching to one (the Switch page, experimental: it can lose data) is meant to move the Claude window's Code sessions and scheduled tasks to it inside this profile's folder, with a backup first and Undo, then signs Claude Code in again on the same folder as that account; the account it leaves goes on standby. Whatever account signs in to the folder, even from Terminal, is the one in use: cl_audit follows it at once. An account belongs to one profile. cl_audit's background agent reads the sign-in from the Keychain, read-only, the same way Claude Code does; no new Keychain permission, and no sign-in is ever copied. cl_audit itself never reads or writes Keychain items during a switch; Claude Code's own sign-in updates its own item.
+      <!-- The approved Accounts sketch (cl_audit 97ebf0a): CLAUDE CODE goes; ACCOUNTS is its own card, one header (no
+           separate "Accounts" label), and FOLDER holds Folder, Share from and Shared. ACCOUNTS: one box per account (IN USE,
+           STANDBY: no limits), the link + Sign in with another account… (accounts aren't added by hand: those found on this
+           Mac list themselves), Folders from before. In the split (data/split.ts) one amber zone from the card's top edge
+           holds the header, the headline, two muted lines and the two accounts; the standby accounts stay below it. -->
+      <div class="card c-c c-acc" id="accounts"><div class="acc-zone" data-acc-zone>
+        <h4>Accounts <i class="idot" title="The claude.ai accounts this profile has. Its Claude Code folder holds one sign-in at a time: IN USE is the account signed in there, and the only one whose limits cl_audit reads. The others are STANDBY: signed out, with no folder of their own, so they show no limits, only when they were last used. They are found on this Mac by themselves: the Claude window's sessions folders, Claude Code's records and their backups, and the transcripts; Forget… takes one off. Switching to one (the Switch page, experimental: it can lose data) is meant to move the Claude window's Code sessions and scheduled tasks to it inside this profile's folder, with a backup first and Undo, then signs Claude Code in again on the same folder as that account; the account it leaves goes on standby. Whatever account signs in to the folder, even from Terminal, is the one in use: cl_audit follows it at once. An account belongs to one profile. cl_audit's background agent reads the sign-in from the Keychain, read-only, the same way Claude Code does; no new Keychain permission, and no sign-in is ever copied. cl_audit itself never reads or writes Keychain items during a switch; Claude Code's own sign-in updates its own item.
 
-Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a short-lived access key, which Claude Code swaps for a fresh one whenever it runs. cl_audit only reads that key, so after a while without Claude Code it runs out and the usage stops updating. On: cl_audit then runs Claude Code once in the background (a one-line prompt, “Reply with OK.”, on Haiku, nothing saved) so it swaps the key; at most every 30 min, using a sliver of this profile's usage. Off: the usage waits until you next use Claude Code.">i</i></span>
+Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a short-lived access key, which Claude Code swaps for a fresh one whenever it runs. cl_audit only reads that key, so after a while without Claude Code it runs out and the usage stops updating. On: cl_audit then runs Claude Code once in the background (a one-line prompt, “Reply with OK.”, on Haiku, nothing saved) so it swaps the key; at most every 30 min, using a sliver of this profile's usage. Off: the usage waits until you next use Claude Code.">i</i></h4>
+        <!-- the split by hand: the amber headline and two muted lines, said once, then Terminal's account (its numbers,
+             TERMINAL | APP, Sign the app in) and the Claude app's (Sign Terminal in); settings.astro fills the rows -->
+        <div class="split-head" data-split-head hidden>
+          <b>{SPLIT_WORDS.head}</b><!-- words: SEO (sketch 97ebf0a) -->
+          <span>{SPLIT_WORDS.why}</span><!-- words: SEO (sketch 97ebf0a) -->
+          <span>{SPLIT_WORDS.fix}</span><!-- words: SEO (sketch 97ebf0a) -->
+        </div>
+        <div class="split-rows" data-split-rows hidden></div>
+      </div>
           <div class="acc-list">
-            <!-- IN USE: a lit lamp, the address as a pop-up (✓ it, Sign in…, Renew sign-in by itself), its plan, where it is
-                 signed in (the Claude app, which includes its Code tab, and Claude Code in Terminal, the folder's sign-in
-                 that usage is read through), the limits in the dashboard's card style. Two shades only: it is dark while
-                 it is in focus and unlit (.rest) while a standby account is picked. -->
+            <!-- IN USE: a lit lamp, the address as a pop-up (✓ it, Sign in…, Renew sign-in by itself), its plan, the limits in
+                 the dashboard's card style (the sketch drops the Claude app / Claude Code in Terminal marks: with one
+                 account both are on it). Two shades only: it is dark while it is in focus and unlit (.rest) while a standby
+                 account is picked. Hidden in the split, whose two rows are in the amber zone above. -->
             <div class="abox in-use" data-abox-inuse>
               <div class="abox-head"><i class="abox-lamp on"></i>
                 <span class="abox-t login-ctl">
@@ -85,12 +95,6 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
                   <small data-abox-detail>{a.plan}</small>
                 </span>
                 <span class="disp xs abox-badge"><span class="g" data-abox-badge>In use</span></span></div>
-              <!-- words: SEO -->
-              <div class="where"><span class="mk on" data-mk-app>Claude app</span><span class="mk on" data-mk-term>Claude Code in Terminal</span></div>
-              <!-- the split (26.11.75 demo): Claude Code in Terminal on another account than the Claude app. As the app's
-                   inUseBox: the card's red heading and sentence, the reddish Sign in…, no numbers; they are on the
-                   Terminal account's own row below (data-standby-boxes) -->
-              <div class="abox-why" data-abox-why hidden></div>
               <div class="abox-limits" data-abox-limits></div>
               <!-- Sign in… (26.11.79, signInAgainLine): the sign-in window's line while it is open, with Cancel, then how it
                    ended; the line goes after a while -->
@@ -102,14 +106,16 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
                  becomes a Switch account key, which opens the Switch page with it picked -->
             <div class="acc-pick" data-standby-boxes></div>
             <p class="g-note sub" data-pick-hint hidden>Click a standby account to select it, then Switch account.</p>
-            <!-- demo only, like the dashboard's: on a profile with standby accounts, Split signs Claude Code in Terminal in to
-                 the first one it offers while the Claude app stays on the account in use; the same key puts it back -->
-            <div class="sw-demo" data-split-demo hidden><span class="sub">Demo: other states</span><!-- words: SEO -->
+            <!-- the shared seat (cl_audit 2550937, 8b67a4e): the account in use is in use in another profile too; one amber
+                 line after any other (FolderRules.sharedNote), never a block -->
+            <p class="g-note shared-note" data-shared-note hidden></p>
+            <!-- demo only, like the dashboard's: Split puts work's Claude app and Terminal on different accounts (Terminal on
+                 one the profile doesn't list, so Sign the app in opens the Switch page's finish line); Shared account makes
+                 the account in use another profile's too. The same key puts it back. -->
+            <div class="sw-demo" data-split-demo><span class="sub">Demo: other states</span><!-- words: SEO -->
               <span class="switch small-switch" role="group" aria-label="Other states"><!-- words: SEO -->
-                <button type="button" data-split-key="standby" aria-pressed="false">{cardStates.split.label}</button>
-                <!-- 26.11.76: Terminal on an account that isn't on the standby list (Claude Code switched to it elsewhere,
-                     cl_quick say); its Switch account is the finish line -->
-                <button type="button" data-split-key="elsewhere" aria-pressed="false">Switched elsewhere</button><!-- words: SEO -->
+                <button type="button" data-split-key aria-pressed="false">Split</button><!-- words: SEO -->
+                <button type="button" data-shared-key aria-pressed="false">Shared account</button><!-- words: SEO -->
               </span></div>
             <!-- the accounts found on this Mac are listed by themselves; a brand-new one signs in from here -->
             <div class="add-acc">
@@ -119,7 +125,13 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
             </div>
             <!-- the folders an earlier cl_audit made for this profile's accounts: Move to Trash… or Keep it -->
             <div class="leftovers" data-leftovers hidden></div>
-          </div></div>
+          </div>
+      </div>
+
+      <!-- FOLDER (sketch 97ebf0a): the profile's Claude Code folder, and (any folder but ~/.claude) Share from and Shared,
+           read-only. Every row stacks, label above and the value whole below, so long paths are never cut. -->
+      <!-- words: SEO (the card's hover text: cl_audit feat/two-names, Settings.swift) -->
+      <div class="card c-c c-fold"><h4>Folder <i class="idot" title="The Claude Code folder for this profile, like ~/.claude: its sign-in, settings and history live there. One profile per folder; folders are used where they are (Claude Code names a folder's Keychain sign-in after its path). Its Claude window comes with it: the usual Claude app for the profile using ~/.claude, its own Claude window (own sign-in, chats and settings) for any other.">i</i></h4>
         <div class="srow vcol stk"><span>Folder <i class="idot" title="The Claude Code folder for this profile, like ~/.claude: its sign-in, settings and history live there. One profile per folder; folders are used where they are (Claude Code names a folder's Keychain sign-in after its path).">i</i></span><span class="folder-ctl"><select class="menu mono" data-folder aria-label="Folder"></select><span class="folder-btn" title="Choose another folder…" aria-hidden="true"><svg width="15" height="12" viewBox="0 0 15 12"><path d="M1 2.2C1 1.5 1.5 1 2.2 1h3.3l1.4 1.5h5.9c.7 0 1.2.5 1.2 1.2v6.1c0 .7-.5 1.2-1.2 1.2H2.2C1.5 11 1 10.5 1 9.8z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></span></div>
         <div data-share hidden>
           <div class="srow vcol stk"><span>Share from <i class="idot" title="The Claude Code folder this profile's folder links some items from (instructions, agents, skills, commands, memory & history), so edits there show up here too. Sign-in, plugins and usage stay separate.">i</i></span><span class="share-v mono" data-share-from></span></div>

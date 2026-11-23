@@ -103,6 +103,9 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
   import { applyPrefs, loadPrefs, savePrefs, ordered, type Prefs } from "../data/prefs";
   import { profileGlyph, menuHTML } from "../data/menubar";
   import { accounts, type AccountId } from "../data/demo";
+  import { isWindowOpen, setWin } from "../data/cardState";
+  import { isSplit } from "../data/split";
+  import { showWhatNow } from "../data/whatNow";
   // The profiles' menu bar icons: drawn for the menu bar's look (dark, or light on the Silver face); a click opens that
   // profile's own menu. applyPrefs calls this whenever the settings change.
   const w_ = window as any;
@@ -124,7 +127,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       const id = icon.dataset.mbId as AccountId;
       if (openId === id) { closeMenu(); return; }
       openId = id;
-      menu.innerHTML = menuHTML(id, loadPrefs()[id].name);
+      menu.innerHTML = menuHTML(id, loadPrefs()[id].name, { open: isWindowOpen(id), win: loadPrefs()[id].win, split: isSplit(id) });
       menu.hidden = false;
       const r = icon.getBoundingClientRect();
       menu.style.left = `${Math.max(8, Math.min(window.innerWidth - menu.offsetWidth - 8, r.left))}px`;
@@ -134,14 +137,18 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
     const item = t.closest<HTMLElement>("[data-mbm]");
     if (item && openId) {
       const id = openId as AccountId, what = item.dataset.mbm;
-      // Switch account ›: its submenu opens under it (the menu stays open)
-      if (what === "submenu") {
+      // Switch account › and Claude window ›: the submenu opens under it (the menu stays open)
+      if (what === "submenu" || what === "winsub") {
         const sub = item.nextElementSibling as HTMLElement | null;
         if (sub) { sub.hidden = !sub.hidden; item.classList.toggle("open", !sub.hidden); item.setAttribute("aria-expanded", String(!sub.hidden)); }
         return;
       }
       closeMenu();
-      if (what === "Open Claude window") w_.clOpenDesktop?.(id);
+      // (Quick chat is a link to cl_quick's site, and the split's amber line one to Settings: the browser follows them)
+      if (what === "win-open") { w_.clOpenDesktop?.(id); setWin(id, true); }
+      else if (what === "win-show") w_.clOpenDesktop?.(id);
+      else if (what === "win-quit") setWin(id, false);
+      else if (what === "Refresh now") showWhatNow("Refresh now", "", `Reads ${loadPrefs()[id].name}'s usage again now. It doesn't use any of your limits. This is a demo, so nothing is read.`);   // words: SEO
       else if (what === "Dashboard") location.href = "/dashboard/";
       else if (what === "switch") {
         // the Switch page, in Settings as in the app, with that account picked
@@ -153,7 +160,7 @@ const [headMain, ...headRest] = (headline ?? "").split(" · ");
       else if (what === "hide") { const p = loadPrefs(); p[id].mb.on = false; savePrefs(p); applyPrefs(p); }
       return;
     }
-    if (openId && !t.closest("[data-mb-menu]")) closeMenu();
+    if (openId && (!t.closest("[data-mb-menu]") || t.closest("[data-mb-menu] a"))) closeMenu();
   });
   // account boxes that can be picked (Settings' standby rows, the Switch page's list) take Return and Space like a key
   document.addEventListener("keydown", (e) => {

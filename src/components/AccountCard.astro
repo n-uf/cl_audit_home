@@ -4,7 +4,7 @@
 // gets one display instead), both limits, and the keys. The switches work in the demo: the script in
 // data/cardState.ts moves them, with a spinner, and keeps the state across pages.
 import { cardLimitsHTML, fullLimit } from "../data/panelView";
-import { cardKeysHTML, fullKeys, usualKeys } from "../data/cardKeys";
+import { cardKeysHTML, fullKeys, usualKeys, inuseHTML } from "../data/cardKeys";
 import { accounts, type AccountId } from "../data/demo";
 import AccIcon from "./AccIcon.astro";
 interface Props {
@@ -23,7 +23,9 @@ const full = !!fullLimit(a.id as AccountId);   // a limit is full: the plan badg
     <div style="display:grid;gap:2px;min-width:0">
       <!-- the profile's own light before its name (26.11.78, ProfileLED: it replaced the flat dot) -->
       <div class="acc-name"><i class="pled" style={`--c:${a.color}`} aria-hidden="true"></i>Claude {a.name}</div>
-      <div class="inuse"><i></i><span class="email">{a.email}</span></div>
+      <!-- the account in use: its lamp and address; while Show emails is off the blurred stand-in, the address while the
+           pointer is on it (AccountValue, cl_audit e95e181). In the split, Terminal's account · Terminal (cardState.ts) -->
+      <div class="inuse" data-inuse set:html={inuseHTML(a.email)} />
     </div>
     <span class:list={["plan", { red: full }]}><b data-plan={a.plan}>{a.plan}</b><small>{a.updated}</small></span>
   </div>
