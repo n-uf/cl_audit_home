@@ -192,7 +192,7 @@ The menu bar suits you better when:
 - **The Dock is full.** Every profile with Usage in the Dock adds an icon there; a menu bar icon takes no Dock space.
 - **You want fewer apps in the Dock.** A usage only profile with a menu bar icon leaves the Dock as it was.
 - **You work on a laptop screen.** With the Dock hidden or short of room, the top of the screen is where you already look.
-- **You want a menu.** Refresh now and Open Claude window are one click away.
+- **You want a menu.** Refresh now and the Claude window are a click away.
 
 The Dock icon shows more, though. It has its own click action, a details panel on press and hold, and when a limit is full it turns into the countdown with a crimson frame. If that's enough, leave the menu bar off. For the desktop or Notification Center there's also [the Claude usage widget for Mac](/use-cases/claude-usage-widget-mac/).
 

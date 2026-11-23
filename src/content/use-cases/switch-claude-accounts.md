@@ -210,7 +210,7 @@ Every route opens the same Switch page. None switches by itself.
 
 - **Settings.** Click a standby box to select it, and a **Switch account** key takes the place of STANDBY. Its address pop-up also has **Switch to it…**.
 - **The dashboard card.** While a limit is full, the card shows an orange **Switch account** key at the right end of its keys row, under the full display. It selects nothing for you. Its menu ticks the account in use with its plan, lists your standby accounts by address only and ends with "Sign in to another account…". The key shows even when there's no standby account. Picking an account opens the Switch page with it picked.
-- **The menus.** The Dock icon's menu, and the [menu bar icon](/use-cases/claude-usage-menu-bar-mac/) if you turned it on, have **Switch account ›**: the account in use is ticked, and your standby accounts are listed by address only. While a limit is full, "Switch to ultra-2…" also sits on the top level.
+- **The menu bar.** The profile's [menu bar icon](/use-cases/claude-usage-menu-bar-mac/), if you turned it on, has **Switch account ›** in its menu: the account in use is ticked, and your standby accounts are listed by address only. While a limit is full, "Switch to ultra-2…" also sits on the top level.
 - **The alert.** When a limit is full, the alert adds "You can switch to another of its accounts: Claude Code signs in again on this profile's folder." with **Switch account…** and **Later**. Like every cl_audit alert, it names no account. See [how the alerts work](/use-cases/claude-usage-limit-alerts/).
 
 ## What the Switch page tells you first

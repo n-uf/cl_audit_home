@@ -130,6 +130,6 @@ If you're weighing a bigger plan against paying for credits, [Claude Max vs Pro]
 
 ## See credits start before a limit stops you
 
-A spend limit only matters once a plan limit is full, so the useful warning comes earlier. cl_audit, our free [Claude usage tracker](/) for macOS, shows when a profile starts spending credits: its card, panels and Dock menu say "Using usage credits · $4.20 spent", and with alerts on you get a notification when credits start and another when they run out. It doesn't show your spend limit or balance; those stay in Settings ▸ Usage and `/usage`.
+A spend limit only matters once a plan limit is full, so the useful warning comes earlier. cl_audit, our free [Claude usage tracker](/) for macOS, shows when a profile starts spending credits: its card and panels say "Using usage credits · $4.20 spent", and with alerts on you get a notification when credits start and another when they run out. It doesn't show your spend limit or balance; those stay in Settings ▸ Usage and `/usage`.
 
 How to set the alerts is on the page about [Claude usage limit notifications](/use-cases/claude-usage-limit-alerts/), and cl_audit needs Claude Code signed in for each profile.
