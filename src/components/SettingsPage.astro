@@ -232,8 +232,8 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
             <div class="mb-tiles">{mbColours.map(([k, t]) => <button type="button" class="mb-st" data-mb-colours={k}><span class="mb-chip dark" data-mb-cglyph={k}></span><span>{t}</span></button>)}</div></div>
           <div class="srow seg-row"><span>Label <i class="idot" title="The profile's label before its icon (“MAIN”), or none.">i</i></span>
             <span class="switch small-switch" role="group" aria-label="Label"><button type="button" data-mb-label="0">None</button><button type="button" data-mb-label="1">Profile label</button></span></div>
-          <div class="srow seg-row"><span>When full <i class="idot" title="While a full limit holds the profile back: its countdown beside the icon (“1h 42m”), or the icon in red only. With the System colours it's always the countdown.">i</i></span>
-            <span class="switch small-switch" role="group" aria-label="When full"><button type="button" data-mb-full="countdown">Countdown</button><button type="button" data-mb-full="red">Red only</button></span></div>
+          <div class="srow seg-row"><span>When full <i class="idot" title="While a full limit holds the profile back: its countdown beside the icon (“1h 42m”), or the icon in crimson only. With the System colours it's always the countdown.">i</i></span><!-- words: SEO (the app's, MenuBar.swift) -->
+            <span class="switch small-switch" role="group" aria-label="When full"><button type="button" data-mb-full="countdown">Countdown</button><button type="button" data-mb-full="red">Crimson only</button></span></div>
           <div class="pv-strip">
             <div class="lane-head"><b>Preview</b> <span class="sub">your menu bar (dark), then as the limit fills up</span></div>
             <div class="mb-lane dark" data-mb-lane="dark">{mbLane.map(() => <span class="mb-chip" />)}</div>
