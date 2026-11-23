@@ -31,11 +31,21 @@ sources:
   - title: "cl_audit CHANGELOG, 26.11.0 (2026-11-05)"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
     checked: 2026-11-23
-  - title: "cl_audit README at v26.11.88 (n-uf): the menus, Switch account ›, crimson for a full limit"
+  - title: "cl_audit README at v26.11.88 (n-uf): crimson for a full limit"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
     checked: 2026-11-23
-    supports: "At v26.11.88: the account in use under the profile's name with a lit green lamp; Switch account › with the account in use ticked and every other account with when it was last in use; Switch to … on the top level while a limit is full; all of them open the Switch page; When full: crimson only"
+    supports: "At v26.11.88: When full has two choices, the countdown beside the icon or crimson only; a full limit is crimson in every colour choice except System, where the countdown shows it."
     quote: "A full limit is crimson, except in System, where its countdown shows it."
+  - title: "cl_audit source at v26.11.88, Sources/MenuBar.swift (the profile's menu)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/MenuBar.swift#L357-L364"
+    checked: 2026-11-23
+    supports: "Under the profile's row, the menu bar menu holds the Dock menu's rows without the profile row: the accounts with the problem line, the Claude window and the actions, then Hide from the menu bar. There is no Switch account submenu and no Switch to … item at the top."
+    quote: "the accounts with the problem line"
+  - title: "cl_audit source at v26.11.88, Sources/DockMenu.swift (the menu bar menu's accounts)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/DockMenu.swift#L108-L146"
+    checked: 2026-11-23
+    supports: "The menu bar menu's accounts: the one in use ticked, in the split Terminal's account and the sign-in to the app's, each standby account by address, then Sign in to another account…; a standby account's row opens the Switch page with it picked, and the account in use's row does nothing (Checks/docktile/main.swift at the tag checks the rows)."
+    quote: "each standby account, Sign in to another account…"
   - title: "cl_audit CHANGELOG, 26.11.33"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
     checked: 2026-11-23
@@ -188,7 +198,7 @@ A click opens that profile's own menu:
 
 In the menu bar, in the profile's settings, puts it back.
 
-A profile with more than one account shows the account in use under the profile's name, with a lit green lamp and no label ("ultra-1"), and has **Switch account ›**: a submenu with the account in use ticked ("ultra-1 · week 94%"), then your other accounts by address only ("ultra-2…"). The lamp goes off when the sign-in has run out, is gone, can't be read, or is on another account or another profile. A standby account is signed out, so the menu shows no numbers for it. While a limit is full, the first account not known to be full also sits on the top level, first among the actions: "Switch to ultra-3…". All of these only open cl_audit's Switch page; nothing switches until you start the switch there. {{live:/use-cases/switch-claude-accounts/}}The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers what a switch moves and how to undo one.{{/live}}
+A profile with more than one account shows the account in use under the profile's name, with a lit green lamp and no label ("ultra-1"). Below that row the menu lists the profile's accounts directly, with no submenu: the account in use ticked ("ultra-1@example.com"), then each other account by address ("ultra-2@example.com"), then **Sign in to another account…**. The lamp goes off when the sign-in has run out, is gone, can't be read, or is on another account or another profile. A standby account is signed out, so the menu shows no numbers for it. Picking a standby account only opens cl_audit's Switch page with it picked; nothing switches until you start the switch there. {{live:/use-cases/switch-claude-accounts/}}The [Claude account switcher](/use-cases/switch-claude-accounts/) page covers what a switch moves and how to undo one.{{/live}}
 
 {{experimental: switch}}
 
