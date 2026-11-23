@@ -13,6 +13,9 @@ const jsonLd = [
 ];
 ---
 <Desktop title={title} description={description} page="settings" headline="Profile and general settings" jsonLd={jsonLd}>
+  <!-- whether everything is saved, and what the selected profile is doing: the display the app's window strip has on its
+       Settings page (Launcher.swift: SettingsStatus), here in the window head's row for a page's own controls -->
+  <span slot="top" class="disp fixed s-status" data-status>Saved <em>· as you change</em></span>
   <div class="content-inner">
     <SettingsPage />
   </div>
@@ -21,7 +24,7 @@ const jsonLd = [
 <script>
   import { accounts, standby, offerOrder, type AccountId, type Standby } from "../data/demo";
   import { chevronHTML } from "../data/chevron";
-  import { emailHTML, emailsHTML, emailText, shortText } from "../data/emails";
+  import { emailHTML, emailsHTML, emailText, shortText, shortHTML } from "../data/emails";
   import { applyPrefs, loadPrefs, savePrefs, loadOrder, saveOrder, loadCardStyle, saveCardStyle, iconSrc, laneSrc, loadAppIcon, saveAppIcon, appIconSrc, panelChoices, colors, loadWidget, saveWidget, type AppIcon, type Prefs, type Style, type MenuBarLook, type MenuBarStyle, type WidgetLook } from "../data/prefs";
   import { glyphHTML, lane as mbLane } from "../data/menubar";
   import { widgetHTML } from "../data/widgetView";
@@ -227,7 +230,7 @@ const jsonLd = [
     const idle = "Saved <em>· as you change</em>";
     let flash = 0;
     const status = (html: string, ms = 0) => {
-      const s = $("[data-status]"); if (!s) return;
+      const s = document.querySelector<HTMLElement>("[data-status]"); if (!s) return;   // (in the window head, outside #settings)
       clearTimeout(flash); flash = 0;
       s.innerHTML = html;
       if (ms) flash = window.setTimeout(() => { flash = 0; statusIdle(); }, ms);
@@ -494,10 +497,15 @@ const jsonLd = [
 
     // Fill every control from the selected profile's settings.
     const show = () => {
-      // each profile tile's second line: its folder, or "usage only"
+      // each profile tile's second line (AccountTile.sub): "usage only"; else its folder, with more than one account the one
+      // in use by its short name ("~/.claude-work · team-1", "hidden address" while Show emails is off), and
+      // " · own window" for a profile on its own Claude window
       for (const x of accounts) {
         const sub = $(`[data-tile-sub="${x.id}"]`);
-        if (sub) sub.textContent = !prefs[x.id].showInDock && !prefs[x.id].win ? "usage only" : x.dir;
+        if (!sub) continue;
+        const own = prefs[x.id].win && x.dir !== "~/.claude" ? " · own window" : "";   // words: SEO (the app's, DesktopMode.ownMark)
+        sub.innerHTML = !prefs[x.id].showInDock && !prefs[x.id].win ? "usage only"   // words: SEO (the app's)
+          : x.dir + (standby[x.id].length ? ` · ${shortHTML(x.email)}` : "") + own;
       }
       if (!changing && !flash) statusIdle();
       $$<HTMLElement>("[data-select-acc]").forEach((t) => t.classList.toggle("sel", general ? t.dataset.selectAcc === "general" : t.dataset.selectAcc === acc));

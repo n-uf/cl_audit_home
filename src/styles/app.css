@@ -1312,8 +1312,10 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
 .fpic b { position: absolute; left: 44px; right: 8px; top: 8px; height: 11px; border-radius: 2px; }
 .fpic u { position: absolute; left: 8px; right: 8px; bottom: 8px; height: 5px; border-radius: 1px; background: linear-gradient(90deg, #22c55e 0 45%, #f59e0b 45% 58%, rgba(0,0,0,.3) 58%); }
 
-/* Settings (26.10.2): the strip's saved display, General's Dock row, the chosen face's card, faded Dock-only cards */
-.settings .strip .s-status { width: auto; height: 30px; flex: 1 1 260px; max-width: 290px; }   /* fits "Saved · usage in the Dock off" */
+/* Settings (26.10.2): the saved display (in the window head's row, as the app's window strip has it), the strip's ⓘ,
+   General's Dock row, the chosen face's card, faded Dock-only cards */
+.fascia-slot .s-status { width: auto; height: 26px; flex: 0 1 290px; max-width: 290px; margin-left: auto; }   /* fits "Saved · usage in the Dock off" */
+.settings .strip .strip-i { align-self: center; margin-left: 2px; }
 .dock-order { align-items: flex-start; padding-top: 8px; }
 .dock-order .do-t { display: inline-flex !important; align-items: center; gap: 8px; }
 .dock-order .disp { height: 18px; font-size: 9px; padding: 0 7px; }
@@ -1331,7 +1333,7 @@ a, button, summary, label, select, [role="button"] { -webkit-tap-highlight-color
   .dash-bar .strip26 { flex-wrap: wrap; row-gap: 6px; max-width: 100%; }
   .dash-bar .strip26 .vdiv { display: none; }
   .dash-bar .disp.fixed { width: auto; }
-  .settings .strip .s-status { width: auto; flex: 1 1 100%; max-width: none; }
+  .fascia-slot .s-status { flex: 1 1 100%; max-width: none; margin-left: 0; }
   .hhead .keys { flex-wrap: wrap; }
 }
 /* upright phones: the dashboard's top strip has the profile keys on one line, Updated and its refresh key on the next */
@@ -1627,6 +1629,12 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .rline { margin: -3px 0 6px; font-size: 12px; line-height: 1.4; }
 .sw-row { align-items: center; padding: 6px 0; }
 .sw-row .swatches { row-gap: 8px; }
+/* Profile ▸ Colour: the app's ten accents in one row (SwatchRow, 14 pt each, 2 pt apart), a phone's narrow column too */
+@media (max-width: 600px) {
+  /* (doubled class: beats the narrow-window swatch rule above) */
+  .settings .s-cols .c-p .srow > .swatches.swatches[data-swatches="color"] { flex-wrap: nowrap; gap: 4px; }
+  .settings .s-cols .c-p .srow > .swatches.swatches[data-swatches="color"] > * { width: 14px; height: 14px; flex: none; }
+}
 /* segments for two short choices fill the value column */
 .seg-row > .switch { flex: 1 1 auto; display: flex; }
 .seg-row > .switch > button { flex: 1 1 0; min-width: 0; white-space: nowrap; }
