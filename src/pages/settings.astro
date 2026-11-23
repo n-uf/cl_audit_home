@@ -338,6 +338,17 @@ const jsonLd = [
       $("[data-abox-inuse]")!.hidden = on;
       // the shared note: one amber line after any other (the demo's Shared account key); never in the split, whose
       // account in use is in the zone
+      // the last switch's line (AccountSettings.linkedWords): only while the account it left is on standby here, within
+      // 7 days of the switch; the demo's work switched away from team-2 two days ago
+      const was = acc === "work" ? listed().find((s) => s.email === "team-2@work.example") : undefined;
+      const linked = $("[data-linked-line]")!;
+      linked.hidden = !was;
+      if (was) {
+        const at = new Date(Date.now() - 2 * 86400000); at.setHours(18, 40, 0, 0);
+        const when = `${at.toLocaleString("en-GB", { weekday: "short" })} 18:40`;   // Settings.when: "EEE HH:mm" (not today)
+        linked.innerHTML = emailsHTML(`Switched ${when} · was ${was.email}, now on standby. Stays with ${was.email}: a CI token from claude setup-token, connectors, cloud sessions, and the sessions it ran (`) +   // words: SEO (the app's)
+          `<a href="https://github.com/n-uf/cl_audit#moving-a-profile-to-another-account" target="_blank" rel="noopener">how-to<span class="sr-only"> (opens in a new tab)</span></a>).`;
+      }
       const note = $("[data-shared-note]")!;
       note.hidden = !sharedOn.has(acc) || on;
       note.textContent = sharedNote();
