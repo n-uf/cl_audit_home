@@ -977,8 +977,6 @@ select.menu option { background: #2c2c2f; color: var(--text); }
 .pn-chip.red { background: rgba(239,68,68,.2); color: #ef4444; }
 .pn-chip.green { background: rgba(34,197,94,.2); color: #22c55e; }
 .pn-chip.gray { background: rgba(142,142,147,.2); color: rgba(242,242,244,.8); }
-.pn-foot { display: flex; align-items: center; gap: 8px; }
-.pn-gear { width: 32px; height: 26px; border-radius: 99px; display: grid; place-items: center; background: rgba(255,255,255,.08); color: var(--muted); }
 .pn-note { font-size: 11.5px; }
 .pop.peek { display: block; width: 320px; padding: 14px; }
 .pop.peek[hidden] { display: none; }
@@ -1690,16 +1688,6 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .abox.in-use.rest { background: rgba(0,0,0,.24); box-shadow: var(--well); }
 .abox.in-use.rest .abox-title { color: var(--soft); }
 .face-silver .appwin .abox.in-use.rest { background: rgba(0,0,0,.08); box-shadow: inset 0 1px 3px rgba(0,0,0,.25); }
-/* the split (Claude Code in Terminal on another account): the box's glow turns red, and the card's notice (heading and
-   sentence) with the reddish Sign in… takes the numbers' place, as the app's inUseBox with alert */
-.abox.in-use.alert { box-shadow: inset 0 0 12px rgba(255,107,94,.10), inset 0 1px 1.5px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.05); }
-.face-silver .appwin .abox.in-use.alert { box-shadow: inset 0 0 12px rgba(179,38,30,.10), inset 0 2px 4px rgba(0,0,0,.14), 0 1px 0 rgba(255,255,255,.7); }
-.abox-why { display: grid; gap: 7px; justify-items: start; }
-.abox-why .redline { margin: 0; display: grid; gap: 2px; font-size: 12px; line-height: 1.35; color: #e9b3ad; }
-.abox-why .redline b { font-weight: 600; font-size: 12.5px; color: #ff8a80; overflow-wrap: anywhere; }
-.face-silver .appwin .abox-why .redline { color: #8a2a20; }
-.face-silver .appwin .abox-why .redline b { color: #b3261e; }
-.abox-why .acc-actions { margin: 0; }
 /* Sign in…'s line (26.11.79): amber while the sign-in window is open, with Cancel at the right; then how it ended */
 .abox-signin { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
 .abox-signin .abox-note { min-width: 0; }
@@ -1964,10 +1952,10 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* the sign-in can't be read, or is on another account or profile: the lamp is off (26.11.41), an unlit dot like an
    account box's */
 .inuse.unlit i { background: #3a3532; box-shadow: inset 0 1px 1px rgba(0,0,0,.55); }
-:is(.card, .abox-why) .acc-actions .pill.small.signin { border: 0; color: #1f0705; text-shadow: none;
+.card .acc-actions .pill.small.signin { border: 0; color: #1f0705; text-shadow: none;
   background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #f4907f, #dc5a4b);
   box-shadow: inset 0 1px rgba(255,255,255,.55), inset 0 -1px rgba(110,26,10,.35), 0 0 0 1px #5e170d, 0 2px #3d0e07, 0 3px 7px rgba(0,0,0,.45); }
-:is(.card, .abox-why) .acc-actions .pill.small.signin::before, :is(.card, .abox-why) .acc-actions .pill.small.signin::after { display: none; }
+.card .acc-actions .pill.small.signin::before, .card .acc-actions .pill.small.signin::after { display: none; }
 .more-menu small { font-size: 11px; color: var(--muted); }
 
 /* ── The split by hand, in two names (cl_audit's approved Accounts sketch, 97ebf0a; data/split.ts) ──────────────────────
