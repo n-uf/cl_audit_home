@@ -2046,7 +2046,8 @@ button.pn-close { flex: none; padding: 0; border: 0; cursor: pointer; font: inhe
 .dm-subwrap { position: relative; }
 .dock-menu.dm-sub { position: absolute; left: calc(100% + 4px); bottom: -5px; min-width: 150px; }
 .dock-menu.dm-sub.left { left: auto; right: calc(100% + 4px); }
-.dock-menu.dm-sub.over { left: 28px; right: auto; bottom: calc(100% + 2px); }
+.dock-menu.dm-sub.over { left: -2px; right: -2px; min-width: 0; bottom: calc(100% + 2px); }
+.dock-menu:focus { outline: none; }   /* (the menu takes the focus only to hold the keys; its items show the focus) */
 .dock-item.menu-open img, .dock-item.menu-open .app-tile { filter: brightness(.7); }
 /* a phone: every item a 44 px tap target, as the page's other keys and links */
 @media (max-width: 600px) {
