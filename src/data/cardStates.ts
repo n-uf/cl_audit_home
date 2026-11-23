@@ -3,7 +3,7 @@
 // that is signed in to the same account. In every other state the usage slot says why, in a bold one-line heading about
 // Terminal's sign-in and one sentence saying what to do, and the keys row changes to match. Red: the sign-in is on the
 // wrong account or gone. Amber: the sign-in is fine but can't be read yet, or a switch is under way.
-// Sample data only; every address is written in full, so Show emails off can mask it (data/emails.ts).
+// Sample data only; every address is written in full, so Show emails off can hide it (data/emails.ts).
 import { accounts } from "./demo";
 import { emailsHTML } from "./emails";
 import { usualKeys, type KeysSpec } from "./cardKeys";
