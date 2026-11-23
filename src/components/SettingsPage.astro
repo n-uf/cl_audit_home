@@ -48,9 +48,10 @@ const sw = (key: string, label: string, on = true) => `<span class="ctl-pair"><b
       </button>
     ))}
     <a class="tile tile-plus" href="/install/" title="New profile (see Install)" aria-label="New profile">+</a>
-    <span class="spacer"></span>
-    <!-- whether everything is saved, as the app's top strip says it -->
-    <span class="disp fixed s-status" data-status>Saved <em>· as you change</em></span>
+    <!-- the strip's ⓘ after "+" (ProfileOrderInfo); whether everything is saved is the window's top strip's display
+         (SettingsStatus), above the window's content: settings.astro puts it in the fascia's slot -->
+    <!-- words: SEO (the app's, ProfileOrder.swift) -->
+    <i class="idot strip-i" tabindex="0" title={`Drag a profile's tile left or right to change the order. On the dashboard, drag a profile's card: it's the same order. The dashboard, the launcher (⌘1, ⌘2…), the menu bar icons, the widget, the usage history and the Dock menu follow it. It's saved when you let go.\nThe menu bar icons line up in the new order; ⌘-drag still moves them after.\nThe Dock icons stay where they are: the Dock is macOS's, so move them there. (With General ▸ Dock ▸ Keep in order on, cl_audit puts them in this order the next time it arranges the Dock: Arrange Dock, or adding, renaming or removing a profile.)`}>i</i>
   </div>
 
   <!-- A profile's settings -->
