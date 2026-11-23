@@ -5,7 +5,7 @@ h1: "Multiple Claude accounts on one Mac"
 mainKeyword: "multiple claude accounts"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-22
+updated: 2026-11-23
 author: n-uf
 order: 1
 takeaways:

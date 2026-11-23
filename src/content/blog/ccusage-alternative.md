@@ -5,7 +5,7 @@ h1: "ccusage alternative for Mac: cl_audit vs ccusage"
 mainKeyword: "ccusage alternative"
 kind: comparison
 published: 2026-11-02
-updated: 2026-11-22
+updated: 2026-11-23
 author: n-uf
 takeaways:
   - "ccusage reports token use and estimated cost from local logs in the terminal; cl_audit shows how much of each profile's 5-hour and weekly limits is used, in the Dock."

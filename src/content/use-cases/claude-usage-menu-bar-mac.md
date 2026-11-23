@@ -5,7 +5,7 @@ h1: "A Claude usage menu bar icon for each profile"
 mainKeyword: "claude usage menu bar"
 kind: use-case
 published: 2026-11-05
-updated: 2026-11-22
+updated: 2026-11-23
 author: n-uf
 order: 5
 takeaways:

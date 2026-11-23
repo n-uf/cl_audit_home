@@ -5,7 +5,7 @@ h1: "Claude usage credits explained: when they start and what they cost"
 mainKeyword: "claude usage credits"
 kind: what-is
 published: 2026-11-10
-updated: 2026-11-22
+updated: 2026-11-23
 draft: false
 author: n-uf
 takeaways:

@@ -5,7 +5,7 @@ h1: "A Claude Team and personal account on one Mac"
 mainKeyword: "claude team and personal account"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-22
+updated: 2026-11-23
 author: n-uf
 takeaways:
   - "Anthropic's help pages treat a personal account and a Team account as separate accounts, with their own usage limits, billing, chats and projects (checked 20 November 2026)."

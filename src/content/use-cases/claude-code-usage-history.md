@@ -5,7 +5,7 @@ h1: "Claude Code usage history on your Mac"
 mainKeyword: "claude code usage history"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-22
+updated: 2026-11-23
 author: n-uf
 order: 3
 takeaways:

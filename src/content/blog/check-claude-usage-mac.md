@@ -5,7 +5,7 @@ h1: "How to check Claude usage on a Mac"
 mainKeyword: "how to check claude usage"
 kind: how-to
 published: 2026-11-02
-updated: 2026-11-22
+updated: 2026-11-23
 author: n-uf
 takeaways:
   - "On a Pro, Max, Ultra, Team or seat-based Enterprise plan, Settings > Usage shows the weekly limits and, except on a verified Ultra account, the current 5-hour session, with reset times."

@@ -5,7 +5,7 @@ h1: "Claude usage limit notifications"
 mainKeyword: "claude usage limit notification"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-22
+updated: 2026-11-23
 author: n-uf
 order: 2
 takeaways:
