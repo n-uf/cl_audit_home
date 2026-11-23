@@ -99,7 +99,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
       // Claude Code is on the new account; the Claude app (the account in use follows it) is still on the old one
       // (the finish line too: it came from the Claude app's account, which is one of the profile's standby entries, the active
       // one (Switch.swift appSeat), so the app's cameFrom finds it and Switch back… shows)
-      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, K(`data-sw-backswitch title="${backSwitchTitle()}"`, "Switch back…"), GO(backTitle, "‹ Back"));   // words: SEO
+      case "reached": return bar(`<span class="a">Claude Code on ${T()}</span> <em>· the Claude app still on ${from}</em>`, K(`data-sw-backswitch title="${backSwitchTitle()}"`, "Switch back"), GO(backTitle, "‹ Back"));   // words: SEO
       case "other": return bar(`<span class="a">Signed in as ${O()}</span> <em>· not ${T()}</em>`, GO("data-sw-retry", `Sign in as ${T()} again`), K("data-sw-undo", "Undo the move"));
       case "timedOut": return bar(`<span class="a">No sign-in</span> <em>· sessions on ${T()}</em>`, GO("data-sw-retry", "Try again"), K("data-sw-undo", "Undo the move"), back);
       case "failed": return fail === "half"
@@ -316,7 +316,7 @@ export function initSwitch(page: HTMLElement, hooks: { close: () => void; tile: 
     // Switch back: the app opens this page with the account it came from picked. The demo can't model work now being on
     // team-2, so it says what happens and leaves the page.
     if (has("[data-sw-backswitch]")) {
-      showWhatNow("Switch back…", "", `The way back is a switch the other way: the Switch page opens with ${from} picked, ${name}'s sessions move back to ${from} and Claude Code on ${dir} signs in as ${from} again. This is a demo, so nothing changed.`);
+      showWhatNow("Switch back", "", `The way back is a switch the other way: the Switch page opens with ${from} picked, ${name}'s sessions move back to ${from} and Claude Code on ${dir} signs in as ${from} again. This is a demo, so nothing changed.`);
       hooks.close();
       return;
     }

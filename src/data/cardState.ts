@@ -256,7 +256,7 @@ export function initCards() {
       // Sign in… (a state without numbers): Claude Code's own sign-in, with the address filled in
       if ((b = t.closest("[data-card-signin]"))) {
         const acc = accounts.find((x) => x.id === b!.dataset.cardSignin)!;
-        showWhatNow("Sign in…", "", signInNote(acc.dir, acc.email));   // words: SEO
+        showWhatNow("Sign in", "", signInNote(acc.dir, acc.email));   // words: SEO
       }
       // Switch account's menu (while a limit is full): a standby account opens the Switch page, in Settings as in the
       // app, with it picked; Sign in to another account… says what it would do

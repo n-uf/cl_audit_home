@@ -82,7 +82,7 @@ const jsonLd = [
       const h = pages.querySelector<HTMLElement>("[data-rs-head]");
       if (h) h.innerHTML = `${rs === "done" ? `${n} restored` : `${rs === "run" ? "Restoring" : "Restore"} ${n}`} from “${bkName}”`;
       root.querySelector<HTMLElement>("[data-bk-list]")!.innerHTML = backupsOf(acc).map(([t, d]) =>
-        `<div class="bk"><b>${t}</b><small>${d}</small><span class="bk-keys"><button type="button" class="key k" data-bk-restore="${t}">Restore…</button><button type="button" class="pill small more-btn" data-bk-more aria-label="More">⋯</button></span></div>`).join("");
+        `<div class="bk"><b>${t}</b><small>${d}</small><span class="bk-keys"><button type="button" class="key k" data-bk-restore="${t}">Restore</button><button type="button" class="pill small more-btn" data-bk-more aria-label="More">⋯</button></span></div>`).join("");
       if (sess) (window as any).scrollTo?.({ top: 0 });
     };
     const openPage = (p: string) => { page = p; clearTimeout(rsTimer); show(); };
@@ -385,7 +385,7 @@ const jsonLd = [
       `<div class="left"><p>${f.path}: made by an earlier cl_audit for one of this profile's accounts. ` +
       (f.sessions ? `It holds ${f.sessions === 1 ? "1 session" : `${f.sessions} sessions`}, so it isn't offered for the Trash: open it in Finder to look first.` : "Nothing uses it now.") +
       `</p><div class="left-keys"><button type="button" class="sw-plain" data-left-keep="${f.path}" title="Keeps the folder and stops this list asking about it">Keep it</button>` +
-      (f.sessions ? `<button type="button" class="key k" data-left-finder="${f.path}">Show in Finder</button>` : `<button type="button" class="key k" data-left-trash="${f.path}">Move to Trash…</button>`) + "</div></div>";
+      (f.sessions ? `<button type="button" class="key k" data-left-finder="${f.path}">Show in Finder</button>` : `<button type="button" class="key k" data-left-trash="${f.path}">Move to Trash</button>`) + "</div></div>";
     const showLeftovers = () => {
       const list = LEFT[acc].filter((f) => !gone.has(`${acc}:${f.path}`));
       const el = $("[data-leftovers]")!;
@@ -718,7 +718,7 @@ const jsonLd = [
         $("[data-bk-line]")!.textContent = `${n === 1 ? "The last backup" : `The last ${n}`} of each profile` + (d ? `, and any under ${d} days.` : ".");
         return;
       }
-      if ((b = pick("[data-bk-demo]"))) { showWhatNow(b.dataset.bkDemo!, "", b.dataset.bkDemo === "Change…" ? "A folder picker opens; backups already made stay where they were. This is a demo, so nothing changes." : "cl_audit's backups folder opens in Finder. This is a demo, so nothing opens."); return; }
+      if ((b = pick("[data-bk-demo]"))) { showWhatNow(b.dataset.bkDemo!, "", b.dataset.bkDemo === "Change" ? "A folder picker opens; backups already made stay where they were. This is a demo, so nothing changes." : "cl_audit's backups folder opens in Finder. This is a demo, so nothing opens."); return; }
       // Sessions: Back up now, a backup's Restore… and ⋯, Export…, Import…, and the keys on their pages
       if (pick("[data-bk-now]")) {
         const d = new Date(), name = `Manual · ${d.getDate()} ${d.toLocaleString("en-GB", { month: "short" })} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
@@ -741,7 +741,7 @@ const jsonLd = [
       }
       if ((b = pick("[data-mv-dock]"))) { showWhatNow("Add to Dock", "", "cl_audit builds the profile's Dock icon and adds it to the Dock. This is a demo, so the Dock stays as it is."); return; }
       // the move import's Folder not here and Code card (26.11.12)
-      if (pick("[data-mv-pick]")) { showWhatNow("Pick folder…", "", "You pick where the session's folder is on this Mac, and the session is pointed there when it's imported: its saved chat and its Code-tab entry get the new folder, and a worktree that isn't here is dropped. Undo this import is meant to take it back. This is a demo, so nothing changed."); return; }
+      if (pick("[data-mv-pick]")) { showWhatNow("Pick folder", "", "You pick where the session's folder is on this Mac, and the session is pointed there when it's imported: its saved chat and its Code-tab entry get the new folder, and a worktree that isn't here is dropped. Undo this import is meant to take it back. This is a demo, so nothing changed."); return; }
       if (pick("[data-mv-copy]")) { showWhatNow("Copy", "", "Copies the commands for Terminal; cl_audit never runs them. This is a demo, so nothing is copied."); return; }
       if (pick("[data-sess-back]")) { openPage(""); return; }
       if (pick("[data-sess-keep]")) {

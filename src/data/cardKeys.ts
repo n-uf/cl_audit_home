@@ -52,7 +52,7 @@ export function cardKeysHTML(a: Acc, spec: KeysSpec, open = !!a.winOpen) {
   const more = `<span class="more-wrap"><button type="button" class="pill small more-btn" data-more aria-haspopup="menu" aria-expanded="false" aria-label="More for ${a.name}" title="More for ${a.name}">⋯</button>` +
     `<span class="more-menu" role="menu" hidden>${out ? `<span class="more-out">${out}<hr></span>` : ""}` +
     `<button type="button" role="menuitem" data-refresh>Refresh now</button><hr><a role="menuitem" href="/settings/" data-profile-settings="${a.id}">Profile settings…</a></span></span>`;
-  const lead = spec.lead === "signin" ? `<button type="button" class="pill small signin" data-card-signin="${a.id}" title="Sign Claude Code in Terminal in to ${emailText(a.email)}">Sign in…</button>` :   // words: SEO
+  const lead = spec.lead === "signin" ? `<button type="button" class="pill small signin" data-card-signin="${a.id}" title="Sign Claude Code in Terminal in to ${emailText(a.email)}">Sign in</button>` :   // words: SEO (a key: no "…")
     spec.lead === "refresh" ? "<button type=\"button\" class=\"pill small\" data-refresh>Refresh now</button>" : "";
   return lead + spec.keys.map((k) => (k === "show" ? show : terminal)).join("") + more + (spec.switchMenu ? switchMenuHTML(a) : "");
 }
