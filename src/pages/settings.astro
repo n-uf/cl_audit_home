@@ -574,6 +574,12 @@ const jsonLd = [
       // a part that's off folds its card to the switch row: Dock icon, Claude window, Menu bar
       $("[data-dk-body]")!.hidden = !pr.showInDock;
       $("[data-cw-body]")!.hidden = !pr.win;
+      // the Claude window's grey line while it's on: the usual Claude app for ~/.claude, its own window for any other
+      const usual = a.dir === "~/.claude";
+      $("[data-cw-opens]")!.hidden = !pr.win;
+      $("[data-cw-opens]")!.textContent = usual
+        ? "Opens as the usual Claude app, the one you get from the Dock or Applications."   // words: SEO (the app's, DesktopMode.opensWords)
+        : "Opens as its own window, from this profile's Dock icon or menu. Claude opened from the Dock or Applications is a different window, with other sessions.";   // words: SEO (the app's)
       $("[data-mb-body]")!.hidden = !pr.mb.on;
       // Claude window ▸ With Dock icon needs a Dock icon to go with; Opens from ▸ Only when asked gets its grey line
       ($<HTMLButtonElement>('[data-switch="windowFollows"]')!).disabled = !pr.showInDock;

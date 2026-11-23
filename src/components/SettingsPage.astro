@@ -145,6 +145,8 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
            folds to the switch row. -->
       <div class="card c-w"><h4>Claude window <i class="idot" title="This profile's Claude window: its own (own sign-in, chats and settings), or the usual Claude app for ~/.claude. Whether it goes with the Dock icon and what may open it; the cl_audit agent does this, whether or not cl_audit is open.">i</i></h4>
         <div class="srow"><span>Claude window <i class="idot" title="On: a Claude window signed in to this profile's account; open it from the dashboard, the Dock icon or the menu bar icon. Off: none, and nothing opens one; its folder and sign-in are kept, so turning it back on needs no new sign-in.">i</i></span><Fragment set:html={sw("win", "Claude window")} /></div>
+        <!-- its one grey line while it's on (DesktopMode.opensWords): the usual app, or its own window; settings.astro fills it -->
+        <p class="g-note sub rline" data-cw-opens hidden></p>
         <div class="fold" data-cw-body>
           <div class="srow"><span>With Dock icon <i class="idot" title="On: quitting this profile's Dock icon quits its window too (Claude can ask about unsent work first; the Dock icon's menu then has “Quit and keep Claude window”), and, with Opens from ▸ Dock click too, starting the Dock icon (a click on its Dock tile, or its switch on the dashboard) opens the window. Not at login.">i</i></span><Fragment set:html={sw("windowFollows", "With Dock icon", false)} /></div>
           <p class="g-note sub rline" data-wf-line hidden>No Dock icon to go with: Usage in the Dock is off.</p>
