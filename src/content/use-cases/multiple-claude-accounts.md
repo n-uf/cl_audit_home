@@ -10,7 +10,7 @@ author: n-uf
 order: 1
 takeaways:
   - "You can run multiple Claude accounts on one Mac at the same time. The first profile is the default one, on ~/.claude with the usual Claude app; each profile you add gets its own Claude window and Claude Code folder."
-  - "An account belongs to one profile (checked by account and organisation), so a personal plan and a Team seat on the same email can be two profiles."
+  - "cl_audit tells accounts apart by account and organisation, so a personal plan and a Team seat on the same email can be two profiles. One account can also be in several profiles, each with its own folder."
   - "Each profile's 5-hour and weekly limits are read separately; cl_audit doesn't pool them. A profile can switch to another of your own accounts, and its Code sessions are meant to move with it, but switching is experimental and can lose data."
   - "Whether one person may hold more than one Claude account is set by Anthropic's terms, not by cl_audit."
   - "cl_audit is free, source-available and runs on Apple silicon Macs with macOS 13 or later."
@@ -22,7 +22,7 @@ faq:
   - q: "Do two accounts share usage limits?"
     a: "cl_audit keeps them apart: each profile shows the limits of its own account, read from Anthropic with that profile's sign-in, and cl_audit doesn't pool them. A profile can switch to another of your own accounts, and its Code sessions are meant to move with it, after a backup, but switching is experimental and can lose data. Within one plan, Anthropic's help page says Claude and Claude Code count against the same limits."
   - q: "Can two profiles use the same email?"
-    a: "Only if they are two different accounts. A personal plan and a Team seat on the same email are two accounts, so they can be two profiles. An account belongs to one profile: one that another profile already has is refused."
+    a: "Only if they are two different accounts. A personal plan and a Team seat on the same email are two accounts, so they can be two profiles. The same account can be in two profiles too: each keeps its own Claude Code folder, and both show that account's numbers."
 sources:
   - title: "GitHub issue anthropics/claude-code#18435: manage multiple Claude accounts in Claude Desktop"
     url: "https://github.com/anthropics/claude-code/issues/18435"
@@ -124,7 +124,7 @@ In cl_audit the unit is a profile: one Claude setup. A profile has a Claude Code
 
 A profile has two switches, **Usage in the Dock** and **Claude window**. With both off it's "usage only". Its limits still show on the [Claude usage dashboard](/dashboard/), in the launcher and in alerts, but nothing sits in the Dock and no window opens. That suits an account you only want to keep an eye on.
 
-In cl_audit, "account" means only the claude.ai account a profile signs in to. A profile has one or more accounts and works on one at a time. An account belongs to one profile, and cl_audit tells accounts apart by account and organisation.
+In cl_audit, "account" means only the claude.ai account a profile signs in to. A profile has one or more accounts and works on one at a time. An account can be in more than one profile, and cl_audit tells accounts apart by account and organisation.
 
 ## Work and personal on the same email
 
@@ -134,9 +134,9 @@ Anthropic's help page says those two stay separate, each with its own conversati
 
 Each seat keeps its own limits. cl_audit shows them; it doesn't add them up or hand work from one profile to the other.
 
-An account belongs to one profile. If you add one that another profile already has, cl_audit refuses it. A personal plan and a Team seat on one email still work, because they're different accounts.
+You can add an account that another profile already has: the new profile signs in to it in its own folder, and an amber note says "This account is also in use in “Work”. Both profiles show the same numbers." cl_audit reads a shared account once per read interval, and its limit alerts come once, not from each profile. A personal plan and a Team seat on one email are different accounts.
 
-A profile can also keep your other accounts on standby, signed out. Nothing reads a standby account, so it shows no limits, only its plan and when it was last in use. When a limit is full, the profile's card shows a **Switch account** key under the full display. It selects nothing for you: its menu ticks the account in use, lists the standby accounts by address and ends with "Sign in to another account…". cl_audit finds these accounts on this Mac by itself, under Settings ▸ the profile ▸ Claude Code ▸ **Accounts**. To watch two accounts' limits at the same time, give each its own profile. {{live:/use-cases/switch-claude-accounts/}}If you'd rather move one profile between your own accounts than run several side by side, the [Claude account switcher](/use-cases/switch-claude-accounts/) page shows how.{{/live}}
+A profile can also keep your other accounts on standby, signed out. Nothing reads a standby account, so it shows no limits, only its plan and when it was last used. When a limit is full, the profile's card shows a **Switch account** key under the full display. It selects nothing for you: its menu ticks the account in use, lists the standby accounts by address and ends with "Sign in to another account…". cl_audit finds these accounts on this Mac by itself, under Settings ▸ the profile ▸ **Accounts**. To watch two accounts' limits at the same time, give each its own profile. {{live:/use-cases/switch-claude-accounts/}}If you'd rather move one profile between your own accounts than run several side by side, the [Claude account switcher](/use-cases/switch-claude-accounts/) page shows how.{{/live}}
 
 {{experimental: switch}}
 
@@ -150,18 +150,18 @@ With Claude window on, the client's chats stay in its own Claude window, away fr
 
 How a Team seat differs from a personal plan is covered in [Claude Team and personal accounts](/blog/claude-team-and-personal-account/).
 
-When the work ends, use **Remove profile…**. It keeps the profile's Claude Code folder unless you also choose **Delete its folders too**.
+When the work ends, use **Remove profile**. It keeps the profile's Claude Code folder unless you also choose **Delete its folders too**.
 
 ## Set it up in four steps
 
 You need a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile. The Claude app is only needed for Claude windows.
 
-1. **Install cl_audit.** Download the disk image, drag cl_audit onto Applications, then open cl_audit. cl_audit isn't signed with an Apple Developer ID yet, so macOS asks once: allow it in System Settings ▸ Privacy & Security with **Open Anyway**. On a Mac with no profile it opens **Set up cl_audit**: **Use** takes a `~/.claude` that's already signed in, or **Sign in…** signs Claude Code in to it. That's your first account, the default profile, on the usual Claude app. The [install page](/install/) has the steps, and how to build it from source instead.
-2. **Add a profile for the next account.** Open Settings ▸ **＋ (New profile)**. The **Account** pop-up in its Claude Code card lists accounts already signed in to an unused Claude Code folder on this Mac. Picking one connects that folder as it is: its sign-in, settings and history stay. Other profiles' accounts are dimmed. For another account, choose **Sign in to another account…**. cl_audit makes a new folder, `~/.claude-<name>`, which can share instructions, agents, skills, commands or memory from another folder, and opens Claude Code's own sign-in in Terminal with the address filled in. The address only fills in the sign-in; the account your browser is signed in to at claude.ai decides, so switch it there first.
+1. **Install cl_audit.** Download the disk image, drag cl_audit onto Applications, then open cl_audit. cl_audit isn't signed with an Apple Developer ID yet, so macOS asks once: allow it in System Settings ▸ Privacy & Security with **Open Anyway**. On a Mac with no profile it opens **Set up cl_audit**: **Use** takes a `~/.claude` that's already signed in, or **Sign in** signs Claude Code in to it. That's your first account, the default profile, on the usual Claude app. The [install page](/install/) has the steps, and how to build it from source instead.
+2. **Add a profile for the next account.** Open Settings ▸ **＋ (New profile)**. The **Account** pop-up in its Claude Code card lists accounts already signed in to an unused Claude Code folder on this Mac. Picking one connects that folder as it is: its sign-in, settings and history stay. Other profiles' accounts are listed too: picking one signs in to it in the new profile's own folder. For another account, choose **Sign in to another account…**. cl_audit makes a new folder, `~/.claude-<name>`, which can share instructions, agents, skills, commands or memory from another folder, and opens Claude Code's own sign-in in Terminal with the address filled in. The address only fills in the sign-in; the account your browser is signed in to at claude.ai decides, so switch it there first.
 3. **Choose what it includes.** Turn Claude window and Usage in the Dock on or off. If it gets a Claude window, quit the Claude app first, because while it's open it writes its own sign-in and settings. The page lists any open Claude windows and checks again every 2 seconds.
 4. **Sign in, in two parts.** Claude Code first, then, if the profile has a Claude window, sign that window in to the same claude.ai account. Its Code sidebar starts empty. Last, add the Dock icon, or choose Start reading usage.
 
-You sign in on Anthropic's own screens, and cl_audit never sees the password. An account belongs to one profile; cl_audit checks that by account and organisation ids.
+You sign in on Anthropic's own screens, and cl_audit never sees the password. cl_audit tells accounts apart by their account and organisation ids.
 
 Repeat steps 2 to 4 for each further account. The dashboard then shows a card for each profile, with a switch for its Claude window and one for its Dock icon.
 
