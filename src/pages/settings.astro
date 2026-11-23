@@ -582,6 +582,10 @@ const jsonLd = [
       // a part that's off folds its card to the switch row: Dock icon, Claude window, Menu bar
       $("[data-dk-body]")!.hidden = !pr.showInDock;
       $("[data-cw-body]")!.hidden = !pr.win;
+      // Sessions ▸ Export's line (SessionsExport.words): the demo's work was exported once (sample date and size)
+      $("[data-export-line]")!.textContent = acc === "work"
+        ? "Last exported 5 Nov · 5.5 GB"   // words: SEO (the app's form)
+        : "Never exported. A file for another Mac or for keeping.";   // words: SEO (the app's)
       // the Claude window's grey line while it's on: the usual Claude app for ~/.claude, its own window for any other
       const usual = a.dir === "~/.claude";
       $("[data-cw-opens]")!.hidden = !pr.win;
@@ -626,6 +630,8 @@ const jsonLd = [
         if (b.dataset.cap === "save") saveEdit(f); else revertEdit(f);
         fieldEl(f).focus(); return;
       }
+      // the Sessions card's "General" link: General's page, where Backups says where they go and how many
+      if (pick("[data-go-general]")) { root.querySelector<HTMLElement>('.strip [data-select-acc="general"]')?.click(); (window as any).scrollTo?.({ top: 0 }); return; }
       if ((b = pick("[data-select-acc]"))) {
         // a value typed but not saved goes to the profile it was typed for; one that can't be saved is dropped
         for (const f of ["name", "label"] as const) { saveEdit(f); if (drafts[f]) revertEdit(f); }
@@ -742,6 +748,8 @@ const jsonLd = [
         $("[data-bk-value='days']")!.textContent = `${bkKeep.days} days`;
         const n = bkKeep.last, d = bkKeep.days;
         $("[data-bk-line]")!.textContent = `${n === 1 ? "The last backup" : `The last ${n}`} of each profile` + (d ? `, and any under ${d} days.` : ".");
+        // the profiles' Sessions cards say the same numbers (SessionsCard.closingLine)
+        $("[data-bk-n]")!.textContent = String(n); $("[data-bk-d]")!.textContent = String(d);
         return;
       }
       if ((b = pick("[data-bk-demo]"))) { showWhatNow(b.dataset.bkDemo!, "", b.dataset.bkDemo === "Change" ? "A folder picker opens; backups already made stay where they were. This is a demo, so nothing changes." : "cl_audit's backups folder opens in Finder. This is a demo, so nothing opens."); return; }
