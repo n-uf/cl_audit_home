@@ -31,7 +31,7 @@ const glance: [string, string][] = [
   ["Free", "Source-available (PolyForm Perimeter 1.0.1). No sign-up, server or analytics."],
   ["Mac", "Apple silicon, macOS 13 or later. Claude Code signed in for each profile."],
   ["Plans", "Plans with usage limits, such as Pro, Max, Ultra and Team."],
-  ["Accounts", "One profile per account seat, so work and personal sit side by side."],
+  ["Accounts", "A profile per account seat, so work and personal sit side by side."],
   ...(stage ? [["Alpha", "First released October 2026. A Claude update can break it until cl_audit updates."] as [string, string]] : []),
   ["Independent", "Not affiliated with Anthropic."],
 ];
@@ -307,7 +307,7 @@ const jsonLd = [orgNode, {
         <div class="list">
           <div><b>Settings ▸ ＋ (New profile)</b><span>Pick its account: one already signed in to a Claude Code folder on this Mac, or sign in to another one in a new folder. Then switch Claude window and Usage in the Dock on or off.</span></div>
           <div><b>Quit the Claude app first</b><span>Only for a profile with a Claude window, and only until its folder exists. While it's open, the app writes its own sign-in and settings.</span></div>
-          <div><b>Sign in</b><span>Claude Code first, then the profile's Claude window, both to the same claude.ai account. One profile per account.</span></div>
+          <div><b>Sign in</b><span>Claude Code first, then the profile's Claude window, both to the same claude.ai account. One profile per folder; an account can be in more than one.</span></div>
           <div><b>Dock icon</b><span>cl_audit installs it and puts it in the Dock. A profile without one still has its usage read.</span></div>
         </div>
       </div>
@@ -316,7 +316,7 @@ const jsonLd = [orgNode, {
         <Experimental flows={["switch"]} />
         <div class="list">
           <div><b>Profile</b><span>One Claude setup in cl_audit: a Claude Code folder with its sign-in and, if you want them, a Claude window, a Dock icon and a menu bar icon.</span></div>
-          <div><b>Account</b><span>A claude.ai account a profile uses. A profile works on one at a time and can keep others on standby; an account belongs to one profile. A personal plan and a Team seat on one email are two.</span></div>
+          <div><b>Account</b><span>A claude.ai account a profile uses. A profile works on one at a time and can keep others on standby; two profiles can share an account and its numbers. A personal plan and a Team seat on one email are two.</span></div>
           <div><b>Claude window · Dock icon</b><span>The profile's running Claude app, and its own small app whose Dock icon shows its usage.</span></div>
         </div>
       </div>
