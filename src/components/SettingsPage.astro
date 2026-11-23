@@ -78,9 +78,9 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
         <!-- the split by hand: the amber headline and two muted lines, said once, then Terminal's account (its numbers,
              TERMINAL | APP, Sign the app in) and the Claude app's (Sign Terminal in); settings.astro fills the rows -->
         <div class="split-head" data-split-head hidden>
-          <b>{SPLIT_WORDS.head}</b><!-- words: SEO (sketch 97ebf0a) -->
-          <span>{SPLIT_WORDS.why}</span><!-- words: SEO (sketch 97ebf0a) -->
-          <span>{SPLIT_WORDS.fix}</span><!-- words: SEO (sketch 97ebf0a) -->
+          <b>{SPLIT_WORDS.head}</b><!-- words: SEO (v26.11.88) -->
+          <span>{SPLIT_WORDS.why}</span><!-- words: SEO (v26.11.88) -->
+          <span>{SPLIT_WORDS.fix}</span><!-- words: SEO (v26.11.88) -->
         </div>
         <div class="split-rows" data-split-rows hidden></div>
       </div>
@@ -281,6 +281,10 @@ Renew sign-in (in the account in use's pop-up): Claude Code's sign-in uses a sho
         <div class="srow"><span>Keep the last <i class="idot" title="The newest backups of each profile that are always kept, however old.">i</i></span><span class="stepper"><button type="button" data-bk-step="last" data-dir="-1" aria-label="Fewer">−</button><span data-bk-value="last">3</span><button type="button" data-bk-step="last" data-dir="1" aria-label="More">＋</button></span></div>
         <div class="srow"><span>And any under <i class="idot" title="Backups made within this many days are kept too. After a switch's backup is made (and after Back up now), the ones past both are deleted; one an unfinished switch names is never deleted. 0 keeps only the last few.">i</i></span><span class="stepper"><button type="button" data-bk-step="days" data-dir="-1" aria-label="Fewer days">−</button><span data-bk-value="days">30 days</span><button type="button" data-bk-step="days" data-dir="1" aria-label="More days">＋</button></span></div>
         <p class="g-note sub" data-bk-line>The last 3 of each profile, and any under 30 days.</p>
+        <!-- 26.11.88 (OldQuickChatsLine): while chats from cl_audit's old quick chat are left, one quiet line with Show in
+             Finder and Move to Trash (asks first); the demo has 3 until you move them -->
+        <!-- words: SEO (the app's, OldQuickChats.swift) -->
+        <div class="old-qc" data-old-qc><small class="ap-note" title={"cl_audit's own quick chat is gone.\ncl_quick is the quick chat now.\nThese are the chats the old one kept."}>3 old quick chats from cl_audit are still here.</small><span class="bk-row"><button type="button" class="key k" data-old-qc-finder>Show in Finder</button><button type="button" class="key k" data-old-qc-trash>Move to Trash</button></span></div>
       </div>
       <div class="card" data-gcard="about"><h4>About</h4>
         <div class="srow"><span>Version <i class="idot" title="Calendar version: the year and month of the release, then a counter within that month (26.10.1 = the second release in October 2026). The build counts every change.">i</i></span><span class="disp">{version} <em>· build {build}</em></span></div>

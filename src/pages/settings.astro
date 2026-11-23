@@ -324,9 +324,9 @@ const jsonLd = [
         `<div class="abox split-box" role="group" aria-label="${emailText(email)}, ${on === "terminal" ? "Terminal's account" : "the Claude app's account"}"><div class="abox-head"><i class="abox-lamp amber"></i><span class="abox-t">` +
         `<span class="abox-title">${emailHTML(email)}</span><small>${plan}</small></span>${twoNamesBadgeHTML(on)}</div>${body}<div class="split-keys">${key}</div></div>`;
       return row(TERMINAL.email, TERMINAL.plan, "terminal", `<div class="abox-limits">${limitsHTML("sample", loadCardStyle(), false)}</div>`,
-          `<button type="button" class="key k sm split-k" data-split-app>${SPLIT_WORDS.appKey}</button>`) +   // words: SEO (sketch 97ebf0a)
+          `<button type="button" class="key k sm split-k" data-split-app>${SPLIT_WORDS.appKey}</button>`) +   // words: SEO (v26.11.88)
         row(a.email, a.plan, "app", "",
-          `<button type="button" class="key k sm split-k" data-split-terminal>${SPLIT_WORDS.terminalKey}</button>`) +   // words: SEO (sketch 97ebf0a)
+          `<button type="button" class="key k sm split-k" data-split-terminal>${SPLIT_WORDS.terminalKey}</button>`) +   // words: SEO (v26.11.88)
         `<div class="abox-signin" data-split-signin hidden></div>`;
     };
     const paintSplit = () => {
@@ -850,6 +850,12 @@ const jsonLd = [
       // Folders from before: Keep it, Show in Finder, and Move to Trash… (asks first, says what is in it and names the Keychain item)
       if ((b = pick("[data-left-keep]"))) { gone.add(`${acc}:${b.dataset.leftKeep}`); showLeftovers(); return; }
       if ((b = pick("[data-left-finder]"))) { showWhatNow("Show in Finder", "", `${b.dataset.leftFinder} opens in Finder, so you can look at what is in it. This is a demo, so nothing opens.`); return; }
+      // General ▸ Backups: the old quick chats' line (26.11.88, OldQuickChatsLine); Move to Trash asks first, as the app's alert
+      if (pick("[data-old-qc-finder]")) { showWhatNow("Show in Finder", "", "The folders cl_audit's old quick chat kept its chats in open in Finder. This is a demo, so nothing opens."); return; }
+      if (pick("[data-old-qc-trash]")) {
+        ask("Move cl_audit's old quick chats to the Trash?", "This moves 3 chats and the folders they were kept in to the Trash.\nNothing is deleted until you empty the Trash.", "Move to Trash", "[data-old-qc-trash]", () => { $("[data-old-qc]")!.hidden = true; });   // words: SEO (the app's)
+        return;
+      }
       if ((b = pick("[data-left-trash]"))) {
         const f = LEFT[acc].find((x) => x.path === b!.dataset.leftTrash)!;
         ask(`Move ${f.path} to the Trash?`, `In it: ${f.inside}. Everything in it goes with it; you can put it back from the Trash. The sign-in itself isn't in the folder: Claude Code keeps it in your Keychain as “${f.keychain}”. Delete that in Keychain Access if you no longer need it; cl_audit doesn't touch it.`, "Move to Trash", `[data-left-trash="${f.path}"]`, () => { gone.add(`${acc}:${f.path}`); showLeftovers(); });
