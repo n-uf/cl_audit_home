@@ -701,6 +701,8 @@ const jsonLd = [
       // offered), its finish line, since the profile doesn't list it: the window closes, its sessions move, and you sign
       // the Claude app in there. Sign Terminal in, on the Claude app's: Claude Code's own sign-in with the app's address
       // filled in; once it ends, one account again.
+      // (In the demo a finished Sign the app in, the Switch page run to "Switched", leaves the split on: the Switch page
+      // is a demo of its own, with its own state. In the app the split then ends, both apps on Terminal's account.)
       if (pick("[data-split-app]")) { (window as any).clOpenSwitch?.(acc, TERMINAL.email, { email: TERMINAL.email, plan: TERMINAL.plan }); return; }
       if (pick("[data-split-terminal]")) {
         const own = accounts.find((x) => x.id === acc)!;
@@ -941,6 +943,22 @@ const jsonLd = [
     document.addEventListener("cl:split", onSplit);
     // the split's amber line (the card, the menu bar, the Dock panel) leads here, to Accounts
     if (location.hash === "#accounts") document.getElementById("accounts")?.scrollIntoView({ block: "start" });
+    // A profile's "Profile settings…" or amber line while this page is already shown (a same-page link, which the router
+    // only scrolls): that profile is selected here, and the page goes to `to` (an element id: "accounts") or its top.
+    // false: this page is gone, so the caller navigates as usual.
+    (window as any).clSettingsProfile = (id: string, to = "") => {
+      if (!root.isConnected || !accounts.some((x) => x.id === id)) return false;
+      for (const f of ["name", "label"] as const) { saveEdit(f); if (drafts[f]) revertEdit(f); }
+      general = false; page = ""; acc = id as AccountId;
+      show();
+      if (to) document.getElementById(to)?.scrollIntoView({ block: "start" });
+      else document.querySelector(".content")?.scrollTo?.({ top: 0 });
+      if (location.hash !== (to ? `#${to}` : "")) history.replaceState(history.state, "", location.pathname + (to ? `#${to}` : ""));
+      return true;
+    };
+    // Sign Terminal in's sign-in, still waiting, belongs to this visit only: leaving the page drops it, so it can't end a
+    // split put back on later
+    document.addEventListener("astro:before-swap", () => { if (signIn) clearTimeout(signIn.t); signIn = null; }, { once: true });
     // from the dashboard card's or a menu's "Switch account": /settings/?switch=work&to=<address>
     const qs = new URLSearchParams(location.search);
     if (qs.get("switch")) {
