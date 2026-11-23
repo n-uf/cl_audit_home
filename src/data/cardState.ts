@@ -286,9 +286,7 @@ export function initCards() {
         }, 0);
         return;
       }
-      // "Profile settings…" opens Settings on that profile
-      // (unless Settings, already shown, took it in place: see the capture listener below)
-      if ((b = t.closest("[data-profile-settings]")) && !e.defaultPrevented) { try { sessionStorage.setItem("cl_audit.settingsProfile", b.dataset.profileSettings!); } catch {} }
+      // ("Profile settings…" and the split's amber line: the capture listener below)
       // the "Demo: other states" keys: one card goes into that state; the same key again puts it back
       if ((b = t.closest("[data-card-state]"))) {
         const key = b.dataset.cardState as CardStateKey;
@@ -318,14 +316,16 @@ export function initCards() {
       }
     });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCardMenus(); });
-    // A "Profile settings…" or the split's amber line while Settings is already the page: a same-page link, which the
-    // router would only scroll (to the wrong profile's Accounts). Settings selects that profile and goes there instead;
-    // the link's default is prevented before the router sees it (capture, on window).
+    // "Profile settings…" and the split's amber line open Settings on that profile: the profile is stored for the page
+    // that loads. While Settings is already the page, the link is a same-page one, which the router would only scroll
+    // (to the wrong profile's Accounts): Settings selects that profile and goes there itself, and the link's default is
+    // prevented before the router sees it (capture, on window, ahead of the router's own listener).
     window.addEventListener("click", (e) => {
       const b = (e.target as HTMLElement).closest?.<HTMLElement>("[data-profile-settings]");
-      if (!b || !location.pathname.startsWith("/settings")) return;
-      const to = b instanceof HTMLAnchorElement ? b.hash.slice(1) : "";
-      if (w.clSettingsProfile?.(b.dataset.profileSettings, to)) e.preventDefault();
+      if (!b) return;
+      const id = b.dataset.profileSettings!, to = b instanceof HTMLAnchorElement ? b.hash.slice(1) : "";
+      if (location.pathname.startsWith("/settings") && w.clSettingsProfile?.(id, to)) { e.preventDefault(); return; }
+      try { sessionStorage.setItem("cl_audit.settingsProfile", id); } catch {}
     }, true);
     window.addEventListener("resize", fitTicks);
     document.addEventListener("cl:split", () => renderCards());
