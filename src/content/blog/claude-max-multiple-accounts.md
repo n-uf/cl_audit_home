@@ -122,7 +122,7 @@ In cl_audit, a **profile** is one Claude setup: a Claude Code folder with its ow
 3. For a new account, cl_audit makes a folder such as `~/.claude-client` and Terminal runs Claude Code's own sign-in for it. The address you type only fills in the form; the account the browser is signed in to at claude.ai decides, so switch it there first.
 4. Choose the two switches, **Usage in the Dock** and **Claude window**. With both off, the profile is "usage only": its limits still show on the dashboard and in alerts.
 
-An account can be in more than one profile, each with its own folder, and both show its numbers. The sign-in screens are Anthropic's, so cl_audit never sees the password. The [multiple Claude accounts](/use-cases/multiple-claude-accounts/) page has the whole setup, including the Claude window side.
+An account can be in more than one profile, each with its own Claude Code folder, and both show its numbers. The sign-in screens are Anthropic's, so cl_audit never sees the password. The [multiple Claude accounts](/use-cases/multiple-claude-accounts/) page has the whole setup, including the Claude window side.
 
 ## How does cl_audit show both Max plans' limits?
 
