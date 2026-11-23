@@ -4,6 +4,7 @@
 // (Usage in the Dock, Claude window).
 import { accounts, rgbOf, type AccountId } from "./demo";
 import { limitsHTML, backWords, creditsHTML, type Design } from "./panelView";
+import { isSplit } from "./split";
 import manifest from "./icon-manifest.json";   // written by scripts/render-icons.sh
 
 export const styles = [
@@ -169,6 +170,18 @@ export const defaultStyle = (id: AccountId) => defaults[id].style;
 export const defaultColor = (id: AccountId) => colors[defaults[id].color];
 
 /** Puts the saved choices on the page: icons, profile colours, names. */
+/** Every dashboard card's two limits in the card style; in the split (data/split.ts) they are Terminal's account's (the
+ *  sample figures), read through Terminal's sign-in, so the card still shows numbers. */
+export function fillCardLimits(p = loadPrefs()) {
+  const design = loadCardStyle();
+  document.querySelectorAll<HTMLElement>("[data-card-limits]").forEach((el) => {
+    const id = el.dataset.cardLimits as AccountId, split = isSplit(id), key = `${design}:${p[id].showFable ? 1 : 0}:${split ? 1 : 0}`;
+    if (el.dataset.design === key) return;
+    el.dataset.design = key;
+    el.innerHTML = split ? limitsHTML("sample", design, false) : limitsHTML(id, design, false) + creditsHTML(id);
+  });
+}
+
 export function applyPrefs(p = loadPrefs()) {
   const root = document.documentElement;
   // the Dock's cl_audit tile shows the chosen app icon, as in the app while it runs
@@ -201,13 +214,7 @@ export function applyPrefs(p = loadPrefs()) {
   // the card style: every profile card draws its two limits in it
   // Profile ▸ Fable's limit: published for panelView (which draws the Fable row) before anything is redrawn
   (window as any).clShowFable = Object.fromEntries(accounts.map((a) => [a.id, p[a.id].showFable]));
-  const design = loadCardStyle();
-  document.querySelectorAll<HTMLElement>("[data-card-limits]").forEach((el) => {
-    const id = el.dataset.cardLimits as AccountId, key = `${design}:${p[id].showFable ? 1 : 0}`;
-    if (el.dataset.design === key) return;
-    el.dataset.design = key;
-    el.innerHTML = limitsHTML(id, design, false) + creditsHTML(id);
-  });
+  fillCardLimits(p);
   // the profiles' order (26.11.0): dashboard keys and cards, the history's legend, the launcher (its ⌘1, ⌘2… follow)
   // and the Settings strip; never the Dock
   reorder(".dash-bar [data-chip]", "data-chip");

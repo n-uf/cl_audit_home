@@ -9,14 +9,16 @@ import { emailsHTML } from "./emails";
 import { usualKeys, type KeysSpec } from "./cardKeys";
 
 type Acc = (typeof accounts)[number];
-export type CardStateKey = "split" | "out" | "expired" | "clash" | "clashOut" | "mismatch" | "denied" | "unreadable" | "switching";
+// (Not here: the split by hand, which keeps its numbers since the two-names sketch: data/split.ts and the row's Split key.
+// Gone: "Another profile's account" and its signed-out twin; since cl_audit 8b67a4e an account may be in use in several
+// profiles, so there is no clash, only Settings' amber shared note.)
+export type CardStateKey = "out" | "expired" | "mismatch" | "denied" | "unreadable" | "switching";
 export type CardState = {
   label: string;                 // the demo row's key
   tone: "red" | "amber";         // the plan badge takes it
   out?: boolean;                 // signed out or expired: the account line gets a red lamp and a red address
-  lampOff?: boolean;             // the sign-in can't be read, or is on another account or profile: the green lamp goes off
-                                 // (26.11.41, ProfileDisplay.lamp); in the split it stays lit, the account in use's
-  noPlan?: boolean;              // the folder is on another profile's account: no plan shows (26.11.52, ProfileShow.plan)
+  lampOff?: boolean;             // the sign-in can't be read, or is on another account: the green lamp goes off
+                                 // (26.11.41, ProfileDisplay.lamp)
   heading: (a: Acc) => string;
   sentence: (a: Acc) => string;
   keys: KeysSpec;
@@ -25,21 +27,13 @@ export type CardState = {
 /** The demo's profile whose card the "Demo: other states" row changes. */
 export const demoProfile = "home";
 
-const OTHER = "other@example.com";   // an account the profile doesn't use: the one Terminal is on, or a switch is moving to
-const work = accounts.find((x) => x.id === "work")!;   // another profile, whose account is in use there
+const OTHER = "other@example.com";   // an account the profile doesn't use: the one a switch is moving to
 const signInAs = (a: Acc) => `Sign in as ${a.email} to read ${a.name}'s usage.`;   // words: SEO
 
 // ⋯ holds Show window and Terminal (then Refresh now and Profile settings…) while Sign in… leads the row
 const signedOutKeys: KeysSpec = { lead: "signin", keys: [], more: ["show", "terminal"], terminalNote: "asks to sign in first" };   // words: SEO
 
 export const cardStates: Record<CardStateKey, CardState> = {
-  split: {
-    label: "Split",   // words: SEO
-    tone: "red",
-    heading: () => `Terminal is signed in to ${OTHER}`,   // words: SEO
-    sentence: signInAs,
-    keys: { lead: "signin", keys: ["show"], more: ["terminal"], terminalNote: `signed in as ${OTHER}` },   // words: SEO
-  },
   out: {
     label: "Signed out",   // words: SEO
     tone: "red",
@@ -55,26 +49,6 @@ export const cardStates: Record<CardStateKey, CardState> = {
     heading: () => "Terminal's sign-in has expired",   // words: SEO
     sentence: signInAs,
     keys: signedOutKeys,
-  },
-  clash: {
-    label: "Another profile's account",   // words: SEO
-    tone: "red",
-    lampOff: true,
-    noPlan: true,
-    heading: () => `Terminal is signed in to ${work.name}'s account`,   // words: SEO
-    sentence: signInAs,
-    keys: { lead: "signin", keys: ["show"], more: ["terminal"], terminalNote: `on ${work.name}'s account` },   // words: SEO
-  },
-  // 26.11.77: the same clash with Terminal signed out, the folder's record still naming the account it was last on: the
-  // heading never says "signed in to" then (UsageNotice: "Terminal is signed out, last on …'s account")
-  clashOut: {
-    label: "Signed out (other profile)",   // words: SEO
-    tone: "red",
-    lampOff: true,
-    noPlan: true,
-    heading: () => `Terminal is signed out, last on ${work.name}'s account`,   // words: SEO (the app's)
-    sentence: signInAs,
-    keys: { lead: "signin", keys: ["show"], more: ["terminal"], terminalNote: `on ${work.name}'s account` },   // words: SEO
   },
   mismatch: {
     label: "Different account",   // words: SEO

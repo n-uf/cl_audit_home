@@ -5,6 +5,8 @@ import History from "../components/History.astro";
 import Experimental from "../components/Experimental.astro";
 import { accounts } from "../data/demo";
 import { cardStates, cardStateKeys } from "../data/cardStates";
+import { SPLIT_PROFILE } from "../data/split";
+const splitName = accounts.find((a) => a.id === SPLIT_PROFILE)!.name;
 import { orgNode, webPage, breadcrumbs } from "../data/schema";
 
 // main keyword: "Claude usage dashboard"
@@ -38,6 +40,9 @@ const jsonLd = [
     <div class="sw-demo" data-card-demo><span class="sub">Demo: other states</span><!-- words: SEO -->
       <span class="switch small-switch" role="group" aria-label="Other states"><!-- words: SEO -->
         {cardStateKeys.map((k) => <button type="button" data-card-state={k} aria-pressed="false">{cardStates[k].label}</button>)}
+        <!-- the split by hand (sketch 97ebf0a): work's Claude app and Terminal on different accounts; it shows on work's card,
+             its menu bar menu, its Dock icon's details panel and Settings ▸ work ▸ Accounts at once (data/split.ts) -->
+        <button type="button" data-split-demo-key aria-pressed="false" title={`Puts ${splitName}'s Claude app and Terminal on different accounts`}>Split</button><!-- words: SEO -->
       </span></div>
     <Experimental flows={["switch"]} />
     <History />

@@ -6,12 +6,13 @@
 // The dashboard's "Demo: other states" keys put one card (demoProfile) into a state with no numbers (cardStates.ts) and
 // back: its usage slot, keys row, plan badge and account line change, nothing else.
 import { accounts, type AccountId } from "./demo";
-import { loadPrefs } from "./prefs";
+import { loadPrefs, fillCardLimits } from "./prefs";
 import { fullLimit } from "./panelView";
 import { showWhatNow } from "./whatNow";
 import { signInNote, signInOtherNote } from "./signInNotes";
-import { cardKeysHTML, fullKeys, usualKeys } from "./cardKeys";
+import { cardKeysHTML, fullKeys, usualKeys, inuseHTML } from "./cardKeys";
 import { cardStates, demoProfile, stateSlotHTML, type CardStateKey } from "./cardStates";
+import { isSplit, setSplit, windowLineHTML, TERMINAL, SPLIT_PROFILE } from "./split";
 
 type S = { win: boolean; dock: boolean; winBusy?: "opening" | "quitting"; dockBusy?: "starting" | "quitting"; quitAt?: number };
 
@@ -22,9 +23,37 @@ const w = window as any;
 // The Dock icon app starts stopped (26.11.76): the Dock draws each profile's usage itself, so the app runs only once it is
 // started, by a click on its Dock tile or its switch here (the card's chip says "stopped" until then, as the app's dockChip)
 const state: Record<string, S> = (w.__clState ??= Object.fromEntries(accounts.map((a) => [a.id, { win: !!a.winOpen, dock: false }])));
+/** A profile's window and Dock icon app as the demo has them now (the Dock's menu and details panel read it). */
+export const dockState = (id: string) => ({ win: !!state[id]?.win, dock: !!state[id]?.dock });
+
+// 26.11.82: a Dock icon app the visitor starts with a click on its Dock tile quits by itself a minute or two after they
+// leave it (its panel closed), while the Dock draws its icon; its Claude window is left as it is. Never while its panel
+// is open, and not one started from the card's switch. The demo waits AUTO_QUIT_MS (window.__clAutoQuitMs overrides it,
+// for the tries), then the chip and the Dock's running dot go back to stopped.
+const AUTO_QUIT_MS = 90_000;
+const byDock: Record<string, boolean> = (w.__clByDock ??= {});
+const quitTimers: Record<string, number> = (w.__clQuitTimers ??= {});
+const forget = (id: string) => { clearTimeout(quitTimers[id]); delete quitTimers[id]; delete byDock[id]; };
 /** A click on a profile's Dock tile starts its Dock icon app, as its card switch does (With Dock icon included); the Dock
  *  bar calls this, and renderCards draws the Dock's running dot from the state. */
-w.clDockStarted = (id: string) => setDock(id, true);
+w.clDockStarted = (id: string) => {
+  const s = state[id];
+  if (s && !s.dock && !s.dockBusy) byDock[id] = true;
+  setDock(id, true);
+};
+/** Its panel is open: the visitor is on it, so it doesn't quit. */
+export function dockLooking(id: string) { clearTimeout(quitTimers[id]); delete quitTimers[id]; }
+/** Its panel closed: one the visitor's click started quits by itself a while later. */
+export function dockLeft(id: string) {
+  if (!byDock[id]) return;
+  clearTimeout(quitTimers[id]);
+  quitTimers[id] = window.setTimeout(() => {
+    delete quitTimers[id];
+    if (!byDock[id]) return;
+    delete byDock[id];
+    if (state[id]?.dock) setDock(id, false, true);
+  }, typeof w.__clAutoQuitMs === "number" ? w.__clAutoQuitMs : AUTO_QUIT_MS);
+}
 let ticker = 0;
 // the state each card is shown in ("" = its own, with numbers), kept on window like the switches'
 const shown: Record<string, CardStateKey | ""> = (w.__clCardShown ??= {});
@@ -102,23 +131,31 @@ function paint(chip: HTMLElement | null, sw: HTMLElement | null, on: boolean, bu
 /** A card in a state with no numbers (or back with them): the usage slot says why, the keys row, the plan badge's tone
  *  and the account line follow. A limit that is full keeps its own keys and red badge once the state is taken away. */
 function paintState(card: HTMLElement, a: (typeof accounts)[number], win: boolean) {
-  // only the page with the demo row shows a state; the home page's cards always have their numbers
-  const key = document.querySelector("[data-card-demo]") ? shown[a.id] ?? "" : "";
+  // the split (data/split.ts) shows wherever the profile's card is; the other states only on the page with the demo
+  // row (the home page's cards always have their numbers)
+  const split = isSplit(a.id);
+  const key = split ? "split" : document.querySelector("[data-card-demo]") ? shown[a.id] ?? "" : "";
   if ((card.dataset.cardStateKey ?? "") === key) return;
   card.dataset.cardStateKey = key;
-  const st = key ? cardStates[key] : undefined, full = !!fullLimit(a.id);
+  const st = key && key !== "split" ? cardStates[key] : undefined, full = !split && !!fullLimit(a.id);
   const msg = card.querySelector<HTMLElement>("[data-card-msg]")!;
   msg.hidden = !st;
   msg.className = `msgslot${st ? ` ${st.tone}` : ""}`;
   msg.innerHTML = st ? stateSlotHTML(a, st) : "";
   card.querySelector(".usage-slot")?.classList.toggle("msg", !!st);
-  card.querySelector("[data-card-keys]")!.innerHTML = cardKeysHTML(a, st ? st.keys : full ? fullKeys : usualKeys, win);
+  // the split by hand (sketch 97ebf0a): Terminal's numbers (fillCardLimits), its account on the account line, the amber
+  // line under the numbers (a link to Settings ▸ Accounts) and the window key amber, then Terminal and ⋯
+  card.querySelector("[data-split-line]")?.remove();
+  if (split) card.querySelector(".usage-slot")?.insertAdjacentHTML("afterend", `<div class="split-line" data-split-line>${windowLineHTML(a.id)}</div>`);
+  fillCardLimits();
+  card.querySelector("[data-card-keys]")!.innerHTML = cardKeysHTML(a, st ? st.keys : full ? fullKeys : usualKeys, win, split);
+  card.querySelector("[data-inuse]")!.innerHTML = inuseHTML(split ? TERMINAL.email : a.email, split);
   const plan = card.querySelector(".plan");
   plan?.classList.toggle("red", st ? st.tone === "red" : full);
   plan?.classList.toggle("amber", st?.tone === "amber");
-  // no plan in a clash (26.11.52, ProfileShow.plan): the badge shows "–" over the time, as the app's PlanBadge does
   const planName = plan?.querySelector<HTMLElement>("[data-plan]");
-  if (planName) planName.textContent = st?.noPlan ? "–" : planName.dataset.plan!;
+  if (planName) planName.textContent = split ? TERMINAL.plan : planName.dataset.plan!;
+  card.querySelector(".inuse")?.classList.toggle("split", split);
   card.querySelector(".inuse")?.classList.toggle("out", !!st?.out);
   card.querySelector(".inuse")?.classList.toggle("unlit", !!st?.lampOff);
 }
@@ -146,6 +183,11 @@ export function renderCards() {
   // the demo row's keys: lit while their state is shown
   document.querySelectorAll<HTMLElement>("[data-card-state]").forEach((b) => {
     const on = shown[demoProfile] === b.dataset.cardState;
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", String(on));
+  });
+  document.querySelectorAll<HTMLElement>("[data-split-demo-key]").forEach((b) => {
+    const on = isSplit(SPLIT_PROFILE);
     b.classList.toggle("on", on);
     b.setAttribute("aria-pressed", String(on));
   });
@@ -184,6 +226,7 @@ export function setWin(id: string, on: boolean, byFollow = false) {
 export function setDock(id: string, on: boolean, byFollow = false) {
   const s = state[id];
   if (!s || s.dockBusy || s.dock === on) return;
+  if (!on) forget(id);   // quit by any way: nothing left to quit by itself
   s.quitAt = undefined;
   s.dockBusy = on ? "starting" : "quitting";
   renderCards();
@@ -229,7 +272,8 @@ export function initCards() {
       }
       closeCardMenus();
       if ((b = t.closest("[data-win-switch]"))) { setWin(b.dataset.winSwitch!, !state[b.dataset.winSwitch!].win); return; }
-      if ((b = t.closest("[data-dock-switch]"))) { setDock(b.dataset.dockSwitch!, !state[b.dataset.dockSwitch!].dock); return; }
+      // (started from its switch, it runs until quit: it doesn't quit by itself)
+      if ((b = t.closest("[data-dock-switch]"))) { forget(b.dataset.dockSwitch!); setDock(b.dataset.dockSwitch!, !state[b.dataset.dockSwitch!].dock); return; }
       // Open window / Show window, the launcher rows and the Dock's Claude tiles open the demo window
       if ((b = t.closest("[data-open-desktop]"))) {
         const id = b.dataset.openDesktop!;
@@ -248,6 +292,9 @@ export function initCards() {
         renderCards();
         return;
       }
+      // the Split key: work's Claude app and Terminal on different accounts (data/split.ts), on every surface at once;
+      // the same key puts it back
+      if (t.closest("[data-split-demo-key]")) { setSplit(SPLIT_PROFILE, !isSplit(SPLIT_PROFILE)); return; }
       // Refresh now (a key, or in ⋯): reads every profile's usage again
       if (t.closest("[data-refresh]")) {
         showWhatNow("Refresh now", "", "Reads every profile's usage again now. It doesn't use any of your limits. This is a demo, so nothing is read.");   // words: SEO
@@ -268,6 +315,7 @@ export function initCards() {
     });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCardMenus(); });
     window.addEventListener("resize", fitTicks);
+    document.addEventListener("cl:split", () => renderCards());
   }
   renderCards();
   if (Object.values(state).some((s) => s.quitAt)) startTicker();

@@ -25,46 +25,203 @@ import AccIcon from "./AccIcon.astro";
 
 
   {accounts.map((a) => (
-    <div class="pop peek" data-popup={a.id} hidden set:html={panelHTML(a.id, "segments", { large: false })} />
+    <div class="pop peek" data-popup={a.id} hidden set:html={panelHTML(a.id, "segments")} />
   ))}
+  <!-- a profile Dock icon's right-click menu (DockMenu.swift), filled in when it opens -->
+  <div class="dock-menu" data-dock-menu role="menu" hidden></div>
 </nav>
 
 <script>
-  import { panelHTML, type Design } from "../data/panelView";
+  import { panelHTML, detailsHTML, type Design } from "../data/panelView";
   import { loadPrefs } from "../data/prefs";
+  import { accounts, type AccountId } from "../data/demo";
+  import { dockState, setWin, setDock, dockLooking, dockLeft } from "../data/cardState";
+  import { isSplit } from "../data/split";
+  import { showWhatNow } from "../data/whatNow";
+  import { signInNote } from "../data/signInNotes";
+  import { navigate } from "astro:transitions/client";
+  const w_ = window as any;
   const bar = document.querySelector<HTMLElement>(".dock-bar")!;
-  let open: HTMLElement | null = null;
+  let open: HTMLElement | null = null, openId = "";
   let timer = 0;
-  const close = () => { clearTimeout(timer); open?.setAttribute("hidden", ""); open = null; };
+  // A panel that closes is the visitor leaving the Dock icon: one their click started quits by itself a while later
+  // (26.11.82, data/cardState.ts dockLeft)
+  const close = () => {
+    clearTimeout(timer);
+    open?.setAttribute("hidden", "");
+    open?.classList.remove("details");
+    if (open && openId) dockLeft(openId);
+    open = null; openId = "";
+  };
   // A peek hides itself after the profile's "Usage shows for" time (3 s by default); it waits while the pointer is over it.
   const autoHide = (ms: number) => { clearTimeout(timer); timer = window.setTimeout(() => { if (open && !open.matches(":hover")) close(); else autoHide(ms); }, ms); };
   // cl_audit's own icon: bring it to the front, like clicking a running app (closes other windows and pop-ups).
   bar.querySelector<HTMLButtonElement>("[data-front-app]")?.addEventListener("click", (e) => {
     e.stopPropagation();
-    (window as any).clCloseWins?.();
-    close();
+    w_.clCloseWins?.();
+    close(); closeMenu();
   });
-  bar.querySelectorAll<HTMLButtonElement>("[data-pop]").forEach((b) =>
+  /** Shows a profile's panel above its Dock icon: the compact one (`large` false, it hides itself after the profile's
+   *  Usage shows for) or the details panel (it stays until Escape, a click elsewhere, ✕ or another click on the icon). */
+  const showPanel = (b: HTMLElement, large: boolean) => {
+    const id = b.dataset.pop as AccountId;
+    const pop = bar.querySelector<HTMLElement>(`[data-popup="${id}"]`)!;
+    const pr = loadPrefs()[id];
+    if (open === pop && pop.classList.contains("details") === large) return close();
+    close();
+    pop.innerHTML = large
+      ? detailsHTML(id, pr.panel as Design, { name: pr.name, open: dockState(id).win, split: isSplit(id) })
+      : panelHTML(id, pr.panel as Design, { name: pr.name });
+    pop.classList.toggle("details", large);
+    pop.removeAttribute("hidden");
+    const r = b.getBoundingClientRect(), w = pop.offsetWidth;
+    pop.style.left = `${Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2))}px`;
+    open = pop; openId = id;
+    dockLooking(id);
+    if (!large) autoHide(Math.round(pr.peek * 1000));
+  };
+  bar.querySelectorAll<HTMLButtonElement>("[data-pop]").forEach((b) => {
     b.addEventListener("click", (e) => {
       e.stopPropagation();
+      closeMenu();
       // the click starts the profile's Dock icon app: data/cardState.ts keeps that state across pages and draws the running
       // dot from it, and the card's Dock icon chip says running
-      (window as any).clDockStarted?.(b.dataset.pop);
-      const pop = bar.querySelector<HTMLElement>(`[data-popup="${b.dataset.pop}"]`)!;
-      // the compact panel, in the design chosen for this profile in Settings
-      const pr = loadPrefs()[b.dataset.pop as "home"];
-      pop.innerHTML = panelHTML(b.dataset.pop as "home", pr.panel as Design, { large: false, name: pr.name });
-      if (open === pop) return close();
-      close();
-      pop.removeAttribute("hidden");
-      const r = b.getBoundingClientRect(), w = pop.offsetWidth;
-      pop.style.left = `${Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2))}px`;
-      open = pop;
-      autoHide(Math.round(pr.peek * 1000));
-    }),
-  );
-  document.addEventListener("click", (e) => { if (open && !open.contains(e.target as Node)) close(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
-  document.addEventListener("astro:before-swap", close);
-  document.addEventListener("cl:close-pops", close);
+      w_.clDockStarted?.(b.dataset.pop);
+      // the compact panel, in the design chosen for this profile in Settings; ⌥-click (or Click ▸ Details panel) the
+      // details panel
+      const pr = loadPrefs()[b.dataset.pop as AccountId];
+      showPanel(b, e.altKey || pr.click === "Details panel");
+    });
+    // a double-click always opens the details panel (its two clicks opened and closed the compact one)
+    b.addEventListener("dblclick", (e) => { e.stopPropagation(); if (!(open && open.classList.contains("details"))) showPanel(b, true); });
+    b.addEventListener("contextmenu", (e) => { e.preventDefault(); e.stopPropagation(); openMenu(b, false); });
+    // the keyboard's way to the same menu: the context-menu key, or Shift+F10
+    b.addEventListener("keydown", (e) => {
+      if (e.key === "ContextMenu" || (e.key === "F10" && e.shiftKey)) { e.preventDefault(); openMenu(b, true); }
+    });
+  });
+  // the details panel's own controls; its window key and the links are the card's (data/cardState.ts, the router)
+  bar.addEventListener("click", (e) => {
+    const t = e.target as HTMLElement;
+    if (t.closest("[data-details-close]")) { close(); return; }
+    const si = t.closest<HTMLElement>("[data-details-signin]");
+    if (si) {
+      const a = accounts.find((x) => x.id === si.dataset.detailsSignin)!;
+      showWhatNow("Sign in", "", signInNote(a.dir, a.email));   // words: SEO
+      return;
+    }
+    if (t.closest(".pop.details a, .pop.details [data-open-desktop]")) close();
+  });
+
+  // ── The right-click menu (DockMenu.swift dockRows, cl_audit 2d0bc11): the profile and its light, then Claude window ▸
+  // (Open while it's closed; Show and Quit while it's open, and Quit and keep while the Dock icon app runs with its window
+  // following it), Quick chat (cl_quick, ClQuick.swift), Refresh now, then Dashboard and Profile settings…. No accounts,
+  // numbers or states: the panels have them. Each item does what the demo can.
+  const menu = bar.querySelector<HTMLElement>("[data-dock-menu]")!;
+  let menuFor: HTMLElement | null = null;
+  const QUICK = "https://cl-quick.n-uf.com";   // ClQuick.site
+  /** "Claude home"; a name that starts with Claude as it is (DockTileMenu.title). */
+  const title = (name: string) => (name.toLowerCase().startsWith("claude") ? name : `Claude ${name}`);
+  const item = (act: string, label: string, extra = "") => `<button type="button" class="dm-it" role="menuitem" tabindex="-1" data-dm="${act}"${extra}>${label}</button>`;
+  const menuHTML = (id: AccountId) => {
+    const a = accounts.find((x) => x.id === id)!, pr = loadPrefs()[id], s = dockState(id);
+    const inside = s.win
+      ? item("show", "Show") + item("quit", "Quit") + (s.dock && pr.windowFollows && pr.showInDock ? item("keep", "Quit and keep") : "")   // words: SEO (the app's)
+      : item("open", "Open");   // words: SEO (the app's)
+    return `<div class="dm-it dm-head" role="menuitem" aria-disabled="true" tabindex="-1"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i>${title(pr.name.trim() || a.name)}</div><hr role="separator">` +
+      (pr.win ? `<div class="dm-subwrap">${item("window", 'Claude window<span class="dm-chev" aria-hidden="true">▸</span>', ' aria-haspopup="menu" aria-expanded="false"')}<div class="dock-menu dm-sub" role="menu" aria-label="Claude window" hidden>${inside}</div></div>` : "") +
+      // Quick chat is cl_quick's: the item opens cl_quick on the profile's folder (here: its site)
+      `<a class="dm-it" role="menuitem" tabindex="-1" data-dm="quick" href="${QUICK}/" target="_blank" rel="noopener">Quick chat<span class="sr-only"> (opens in a new tab)</span></a>` +   // words: SEO (the app's)
+      item("refresh", "Refresh now") + '<hr role="separator">' + item("dashboard", "Dashboard") + item("settings", "Profile settings…");   // words: SEO (the app's)
+  };
+  const items = (m: HTMLElement) => [...m.querySelectorAll<HTMLElement>(":scope > .dm-it:not([aria-disabled]), :scope > .dm-subwrap > .dm-it")];
+  const sub = () => menu.querySelector<HTMLElement>(".dm-sub");
+  const openSub = (focus: boolean) => {
+    const s = sub(); if (!s) return;
+    s.hidden = false;
+    menu.querySelector('[data-dm="window"]')?.setAttribute("aria-expanded", "true");
+    // to the right of the menu, or to its left where the window has no room there; a phone with no room on either side
+    // gets it over the menu, just above its item
+    const r = menu.getBoundingClientRect(), right = r.right + s.offsetWidth + 4 <= window.innerWidth, left = r.left - s.offsetWidth - 4 >= 0;
+    s.classList.toggle("left", !right && left);
+    s.classList.toggle("over", !right && !left);
+    if (focus) items(s)[0]?.focus();
+  };
+  const closeSub = () => { const s = sub(); if (s) s.hidden = true; menu.querySelector('[data-dm="window"]')?.setAttribute("aria-expanded", "false"); };
+  function closeMenu(refocus = false) {
+    if (menu.hidden) return;
+    menu.hidden = true; menu.innerHTML = "";
+    menuFor?.classList.remove("menu-open");
+    if (refocus) menuFor?.focus();
+    menuFor = null;
+  }
+  function openMenu(b: HTMLElement, keyboard: boolean) {
+    close();
+    const id = b.dataset.pop as AccountId;
+    menu.innerHTML = menuHTML(id);
+    menu.dataset.for = id;
+    menu.setAttribute("aria-label", `cl_audit ${loadPrefs()[id].name}`);
+    menu.hidden = false;
+    menuFor = b; b.classList.add("menu-open");
+    const r = b.getBoundingClientRect(), w = menu.offsetWidth;
+    menu.style.left = `${Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2))}px`;
+    menu.style.bottom = `${Math.max(8, window.innerHeight - r.top + 6)}px`;
+    if (keyboard) items(menu)[0]?.focus(); else menu.focus?.();
+  }
+  const go = (path: string, profile?: string) => {
+    if (profile) { try { sessionStorage.setItem("cl_audit.settingsProfile", profile); } catch {} }
+    navigate(path);
+  };
+  const act = (what: string, id: AccountId) => {
+    const name = loadPrefs()[id].name.trim() || "this profile";
+    switch (what) {
+      case "open": w_.clOpenDesktop?.(id); setWin(id, true); break;
+      case "show": w_.clOpenDesktop?.(id); break;
+      case "quit": setWin(id, false); break;
+      case "keep": setDock(id, false, true); break;   // the Dock icon app quits; its window stays
+      case "refresh": showWhatNow("Refresh now", "", `Reads ${name}'s usage again now. It doesn't use any of your limits. This is a demo, so nothing is read.`); break;   // words: SEO
+      case "dashboard": go("/dashboard/"); break;
+      case "settings": go("/settings/", id); break;
+    }
+  };
+  menu.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const it = (e.target as HTMLElement).closest<HTMLElement>(".dm-it");
+    if (!it || it.hasAttribute("aria-disabled")) return;
+    const what = it.dataset.dm!, id = menu.dataset.for as AccountId;
+    if (what === "window") { if (sub()?.hidden) openSub(false); else closeSub(); return; }
+    closeMenu();
+    if (what !== "quick") act(what, id);   // (Quick chat is a link: it opens cl_quick's site in a new tab)
+  });
+  menu.addEventListener("mouseover", (e) => {
+    const it = (e.target as HTMLElement).closest<HTMLElement>(".dm-it");
+    if (!it || it.closest(".dm-sub")) return;
+    if (it.dataset.dm === "window") openSub(false); else closeSub();
+  });
+  menu.addEventListener("keydown", (e) => {
+    const inSub = !!(document.activeElement as HTMLElement)?.closest(".dm-sub");
+    const list = items(inSub ? sub()! : menu), i = list.indexOf(document.activeElement as HTMLElement);
+    const cur = document.activeElement as HTMLElement;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      const n = list.length, next = i < 0 ? (e.key === "ArrowDown" ? 0 : n - 1) : (i + (e.key === "ArrowDown" ? 1 : n - 1)) % n;
+      list[next]?.focus();
+    } else if (e.key === "ArrowRight" && cur?.dataset.dm === "window") { e.preventDefault(); openSub(true); }
+    else if (e.key === "ArrowLeft" && inSub) { e.preventDefault(); closeSub(); menu.querySelector<HTMLElement>('[data-dm="window"]')?.focus(); }
+    else if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); if (inSub) { closeSub(); menu.querySelector<HTMLElement>('[data-dm="window"]')?.focus(); } else closeMenu(true); }
+    else if (e.key === "Tab") closeMenu();
+    else if ((e.key === "Enter" || e.key === " ") && cur?.classList.contains("dm-it")) {
+      e.preventDefault();
+      if (cur.dataset.dm === "window") openSub(true); else cur.click();
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (open && !open.contains(e.target as Node)) close();
+    if (!menu.hidden && !menu.contains(e.target as Node)) closeMenu();
+  });
+  document.addEventListener("contextmenu", (e) => { if (!menu.hidden && !menu.contains(e.target as Node)) closeMenu(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") { close(); closeMenu(true); } });
+  document.addEventListener("astro:before-swap", () => { close(); closeMenu(); });
+  document.addEventListener("cl:close-pops", () => { close(); closeMenu(); });
 </script>

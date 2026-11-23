@@ -2,6 +2,8 @@
 // drawn from a profile's figures. "large" is the full panel (Settings preview); otherwise the compact one
 // the Dock shows on a click. Same layout rules as the app's PanelDesigns.swift.
 import { accounts, rgbOf, type AccountId } from "./demo";
+import { emailHTML } from "./emails";
+import { TERMINAL, SPLIT_WORDS, twoNamesBadgeHTML, windowLineHTML } from "./split";
 
 export type Design = "glow" | "rings" | "numbers" | "segments" | "pace";
 
@@ -140,15 +142,37 @@ export function cardLimitsHTML(id: AccountId, design: Design) {
   return `<div class="card-limits" data-card-limits="${id}" data-design="${design}" role="group" aria-label="5-hour limit ${a.five}% used, week ${a.week}% used">${limitsHTML(id, design, false)}${creditsHTML(id)}</div>`;
 }
 
-/** A whole panel: header (icon, name, email, plan), the limits in the chosen design, and the footer. */
-export function panelHTML(id: AccountId, design: Design, opts: { large: boolean; name?: string; icon?: string; note?: string }) {
+/** The compact panel a plain click on a Dock icon shows for a few seconds (Details.swift CompactView): the profile's light
+ *  and name, its plan, the limits in the chosen design. No address: the details panel has the account line. */
+export function panelHTML(id: AccountId, design: Design, opts: { name?: string; note?: string } = {}) {
   const a = accounts.find((x) => x.id === id)!;
   const name = opts.name ?? a.name;
-  const head = opts.large
-    ? `<div class="pn-head"><span class="ico" data-ico="${id}"><img src="${opts.icon ?? a.icon}" data-acc-icon="${id}" alt="" width="56" height="56"></span><div class="pn-who"><div class="pn-title"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i>Claude ${name}</div><div class="pn-sub email">${a.email}</div><span class="pn-plan">${a.plan} plan</span></div><span class="pn-close" aria-hidden="true">✕</span></div>`
-    : `<div class="pn-head small"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b><span class="pn-plan">${a.plan}</span></div>`;   // the profile's light (26.11.81, ProfileLED)
-  const foot = opts.large
-    ? `<div class="pn-foot"><span class="pill small tint ${a.tint}" style="--tint:var(--acc-${a.id}-rgb, ${rgbOf(a.hex)})">Claude</span><span class="pill small">Dashboard</span><span class="spacer"></span><span class="pn-sub">Updated just now</span><span class="pn-gear" aria-hidden="true">⚙︎</span></div>`
-    : `<div class="pn-sub pn-note">${opts.note ?? ""}</div>`;
-  return `<div class="pn${opts.large ? " large" : ""}">${head}${limitsHTML(id, design, opts.large)}${creditsHTML(id)}${foot}</div>`;
+  const head = `<div class="pn-head small"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b><span class="pn-plan">${a.plan}</span></div>`;   // the profile's light (26.11.81, ProfileLED)
+  return `<div class="pn">${head}${limitsHTML(id, design, false)}${creditsHTML(id)}<div class="pn-sub pn-note">${opts.note ?? ""}</div></div>`;
+}
+
+/** The details panel (Details.swift DetailsView: double-click or ⌥-click on the Dock icon, or a click with Click set to
+ *  Details panel), as the approved sketch draws it (97ebf0a, "the card's language, compact keys only"): the icon, the
+ *  profile's light and name, the account line (the account in use with its lamp; the address is the blurred stand-in
+ *  while Show emails is off, AccountValue), the limits, then the card's keys: the window key, Dashboard and the gear,
+ *  with the age under them. In the split (data/split.ts) the TERMINAL | APP badge sits beside the name, the account line
+ *  names whose numbers they are (Terminal's account · Terminal), the amber line links to Settings ▸ Accounts, the window
+ *  key is the card's amber Show window and a compact Sign in signs Terminal in to the window's account. */
+export function detailsHTML(id: AccountId, design: Design, opts: { name?: string; icon?: string; open: boolean; split: boolean }) {
+  const a = accounts.find((x) => x.id === id)!;
+  const name = opts.name ?? a.name, split = opts.split;
+  const line = split
+    ? `<i class="lamp amber"></i><span class="addr">${emailHTML(TERMINAL.email)}</span><span class="pn-tag">· ${SPLIT_WORDS.terminal}</span>`   // words: SEO (sketch 97ebf0a)
+    : `<i class="lamp"></i><span class="addr">${emailHTML(a.email)}</span>`;
+  const head = `<div class="pn-head"><span class="ico" data-ico="${id}"><img src="${opts.icon ?? a.icon}" data-acc-icon="${id}" alt="" width="52" height="52"></span>` +
+    `<div class="pn-who"><div class="pn-title"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><span>Claude ${name}</span>${split ? twoNamesBadgeHTML("terminal") : ""}</div>` +
+    `<div class="pn-acc">${line}</div></div>` +
+    `<button type="button" class="pn-close" data-details-close aria-label="Close" title="Close">✕</button></div>`;
+  const win = `<button type="button" class="pill small tint ${a.tint}${opts.open ? "" : " unlit"}${split ? " amberk" : ""}" style="--tint:var(--acc-${a.id}-rgb, ${rgbOf(a.hex)})" data-open-desktop="${id}" data-open-label>${opts.open ? "Show window" : "Open window"}</button>`;
+  const keys = `<div class="acc-actions pn-keys">${win}` +
+    (split ? `<button type="button" class="pill small" data-details-signin="${id}" title="Sign Terminal in to the Claude app's account">${SPLIT_WORDS.panelKey}</button>` : "") +   // words: SEO (sketch 97ebf0a)
+    `<a class="pill small" href="/dashboard/">Dashboard</a><span class="spacer"></span>` +
+    `<a class="pill small pn-gear" href="/settings/" data-profile-settings="${id}" title="Settings…" aria-label="Profile settings">⚙︎</a></div>`;
+  const limits = split ? limitsHTML("sample", design, true) : limitsHTML(id, design, true) + creditsHTML(id);
+  return `<div class="pn large${split ? " split" : ""}">${head}${limits}${split ? windowLineHTML(id) : ""}${keys}<div class="pn-sub pn-upd">Updated ${a.updated}</div></div>`;
 }

@@ -271,9 +271,9 @@ code, kbd { font-family: var(--mono); }
 
 [hidden] { display: none !important; }
 /* Show emails off, as 26.11.87 does it (data/emails.ts, cl_kit's AddressText): a hidden address shows nothing of itself.
-   A plain address is left out everywhere; one inside a sentence, a menu, a toast or a tooltip reads "hidden address"
-   (.email-m). Where Settings draws one as a title (the account boxes, the Switch page) it is one fixed stand-in, the same
-   for every account, blurred (.email-s), and the address itself only while the pointer is on the title. */
+   One inside a sentence, a menu, a toast or a tooltip reads "hidden address" (.email-m). Where a view draws one as a
+   value (Settings' account boxes, the Switch page, the dashboard card, the Dock icon's details panel) it is one fixed
+   stand-in, the same for every account, blurred (.email-s), and the address itself only while the pointer is on it. */
 .hide-emails .email { display: none; }
 .email-m, .email-s { display: none; }
 .hide-emails .email-m { display: inline; }
@@ -282,6 +282,15 @@ code, kbd { font-family: var(--mono); }
 /* (the pointer on the title's whole line, which keeps its width, so the swap never moves the title from under it) */
 .hide-emails .settings :is(.abox-t:hover :is(.abox-title, b), .login-menu .lm-row:hover) .email-s { display: none; }
 .hide-emails .settings :is(.abox-t:hover :is(.abox-title, b), .login-menu .lm-row:hover) .email { display: inline; }
+/* outside Settings too (cl_audit e95e181, 2f1fa08: AccountValue): the dashboard card's account line and the Dock icon's
+   details panel draw the same blurred stand-in for a hidden address (.addr), and the address while the pointer is on it */
+.hide-emails .addr .email-m { display: none; }
+.hide-emails .addr .email-s { display: inline; filter: blur(3.5px); }
+.hide-emails .addr:hover .email-s { display: none; }
+.hide-emails .addr:hover .email { display: inline; }
+.addr { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hide-emails .addr:not(:hover) { text-overflow: clip; }   /* (a stand-in cut short is only clipped: no "…" after a blur) */
+.addr > * { white-space: nowrap; }
 /* a Switch account menu row (.arow): its short name while shown; hidden, the blurred stand-in, and the address only
    while the row is highlighted (SwitchMenu.accountItem, AddressMenuRow) */
 .as-stand, .as-real { display: none; }
@@ -1697,18 +1706,6 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* one line, as the app's (lineLimit 1): it ends in "…" where the box is narrow */
 .abox-signin .si-wait { color: #ffb24a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .face-silver .appwin .abox-signin .si-wait { color: #9a5b00; }
-/* the Terminal account's own row: its address is no pop-up, the whole row is the click */
-.abox.code-row .abox-title { cursor: inherit; }
-.abox.code-row { cursor: pointer; }
-/* where an account is signed in: the Claude app (its Code tab included) and Claude Code in Terminal, the folder's
-   sign-in that usage is read through; a marker is lit where it is, struck through where it isn't */
-.where { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 0 15px; }
-.mk { font: 600 9px var(--font); letter-spacing: .1em; text-transform: uppercase; padding: 2px 7px; border-radius: 9px; color: #5b5b62; box-shadow: inset 0 0 0 1px #34343a; }
-.mk.on { color: #cfd3da; box-shadow: inset 0 0 0 1px #4a4d55; background: rgba(255,255,255,.03); }
-.mk.on::before { content: "● "; color: rgb(var(--led-on)); font-size: 7px; vertical-align: 1px; }
-.mk.off { text-decoration: line-through; text-decoration-color: rgba(91,91,98,.6); }
-.face-silver .mk { color: #8a8d91; box-shadow: inset 0 0 0 1px rgba(0,0,0,.18); }
-.face-silver .mk.on { color: #2e3033; box-shadow: inset 0 0 0 1px rgba(0,0,0,.3); background: rgba(0,0,0,.04); }
 .add-acc { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
 .add-acc small { font-size: 11px; }
 /* "+ Sign in with another account…": a link, not a key */
@@ -1972,6 +1969,97 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
   box-shadow: inset 0 1px rgba(255,255,255,.55), inset 0 -1px rgba(110,26,10,.35), 0 0 0 1px #5e170d, 0 2px #3d0e07, 0 3px 7px rgba(0,0,0,.45); }
 :is(.card, .abox-why) .acc-actions .pill.small.signin::before, :is(.card, .abox-why) .acc-actions .pill.small.signin::after { display: none; }
 .more-menu small { font-size: 11px; color: var(--muted); }
+
+/* ── The split by hand, in two names (cl_audit's approved Accounts sketch, 97ebf0a; data/split.ts) ──────────────────────
+   A warning in amber (Terminal's numbers still work), never red: red stays for "nothing works". Colour only in the
+   amber zone's tint, the lamps, the TERMINAL | APP badge's halves, the keys' small amber dots and the amber line. */
+:root { --split: #f5b93a; --split-text: #f8c55a; --split-muted: #d9cdb4; --split-zone: rgba(245,170,40,.13); }
+/* the amber zone: from the card's very top edge, inside its rounded corners, the ACCOUNTS header inside it; its padding
+   is the card's, so the header sits where it does in the normal state */
+.c-acc .acc-zone.split { margin: -14px -16px 10px; padding: 14px 16px 12px; border-radius: var(--radius) var(--radius) 0 0;
+  background: linear-gradient(180deg, rgba(245,170,40,.16), rgba(245,170,40,.10)); box-shadow: inset 0 -1px 0 rgba(245,170,40,.22); }
+.c-acc .acc-zone.split h4 { color: var(--split-text); }
+.c-acc .acc-zone.split h4::after { background: rgba(245,185,58,.45); box-shadow: none; }
+.split-head { display: grid; gap: 3px; margin: 0 0 10px; font-size: 12px; line-height: 1.4; color: var(--split-muted); }
+.split-head b { font-size: 13px; font-weight: 600; color: var(--split-text); }
+.split-head span + span { margin-top: 4px; }
+.split-rows { display: grid; gap: 8px; }
+.c-acc .acc-list { display: grid; gap: 8px; align-items: stretch; }
+.abox.split-box { background: linear-gradient(180deg, #111214, #0e0f11); box-shadow: inset 0 1px 1.5px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.05); }
+.abox.split-box .abox-title { cursor: default; }
+.abox-lamp.amber, .pn-acc .lamp.amber { background: var(--split); box-shadow: 0 0 6px rgba(245,185,58,.85); }
+/* TERMINAL | APP: the signed-in half bright green, the missing half bright red, a hairline between them */
+.tn-badge { gap: 7px; flex: none; }
+.tn-badge i { width: 1px; height: 10px; background: rgba(255,255,255,.18); }
+.tn-badge .g { color: #5cf08a; text-shadow: 0 0 3px rgba(92,240,138,.7); }
+.tn-badge .r { color: #ff5a4f; text-shadow: 0 0 3px rgba(255,90,79,.7); }
+.split-keys { display: flex; }
+/* the two keys at one width, each with a small amber dot */
+.key.split-k { width: 156px; gap: 7px; }
+.key.split-k::before { content: ""; width: 6px; height: 6px; border-radius: 50%; flex: none; background: var(--split); box-shadow: 0 0 5px rgba(245,185,58,.85); }
+.split-rows .abox-signin { padding: 0 2px; }
+/* the shared seat's amber line (FolderRules.sharedNote): one thought per line */
+.g-note.shared-note { margin: 0; white-space: pre-line; color: var(--split-text); font-size: 12px; }
+/* the amber line: a link to the profile's Settings ▸ Accounts (the card, the menu bar menu, the Dock panel) */
+.amber-link { color: var(--split-text); font-size: 12px; text-decoration: underline; text-decoration-color: rgba(248,197,90,.5); text-underline-offset: 2px; }
+.amber-link:hover { text-decoration-color: currentColor; }
+.split-line { margin-top: -4px; }
+.inuse-tag, .pn-tag { flex: none; color: var(--muted); white-space: nowrap; }
+.inuse .addr { flex: 0 1 auto; }
+/* in the split the account line names whose numbers they are on a line of its own under the address, as the sketch's
+   card has it: the lamp and the address, then "· Terminal" */
+.inuse.split { flex-wrap: wrap; row-gap: 1px; }
+.inuse.split .addr { max-width: calc(100% - 12px); }
+.inuse.split .inuse-tag { flex-basis: 100%; padding-left: 12px; }
+/* the window key amber in the split (the window is what's out of line): the same key on the card and the Dock panel,
+   dark legend on the amber face, its window-open lamp a bright light with a dark ring */
+.acc-actions .pill.small.amberk { color: #1f1405; text-shadow: none;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, rgba(0,0,0,.05) 1px 2px), linear-gradient(180deg, #f9cd6a, #e9a92c);
+  box-shadow: inset 0 1px rgba(255,255,255,.55), inset 0 -1px rgba(110,70,10,.35), 0 0 0 1px #5e3d0d, 0 2px #3d2707, 0 3px 7px rgba(0,0,0,.45); }
+.acc-actions .pill.small.amberk::before { background: #fff6d8; box-shadow: 0 0 0 1.5px #3a2606, 0 0 5px rgba(255,246,216,.9); }
+.acc-actions .pill.small.amberk.unlit::before { background: #8a6a2a; box-shadow: 0 0 0 1.5px #3a2606; }
+.face-silver .amber-link, .face-silver .split-head b, .face-silver .c-acc .acc-zone.split h4, .face-silver .g-note.shared-note { color: #8a5200; }
+.face-silver .split-head { color: #4d4433; }
+.face-silver .tn-badge .g { color: #11743a; text-shadow: none; }
+.face-silver .tn-badge .r { color: #b3261e; text-shadow: none; }
+.face-silver .tn-badge i { background: rgba(0,0,0,.2); }
+.face-silver .abox.split-box { background: linear-gradient(180deg, #fbfcfc, #eef0f1); box-shadow: inset 0 2px 4px rgba(0,0,0,.14), 0 1px 0 rgba(255,255,255,.7); }
+.face-silver .c-acc .acc-zone.split { background: linear-gradient(180deg, rgba(232,160,30,.22), rgba(232,160,30,.14)); }
+.mbm-acc.split { flex-wrap: wrap; }
+.mbm-acc.split .addr { opacity: 1; }
+.mbm-split { padding: 0 8px 5px 20px; }
+.mbm-split .amber-link { font-size: 11.5px; }
+.mbm-wsub { margin: 2px 0 4px 10px; padding-left: 4px; }
+
+/* ── The Dock icon's details panel (Details.swift DetailsView; the sketch's "card's language, compact keys only") ── */
+.pop.peek.details { width: min(380px, calc(100vw - 16px)); padding: 0; background: none; box-shadow: none; }
+.pn.large .pn-head .ico img { width: 52px; height: 52px; }
+.pn.large .pn-title { flex-wrap: wrap; font-size: 15px; }
+.pn-acc { display: flex; align-items: center; gap: 5px; min-width: 0; max-width: 100%; color: var(--muted); font-size: 12px; }
+.pn-acc .lamp { width: 6px; height: 6px; border-radius: 50%; flex: none; background: rgb(var(--led-on)); box-shadow: 0 0 5px rgba(var(--led-on), .8); }
+.pn-who { min-width: 0; }
+button.pn-close { flex: none; padding: 0; border: 0; cursor: pointer; font: inherit; font-size: 10px; }
+/* the card's keys, compact: one row while it fits, the gear at its right end */
+.pn-keys { margin: 0; gap: 6px; }
+.pn-keys .pill.small { padding: 0 9px; letter-spacing: .08em; }
+.pn-keys .pn-gear { width: auto; height: 26px; padding: 0 9px; }
+.pn-upd { justify-self: end; font-size: 11.5px; }
+.pn.large.split .amber-link { margin-top: -6px; }
+
+/* ── A profile Dock icon's right-click menu (DockMenu.swift): a macOS menu, plain titles, above the icon ── */
+.dock-menu { position: fixed; z-index: 30; min-width: 196px; padding: 5px; border-radius: 8px; pointer-events: auto; color: #ececee; font-size: 13px;
+  background: rgba(40,40,44,.94); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 0 .5px rgba(255,255,255,.2); }
+.dock-menu[hidden] { display: none; }
+.dock-menu hr { border: 0; border-top: 1px solid rgba(127,127,127,.3); margin: 5px 6px; }
+.dm-it { display: flex; align-items: center; gap: 7px; width: 100%; min-height: 22px; padding: 2px 10px; border: 0; border-radius: 4px; background: none; color: inherit; font: inherit; text-align: left; text-decoration: none; cursor: default; white-space: nowrap; }
+.dm-it:hover, .dm-it:focus-visible, .dm-it[aria-expanded="true"] { outline: none; background: #0a64d6; color: #fff; }
+.dm-it.dm-head, .dm-it.dm-head:hover { background: none; color: rgba(236,236,238,.55); font-weight: 600; }
+.dm-chev { margin-left: auto; padding-left: 14px; font-size: 10px; opacity: .8; }
+.dm-subwrap { position: relative; }
+.dock-menu.dm-sub { position: absolute; left: calc(100% + 4px); bottom: -5px; min-width: 150px; }
+.dock-menu.dm-sub.left { left: auto; right: calc(100% + 4px); }
+.dock-menu.dm-sub.over { left: 28px; right: auto; bottom: calc(100% + 2px); }
+.dock-item.menu-open img, .dock-item.menu-open .app-tile { filter: brightness(.7); }
 
 /* ── Upright phones: text and touch targets ───────────────────────────────────────────────────────────────────────
    Running text is 16 px; the lines around it (notes, table cells, captions, code) 14 px; the printed labels on the
