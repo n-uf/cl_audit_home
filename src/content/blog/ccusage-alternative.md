@@ -5,7 +5,7 @@ h1: "ccusage alternative for Mac: cl_audit vs ccusage"
 mainKeyword: "ccusage alternative"
 kind: comparison
 published: 2026-11-02
-updated: 2026-11-12
+updated: 2026-11-22
 author: n-uf
 takeaways:
   - "ccusage reports token use and estimated cost from local logs in the terminal; cl_audit shows how much of each profile's 5-hour and weekly limits is used, in the Dock."
@@ -86,7 +86,7 @@ It's MIT licensed. Three things its README doesn't cover: which operating system
 
 ### cl_audit
 
-cl_audit is a free, source-available Mac app built around profiles. A profile is one Claude setup: a Claude Code folder with its sign-in and, optionally, a Claude window and a Dock icon. A profile has one or more Claude accounts and works on one at a time, and an account belongs to one profile. A personal plan and a Team seat on the same email are two accounts.
+cl_audit is a free, source-available Mac app built around profiles. A profile is one Claude setup: a Claude Code folder with its sign-in and, optionally, a Claude window and a Dock icon. A profile has one or more Claude accounts and works on one at a time, and two profiles can share an account. A personal plan and a Team seat on the same email are two accounts.
 
 ![Claude Code usage history by hour, day and project](/img/guides/usage-history.webp "cl_audit's Claude Code usage history: when, tokens per day, and where they go by project, model and surface. Sample data.")
 

@@ -5,7 +5,7 @@ h1: "Claude desktop profile switchers for Mac, compared"
 mainKeyword: "claude desktop profile switcher"
 kind: comparison
 published: 2026-11-02
-updated: 2026-11-12
+updated: 2026-11-22
 author: n-uf
 takeaways:
   - "The Claude app signs in to one account at a time. Anthropic's help page describes switching only for accounts on the same email."
@@ -143,7 +143,7 @@ cl_audit is a free macOS app from n-uf, source-available under PolyForm Perimete
 
 What it adds is usage. cl_audit's background agent reads each profile's 5-hour and weekly limits from Anthropic with that profile's Claude Code sign-in. The Dock icon and the dashboard show them, with a countdown while a limit is full ("back at 15:28") and a notification when it's back. The [demo dashboard](/dashboard/) shows sample data, and the page on [limit alerts on a Mac](/use-cases/claude-usage-limit-alerts/) covers the alerts. Usage history comes from Claude Code's session files on the Mac. Nothing is uploaded.
 
-It asks more of you than the others: a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile, even if you mostly use the Claude app. The Claude app is only needed for Claude windows. It works with plans that have usage limits (Pro, Max, Ultra, Team); an API-key profile has no limits to show. A profile works on one account at a time, and no two profiles share an account. It isn't signed with an Apple Developer ID yet, so macOS asks you to approve it once. Usage shows mainly in the Dock (a menu bar icon per profile is optional), and it doesn't pool limits. A profile can switch to another of your own accounts, and the switch is meant to move its Code sessions with it, after a backup.
+It asks more of you than the others: a Mac with Apple silicon, macOS 13 or later, and Claude Code signed in for each profile, even if you mostly use the Claude app. The Claude app is only needed for Claude windows. It works with plans that have usage limits (Pro, Max, Ultra, Team); an API-key profile has no limits to show. A profile works on one account at a time, and two profiles can share one. It isn't signed with an Apple Developer ID yet, so macOS asks you to approve it once. Usage shows mainly in the Dock (a menu bar icon per profile is optional), and it doesn't pool limits. A profile can switch to another of your own accounts, and the switch is meant to move its Code sessions with it, after a backup.
 
 {{experimental: switch}}
 
