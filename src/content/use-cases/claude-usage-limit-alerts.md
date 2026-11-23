@@ -5,7 +5,7 @@ h1: "Claude usage limit notifications"
 mainKeyword: "claude usage limit notification"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-12
+updated: 2026-11-22
 author: n-uf
 order: 2
 takeaways:
@@ -114,7 +114,6 @@ You'll see the same countdown in a few more places:
 
 - the details panel, which has the same box;
 - the launcher, next to the profile;
-- the Dock icon's menu, which starts with "5-hour full · back at 15:28, in 1h 42m";
 - the Dock icon itself: the time in large figures, "5H FULL" under it, and a crimson frame;
 - the profile's menu bar icon, if you turned one on (profile settings ▸ Menu bar, off by default): the countdown beside the icon ("1h 42m"), or just crimson, as you choose;
 - the "Claude usage" widget (macOS 14 or later), which shows when a full limit is back.
