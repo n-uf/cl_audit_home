@@ -4,8 +4,8 @@
 //  - one fixed blurred stand-in, the same for every account: where a view draws an address as a value (Settings' account
 //    box titles, the Switch page; since cl_audit e95e181 and 2f1fa08 the dashboard card's account line and the Dock
 //    icon's details panel too, `.addr`), the `.email-s` twin, and the address itself only while the pointer is on it;
-//  - in the Switch account menus, a row draws the stand-in and its address only while the row is highlighted
-//    (addressRowHTML); a short name ("Switch to …") is "hidden address" (shortText, shortHTML).
+//  - in the account menus (the menu bar menu, the card's Switch menu), a row draws the stand-in and its address only
+//    while the row is highlighted (addressRowHTML); a short name in words is "hidden address" (shortText, shortHTML).
 // app.css has the rules.
 
 /** The words for a hidden address, in sentences, menus and tooltips (AddressText.hidden). */

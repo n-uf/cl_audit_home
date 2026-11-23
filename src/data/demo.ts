@@ -29,8 +29,6 @@ const knownFull = (s: Standby) => s.lastWeek >= 100;
  *  full first, the least used by the week they left with first, then the most recently in use (the list's own order). */
 export const offerOrder = (list: Standby[]) =>
   list.map((s, i) => [s, i] as const).sort(([a, i], [b, j]) => Number(knownFull(a)) - Number(knownFull(b)) || a.lastWeek - b.lastWeek || i - j).map(([s]) => s);
-/** The one a full limit offers first (AccountBook.best): the first in that order not known to be full, or none. */
-export const bestOffer = (list: Standby[]) => offerOrder(list).find((s) => !knownFull(s));
 /** "217, 119, 87": a "#rrggbb" colour as the r, g, b a key's LED (--tint) takes. */
 export const rgbOf = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(", ");
 /** "team-2": an account's short name, its address before the @ (AccountNames.short). */

@@ -291,8 +291,8 @@ code, kbd { font-family: var(--mono); }
 .addr { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hide-emails .addr:not(:hover) { text-overflow: clip; }   /* (a stand-in cut short is only clipped: no "…" after a blur) */
 .addr > * { white-space: nowrap; }
-/* a Switch account menu row (.arow): its short name while shown; hidden, the blurred stand-in, and the address only
-   while the row is highlighted (SwitchMenu.accountItem, AddressMenuRow) */
+/* an account's menu row (.arow: the menu bar menu's accounts, the card's Switch menu): its short name while shown;
+   hidden, the blurred stand-in, and the address only while the row is highlighted (SwitchMenu.accountItem, AddressMenuRow) */
 .as-stand, .as-real { display: none; }
 .hide-emails .arow .as-short { display: none; }
 .hide-emails .arow .as-stand { display: inline; filter: blur(3.5px); }
@@ -1547,7 +1547,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .mb-icon { display: inline-flex; align-items: center; height: 20px; padding: 0 5px; border: 0; border-radius: 4px; background: none; cursor: pointer; }
 .mb-icon.open, .mb-icon:hover { background: rgba(255,255,255,.18); }
 .face-silver .mb-icon.open, .face-silver .mb-icon:hover { background: rgba(0,0,0,.1); }
-.mb-menu { position: fixed; top: 28px; z-index: 80; width: 316px; max-width: calc(100vw - 16px); box-sizing: border-box; padding: 6px; border-radius: 9px; color: #eee; font-size: 12.5px;
+.mb-menu { position: fixed; top: 28px; z-index: 80; width: 330px; max-width: calc(100vw - 16px); box-sizing: border-box; padding: 6px; border-radius: 9px; color: #eee; font-size: 12.5px;
   background: rgba(40,40,44,.94); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 0 .5px rgba(255,255,255,.2); }
 .face-silver .mb-menu { color: #1d1d1f; background: rgba(246,246,246,.95); box-shadow: 0 10px 30px rgba(0,0,0,.25), 0 0 0 .5px rgba(0,0,0,.2); }
 .mbm-head { display: flex; align-items: center; gap: 6px; padding: 4px 8px 6px; font-weight: 600; }
@@ -1555,7 +1555,7 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .mbm-head span.hot { margin-left: auto; font-size: 11px; color: #eb445b; white-space: nowrap; }
 .face-silver .mbm-head span.hot { color: #b42318; }
 /* a limit's line: its name, its bar, its share, when it resets ("in 1h 42m", "back at 15:28") */
-.mbm-row { display: grid; grid-template-columns: 46px minmax(0, 1fr) 36px 78px; align-items: center; gap: 8px; padding: 3px 8px; font-size: 11.5px; }
+.mbm-row { display: grid; grid-template-columns: 46px minmax(0, 1fr) 36px 92px; align-items: center; gap: 8px; padding: 3px 8px; font-size: 11.5px; }
 .mbm-row b { text-align: right; font: 700 11px var(--mono); }
 .mbm-when { font-size: 11px; opacity: .65; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mbm-bar { position: relative; height: 5px; border-radius: 3px; background: rgba(127,127,127,.25); overflow: hidden; }
@@ -1876,15 +1876,14 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 /* menus: the account in use under the profile's name, and the accounts' rows (the one in use ticked) */
 .mbm-acc { display: flex; align-items: center; gap: 6px; padding: 0 8px 5px; font-size: 11.5px; }
 .mbm-acc i { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 4px rgba(34,197,94,.85); }
-.mbm-acc span { opacity: .55; }
 .mbm-it .chev { margin-left: auto; font-size: 13px; line-height: 1; opacity: .7; }
 /* as macOS lays out a menu with a ticked item: every item leaves the tick's column, the tick sits in it */
 .mb-menu .mbm-it { position: relative; padding-left: 22px; }
 .mbm-it .ck { position: absolute; left: 8px; font-size: 11px; }
-/* a row with an address inside words ("Sign Terminal in to … …"): one line, the address inline */
-.mbm-it.lined { display: flex; align-items: center; gap: .3em; white-space: nowrap; overflow: hidden; }
+/* a row with an address inside words ("Sign Terminal in to <address>…"): one line, the address inline */
+.mbm-it.lined { display: flex; align-items: center; white-space: nowrap; overflow: hidden; }
 .mbm-it.lined > span { flex: none; }
-.mbm-it.lined > .ad { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.mbm-it.lined > .ad { flex: 0 1 auto; min-width: 0; margin-left: .3em; overflow: hidden; text-overflow: clip; }   /* the row's own "…" follows */
 .mbm-it.open { background: #0a64d6; color: #fff; }
 .mbm-it:has(.chev, .ck) { display: flex; align-items: center; gap: 6px; }
 .mbm-it.cur, .mbm-it.cur:hover { background: none; color: inherit; }
