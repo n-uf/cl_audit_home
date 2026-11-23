@@ -17,7 +17,7 @@ import AccIcon from "./AccIcon.astro";
       <button type="button" class="dock-item" data-open-desktop={a.id} aria-label={`Claude window of the ${a.name} profile`}>
         <span class="app-tile" aria-hidden="true"></span><span class="tip">Claude window — {a.name}</span><span class="run"></span>
       </button>
-      <button type="button" class="dock-item" data-pop={a.id} aria-label={`cl_audit ${a.name} (Dock icon): ${a.five}% of the 5-hour limit, ${a.week}% of the weekly limit`}>
+      <button type="button" class="dock-item" data-pop={a.id} aria-haspopup="menu" aria-expanded="false" aria-label={`cl_audit ${a.name} (Dock icon): ${a.five}% of the 5-hour limit, ${a.week}% of the weekly limit`}>
         <AccIcon id={a.id} src={a.icon} size={56} /><span class="tip">cl_audit {a.name}</span><span class="run"></span>
       </button>
     </>))}
@@ -28,7 +28,7 @@ import AccIcon from "./AccIcon.astro";
     <div class="pop peek" data-popup={a.id} hidden set:html={panelHTML(a.id, "segments")} />
   ))}
   <!-- a profile Dock icon's right-click menu (DockMenu.swift), filled in when it opens -->
-  <div class="dock-menu" data-dock-menu role="menu" hidden></div>
+  <div class="dock-menu" data-dock-menu role="menu" tabindex="-1" hidden></div>
 </nav>
 
 <script>
@@ -129,7 +129,7 @@ import AccIcon from "./AccIcon.astro";
       ? item("show", "Show") + item("quit", "Quit") + (s.dock && pr.windowFollows && pr.showInDock ? item("keep", "Quit and keep") : "")   // words: SEO (the app's)
       : item("open", "Open");   // words: SEO (the app's)
     return `<div class="dm-it dm-head" role="menuitem" aria-disabled="true" tabindex="-1"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i>${title(pr.name.trim() || a.name)}</div><hr role="separator">` +
-      (pr.win ? `<div class="dm-subwrap">${item("window", 'Claude window<span class="dm-chev" aria-hidden="true">▸</span>', ' aria-haspopup="menu" aria-expanded="false"')}<div class="dock-menu dm-sub" role="menu" aria-label="Claude window" hidden>${inside}</div></div>` : "") +
+      (pr.win ? `<div class="dm-subwrap" role="none">${item("window", 'Claude window<span class="dm-chev" aria-hidden="true">▸</span>', ' aria-haspopup="menu" aria-expanded="false"')}<div class="dock-menu dm-sub" role="menu" aria-label="Claude window" hidden>${inside}</div></div>` : "") +
       // Quick chat is cl_quick's: the item opens cl_quick on the profile's folder (here: its site)
       `<a class="dm-it" role="menuitem" tabindex="-1" data-dm="quick" href="${QUICK}/" target="_blank" rel="noopener">Quick chat<span class="sr-only"> (opens in a new tab)</span></a>` +   // words: SEO (the app's)
       item("refresh", "Refresh now") + '<hr role="separator">' + item("dashboard", "Dashboard") + item("settings", "Profile settings…");   // words: SEO (the app's)
@@ -152,17 +152,22 @@ import AccIcon from "./AccIcon.astro";
     if (menu.hidden) return;
     menu.hidden = true; menu.innerHTML = "";
     menuFor?.classList.remove("menu-open");
+    menuFor?.setAttribute("aria-expanded", "false");
     if (refocus) menuFor?.focus();
     menuFor = null;
   }
   function openMenu(b: HTMLElement, keyboard: boolean) {
+    // the same tile's menu already open (a contextmenu event after Shift+F10 or the context-menu key): keep it, and the
+    // focus in it; another tile's closes first, so only one tile is ever dimmed
+    if (menuFor === b && !menu.hidden) return;
+    closeMenu();
     close();
     const id = b.dataset.pop as AccountId;
     menu.innerHTML = menuHTML(id);
     menu.dataset.for = id;
     menu.setAttribute("aria-label", `cl_audit ${loadPrefs()[id].name}`);
     menu.hidden = false;
-    menuFor = b; b.classList.add("menu-open");
+    menuFor = b; b.classList.add("menu-open"); b.setAttribute("aria-expanded", "true");
     const r = b.getBoundingClientRect(), w = menu.offsetWidth;
     menu.style.left = `${Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2))}px`;
     menu.style.bottom = `${Math.max(8, window.innerHeight - r.top + 6)}px`;
@@ -181,16 +186,21 @@ import AccIcon from "./AccIcon.astro";
       case "keep": setDock(id, false, true); break;   // the Dock icon app quits; its window stays
       case "refresh": showWhatNow("Refresh now", "", `Reads ${name}'s usage again now. It doesn't use any of your limits. This is a demo, so nothing is read.`); break;   // words: SEO
       case "dashboard": go("/dashboard/"); break;
-      case "settings": go("/settings/", id); break;
+      // (already on Settings: that profile selected in place, settings.astro's clSettingsProfile)
+      case "settings": if (!(location.pathname.startsWith("/settings") && w_.clSettingsProfile?.(id))) go("/settings/", id); break;
     }
   };
+  let byKey = false;   // the item was chosen with the keyboard: the focus goes back to the tile
   menu.addEventListener("click", (e) => {
     e.stopPropagation();
+    const kbd = byKey; byKey = false;
     const it = (e.target as HTMLElement).closest<HTMLElement>(".dm-it");
     if (!it || it.hasAttribute("aria-disabled")) return;
     const what = it.dataset.dm!, id = menu.dataset.for as AccountId;
-    if (what === "window") { if (sub()?.hidden) openSub(false); else closeSub(); return; }
-    closeMenu();
+    // Claude window ▸: a click (or a tap) opens its submenu and never shuts it; it closes when the pointer leaves for
+    // another item, with ArrowLeft or Escape, or with the menu
+    if (what === "window") { openSub(kbd); return; }
+    closeMenu(kbd);
     if (what !== "quick") act(what, id);   // (Quick chat is a link: it opens cl_quick's site in a new tab)
   });
   menu.addEventListener("mouseover", (e) => {
@@ -206,13 +216,14 @@ import AccIcon from "./AccIcon.astro";
       e.preventDefault();
       const n = list.length, next = i < 0 ? (e.key === "ArrowDown" ? 0 : n - 1) : (i + (e.key === "ArrowDown" ? 1 : n - 1)) % n;
       list[next]?.focus();
-    } else if (e.key === "ArrowRight" && cur?.dataset.dm === "window") { e.preventDefault(); openSub(true); }
+    } else if (e.key === "Home" || e.key === "End") { e.preventDefault(); list[e.key === "Home" ? 0 : list.length - 1]?.focus(); }
+    else if (e.key === "ArrowRight" && cur?.dataset.dm === "window") { e.preventDefault(); openSub(true); }
     else if (e.key === "ArrowLeft" && inSub) { e.preventDefault(); closeSub(); menu.querySelector<HTMLElement>('[data-dm="window"]')?.focus(); }
     else if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); if (inSub) { closeSub(); menu.querySelector<HTMLElement>('[data-dm="window"]')?.focus(); } else closeMenu(true); }
-    else if (e.key === "Tab") closeMenu();
+    else if (e.key === "Tab") { e.preventDefault(); closeMenu(true); }
     else if ((e.key === "Enter" || e.key === " ") && cur?.classList.contains("dm-it")) {
       e.preventDefault();
-      if (cur.dataset.dm === "window") openSub(true); else cur.click();
+      if (cur.dataset.dm === "window") openSub(true); else { byKey = true; cur.click(); }
     }
   });
 
