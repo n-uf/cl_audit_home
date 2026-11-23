@@ -45,14 +45,14 @@ sources:
   - title: "ccusage README (ryoppippi/ccusage)"
     url: "https://github.com/ccusage/ccusage"
     checked: 2026-11-02
-  - title: "cl_audit README at v26.11.3 (n-uf): Quick chat"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.3/README.md#quick-chat"
-    checked: 2026-11-08
-    supports: "what you type in Quick chat goes to Anthropic through Claude Code"
-    quote: "Nothing but your messages is sent, and only through Claude Code."
-  - title: "cl_audit README at v26.11.10 (n-uf): The default profile, How cl_audit tells what Claude Code deletes"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
-    checked: 2026-11-09
+  - title: "cl_audit README at v26.11.88 (n-uf): Security, where it goes"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md#security-how-cl_audit-handles-the-claude-login"
+    checked: 2026-11-23
+    supports: "cl_audit's two requests, both to Anthropic's own server: the 5-hour and weekly figures, and which account a profile is signed in to; there is no cl_audit server, no analytics and no sign-up. cl_audit has no quick chat of its own (cl_quick has it, Quick chat in the README, CHANGELOG 26.11.88), so none of what you type goes through cl_audit."
+    quote: "There is no cl_audit server, no analytics and no sign-up"
+  - title: "cl_audit README at v26.11.88 (n-uf): The default profile, How cl_audit tells what Claude Code deletes"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "The first profile is the default profile, on ~/.claude; a session deleted in the Claude window goes on the normal schedule, an archived one after a grace period."
     quote: "The default profile is the one on `~/.claude` with the usual Claude app"
 related:

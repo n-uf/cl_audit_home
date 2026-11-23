@@ -116,29 +116,29 @@ sources:
     checked: 2026-11-09
     supports: "Remote connectors are configured through your Claude account; local MCP servers set up in claude_desktop_config.json are a separate mechanism that uses your local network."
     quote: "are a separate mechanism and do use your local network"
-  - title: "cl_audit README at tag v26.11.10 (Moving to another Mac, Importing an export, Claude window)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
-    checked: 2026-11-09
+  - title: "cl_audit README at tag v26.11.88 (Moving to another Mac, Importing an export, Claude window)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "Move to another Mac (a key on the Export page, Settings ▸ a profile ▸ Sessions ▸ Export…) carries the Claude window's MCP settings in the encrypted disk image only; a zip leaves them out; Import adds them only after Add them, and writes claude_desktop_config.json only where the profile has none; backups no longer hold them (those made by 26.11.8 still do); the file also holds the window's sidebar records and other settings; an export never holds .claude.json."
     quote: "written only where the profile has none"
   - title: "cl_audit CHANGELOG, 26.11.9 and 26.11.10"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/CHANGELOG.md"
-    checked: 2026-11-09
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.9 (9 November 2026): Export carries the window's claude_desktop_config.json (its MCP servers and other settings) in the encrypted disk image only, and Import adds it only when the profile has none yet; backups no longer keep it. 26.11.10 (9 November 2026): Move to another Mac sets all of this in one click, in the password-protected disk image only; sign-ins don't travel."
     quote: "in the encrypted disk image only: a zip leaves it out and says so"
   - title: "cl_audit CHANGELOG, 26.11.13"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.13/CHANGELOG.md"
-    checked: 2026-11-10
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.13: a move brings each session's side files, including its project folder's trust and allowed tools, in the encrypted disk image only; a folder's MCP servers travel in the image but start left out on Import, like the window's MCP settings; cl_audit never keeps a copy of .claude.json."
     quote: "A folder's MCP servers travel in the image but start left out on Import."
   - title: "cl_audit CHANGELOG, 26.11.22"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
   - title: "cl_audit CHANGELOG, 26.11.64"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.64/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.64 (20 November 2026): exports carry only the Claude window's MCP settings, and the sidebar records carry only the sidebar's sections and groups; exports made by earlier versions also hold the window's other settings, and restoring or importing them now adds only the MCP settings and ignores the rest; Import and Restore list each MCP server's whole command line and the names of its env variables (never a value) and flag a server that runs a shell, interpreter or launcher, sets a variable that changes what a program loads, or holds an argument that looks like a key."
     quote: "Exports now carry only the Claude window's MCP settings"
 related:

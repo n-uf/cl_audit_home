@@ -161,54 +161,54 @@ sources:
     checked: 2026-11-09
     supports: "What the tool says it is: scripts that collect CLAUDE.md files, configurations, plugins, commands, agents and skills into a repository and restore them on another machine; secrets are recorded by name, never by value; a restore step launches Claude to adapt paths and shell config."
     quote: "Collect, version, and restore Claude Code personalizations across machines."
-  - title: "cl_audit README at tag v26.11.10 (Moving to another Mac; First run; The default profile)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
-    checked: 2026-11-09
-    supports: "Export ▸ Move to another Mac sets all profiles, the encrypted disk image, Claude Code's setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings; a password typed twice, not stored; Close the profiles' Claude windows first; copy the .dmg over; on the new Mac Import makes the profiles that aren't there (in folders of their own, not signed in), then imports each profile's sessions; Add account for each sign-in; scheduled tasks arrive paused; setup and MCP settings come only with Add them; nothing is overwritten; Undo is two steps; what moves and what never moves (sign-ins, the Keychain, settings.local.json; claude.ai chats and Projects follow the account); export the profiles as they are now, not from a backup; the first profile is the default profile on ~/.claude; project folders go at the same paths as on the old Mac first, or those sessions wait (\"Folder not here\"). The site's FAQ and Settings demo (n-uf/cl_audit_home#46) add that project folders and rewind checkpoints don't travel."
-    quote: "Put your project folders at the same paths as on the old Mac"
+  - title: "cl_audit README at tag v26.11.88 (Moving to another Mac; First run; The default profile)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
+    supports: "Export ▸ Move to another Mac sets all profiles, the encrypted disk image, Claude Code's setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings; a password typed twice, not stored; Close the profiles' Claude windows first; copy the .dmg over; on the new Mac Import makes the profiles that aren't there (in folders of their own, not signed in), then imports each profile's sessions; Sign in with another account… for each sign-in; scheduled tasks arrive paused; setup and MCP settings come only with Add them; Undo is two steps; what moves and what never moves (sign-ins, the Keychain, settings.local.json; claude.ai chats and Projects follow the account); export the profiles as they are now, not from a backup; the first profile is the default profile on ~/.claude; a session whose project folder is at the same path as on the old Mac needs nothing more, and one whose folder isn't on this Mac waits (\"Folder not here\"). The site's FAQ and Settings demo (n-uf/cl_audit_home#46) add that project folders and rewind checkpoints don't travel."
+    quote: "At the same path as on the old Mac, a session needs nothing more"
   - title: "cl_audit CHANGELOG, 26.11.33"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
-    checked: 2026-11-15
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.33: twelve long keys got short titles, and what they used to spell out is in their hover text (on the import page: Undo import, Add to Dock, Pick folder…)."
     quote: "Twelve long keys got short titles"
   - title: "cl_audit CHANGELOG, 26.11.10"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/CHANGELOG.md"
-    checked: 2026-11-09
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.10 (9 November 2026): Move to another Mac, a move is only ever the password-protected disk image, never a zip; a move keeps accounts' real identifiers; sign-ins don't travel; cl_audit's own profiles and settings travel in the encrypted image; Undo is two steps; 26.11.9 or older can't open a file with cl_audit's profiles or a move. 26.11.8 and 26.11.9 entries: setup, MCP settings and tasks travel; backups drop env values and MCP settings."
     quote: "Sign-ins don't travel: you sign in again on the new Mac."
   - title: "cl_audit CHANGELOG, 26.11.11"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.11/CHANGELOG.md"
-    checked: 2026-11-10
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.11: before a backup writes Claude Code's setup, cl_audit runs the Export page's key check over settings.json, the scripts its hooks run (with the skills holding them) and the plugin marketplaces file; a hook or permission rule holding a key is left out whole, another value that looks like a key is blanked and its name kept, and a script, a skill whose script holds a key or a marketplaces file holding one is left out; Restore, and Export from a backup, say which; it finds only the Export page's key shapes (GitHub, AWS, sk-, JWTs and the like) and doesn't check CLAUDE.md or skills no hook runs."
     quote: "Backups leave out the keys they find in your Claude Code settings and scripts."
   - title: "cl_audit CHANGELOG, 26.11.12"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.12/CHANGELOG.md"
-    checked: 2026-11-10
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.12: Import lists each session whose folder isn't on this Mac (Folder not here) with Pick its folder on this Mac…, which points the saved chat and its Code-tab entry at the picked folder and drops a worktree that isn't on this Mac; the profile's Claude window closes for a moment; Undo this import takes it back, except for a session resumed since; later, Settings ▸ a profile ▸ Sessions ▸ Folder not here with Pick its folder…; the Export page's Code row reads each project with read-only git, warns about work only on this Mac and repos it couldn't read, never runs a program a repo's settings name, and the list travels in the encrypted disk image only with user names, passwords and tokens taken out of remote addresses; the new Mac's Import page shows per project where to clone from, where it was, the branch and what wasn't pushed or committed, with commands to copy, and cl_audit never runs git there; memory files start as Add them in a move import; a move file with the checklist is format 5, refused by 26.11.11 and older; Claude Code's folder naming, the Code tab running a re-pointed session and the worktree fields were confirmed from the programs' own text, not by running them."
     quote: "A moved session opens in the right folder."
   - title: "cl_audit CHANGELOG, 26.11.13"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.13/CHANGELOG.md"
-    checked: 2026-11-10
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.13: a move brings each session's side files (task list, plan, typed prompts with pasted text, the project folder's trust and allowed tools) in the encrypted disk image only; Rewind's copies of edited files are their own Export row with their size, left out unless included; Keys found searches these too; not carried: session environments, the image cache, shell snapshots, debug files, old to-do lists; Import puts them back as rows, on for a move, without overwriting; project MCP servers start left out; prompt history appended to history.jsonl and pointed at each session's folder here; trust written only when the folder has none; both only while Claude Code isn't running for the profile and its window is closed, and only for folders on this Mac; a Pick also points Rewind's saved paths at the new folder; Undo this import takes it all back, leaving and naming anything changed since; side files stay with the imported backup while the import can be undone (30 days), then deleted; a file with side files is format 6, a move without them stays at 5 or 4 so 26.11.12 still opens it; five details confirmed only from Claude Code 2.1.318's program text."
     quote: "A move brings each session's side files."
-  - title: "cl_audit README at tag v26.11.18 (Moving to another Mac; Profile settings, Accounts)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
-    checked: 2026-11-11
-    supports: "There is no Add account since 26.11.18; on the new Mac you sign in again to each account with Accounts ▸ Sign in with another account…."
+  - title: "cl_audit README at tag v26.11.88 (Moving to another Mac; Profile settings, Accounts)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
+    supports: "There is no Add account; on the new Mac you sign in again to each account with Accounts ▸ Sign in with another account…."
     quote: "There is no Add account"
   - title: "cl_audit CHANGELOG, 26.11.22"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
   - title: "cl_audit CHANGELOG, 26.11.23"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.23/CHANGELOG.md"
-    checked: 2026-11-13
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.23: restore, import, the default profile and Undo no longer promise that nothing is ever overwritten or that Undo takes back exactly everything; the app's strings now say built not to overwrite and Undo is meant to take back what it added, and may not bring everything back."
     quote: "no longer promise that nothing is ever overwritten"
-  - title: "cl_audit README at tag v26.11.24 (Import… of a move)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.24/README.md"
-    checked: 2026-11-13
+  - title: "cl_audit README at tag v26.11.88 (Import… of a move)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "26.11.24: a file already there is built not to be replaced, whether the import comes from this Mac or another; Undo this import is meant to take back what it added, though it may not bring everything back."
     quote: "A file already there is built not to be replaced either way."
 related:

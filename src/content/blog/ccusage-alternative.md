@@ -31,8 +31,8 @@ sources:
     url: "https://ccusage.com"
     checked: 2026-11-02
   - title: "cl_audit README (n-uf)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
-    checked: 2026-11-09
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     quote: "The default profile is the one on `~/.claude` with the usual Claude app"
   - title: "cl_audit home page"
     url: "https://cl-audit.n-uf.com/"
@@ -46,9 +46,14 @@ sources:
   - title: "Claude Code docs: Manage costs effectively (the /usage command)"
     url: "https://code.claude.com/docs/en/costs"
     checked: 2026-11-02
+  - title: "cl_audit CHANGELOG, 26.11.88 (one account in several profiles)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
+    supports: "26.11.88: one account can be in several profiles, each with its own Claude Code folder; every profile on a shared account shows that account's numbers."
+    quote: "One account can now be in several profiles."
   - title: "cl_audit CHANGELOG, 26.11.22"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
 related:

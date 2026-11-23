@@ -28,109 +28,124 @@ faq:
     a: "Until Claude Code is on the new account, Undo the move puts back what moved, though maybe not all. After that, the way back is a switch the other way. A switch that stopped half way shows two choices on the Sessions card: Undo it puts the sessions back, and Leave it as it is keeps them where they are."
 sources:
   - title: "cl_audit CHANGELOG, 26.11.80"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.80/CHANGELOG.md"
-    checked: 2026-11-21
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.80: Switch account keeps the scheduled tasks (and their sessions) with the old account, and says why, when the new account's tasks file, or the old one's while it has tasks to move, holds task state it can't read, or when the new account has the same task with enabled set to anything but false."
     quote: "Switch account keeps the scheduled tasks (and their sessions) with the old account, and says why"
   - title: "cl_audit CHANGELOG, 26.11.76"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.76/CHANGELOG.md"
-    checked: 2026-11-21
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.76: a switch settles the scheduled tasks before any session moves; when they can't move (the new account got a differing copy since you pressed Switch, its tasks file can't be written, or the old account's file changed), they stay together with their sessions, the other sessions move, and the switch goes on to the sign-in and says why the tasks stayed; in Settings ▸ Accounts, the row of the account Claude Code in Terminal is signed in to also selects when that account isn't on the standby list, and Switch account then moves the sessions to it and opens no sign-in, since Claude Code is on it already; a finished move of this kind has no Undo (the backup made first keeps a copy)."
     quote: "A switch now settles the scheduled tasks before any session moves."
   - title: "cl_audit CHANGELOG, 26.11.61"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.61/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.61: when a switch leaves a profile's Claude Code on another profile's account, quick chat no longer sends the question that waited for the switch; it says why (the folder is now on that profile's account) and where to go on the Switch page, and keeps what you typed."
     quote: "quick chat no longer sends what you typed there; it says why and keeps it."
   - title: "cl_audit CHANGELOG, 26.11.55"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.55/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.55: when Claude Code's folder is signed in to another profile's account, quick chat's header names the profile's own account and that other account's limit no longer shows it as full or holds what you type; when Claude Code hits a limit there, or while the Claude app and Claude Code are on different accounts, quick chat says “Claude Code's account here has hit its limit.”, and in the clash also whose account the folder is on and to move it back to the profile's own account on the Switch page (or to pick one there when the profile has none)."
     quote: "quick chat's header now names the profile's own account"
   - title: "cl_audit CHANGELOG, 26.11.52"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.52/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.52: quick chat's header names Claude Code's account, the one it answers on, when the Claude app and Claude Code in Terminal are on different accounts; when Claude Code's folder is signed in to another profile's account (Work, say), the Dock icon's panel says “No usage: Terminal is on Work's account”, no plan shows for it any more, and the Switch page says “Move Claude Code back to …” only before the move starts."
     quote: "No usage: Terminal is on Work's account"
   - title: "cl_audit CHANGELOG, 26.11.51"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.51/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.51: an account switch opens the profile's Claude window again once the switch is settled (Claude Code reaches the account, after Undo or Leave it as it is, or when the switch stopped before moving anything); while moved sessions wait, the window stays closed, the Dock icon, the menu bar and the card open that switch's page, and the Switch page says so."
     quote: "An account switch now opens the profile's Claude window again once the switch is settled"
   - title: "cl_audit CHANGELOG, 26.11.48"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.48/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.48: when Claude Code's folder is signed in to another profile's account and you move it back to the profile's own account, the Switch page says the other account stays with the profile it belongs to."
     quote: "the other account stays with the profile it belongs to"
-  - title: "cl_audit README at tag v26.11.87 (Show emails)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.87/README.md"
-    checked: 2026-11-22
+  - title: "cl_audit README at tag v26.11.88 (Show emails)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "Show emails (General settings) off leaves email addresses out of the launcher, the dashboard's account lines and the panels, writes \"hidden address\" in their place in menus and sentences, and draws one fixed blurred stand-in in Settings, the address only while the pointer is on it."
     quote: "writes \"hidden address\" in their place in menus and sentences"
   - title: "cl_audit CHANGELOG, 26.11.87"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.87/CHANGELOG.md"
-    checked: 2026-11-22
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.87: with Show emails off, an address in a sentence, a menu row, an alert or a tooltip reads \"hidden address\"; a fresh install starts hidden and stays so."
     quote: "a fresh install starts hidden and stays so"
   - title: "cl_audit CHANGELOG, 26.11.47"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.47/CHANGELOG.md"
-    checked: 2026-11-15
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.47: before you press Switch the Switch page says “Will stay with ann: …” for the files named like a Code-tab session that stay behind, and keeps “Left with ann: …” for after something has moved; when Claude Code's folder is on another profile's account and the profile's own account is on its standby list, the switch menus list it once, ticked, as “ann · move Claude Code back here”, and choosing it still switches to it."
     quote: "ann · move Claude Code back here"
   - title: "cl_audit CHANGELOG, 26.11.44"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.44/CHANGELOG.md"
-    checked: 2026-11-15
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.44: when Claude Code's folder is signed in to another profile's account, the dashboard card, the Switch page, the Dock icon's usage panel and menu and the menu bar menu name the profile's own account instead of the other profile's, or none when it has none of its own; the Switch page says before you press Switch which files named like a Code-tab session will stay with the old account (“Left with ann: 2 files named like a Code-tab session that aren't one…”; 26.11.47 reworded it before the switch to “Will stay with …”)."
     quote: "which files named like a Code-tab session will stay with the old account"
   - title: "cl_audit CHANGELOG, 26.11.33"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
-    checked: 2026-11-15
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.33: a profile with no numbers to show says why in one heading and one sentence, with one compact key (Terminal signed out, its sign-in expired, Terminal on another account or on another profile's account, the Keychain not handing the sign-in over, a switch with one step left); standby accounts no longer sit on the card, and while a limit is full a compact Switch account key opens a menu of them, by address only; after a switch the waiting line reads “Switching to … : one step left. Sign the Claude app in to … to finish.” instead of “Switched to …”; menus no longer say “· in use”, the account in use is ticked; Settings ▸ Accounts shows In use and Standby; “Log in” is now “Sign in”."
     quote: "a compact Switch account key opens a menu of them, by address only"
-  - title: "cl_audit source at v26.11.33, Sources/CardParts.swift (UsageNotice)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/Sources/CardParts.swift#L22-L58"
-    checked: 2026-11-15
-    supports: "The card's headings and sentences for each state without numbers (“Terminal is signed in to …”, “Terminal is signed in to another account”, “Terminal's sign-in has expired”, “Terminal is signed out”, “Can't read Terminal's sign-in yet”, “Can't read Terminal's sign-in”), amber for the last two and for a switch with one step left, with the keys each one has."
+  - title: "cl_audit source at v26.11.88, Sources/CardParts.swift (UsageNotice)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/CardParts.swift#L36-L73"
+    checked: 2026-11-23
+    supports: "The card's headings and sentences for each state: a switch waiting for the Claude app is amber (“Switching to …: one step left”, “Sign the Claude app in to … to finish.”); the split by hand is one amber link, “Claude window on another account ›”, with Terminal's numbers kept; red for “Terminal is signed in to another account”, “Terminal's sign-in has expired” and “Terminal is signed out”; amber for “Can't read Terminal's sign-in yet” and “Can't read Terminal's sign-in”, with the keys each one has."
     quote: "The Keychain didn't hand it over: unlock it, then Refresh now."
-  - title: "cl_audit source at v26.11.33, Sources/AccountResolver.swift (switchWaits)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/Sources/AccountResolver.swift#L72-L78"
-    checked: 2026-11-15
-    supports: "A switch waiting for the Claude app (the one-step-left state) lasts 24 hours after the switch linked; a switch linked more than a day ago waits no more, and then the card shows the split."
+  - title: "cl_audit source at v26.11.88, Sources/AccountResolver.swift (switchWaits)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/AccountResolver.swift#L113-L120"
+    checked: 2026-11-23
+    supports: "The split is a switch waiting for the Claude app only when the newest switch went to Claude Code's account, the app is still on the account it left and the switch was linked within the last day; a switch linked more than a day ago waits no more, and then the card shows the split by hand. A split with no such switch behind it shows at once."
     quote: "a switch linked more than a day ago waits no more"
+  - title: "cl_audit source at v26.11.88, Sources/SwitchEngine.swift (linkedLately)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/SwitchEngine.swift#L138-L141"
+    checked: 2026-11-23
+    supports: "How long a switch's finish line lasts: a switch counts as linked lately for 24 hours after it was linked (a link dated ahead counts only within five minutes of now)."
+    quote: "Linked within the last day"
+  - title: "cl_audit source at v26.11.88, Sources/Settings.swift (the split's two rows)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/Settings.swift#L1888-L1902"
+    checked: 2026-11-23
+    supports: "In the split by hand, Settings ▸ Accounts draws Terminal's account with an amber lamp, its numbers and “Sign the app in”, which opens the Switch page for it (always offered); the row is not selectable, a click on it does nothing. The Claude app's row has no numbers and “Sign Terminal in”, Terminal's own sign-in with the app's address filled in (one line instead while the app's account is known by its id only)."
+    quote: "Not selectable: a click on the row does nothing."
+  - title: "cl_audit source at v26.11.88, Sources/MenuBar.swift (the split's row)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/MenuBar.swift#L429-L436"
+    checked: 2026-11-23
+    supports: "In the split by hand the menu bar menu's account line is Terminal's account by its short name followed by \" · Terminal\" (“hidden address · Terminal” while addresses are hidden); the amber “Claude window on another account ›” link comes under the numbers."
+    quote: "Text(inUse + (splitCode != nil ? \" · Terminal\" : \"\"))"
   - title: "cl_audit CHANGELOG, 26.11.22"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
-  - title: "cl_audit CHANGELOG, 26.11.25"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.25/CHANGELOG.md"
-    checked: 2026-11-13
-    supports: "26.11.25: when the Claude app is on another account than Claude Code, cl_audit no longer shows Claude Code's usage as the profile's; it offers to log Claude Code in to the app's account."
-    quote: "cl_audit no longer shows Claude Code's usage as the profile's"
-  - title: "cl_audit CHANGELOG, 26.11.29"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.29/CHANGELOG.md"
-    checked: 2026-11-14
-    supports: "26.11.29: when the Claude app and Claude Code in Terminal are on different accounts, cl_audit says it can't read the app account's usage and which account Terminal is on, with “Log Claude Code in Terminal in to …” to fix it."
-    quote: "Log Claude Code in Terminal in to"
-  - title: "cl_audit source at v26.11.29, Sources/AccountResolver.swift (SplitUsage)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.29/Sources/AccountResolver.swift#L127-L175"
-    checked: 2026-11-14
-    supports: "At v26.11.29, the card's words when the Claude app and Claude Code in Terminal are on different accounts (“cl_audit can't read …'s usage: Claude Code in Terminal is signed in to …”, the “Log in to … in Terminal…” button) and right after a switch (“Switched to …: sign the Claude app in to … to finish”, no key); Claude Code's own numbers on one labelled line, “Claude Code in Terminal”."
-    quote: "Claude Code in Terminal is signed in to"
-  - title: "cl_audit README at commit 4cb6007 (Experimental: switching, import, export, restore and the default profile)"
-    url: "https://github.com/n-uf/cl_audit/blob/4cb6007/README.md#experimental-switching-import-export-restore-and-the-default-profile"
-    checked: 2026-11-12
+  - title: "cl_audit CHANGELOG, 26.11.88 (the Claude app and Terminal on different accounts)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
+    supports: "26.11.88: the Claude app and Terminal on different accounts read in two names only; it is a warning in amber, not red, and Terminal's numbers still work; Settings ▸ Accounts puts both accounts in one amber band at the top, says why the Claude app's account has no numbers, and gives each account a TERMINAL | APP badge; Terminal's account has Sign the app in, which opens the Switch page, and the Claude app's account has Sign Terminal in; the dashboard card, the menu bar row and the Dock panel name Terminal's account and say “Claude window on another account ›” in amber under it, a link to the profile's Settings ▸ Accounts; Show window turns amber; the Dock panel names Terminal's account, marked “· Terminal”, shows the badge, and keeps its keys in one row (Show window, Sign in, Dashboard, the gear); while a switch waits for the Claude app no numbers show under the app's account."
+    quote: "It is a warning in amber, not red: Terminal's numbers still work."
+  - title: "cl_audit CHANGELOG, 26.11.88 (one account in several profiles)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
+    supports: "26.11.88: one account can be in several profiles, each with its own Claude Code folder; every profile on a shared account shows that account's numbers; an amber note says which other profiles have the account and never stops Finish, a sign-in or a switch; a sign-in that lands on another profile's account is taken, no longer refused; an account several profiles share is read once per read interval and its limit alerts come once; before a switch to an account another profile's Claude window is on, the Switch page says that window shows the same sidebar."
+    quote: "A sign-in that lands on another profile's account is taken. It is no longer refused."
+  - title: "cl_audit source at v26.11.88, Sources/AccountResolver.swift (SplitUsage)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/AccountResolver.swift#L160-L215"
+    checked: 2026-11-23
+    supports: "The split's words: the Claude app (the account in use) on one account and Terminal, whose sign-in reads the numbers, on another; the band's headline and its two lines, “Claude window on another account”, the keys Sign the app in, Sign Terminal in and Sign in, and “Open the Claude window once, so cl_audit learns its account.” while the app's account is known by its id only; a switch waiting for the app says “Switching to …: one step left. Sign the Claude app in to … to finish.”"
+    quote: "Use the key on either account to put both on the same account."
+  - title: "cl_audit README at v26.11.88 (Experimental: switching, import, export, restore and the default profile)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md#experimental-switching-import-export-restore-and-the-default-profile"
+    checked: 2026-11-23
     supports: "Account switching, import, restore, export, Move to another Mac and making the default profile are experimental, still unstable and can lose data; each of their pages starts with an Experimental: may lose data panel; before one runs, cl_audit asks for consent every time, with a box to tick and Cancel as the default; the No Liability clause of the PolyForm Perimeter 1.0.1 licence applies."
     quote: "can lose data, so use them for testing only"
   - title: "cl_audit CHANGELOG, 26.11.18"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
-    checked: 2026-11-11
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.18: a profile is one Claude Code folder with one signed-in account, the one in use; standby accounts are remembered (address, plan, when last in use), signed out, with no folder or Keychain item, show no usage; Switch to … opens Claude Code's own sign-in in Terminal with the address filled in and cl_audit watches the folder for up to 10 minutes; before the sign-in the window closes, a backup is made, and its Code-tab sessions and scheduled tasks (with their skips and retries) move with a receipt; a session a running Claude Code owns stays until a later switch; Undo the move until Claude Code is on the new account; Undo it for a switch that stopped half way; transcripts stay; the Claude app's sign-in is yours; no Add account, accounts found on the Mac, Forget…, Sign in with another account…; the standby account offered when a limit is full; Undo this switch and the standby numbers gone; Folders from before with Move to Trash… and Keep it; the sign-in unsets API keys and provider switches first; the move adapts claude-transplant 4.2.1 (MIT)."
     quote: "A profile is one Claude Code folder, and switching signs in again on it."
-  - title: "cl_audit README at tag v26.11.18 (Words used here; Which account is in use; When a limit is full; Profile settings, Accounts; Backups; The default profile; Moving a profile to another account; Credits)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
-    checked: 2026-11-11
-    supports: "At v26.11.18: in use and standby; the IN USE box shows the Claude app's account first, else Claude Code's; standby boxes show the plan and Last in use, no limits; accounts found on this Mac, listed as address · organisation; Switch to it… and Forget…; the trays, the menus and the alert line; the Switch page (NOW, TO, What changes, Switch to …); the move, held sessions and the receipt; Reached, another account, timed out; the switch is waiting for you alert; a switch that stopped half way; within a second after claude auth login; for a week after a switch, the line under Accounts; Folders from before; what a backup holds and never holds; the default profile on ~/.claude; what stays with the old account; the claude-transplant credit."
+  - title: "cl_audit README at tag v26.11.88 (Words used here; Which account is in use; When a limit is full; Profile settings, Accounts; Backups; The default profile; Moving a profile to another account; Credits)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
+    supports: "At v26.11.88: in use and standby; the IN USE box shows the Claude app's account first, else Claude Code's; standby boxes show the plan and Last in use, no limits; accounts found on this Mac, listed as address · organisation; Switch to it… and Forget…; the trays, the menus and the alert line; the Switch page (NOW, TO, What changes, Switch to …); the move, held sessions and the receipt; Reached, another account, timed out; the switch is waiting for you alert; a switch that stopped half way; within a second after claude auth login; for a week after a switch, the line under Accounts; Folders from before; what a backup holds and never holds; the default profile on ~/.claude; what stays with the old account; the claude-transplant credit."
     quote: "There is no Add account"
   - title: "cl_audit 26.11.18 release notes (GitHub)"
     url: "https://github.com/n-uf/cl_audit/releases/tag/v26.11.18"
