@@ -112,6 +112,11 @@ sources:
     checked: 2026-11-23
     supports: "In the split by hand the menu bar menu's account line is Terminal's account by its short name followed by \" · Terminal\" (“hidden address · Terminal” while addresses are hidden); the amber “Claude window on another account ›” link comes under the numbers."
     quote: "Text(inUse + (splitCode != nil ? \" · Terminal\" : \"\"))"
+  - title: "cl_audit source at v26.11.88, Sources/DockMenu.swift (the menu bar menu's accounts)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/DockMenu.swift#L108-L146"
+    checked: 2026-11-23
+    supports: "The menu bar menu lists the profile's accounts directly, with no Switch account submenu: the one in use ticked, each standby account by address, then Sign in to another account…; a standby account's row opens the Switch page with it picked."
+    quote: "each standby account, Sign in to another account…"
   - title: "cl_audit CHANGELOG, 26.11.22"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
     checked: 2026-11-23
@@ -227,7 +232,7 @@ Every route opens the same Switch page. None switches by itself.
 
 - **Settings.** Click a standby box to select it, and a **Switch account** key takes the place of STANDBY. Its address pop-up also has **Switch to it…**.
 - **The dashboard card.** While a limit is full, the card shows an orange **Switch account** key at the right end of its keys row, under the full display. It selects nothing for you. Its menu ticks the account in use with its plan, lists your standby accounts by address only and ends with "Sign in to another account…". The key shows even when there's no standby account. Picking an account opens the Switch page with it picked.
-- **The menu bar.** The profile's [menu bar icon](/use-cases/claude-usage-menu-bar-mac/), if you turned it on, has **Switch account ›** in its menu: the account in use is ticked, and your standby accounts are listed by address only. While a limit is full, "Switch to ultra-2…" also sits on the top level.
+- **The menu bar.** The profile's [menu bar icon](/use-cases/claude-usage-menu-bar-mac/), if you turned it on, lists the profile's accounts in its menu, with no submenu: the account in use is ticked, and each standby account is a row by address. Picking one opens the Switch page with it picked.
 - **The alert.** When a limit is full, the alert adds "You can switch to another of its accounts: Claude Code signs in again on this profile's folder." with **Switch account…** and **Later**. Like every cl_audit alert, it names no account. See [how the alerts work](/use-cases/claude-usage-limit-alerts/).
 
 ## What the Switch page tells you first

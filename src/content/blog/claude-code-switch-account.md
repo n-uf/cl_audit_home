@@ -99,6 +99,11 @@ sources:
     checked: 2026-11-23
     supports: "In the split by hand the menu bar menu's account line is Terminal's account by its short name followed by \" · Terminal\" (“hidden address · Terminal” while addresses are hidden); the amber “Claude window on another account ›” link comes under the numbers."
     quote: "Text(inUse + (splitCode != nil ? \" · Terminal\" : \"\"))"
+  - title: "cl_audit source at v26.11.88, Sources/DockMenu.swift (the menu bar menu's accounts)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/DockMenu.swift#L108-L146"
+    checked: 2026-11-23
+    supports: "The menu bar menu lists the profile's accounts directly, with no Switch account submenu: the one in use ticked, each standby account by address, then Sign in to another account…; a standby account's row opens the Switch page with it picked."
+    quote: "each standby account, Sign in to another account…"
   - title: "cl_audit CHANGELOG, 26.11.47"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
     checked: 2026-11-23
@@ -215,7 +220,7 @@ On first run, **Set up cl_audit** takes a `~/.claude` that's already signed in (
 
 Switching a profile is the same sign-in this article describes, run for that profile's folder. In **Settings ▸ the profile ▸ Accounts**, the account in use has the **IN USE** box and the others are **STANDBY**. A standby account is remembered with its plan and when it was last used, but it has no folder or sign-in of its own, so it shows no limits. There's no Add account: cl_audit finds your accounts on this Mac by itself, and **Sign in with another account…** runs Claude Code's own sign-in for one that isn't there yet.
 
-The switch itself starts on the **Switch page**. You get there from a standby box's **Switch account** key in Settings, from the **Switch account** key on the profile's dashboard card while a limit is full (its menu lists your standby accounts by address), from **Switch account ›** in the menu bar icon's menu, or from **Switch account…** in the full-limit alert. Before anything else, the page says what changes: Claude Code in Terminal and editors on that folder moves to the new account, sessions running now included.
+The switch itself starts on the **Switch page**. You get there from a standby box's **Switch account** key in Settings, from the **Switch account** key on the profile's dashboard card while a limit is full (its menu lists your standby accounts by address), from a standby account's row in the menu bar icon's menu, or from **Switch account…** in the full-limit alert. Before anything else, the page says what changes: Claude Code in Terminal and editors on that folder moves to the new account, sessions running now included.
 
 Say you switch to `ultra-2@example.com`. **Switch to ultra-2** first closes the profile's Claude window, makes a backup and moves the window's Code-tab sessions and scheduled tasks to ultra-2, with a receipt. The scheduled tasks go first, before any session moves. If they can't move, they stay with their sessions on the old account, the other sessions move, and the switch goes on to the sign-in and says why. A session that a running Claude Code has open stays with the old account until a later switch. Then Claude Code's own sign-in opens in Terminal: `claude auth login --claudeai --email` with the address filled in, and `CLAUDE_CONFIG_DIR` set to the profile's folder (or unset for `~/.claude`). Before it runs, cl_audit unsets `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN` and the Bedrock, Vertex and Foundry switches, so a stray key from the checklist above can't outrank the sign-in. You finish in the browser. cl_audit watches the folder for up to 10 minutes and says whether it reached ultra-2, signed in as another account (the browser's), or timed out.
 
