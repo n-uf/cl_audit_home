@@ -54,16 +54,16 @@ sources:
   - title: "Settings files and precedence (Claude Code docs, CLAUDE_CONFIG_DIR)"
     url: "https://code.claude.com/docs/en/settings"
     checked: 2026-11-20
-  - title: "cl_audit README at tag v26.11.55 (Adding a profile; The dashboard; Fable's weekly limit and usage credits; Profile settings, Alerts)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.55/README.md"
-    checked: 2026-11-20
-    supports: "26.11.55: New profile's Account pop-up and Sign in to another account… make a folder ~/.claude-<name> and run claude auth login for it; one profile per account; each profile's card, Dock icon and alerts show its own 5-hour and weekly limits, plus Fable's own weekly limit where the plan has one; Notify when back is on by default; usage history is read from Claude Code's session files on this Mac."
-    quote: "An account another profile already has is refused: one profile"
-  - title: "cl_audit CHANGELOG, 26.11.55"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.55/CHANGELOG.md"
-    checked: 2026-11-20
-    supports: "26.11.55 is the newest release at the time of writing; this article describes cl_audit as of that version."
-    quote: "## 26.11.55 — 2026-11-19"
+  - title: "cl_audit README at tag v26.11.88 (Adding a profile; The dashboard; Fable's weekly limit and usage credits; Profile settings, Alerts)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
+    supports: "26.11.88: New profile's Account pop-up and Sign in with another account… make a folder ~/.claude-<name> and run claude auth login for it; an account can be in more than one profile, and each of them shows the same numbers; each profile's card, Dock icon and alerts show its own 5-hour and weekly limits, plus Fable's own weekly limit where the plan has one; Notify when back is on by default; usage history is read from Claude Code's session files on this Mac."
+    quote: "An account can be in more than one profile, and each of them shows the same numbers."
+  - title: "cl_audit CHANGELOG, 26.11.88"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
+    supports: "26.11.88 is the newest release at the time of checking; this article describes cl_audit as of that version. In it one account can be in several profiles, each with its own Claude Code folder; every profile on a shared account shows that account's numbers; New profile's Account pop-up lists the other profiles' accounts as choices; a sign-in that lands on another profile's account is taken, no longer refused."
+    quote: "One account can now be in several profiles."
 related:
   - /use-cases/multiple-claude-accounts/
   - /blog/claude-max-vs-pro/

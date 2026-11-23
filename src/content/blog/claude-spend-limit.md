@@ -44,9 +44,14 @@ sources:
   - title: "Workspaces (Claude API Docs)"
     url: "https://platform.claude.com/docs/en/manage-claude/workspaces"
     checked: 2026-11-16
-  - title: "cl_audit README, version 26.11.53 (n-uf/cl_audit): usage credits on the card and in alerts"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.53/README.md"
-    checked: 2026-11-16
+  - title: "cl_audit README, version 26.11.88 (n-uf/cl_audit): usage credits on the card and in alerts"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
+  - title: "cl_audit source at v26.11.88, Sources/DockMenu.swift (the Dock menus)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/DockMenu.swift#L1-L14"
+    checked: 2026-11-23
+    supports: "Both Dock menus (the Dock icon app's and the tile plug-in's) hold only the profile and its light, Claude window ▸, Quick chat, Refresh now, Dashboard and Profile settings…, since the Dock icon's panel shows the accounts, numbers and states; the credits line is not in them (cl_audit commit 3844813, 23 November 2026)."
+    quote: "are short, since the Dock icon's own panel"
 related:
   - /blog/claude-usage-credits/
   - /blog/claude-usage-limit-reached/

@@ -25,20 +25,25 @@ faq:
   - q: "Does cl_audit show my whole team's usage?"
     a: "No. cl_audit shows the profiles on the Mac it runs on, each with its own account's limits; it has no team-wide view. Team Owners have Anthropic's Analytics instead, with members' activity and a spend report per person and per model. That report covers usage-credit spend, not usage inside each seat's allowance."
 sources:
+  - title: "cl_audit CHANGELOG, 26.11.88 (one account in several profiles)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
+    supports: "26.11.88: one account can be in several profiles, each with its own Claude Code folder; every profile on a shared account shows that account's numbers; an amber note says which other profiles have the account; New profile's Account pop-up lists the other profiles' accounts as choices, and picking one signs in to it in the new profile's own folder; a sign-in that lands on another profile's account is taken, no longer refused."
+    quote: "An amber note says which other profiles have the account."
   - title: "cl_kit source at v26.11.3, Privacy/AddressText.swift (hidden addresses)"
     url: "https://github.com/n-uf/cl_kit/blob/v26.11.3/Privacy/AddressText.swift#L20-L58"
     checked: 2026-11-22
     supports: "cl_kit 26.11.3, the module cl_audit 26.11.87 vendors: a hidden address is never drawn from the real one but as one fixed stand-in, the same for every address, and in running text, a tooltip, an alert or a pop-up row it reads \"hidden address\"; a short name for a compact row is \"hidden address\" too, with no part of the address."
     quote: "public static let hidden = \"hidden address\""
   - title: "cl_audit CHANGELOG, 26.11.87"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.87/CHANGELOG.md"
-    checked: 2026-11-22
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.87: with Show emails off, an address in a sentence, a menu row, an alert or a tooltip reads \"hidden address\"; where Settings draws one (an account's title, the Account pop-up, the Switch page, first run) it draws one fixed blurred stand-in, the same for every account, and the address itself only while the pointer is on it; the Switch account menus draw the stand-in per row and show the address only while the row is highlighted; a fresh install starts hidden and stays so."
     quote: "the address itself only while the pointer is on it"
-  - title: "cl_audit source at v26.11.36, Sources/IconApp.swift (the Dock icon's menu)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.36/Sources/IconApp.swift#L498-L500"
-    checked: 2026-11-15
-    supports: "26.11.36: in the Dock icon's menu, with Show emails off, the sign-in line is left out and the folder warning reads “set up for a different account” instead of naming the address."
+  - title: "cl_audit source at v26.11.88, Sources/Details.swift (the Dock icon's panel)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/Details.swift#L216-L219"
+    checked: 2026-11-23
+    supports: "In the Dock icon's panel, with Show emails off, the folder warning reads “This folder is set up for a different account” instead of naming the address (the Dock menus no longer carry it: Sources/DockMenu.swift at v26.11.88)."
     quote: "This folder is set up for a different account"
   - title: "Move your personal Claude account to a Team or Enterprise organization (Claude Help Center)"
     url: "https://support.claude.com/en/articles/9267400-move-your-personal-claude-account-to-a-team-or-enterprise-organization"
@@ -89,13 +94,13 @@ sources:
     url: "https://github.com/anthropics/claude-code/issues/18435"
     checked: 2026-11-20
   - title: "cl_audit CHANGELOG, 26.11.18"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.18: before the sign-in a switch closes the profile's Claude window, makes a backup and moves its Code-tab sessions and scheduled tasks to the account switched to, each checked, with a receipt; a session a running Claude Code owns stays until a later switch."
     quote: "The switch moves the Claude window's sessions inside the one folder"
   - title: "cl_audit CHANGELOG, 26.11.22"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
 related:

@@ -25,37 +25,57 @@ faq:
   - q: "Does it show Claude Code usage in the menu bar?"
     a: "It shows the limits Anthropic reports for the profile, read with that profile's Claude Code sign-in. Anthropic's help page says Claude and Claude Code count against the same limits, so one icon covers both."
 sources:
-  - title: "cl_audit README at v26.11.0 (n-uf)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.0/README.md"
-    checked: 2026-11-05
+  - title: "cl_audit README at v26.11.88 (n-uf)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
   - title: "cl_audit CHANGELOG, 26.11.0 (2026-11-05)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.0/CHANGELOG.md"
-    checked: 2026-11-05
-  - title: "cl_audit README at v26.11.18 (n-uf): the menus, Switch account ›, crimson for a full limit"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
-    checked: 2026-11-11
-    supports: "At v26.11.18: the account in use under the profile's name with a lit green lamp; Switch account › with the account in use ticked and every other account with when it was last in use; Switch to … on the top level while a limit is full; all of them open the Switch page; When full: crimson only"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
+  - title: "cl_audit README at v26.11.88 (n-uf): the menus, Switch account ›, crimson for a full limit"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
+    supports: "At v26.11.88: the account in use under the profile's name with a lit green lamp; Switch account › with the account in use ticked and every other account with when it was last in use; Switch to … on the top level while a limit is full; all of them open the Switch page; When full: crimson only"
     quote: "A full limit is crimson, except in System, where its countdown shows it."
   - title: "cl_audit CHANGELOG, 26.11.33"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
-    checked: 2026-11-15
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.33: menus no longer say “· in use”; the account in use is ticked."
     quote: "the account in use is ticked"
   - title: "cl_audit CHANGELOG, 26.11.32"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.32/CHANGELOG.md"
-    checked: 2026-11-15
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.32: the menu bar icon and the bars at the top of its menu turn grey when the usage is old (three missed reads, 30 minutes at the usual setting), the same moment the Dock icon does; the green lamp in the menu bar menu goes off when the sign-in has run out, is gone, can't be read, or is on another account than the folder's or on another profile's."
     quote: "now turn grey when the usage is old"
   - title: "cl_audit CHANGELOG, 26.11.1 (2026-11-07)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
-    checked: 2026-11-07
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "crimson from 95 %, a full limit included, in the menu bar icon and its menu"
     quote: "a vivid crimson (#eb445b) from 95 % up, a full limit included"
-  - title: "cl_audit README at v26.11.3 (n-uf): Quick chat in a profile's menu bar and Dock icon menus"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.3/README.md#quick-chat"
-    checked: 2026-11-08
-    supports: "Quick chat in the menu bar icon's menu, first among its actions (Sources/MenuBar.swift at v26.11.3)"
-    quote: "Quick chat in a profile's menu bar or Dock icon menu, which chats on that profile."
+  - title: "cl_audit README at v26.11.88 (n-uf): Quick chat, in a profile's menu bar and Dock icon menus"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md#quick-chat"
+    checked: 2026-11-23
+    supports: "cl_audit has no chat of its own: Quick chat in a profile's menu bar or Dock icon menu opens cl_quick on that profile's Claude Code folder; without cl_quick on the Mac the item reads Get cl_quick… and opens its site."
+    quote: "Quick chat in a profile's menu bar or Dock icon menu opens cl_quick on that profile's Claude Code folder."
+  - title: "cl_audit CHANGELOG, 26.11.88 (the quick chat moves to cl_quick; one account in several profiles; the split)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
+    supports: "26.11.88: the quick chat now lives in cl_quick and cl_audit has none of its own (Quick chat opens cl_quick on that profile's Claude Code folder, and reads Get cl_quick… without it); one account can be in several profiles, and every profile on a shared account shows that account's numbers; with the Claude app and Terminal on different accounts, the menu bar row names Terminal's account, then says \"Claude window on another account ›\" in amber under the numbers."
+    quote: "Every profile on a shared account shows that account's numbers."
+  - title: "cl_audit source at v26.11.88, Sources/DockMenu.swift (the Dock menus)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/DockMenu.swift#L1-L14"
+    checked: 2026-11-23
+    supports: "Both Dock menus (the Dock icon app's and the tile plug-in's) hold only the profile and its light, Claude window ▸ (Open while it's closed; Show, Quit), Quick chat, Refresh now, Dashboard and Profile settings…; the menu bar icon's menu draws its own views, so under its row it also lists the accounts (cl_audit commit 3844813, 23 November 2026)."
+    quote: "are short, since the Dock icon's own panel"
+  - title: "cl_audit source at v26.11.88, Sources/MenuBar.swift (the split's row)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/MenuBar.swift#L429-L436"
+    checked: 2026-11-23
+    supports: "In the split by hand the menu's account line is Terminal's account by its short name followed by \" · Terminal\"; the amber link comes under the numbers."
+    quote: "Text(inUse + (splitCode != nil ? \" · Terminal\" : \"\"))"
+  - title: "cl_quick README at v26.11.1 (n-uf/cl_quick): With cl_audit"
+    url: "https://github.com/n-uf/cl_quick/blob/v26.11.1/README.md#with-cl_audit"
+    checked: 2026-11-23
+    supports: "cl_quick opens a quick chat on the profile that uses the folder cl_audit hands it (cl-quick://chat?folder=…); it runs with or without cl_audit; it is a floating Claude chat for the Mac, answered by your own Claude Code on the profile's account in use."
+    quote: "the bar opens on the profile that uses that folder"
   - title: "Anthropic Help Center: How do usage and length limits work?"
     url: "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work"
     checked: 2026-11-05
@@ -81,13 +101,13 @@ sources:
     url: "https://github.com/tddworks/ClaudeBar"
     checked: 2026-11-05
   - title: "cl_audit CHANGELOG, 26.11.22"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
   - title: "cl_audit CHANGELOG, 26.11.76"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.76/CHANGELOG.md"
-    checked: 2026-11-21
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.76: the Dock draws each profile's usage itself, so a Dock icon has no running dot and no ⌘-Tab entry until you click it; if the Dock can't draw it (Dock Tiles turned off under Login Items & Extensions in System Settings, say), the Dock icon app runs as before, about two minutes after cl_audit starts, until the Dock draws it again; after an update, or for a new profile, a Dock icon app may start once for about a minute so the Dock can use it."
     quote: "the Dock now draws each profile's usage itself"
 related:

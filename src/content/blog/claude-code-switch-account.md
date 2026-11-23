@@ -60,73 +60,78 @@ sources:
     url: "https://support.claude.com/en/articles/12304248-manage-api-key-environment-variables-in-claude-code"
     checked: 2026-11-05
   - title: "cl_audit CHANGELOG, 26.11.18"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
-    checked: 2026-11-11
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.18: a profile is one Claude Code folder with one signed-in account, the one in use; standby accounts are signed out, with no folder or Keychain item, and show no usage; Switch to … opens Claude Code's own sign-in in Terminal for the folder with the address filled in and watches it for up to 10 minutes (reached, another account, timed out); the Switch page says first that Claude Code in Terminal and editors on that folder is affected, running sessions included; before the sign-in the window closes, a backup is made and its Code-tab sessions and scheduled tasks move with a receipt; a session a running Claude Code owns stays until a later switch; Undo the move until Claude Code is on the new account; Undo this switch is gone, the way back is a switch the other way; the Claude app's sign-in is yours and cl_audit never signs anything in or out; a sign-in made with claude auth login moves the profile within a second; no Add account, accounts found on the Mac, Sign in with another account…; the sign-in unsets ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN, CLAUDE_CODE_OAUTH_TOKEN and the Bedrock, Vertex and Foundry switches first."
     quote: "A profile is one Claude Code folder, and switching signs in again on it."
-  - title: "cl_audit README at tag v26.11.18 (Words used here; Which account is in use; When a limit is full; Profile settings, Accounts; First run; The default profile)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
-    checked: 2026-11-11
+  - title: "cl_audit README at tag v26.11.88 (Words used here; Which account is in use; When a limit is full; Profile settings, Accounts; First run; The default profile)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "In use and standby; the routes to the Switch page; the sign-in command (claude auth login --claudeai --email, CLAUDE_CONFIG_DIR unset for ~/.claude and set for any other folder); the Claude app's signed-in account comes first, then Claude Code's with a muted line; the numbers come through Claude Code's sign-in; a sign-in changed in Terminal or the Claude app shows within a few seconds; worked out from the Claude app's own files, not by running it; for a week after a switch, the line under Accounts; the first profile is the default profile, on ~/.claude, and first run offers Use or Sign in…; to watch an old account's limits, give it a profile of its own."
     quote: "The Claude app's signed-in account comes first."
   - title: "cl_audit CHANGELOG, 26.11.33"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
-    checked: 2026-11-15
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.33: the dashboard card says why it has no numbers in one heading and one sentence, with one compact key; standby accounts no longer sit on the card, and while a limit is full a compact Switch account key opens a menu of them, by address only; after a switch the waiting line reads “Switching to … : one step left. Sign the Claude app in to … to finish.” instead of “Switched to …”; “Log in” is now “Sign in”."
     quote: "After a switch, the waiting line now reads"
   - title: "cl_audit CHANGELOG, 26.11.22"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
-  - title: "cl_audit CHANGELOG, 26.11.25"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.25/CHANGELOG.md"
-    checked: 2026-11-13
-    supports: "26.11.25: when the Claude app is on another account than Claude Code, cl_audit no longer shows Claude Code's usage as the profile's; it offers to log Claude Code in to the app's account."
-    quote: "cl_audit no longer shows Claude Code's usage as the profile's"
-  - title: "cl_audit CHANGELOG, 26.11.29"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.29/CHANGELOG.md"
-    checked: 2026-11-14
-    supports: "26.11.29: when the Claude app and Claude Code in Terminal are on different accounts, cl_audit says it can't read the app account's usage and which account Terminal is on, with “Log Claude Code in Terminal in to …” to fix it."
-    quote: "Log Claude Code in Terminal in to"
-  - title: "cl_audit source at v26.11.29, Sources/AccountResolver.swift (SplitUsage)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.29/Sources/AccountResolver.swift#L127-L175"
-    checked: 2026-11-14
-    supports: "At v26.11.29, the card's words when the Claude app and Claude Code in Terminal are on different accounts (“cl_audit can't read …'s usage: Claude Code in Terminal is signed in to …”, the “Log in to … in Terminal…” button) and right after a switch (“Switched to …: sign the Claude app in to … to finish”, no key); Claude Code's own numbers on one labelled line, “Claude Code in Terminal”."
-    quote: "Claude Code in Terminal is signed in to"
+  - title: "cl_audit CHANGELOG, 26.11.88 (the Claude app and Terminal on different accounts)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
+    supports: "26.11.88: the Claude app and Terminal on different accounts read in two names only; it is a warning in amber, not red, and Terminal's numbers still work; Settings ▸ Accounts puts both accounts in one amber band at the top, says why the Claude app's account has no numbers, and gives each account a TERMINAL | APP badge; Terminal's account has Sign the app in, which opens the Switch page, and the Claude app's account has Sign Terminal in; the dashboard card, the menu bar row and the Dock panel name Terminal's account and say “Claude window on another account ›” in amber under it, a link to the profile's Settings ▸ Accounts; no Sign in key while a switch waits for the Claude app."
+    quote: "It is a warning in amber, not red: Terminal's numbers still work."
+  - title: "cl_audit source at v26.11.88, Sources/AccountResolver.swift (SplitUsage)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/AccountResolver.swift#L160-L215"
+    checked: 2026-11-23
+    supports: "The split's words: the band's headline (“The Claude app and Terminal are signed in to different accounts.”) and its two lines, “Claude window on another account”, the keys Sign the app in and Sign Terminal in; a switch waiting for the app says “Switching to …: one step left. Sign the Claude app in to … to finish.” and has no key."
+    quote: "The Claude app and Terminal are signed in to different accounts."
+  - title: "cl_audit source at v26.11.88, Sources/AccountResolver.swift (switchWaits)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/AccountResolver.swift#L113-L120"
+    checked: 2026-11-23
+    supports: "The one-step-left state needs the newest switch to have gone to Claude Code's account, the app still on the account it left, and the switch linked within the last day (SwitchEngine.linkedLately: 24 hours); a switch linked more than a day ago waits no more, and then the split by hand shows."
+    quote: "a switch linked more than a day ago waits no more"
+  - title: "cl_audit source at v26.11.88, Sources/MenuBar.swift (the split's row)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/MenuBar.swift#L429-L436"
+    checked: 2026-11-23
+    supports: "In the split by hand the menu bar menu's account line is Terminal's account by its short name followed by \" · Terminal\" (“hidden address · Terminal” while addresses are hidden); the amber “Claude window on another account ›” link comes under the numbers."
+    quote: "Text(inUse + (splitCode != nil ? \" · Terminal\" : \"\"))"
   - title: "cl_audit CHANGELOG, 26.11.47"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.47/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.47: when Claude Code's folder is signed in to another profile's account and the profile's own account is also on its standby list, the switch menus list it once, ticked, as “ann · move Claude Code back here”, and choosing it still switches to it; Sign in… stays the lighter option that moves nothing."
     quote: "ann · move Claude Code back here"
-  - title: "cl_audit CHANGELOG, 26.11.49"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.49/CHANGELOG.md"
-    checked: 2026-11-20
-    supports: "26.11.49: New profile refuses another profile's standby account, with “That's a standby account of “Work”. One profile per account.”"
-    quote: "That's a standby account of “Work”. One profile per account."
+  - title: "cl_audit CHANGELOG, 26.11.88 (one account in several profiles)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
+    supports: "26.11.88: one account can be in several profiles, each with its own Claude Code folder; every profile on a shared account shows that account's numbers; an amber note says which other profiles have the account and never stops Finish, a sign-in or a switch; a sign-in that lands on another profile's account is taken, no longer refused; New profile's Account pop-up lists the other profiles' accounts as choices, and picking one signs in to it in the new profile's own folder."
+    quote: "A sign-in that lands on another profile's account is taken. It is no longer refused."
   - title: "cl_audit CHANGELOG, 26.11.51"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.51/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.51: an account switch opens the profile's Claude window again once the switch is settled (Claude Code reaches the account, after Undo or Leave it as it is, or when the switch stopped before moving anything)."
     quote: "An account switch now opens the profile's Claude window again once the switch is settled"
   - title: "cl_audit CHANGELOG, 26.11.52"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.52/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.52: quick chat's header names Claude Code's account, the one it answers on, when the Claude app and Claude Code in Terminal are on different accounts; when Claude Code's folder is signed in to another profile's account, no plan shows for it any more."
     quote: "quick chat's header now names Claude Code's account"
   - title: "cl_audit CHANGELOG, 26.11.55"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.55/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.55: when Claude Code's folder is signed in to another profile's account, quick chat's header names the profile's own account and that other account's limit no longer shows it as full or holds what you type; when Claude Code hits a limit there, or while the Claude app and Claude Code are on different accounts, quick chat says “Claude Code's account here has hit its limit.”, and in the clash also whose account the folder is on and to move it back to the profile's own account on the Switch page (or to pick one there when the profile has none)."
     quote: "quick chat's header now names the profile's own account"
   - title: "cl_audit CHANGELOG, 26.11.61"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.61/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.61: when a switch leaves a profile's Claude Code on another profile's account, quick chat no longer sends the question that waited for the switch; it says why (the folder is now on that profile's account) and where to go on the Switch page, and keeps what you typed."
     quote: "quick chat no longer sends what you typed there; it says why and keeps it."
   - title: "cl_audit CHANGELOG, 26.11.76"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.76/CHANGELOG.md"
-    checked: 2026-11-21
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.76: a switch settles the scheduled tasks before any session moves; when they can't move, they stay together with their sessions, the other sessions move, and the switch goes on to the sign-in and says why the tasks stayed."
     quote: "A switch now settles the scheduled tasks before any session moves."
 related:

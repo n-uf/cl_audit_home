@@ -96,44 +96,44 @@ sources:
     checked: 2026-11-07
     supports: "One line: a Windows PowerShell tool with a backup and restore script, and a script that rebuilds the Code tab's per-account session list."
     quote: "A safe, reversible Windows PowerShell tool"
-  - title: "cl_audit README at tag v26.11.4"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.4/README.md"
-    checked: 2026-11-08
+  - title: "cl_audit README at tag v26.11.88 (Sessions card, Backups, Export and Import)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "The Sessions card (Kept here, Keep for and how it writes cleanupPeriodDays, Back up now, backups list, Export… and Import… with Undo last import), General > Backups, what a backup holds and never holds, APFS clones, the Restore preview, merge-only rules, the receipt, Undo this restore. Export…: a profile's sessions as one file, for another Mac or for keeping, saved where the Save panel says; None: a zip, or an AES-256 encrypted disk image with a password; sessions that hold keys are left out unless you choose Keep them: needs a password. Import…: a preview first, nothing is ever overwritten; Undo last import takes back what it added."
-    quote: "Keep for: how long Claude Code keeps its own transcripts"
-  - title: "cl_audit README at tag v26.11.6"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.6/README.md"
-    checked: 2026-11-09
+    quote: "Keep for: how long Claude Code keeps the transcripts of sessions you ran in the terminal"
+  - title: "cl_audit README at tag v26.11.88 (Kept here, Keep for, Would be deleted)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "Kept here ends with when Claude Code deletes the profile's sessions; Kept here and the note under Keep for say which case applies (managed settings included); cl_audit reads managed settings and never writes them; a Claude window session you deleted or archived there is cleaned up like the others (an archived one after a grace period); Restore's Would be deleted row counts only the transcripts Claude Code's own clean-up would delete again, and Keep for 90 days is shown only when it would save some of them."
     quote: "only the restored transcripts Claude Code's own clean-up would delete again"
   - title: "cl_audit CHANGELOG, 26.11.1"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.1/CHANGELOG.md"
-    checked: 2026-11-07
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "Backups before a switch that moves sessions, Back up now, Keep for, Restore and Undo this restore; Export and Import exist in Sessions."
     quote: "Backups of a profile's sessions."
   - title: "cl_audit CHANGELOG, 26.11.8"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.8/CHANGELOG.md"
-    checked: 2026-11-09
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.8 (9 November 2026): Export, Import, Backup and Restore carry Claude Code's setup (CLAUDE.md and the files it includes, skills, agents, commands, output styles, keybindings, settings.json with the scripts its hooks run, the list of installed plugins); Import and Restore leave it out until you pick Add them and add only what is missing, replacing nothing; Undo takes it back; a backup made by this one isn't listed by an older cl_audit."
     quote: "Claude Code's setup travels: Export, Import, Backup and Restore carry it."
   - title: "cl_audit CHANGELOG, 26.11.9"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.9/CHANGELOG.md"
-    checked: 2026-11-09
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.9 (9 November 2026): backups keep each scheduled task's prompt; backups no longer keep settings.json's env values or the window's MCP settings, which travel only in the encrypted export, and a backup's settings.json keeps the names under env with blank values; a backup that holds a scheduled task's prompt can't be opened by 26.11.8 or older."
     quote: "The Claude window's MCP settings and scheduled tasks travel too."
-  - title: "cl_audit README at tag v26.11.10"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/README.md"
-    checked: 2026-11-09
+  - title: "cl_audit README at tag v26.11.88 (Moving to another Mac)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "Moving to another Mac: a Move to another Mac key on the Export page sets All profiles, the encrypted disk image, Claude Code's setup, the window's MCP settings and scheduled tasks, and cl_audit's own profiles and settings; sign-ins don't travel; what never moves is sign-ins, the Keychain and settings.local.json; export the profiles as they are now, not from a backup, since backups keep neither the MCP settings nor settings.json's env values."
     quote: "Sign-ins don't travel. On the new Mac you sign in again to each account"
   - title: "cl_audit CHANGELOG, 26.11.10"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.10/CHANGELOG.md"
-    checked: 2026-11-09
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.10 (9 November 2026): the Move to another Mac key; a move is only ever the password-protected disk image, never a zip; cl_audit's own profiles and settings travel in the image only; sign-ins don't travel."
     quote: "a move is only ever the password-protected disk image, never a zip"
   - title: "cl_audit CHANGELOG, 26.11.11"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.11/CHANGELOG.md"
-    checked: 2026-11-10
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.11: before a backup writes Claude Code's setup, cl_audit runs the Export page's key check over settings.json, the scripts its hooks run (with the skills holding them) and the plugin marketplaces file; a hook or permission rule holding a key is left out whole, another value that looks like a key is blanked and its name kept, and a script, a skill whose script holds a key or a marketplaces file holding one is left out; Restore, and Export from a backup, say which; it finds only the Export page's key shapes (GitHub, AWS, sk-, JWTs and the like) and doesn't check CLAUDE.md or skills no hook runs."
     quote: "Backups leave out the keys they find in your Claude Code settings and scripts."
   - title: "cl_audit 26.11.18 release notes"
@@ -141,39 +141,39 @@ sources:
     checked: 2026-11-11
     supports: "Release 26.11.18 was checked with Claude Code 2.1.318 and the Claude app 5.1231.2; a switch makes a backup before the Claude window's sessions move, and Undo the move puts them back until Claude Code is on the new account; switches' backups stay listed and restorable."
     quote: "Checked with Claude Code 2.1.318 and the Claude app 5.1231.2."
-  - title: "cl_audit README at tag v26.11.18 (Backups of a profile's sessions)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
-    checked: 2026-11-11
-    supports: "A backup is made by Back up now and by every switch that moves the window's sessions, before anything moves; those stay listed and restorable; Restore… puts back what is missing, merged, and never overwrites anything; if the backup can't be made, a switch stops with nothing moved."
+  - title: "cl_audit README at tag v26.11.88 (Backups of a profile's sessions; General settings, Backups)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
+    supports: "General settings ▸ Backups: Keep the last (3) and And any under (30 days) say what stays, the last N of each profile plus any made under D days ago. A backup is made by Back up now and by every switch that moves the window's sessions, before anything moves; those stay listed and restorable; Restore… puts back what is missing, merged, and never overwrites anything; if the backup can't be made, a switch stops with nothing moved."
     quote: "by every switch that moves the window's sessions, before anything moves"
   - title: "cl_audit CHANGELOG, 26.11.12"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.12/CHANGELOG.md"
-    checked: 2026-11-10
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.12: a move brings a checklist of your code (the Export page's Code row, read with read-only git, travelling in the encrypted disk image only), and Import lists each session whose folder isn't on this Mac (Folder not here) with Pick its folder on this Mac…, which points the session at the picked folder."
     quote: "A move brings a checklist of your code."
   - title: "cl_audit CHANGELOG, 26.11.13"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.13/CHANGELOG.md"
-    checked: 2026-11-10
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.13: a move brings each session's side files (task list, plan, typed prompts, the project folder's trust and allowed tools) in the encrypted disk image only; Rewind's copies of the files the sessions edited are their own Export row, left out unless included."
     quote: "A move brings each session's side files."
   - title: "cl_audit CHANGELOG, 26.11.18"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
-    checked: 2026-11-11
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.18: a switch closes the profile's Claude window, makes a backup and moves its Code-tab sessions and scheduled tasks to the account switched to; no Move them? question."
     quote: "The switch moves the Claude window's sessions inside the one folder"
   - title: "cl_audit CHANGELOG, 26.11.22"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
   - title: "cl_audit CHANGELOG, 26.11.23"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.23/CHANGELOG.md"
-    checked: 2026-11-13
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.23: restore, import, the default profile and Undo no longer promise that nothing is ever overwritten or that Undo takes back exactly everything; the app's strings now say built not to overwrite and Undo is meant to take back what it added, and may not bring everything back."
     quote: "no longer promise that nothing is ever overwritten"
-  - title: "cl_audit README at tag v26.11.24 (Backups of a profile's sessions)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.24/README.md"
-    checked: 2026-11-13
+  - title: "cl_audit README at tag v26.11.88 (Backups of a profile's sessions)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "26.11.24: Restore… on a backup puts back what is missing, merged, and is built not to overwrite anything; its preview reads \"Preview · nothing written yet · built not to overwrite\"; Undo this restore is meant to take back what it put back and may not bring everything back."
     quote: "puts back what is missing, merged, and is built not to overwrite anything"
   - title: "cl_audit 26.11.59 release notes"

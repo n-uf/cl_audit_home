@@ -47,21 +47,26 @@ sources:
   - title: "cl_audit README (n-uf/cl_audit): alerts, after a Claude update"
     url: "https://github.com/n-uf/cl_audit"
     checked: 2026-11-05
-  - title: "cl_audit README at tag v26.11.18 (n-uf/cl_audit): When a limit is full, Another account, A switch waiting for you"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
-    checked: 2026-11-11
+  - title: "cl_audit README at tag v26.11.88 (n-uf/cl_audit): When a limit is full, Another account, A switch waiting for you"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "Standby accounts are signed out and show no usage; the full-limit alert adds a line about switching to another of the profile's accounts, with Switch account… and Later; the switch is waiting for you alert, with Show switch and Cancel switch, only while the Switch page isn't in front; alerts never name an account; the Dock icon's crimson frame while a limit is full."
     quote: "so they never name an account by its address or any part of it"
   - title: "cl_audit CHANGELOG, 26.11.18"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
-    checked: 2026-11-11
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "Standby accounts show no usage, the alert included; \"the other account is back\" and its Switch back offer are gone."
     quote: "A profile is one Claude Code folder, and switching signs in again on it."
   - title: "cl_audit CHANGELOG, 26.11.22"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
+  - title: "cl_audit source at v26.11.88, Sources/DockMenu.swift (the Dock menus)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/DockMenu.swift#L1-L14"
+    checked: 2026-11-23
+    supports: "Both Dock menus (the Dock icon app's and the tile plug-in's) hold only the profile and its light, Claude window ▸, Quick chat, Refresh now, Dashboard and Profile settings…, since the Dock icon's panel shows the accounts, numbers and states; the full-limit line is not in them (cl_audit commit 3844813, 23 November 2026)."
+    quote: "are short, since the Dock icon's own panel"
 related:
   - /
   - /use-cases/multiple-claude-accounts/

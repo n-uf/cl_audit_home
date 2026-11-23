@@ -91,14 +91,14 @@ sources:
     checked: 2026-11-07
     supports: "A community tool, menu bar or CLI, that moves Desktop Code session records to another account; transcripts stay on disk, sessions keep their ids, --dry-run plans only and undo reverses the move; macOS 13 or newer with Claude Desktop, Node 22 or newer; MIT; unofficial; personal history moved into a Team or Enterprise organization becomes that organization's data."
     quote: "Moves local Desktop session records to another account."
-  - title: "cl_audit README at tag v26.11.18 (Install; Words used here; When a limit is full; Profile settings, Accounts and Sessions; Backups of a profile's sessions; How cl_audit tells what Claude Code deletes; Moving a profile to another account; Credits)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/README.md"
-    checked: 2026-11-11
+  - title: "cl_audit README at tag v26.11.88 (Install; Words used here; When a limit is full; Profile settings, Accounts and Sessions; Backups of a profile's sessions; How cl_audit tells what Claude Code deletes; Moving a profile to another account; Credits)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
     supports: "In use and standby; accounts found on this Mac from the Claude window's claude-code-sessions/<account>/<org> folders, Claude Code's records and the transcripts; Sign in with another account…; the Switch page and What changes; the move (window closed, backup first, each entry written and checked before the original is set aside, nothing deleted, tasks with skips and retries, a session a running Claude Code owns held until a later switch, a receipt, Undo the move until Claude Code is on the new account); Claude Code's sign-in in Terminal, watched for up to 10 minutes; the Claude app's sign-in is yours; sessions show while the window is signed in to their account; a switch that stopped half way on the Sessions card with Undo it; what a backup holds and never holds; Restore… with a preview; a Claude app session you deleted goes on the normal schedule, an archived one after a grace period; the manual-move advice to quit every Claude window and back up ~/.claude and ~/Library/Application Support/Claude without its caches, and claude-transplant's From and To; the first profile is the default profile, on ~/.claude; the claude-transplant credit."
     quote: "the Claude app's sign-in is yours to change."
   - title: "cl_audit CHANGELOG, 26.11.18 (2026-11-11)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.18/CHANGELOG.md"
-    checked: 2026-11-11
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.18: a profile is one Claude Code folder and switching signs in again on it; the switch moves the Claude window's Code-tab sessions and scheduled tasks from the account in use to the one switched to, inside the one folder, the way claude-transplant does, with a backup and a receipt; Claude Code's transcripts stay in the folder; the Claude app's sign-in is yours; Undo this switch is gone and the way back is a switch the other way; the move adapts claude-transplant 4.2.1 (MIT)."
     quote: "Claude Code's transcripts stay in the folder."
   - title: "cl_audit 26.11.54 release notes (GitHub)"
@@ -107,33 +107,33 @@ sources:
     supports: "Release 26.11.54 was checked with Claude Code 2.1.318 and the Claude app 5.11492.5; a newer Claude version can change how Claude Code saves its sign-in or the usage figures."
     quote: "Checked with Claude Code 2.1.318 and the Claude app 5.11492.5."
   - title: "cl_audit CHANGELOG, 26.11.51"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.51/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.51: an account switch opens the profile's Claude window again once the switch is settled (Claude Code reaches the account, after Undo or Leave it as it is, or when the switch stopped before moving anything); while moved sessions wait for that, the window stays closed and the Switch page says so."
     quote: "While moved sessions wait for that, the window stays closed"
   - title: "cl_audit CHANGELOG, 26.11.47"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.47/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.47: the Switch page says “Will stay with ann: …” before you press Switch, and keeps “Left with ann: …” for after a switch."
     quote: "The Switch page now says \"Will stay with ann: …\" before you press Switch"
   - title: "cl_audit CHANGELOG, 26.11.44"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.44/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.44: the Switch page says before you press Switch which files named like a Code-tab session will stay with the old account."
     quote: "which files named like a Code-tab session will stay with the old account"
   - title: "cl_audit CHANGELOG, 26.11.33"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/CHANGELOG.md"
-    checked: 2026-11-20
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.33: after a switch the waiting line reads “Switching to … : one step left. Sign the Claude app in to … to finish.” instead of “Switched to …”."
     quote: "After a switch, the waiting line now reads"
-  - title: "cl_audit source at v26.11.33, Sources/AccountResolver.swift (switchWaits)"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.33/Sources/AccountResolver.swift#L72-L78"
-    checked: 2026-11-20
-    supports: "A switch waiting for the Claude app (the one-step-left state) lasts 24 hours after the switch linked; a switch linked more than a day ago waits no more."
+  - title: "cl_audit source at v26.11.88, Sources/AccountResolver.swift (switchWaits)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/Sources/AccountResolver.swift#L113-L120"
+    checked: 2026-11-23
+    supports: "A switch waiting for the Claude app (the one-step-left state) lasts 24 hours after the switch linked; a switch linked more than a day ago waits no more, and then the split by hand shows."
     quote: "a switch linked more than a day ago waits no more"
   - title: "cl_audit CHANGELOG, 26.11.22"
-    url: "https://github.com/n-uf/cl_audit/blob/v26.11.22/CHANGELOG.md"
-    checked: 2026-11-12
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
+    checked: 2026-11-23
     supports: "26.11.22: account switching, import, export and Move to another Mac carry an Experimental warning (they can lose data, so use them for testing only); before account switching, import, restore, export or making the default profile runs, cl_audit asks you to confirm the risk of data loss."
     quote: "they can lose data, so use them for testing only"
 related:
