@@ -26,9 +26,10 @@ faq:
     a: "Some can. cl_audit's README describes profiles that each hold one or more Claude accounts, Claude Usage Tracker's README describes multiple profiles in the menu bar, and SessionWatcher's page lists several Claude accounts in its Pro tier. ClaudeBar lists several logins for Codex; the other pages don't mention several Claude accounts."
 sources:
   - title: "cl_audit README (n-uf)"
-    url: "https://github.com/n-uf/cl_audit"
-    checked: 2026-11-08
-    supports: "no cl_audit server; nothing else goes over the network except what you type in Quick chat (26.11.3), which Claude Code sends to Anthropic"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md#security-how-cl_audit-handles-the-claude-login"
+    checked: 2026-11-23
+    supports: "cl_audit's two requests, both to Anthropic's own server (the 5-hour and weekly figures, and which account a profile is signed in to); there is no cl_audit server, no analytics and no sign-up, and nothing else goes over the network. cl_audit has no quick chat of its own at 26.11.88."
+    quote: "nothing else goes over the network"
   - title: "cl_audit home page"
     url: "https://cl-audit.n-uf.com/"
     checked: 2026-11-02
