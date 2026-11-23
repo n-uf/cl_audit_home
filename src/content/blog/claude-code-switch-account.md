@@ -5,7 +5,7 @@ h1: "How to switch account in Claude Code, and what to check when it won't"
 mainKeyword: "claude code switch account"
 kind: how-to
 published: 2026-11-22
-updated: 2026-11-22
+updated: 2026-11-23
 draft: false
 author: n-uf
 takeaways:

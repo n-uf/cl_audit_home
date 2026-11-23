@@ -5,7 +5,7 @@ h1: "Claude desktop profile switchers for Mac, compared"
 mainKeyword: "claude desktop profile switcher"
 kind: comparison
 published: 2026-11-02
-updated: 2026-11-22
+updated: 2026-11-23
 author: n-uf
 takeaways:
   - "The Claude app signs in to one account at a time. Anthropic's help page describes switching only for accounts on the same email."

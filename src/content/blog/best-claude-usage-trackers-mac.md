@@ -5,7 +5,7 @@ h1: "Best Claude usage trackers for Mac (2026)"
 mainKeyword: "best claude usage tracker"
 kind: best-tools
 published: 2026-11-02
-updated: 2026-11-22
+updated: 2026-11-23
 author: n-uf
 takeaways:
   - "Which Claude usage tracker suits you depends on where you want to see your usage: the menu bar, the Dock, the terminal or the browser."
