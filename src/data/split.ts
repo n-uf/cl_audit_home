@@ -16,15 +16,15 @@ export const TERMINAL: Standby = { email: "team-4@work.example", plan: "Team", l
 
 /** The sketch's words (the final branch head is re-mirrored before the merge). */
 export const SPLIT_WORDS = {
-  head: "The Claude app and Terminal are signed in to different accounts.",   // words: SEO (sketch 97ebf0a)
-  why: "cl_audit can read usage only through Terminal's sign-in, so the Claude app's account shows no numbers.",   // words: SEO (sketch 97ebf0a)
-  fix: "Use the key on either account to put both on the same account.",   // words: SEO (sketch 97ebf0a)
-  appKey: "Sign the app in",   // words: SEO (sketch 97ebf0a)
-  terminalKey: "Sign Terminal in",   // words: SEO (sketch 97ebf0a)
-  windowLine: "Claude window on another account",   // words: SEO (sketch 97ebf0a)
-  panelKey: "Sign in",   // words: SEO (sketch 97ebf0a)
-  terminal: "Terminal",   // words: SEO (sketch 97ebf0a)
-  app: "App",   // words: SEO (sketch 97ebf0a)
+  head: "The Claude app and Terminal are signed in to different accounts.",   // words: SEO (v26.11.88)
+  why: "cl_audit can read usage only through Terminal's sign-in, so the Claude app's account shows no numbers.",   // words: SEO (v26.11.88)
+  fix: "Use the key on either account to put both on the same account.",   // words: SEO (v26.11.88)
+  appKey: "Sign the app in",   // words: SEO (v26.11.88)
+  terminalKey: "Sign Terminal in",   // words: SEO (v26.11.88)
+  windowLine: "Claude window on another account",   // words: SEO (v26.11.88)
+  panelKey: "Sign in",   // words: SEO (v26.11.88)
+  terminal: "Terminal",   // words: SEO (v26.11.88)
+  app: "App",   // words: SEO (v26.11.88)
 };
 
 const w = (typeof window !== "undefined" ? window : {}) as any;
@@ -46,4 +46,4 @@ export const twoNamesBadgeHTML = (on: "terminal" | "app") =>
 
 /** The amber line on the dashboard card, the menu bar menu and the Dock panel: a link to the profile's Settings ▸ Accounts. */
 export const windowLineHTML = (id: string) =>
-  `<a class="amber-link" href="/settings/#accounts" data-profile-settings="${id}">${SPLIT_WORDS.windowLine} ›</a>`;   // words: SEO (sketch 97ebf0a)
+  `<a class="amber-link" href="/settings/#accounts" data-profile-settings="${id}">${SPLIT_WORDS.windowLine} ›</a>`;   // words: SEO (v26.11.88)

@@ -5,7 +5,7 @@
 // the icon ("1h 42m"), or only turns red; in System it's never red (the countdown shows it).
 import { accounts, standby, offerOrder, bestOffer, type AccountId } from "./demo";
 import { countdownWords, fableShown } from "./panelView";
-import { addressRowHTML, shortText, emailHTML } from "./emails";
+import { addressRowHTML, shortText } from "./emails";
 import { TERMINAL, SPLIT_WORDS, windowLineHTML } from "./split";
 import type { MenuBarLook } from "./prefs";
 
@@ -85,9 +85,9 @@ export function menuHTML(id: AccountId, name: string, o: { open?: boolean; win?:
     : "";
   // the profile's light before its name (26.11.81, ProfileLED), in its colour as set in Settings
   return `<div class="mbm-head"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><b>Claude ${name}</b><span>${o.split ? TERMINAL.plan : a.plan}</span></div>` +
-    // the split by hand (sketch 97ebf0a): a view with the lamp, Terminal's address (blurred while hidden) · Terminal, and
-    // the amber line, a link to Settings ▸ Accounts
-    (o.split ? `<div class="mbm-acc split"><i></i><span class="addr">${emailHTML(TERMINAL.email)}</span><span class="r">· ${SPLIT_WORDS.terminal}</span></div><div class="mbm-split">${windowLineHTML(id)}</div>` : "") +   // words: SEO (sketch 97ebf0a)
+    // the split by hand (26.11.88, MenuBarRow): the lamp, Terminal's account by its short name, " · Terminal"; the amber
+    // line, a link to Settings ▸ Accounts, comes under the numbers (they are that account's)
+    (o.split ? `<div class="mbm-acc split"><i></i>${shortText(TERMINAL.email)} · ${SPLIT_WORDS.terminal}</div>` : "") +   // words: SEO (v26.11.88)
     // (plain text: the menu is built each time it opens, so the short name reads as the setting says then)
     (sb.length && !o.split ? `<div class="mbm-acc"><i></i>${shortText(a.email)}</div>` : "") +
     (a.five >= 100 ? `<div class="mbm-sub hot">5-hour full · in ${countdownWords(a.fiveLeftMin)}</div>` : "") +
@@ -95,6 +95,7 @@ export function menuHTML(id: AccountId, name: string, o: { open?: boolean; win?:
     row("Week", a.week, `resets ${when(a.weekLeftMin)}`, false) +
     (fableShown(id) ? row("Fable", a.fable!, `resets ${when(a.fableLeftMin)}`, false) : "") +
     (a.credits != null ? `<div class="mbm-sub credit">Using usage credits · $${a.credits.toFixed(2)} spent</div>` : "") +
+    (o.split ? `<div class="mbm-split">${windowLineHTML(id)}</div>` : "") +
     `<div class="mbm-sub">Read ${a.updated}</div><hr>` + switching +
     // the actions, as the Dock icon's menu has them (DockTileMenu.actions): Claude window ▸ (Open while it's closed;
     // Show and Quit while it's open), Quick chat (cl_quick's: it opens cl_quick, here its site), Refresh now

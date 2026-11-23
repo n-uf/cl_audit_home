@@ -43,7 +43,7 @@ function switchMenuHTML(a: Acc) {
 /** The card's account line: the lamp and the address (the stand-in while hidden: `.addr`); in the split, Terminal's
  *  account, named as whose the numbers are ("· Terminal", sketch 97ebf0a). */
 export const inuseHTML = (email: string, terminal = false) =>
-  `<i></i><span class="addr">${emailHTML(email)}</span>${terminal ? `<span class="inuse-tag">· ${SPLIT_WORDS.terminal}</span>` : ""}`;   // words: SEO (sketch 97ebf0a)
+  `<i></i><span class="addr">${emailHTML(email)}</span>${terminal ? `<span class="inuse-tag">· ${SPLIT_WORDS.terminal}</span>` : ""}`;   // words: SEO (v26.11.88)
 
 /** The row's markup. `open`: the profile's Claude window is open (the demo's starting state; cardState.ts keeps it up to
  *  date). `split`: the split by hand (data/split.ts): the window key is amber, since the window is what's out of line. */

@@ -162,7 +162,7 @@ export function detailsHTML(id: AccountId, design: Design, opts: { name?: string
   const a = accounts.find((x) => x.id === id)!;
   const name = opts.name ?? a.name, split = opts.split;
   const line = split
-    ? `<i class="lamp amber"></i><span class="addr">${emailHTML(TERMINAL.email)}</span><span class="pn-tag">· ${SPLIT_WORDS.terminal}</span>`   // words: SEO (sketch 97ebf0a)
+    ? `<i class="lamp amber"></i><span class="addr">${emailHTML(TERMINAL.email)}</span><span class="pn-tag">· ${SPLIT_WORDS.terminal}</span>`   // words: SEO (v26.11.88)
     : `<i class="lamp"></i><span class="addr">${emailHTML(a.email)}</span>`;
   const head = `<div class="pn-head"><span class="ico" data-ico="${id}"><img src="${opts.icon ?? a.icon}" data-acc-icon="${id}" alt="" width="52" height="52"></span>` +
     `<div class="pn-who"><div class="pn-title"><i class="pled" style="--c:${a.color}" aria-hidden="true"></i><span>Claude ${name}</span>${split ? twoNamesBadgeHTML("terminal") : ""}</div>` +
@@ -177,7 +177,7 @@ export function detailsHTML(id: AccountId, design: Design, opts: { name?: string
     ? `<button type="button" class="pill small tint ${a.tint}${opts.open ? "" : " unlit"} amberk" ${tint}>${opts.open ? "Show window" : "Open window"}</button>`
     : `<button type="button" class="pill small tint ${a.tint}" ${tint}>Claude</button>`;   // words: SEO (the app's)
   const keys = `<div class="acc-actions pn-keys">${win}` +
-    (split ? `<button type="button" class="pill small" data-details-signin="${id}" title="Sign Terminal in to the Claude app's account">${SPLIT_WORDS.panelKey}</button>` : "") +   // words: SEO (sketch 97ebf0a)
+    (split ? `<button type="button" class="pill small" data-details-signin="${id}" title="Sign Terminal in to the Claude app's account">${SPLIT_WORDS.panelKey}</button>` : "") +   // words: SEO (v26.11.88)
     `<a class="pill small" href="/dashboard/">Dashboard</a><span class="spacer"></span>` +
     `<a class="pill small pn-gear" href="/settings/" data-profile-settings="${id}" title="Settings…" aria-label="Profile settings">⚙︎</a></div>`;
   const limits = split ? limitsHTML("sample", design, true) : limitsHTML(id, design, true) + creditsHTML(id);

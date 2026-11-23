@@ -1712,6 +1712,10 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .face-silver .lnk { color: #0b57d0; }
 .lnk.inl { font-size: inherit; display: inline; }
 .linked-line { margin: 0; font-size: 12px; }
+/* General ▸ Backups: the old quick chats' quiet line, its two keys at the right (wrapping under it when narrow) */
+.old-qc { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.old-qc[hidden] { display: none; }
+[data-ask-text] { white-space: pre-line; }
 .linked-line a { color: #8ab4ff; }
 .face-silver .linked-line a { color: #0b57d0; }   /* a link inside a line of text (the Sessions card's "General") */
 /* Folders from before (26.11.18): each with its line and its keys, under the boxes */
@@ -2008,11 +2012,8 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .split-line { margin-top: -4px; }
 .inuse-tag, .pn-tag { flex: none; color: var(--muted); white-space: nowrap; }
 .inuse .addr { flex: 0 1 auto; }
-/* in the split the account line names whose numbers they are on a line of its own under the address, as the sketch's
-   card has it: the lamp and the address, then "· Terminal" */
-.inuse.split { flex-wrap: wrap; row-gap: 1px; }
-.inuse.split .addr { max-width: calc(100% - 12px); }
-.inuse.split .inuse-tag { flex-basis: 100%; padding-left: 12px; }
+/* in the split the account line names whose numbers they are on the same line, as 26.11.88's card has it (Launcher.swift:
+   the lamp, the address cut short where it must, then "· Terminal" whole) */
 /* the window key amber in the split (the window is what's out of line): the same key on the card and the Dock panel,
    dark legend on the amber face, its window-open lamp a bright light with a dark ring */
 .acc-actions .pill.small.amberk { color: #1f1405; text-shadow: none;
@@ -2027,9 +2028,10 @@ input.field.problem, input.field.problem:focus { box-shadow: 0 1px 0 var(--dange
 .face-silver .tn-badge i { background: rgba(0,0,0,.2); }
 .face-silver .abox.split-box { background: linear-gradient(180deg, #fbfcfc, #eef0f1); box-shadow: inset 0 2px 4px rgba(0,0,0,.14), 0 1px 0 rgba(255,255,255,.7); }
 .face-silver .c-acc .acc-zone.split { background: linear-gradient(180deg, rgba(232,160,30,.22), rgba(232,160,30,.14)); }
-.mbm-acc.split { flex-wrap: wrap; }
-.mbm-acc.split .addr { opacity: 1; }
-.mbm-split { padding: 0 8px 5px 20px; }
+.mbm-split { padding: 4px 8px 2px; }
+/* (the menu lives in the menu bar, whose links are plain white: the amber line keeps its amber, LineLink 0xf5b54a) */
+.menubar .mbm-split a.amber-link { color: #f5b54a; text-decoration: underline; }
+.face-silver .menubar .mbm-split a.amber-link { color: #8a5200 !important; }
 .mbm-split .amber-link { font-size: 11.5px; }
 .mbm-wsub { margin: 2px 0 4px 10px; padding-left: 4px; }
 
