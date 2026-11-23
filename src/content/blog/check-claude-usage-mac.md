@@ -53,8 +53,10 @@ sources:
     url: "https://code.claude.com/docs/en/vs-code"
     checked: 2026-11-02
   - title: "cl_audit README (n-uf/cl_audit)"
-    url: "https://github.com/n-uf/cl_audit"
-    checked: 2026-11-02
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-23
+    supports: "Words used here: a profile is one Claude setup, its Claude Code folder and sign-in and, if you want them, a Dock icon and a Claude window; a profile's folder holds one signed-in account at a time."
+    quote: "a profile's folder holds one signed-in account at a time"
   - title: "cl_audit CHANGELOG, 26.11.18"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/CHANGELOG.md"
     checked: 2026-11-23

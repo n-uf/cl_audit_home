@@ -45,8 +45,10 @@ sources:
     url: "https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans"
     checked: 2026-11-05
   - title: "cl_audit README (n-uf/cl_audit): alerts, after a Claude update"
-    url: "https://github.com/n-uf/cl_audit"
-    checked: 2026-11-05
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md#how-it-works"
+    checked: 2026-11-23
+    supports: "After a Claude update the agent opens the profile windows that quit by themselves again, in the background, with one alert (“Claude updated to 1.2.0 · Reopened Work's window”); a window you closed yourself is left alone."
+    quote: "Claude updated to 1.2.0 · Reopened Work's window"
   - title: "cl_audit README at tag v26.11.88 (n-uf/cl_audit): When a limit is full, Another account, A switch waiting for you"
     url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
     checked: 2026-11-23
