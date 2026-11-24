@@ -6,7 +6,7 @@ mainKeyword: "claude code status line"
 kind: how-to
 published: 2026-11-24
 updated: 2026-11-24
-draft: true
+draft: false
 author: n-uf
 takeaways:
   - "The Claude Code status line is a row under the prompt that shows whatever your command prints. The command gets the session's data as JSON on stdin."
