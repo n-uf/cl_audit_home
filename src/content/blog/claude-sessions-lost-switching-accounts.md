@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Claude Code sessions lost switching accounts: how to resume"
 description: "Claude Code sessions lost switching accounts? The transcripts are usually still on disk. How to find them, resume with claude --resume, and what to avoid."
 h1: "Claude Code sessions lost switching accounts? They're likely still on disk"
