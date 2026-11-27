@@ -7,7 +7,7 @@ kind: how-to
 published: 2026-11-27
 updated: 2026-11-27
 author: n-uf
-draft: true
+draft: false
 takeaways:
   - "Claude Code deletes session transcripts once they are older than cleanupPeriodDays: the default is 30 days, the minimum is 1, and 0 is rejected. The sweep runs in the background after a session starts and shows no message. From v2.1.248, sessions from Claude Desktop or Cowork are kept at any age unless a setting says otherwise."
   - "Transcripts are plain files at ~/.claude/projects/<project>/<session-id>.jsonl (under your CLAUDE_CONFIG_DIR folder if you set one), so a copy of that folder is a working backup."
