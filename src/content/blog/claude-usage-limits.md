@@ -123,7 +123,7 @@ Anthropic's help page names the length and complexity of your conversations, the
 
 Some things cost less. Anthropic says content in projects is cached and counts less against your limits when reused, and that Claude remembers context from earlier in the conversation, so you don't need to repeat it.
 
-Long chats cost more. With code execution on, Claude summarizes earlier messages as a conversation nears the context window, and the help page says conversations that trigger this automatic context management consume more of your usage limit. Its advice: start a new conversation if you're close to a limit in a long one.
+Long chats cost more. With code execution on, Claude summarizes earlier messages as a conversation nears the context window, and the help page says conversations that trigger this automatic context management consume more of your usage limit. Its advice: start a new conversation if you're close to a limit in a long one. {{live:/blog/how-to-save-claude-usage/}}The habits that follow from all this, in claude.ai, Claude Desktop and Claude Code, are in [how to save Claude usage](/blog/how-to-save-claude-usage/).{{/live}}
 
 The budget is shared across surfaces. Usage on claude.ai, Claude Code and Claude Desktop counts toward the same limit, and Anthropic's Claude Code plan page says IDE usage does too. On a Pro or Max plan, your terminal sessions and your chats come out of one allowance. Seeing where those tokens go is a different job from reading the limit bars; [checking Claude usage on a Mac](/blog/check-claude-usage-mac/) goes through the options.
 
