@@ -19,6 +19,8 @@ faq:
     a: "Yes. With cl_audit each account becomes a profile with its own Claude Code folder and sign-in, and, if you want, its own Claude window and Dock icon. The profile that uses ~/.claude opens the usual Claude app; every other profile gets a separate Claude window."
   - q: "How do I open several Claude windows on a Mac?"
     a: "Turn on the Claude window switch for each profile. The profile using ~/.claude opens the usual Claude app, and every other profile opens its own Claude window with its own sign-in, chats and settings, next to the others. You open or quit each window from its card on the dashboard, and open it from the launcher or its Dock icon."
+  - q: "Can you run multiple instances of Claude Desktop?"
+    a: "Yes, with cl_audit on a Mac. Each profile with Claude window on opens its own Claude window, started on its own data folder, so a work and a personal account run side by side, each with its own sign-in, chats and Code tab. The profile on `~/.claude` uses the usual Claude app."
   - q: "Do two accounts share usage limits?"
     a: "cl_audit keeps them apart: each profile shows the limits of its own account, read from Anthropic with that profile's sign-in, and cl_audit doesn't pool them. A profile can switch to another of your own accounts, and its Code sessions are meant to move with it, after a backup, but switching is experimental and can lose data. Within one plan, Anthropic's help page says Claude and Claude Code count against the same limits."
   - q: "Can two profiles use the same email?"
@@ -62,7 +64,7 @@ sources:
     checked: 2026-11-02
   - title: "Anthropic Usage Policy (effective Nov 12, 2026)"
     url: "https://www.anthropic.com/legal/aup"
-    checked: 2026-11-07
+    checked: 2026-11-28
     supports: "multiple accounts to avoid detection or circumvent guardrails; automation in account creation; ban evasion"
     quote: "Circumvent a ban through the use of a different account"
   - title: "claude-fix README (sarhej/claude-fix)"
@@ -224,9 +226,9 @@ cl_audit can show each account's email address in the launcher, on the cards and
 
 cl_audit doesn't get around usage limits. It doesn't pool limits across accounts: each account's limits are its own, and each profile shows its own accounts' limits, nothing more. A profile can switch to another of your own accounts, and the switch is meant to move its Code sessions there (switching is experimental and can lose data); it doesn't switch on its own. The [FAQ](/faq/) covers how the usage figures are read.
 
-Whether you may hold more than one Claude account is up to Anthropic's terms. Anthropic's Usage Policy, as it read on 7 November 2026 (effective 12 November 2026), lists among things not to do: coordinating malicious activity across multiple accounts; creating multiple accounts to avoid detection, get around product guardrails or send repeated inputs that break the policy; automating account creation; and using a different account to get around a ban.
+Whether you may hold more than one Claude account is up to Anthropic's terms. Anthropic's Usage Policy, as it read on 28 November 2026 (effective 12 November 2026), lists among things not to do: coordinating malicious activity across multiple accounts; creating multiple accounts to avoid detection, get around product guardrails or send repeated inputs that break the policy; automating account creation; and using a different account to get around a ban.
 
-This page is about keeping a work seat and a personal plan apart. cl_audit can't tell you how Anthropic's terms apply to your own case. If you're unsure, read the terms or ask Anthropic.
+This page is about keeping accounts apart for separate purposes: work and personal, or a Team plan and your own. Two accounts' limits don't pool, so a second account is not more room on the first. {{live:/blog/claude-max-multiple-accounts/}}What Anthropic's pages say about holding more than one plan is in [Claude Max multiple accounts](/blog/claude-max-multiple-accounts/).{{/live}} cl_audit can't tell you how Anthropic's terms apply to your own case. If you're unsure, read the terms or ask Anthropic.
 
 ## Other ways to run a second account
 
