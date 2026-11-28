@@ -1,6 +1,6 @@
 ---
 title: "Claude account switcher for Mac, with a backup first"
-description: "cl_audit is a free Claude account switcher for Mac: a profile signs in again as another of your accounts. Moving its sessions is experimental."
+description: "cl_audit is a free Claude account switcher for Mac: a profile signs in again as another of your accounts. Switching and its session move are experimental."
 h1: "Claude account switcher: move a profile between your accounts"
 mainKeyword: "claude account switcher"
 kind: use-case
@@ -13,11 +13,11 @@ takeaways:
   - "A cl_audit profile is one Claude Code folder, signed in to one account at a time: the one in use. Your other accounts wait on standby, signed out, and show no limits."
   - "A switch is Claude Code's own sign-in again on the same folder, unless Claude Code is already on that account. cl_audit checks which account came back. It never copies or moves a sign-in, and a standby account has none kept."
   - "Before the sign-in, the profile's Claude window closes and a backup is made. The window's Code sessions and scheduled tasks are meant to move to the new account, with a receipt and Undo the move, but that move is experimental and not yet proven."
-  - "For Code sessions you can't afford to lose, we suggest running claude-transplant, someone else's MIT-licensed tool, from its command line without --cloud, rather than relying on cl_audit's move."
+  - "For Code sessions you can't afford to lose in the usual Claude app, the default profile's window, we suggest running claude-transplant, someone else's MIT-licensed tool, from its command line without --cloud, rather than relying on cl_audit's move."
   - "You sign the Claude app in to the new account yourself. cl_audit doesn't pool limits and never switches by itself. One account needs none of this, and two accounts open at once are two profiles instead."
 faq:
   - q: "Will I lose my sessions when I switch Claude accounts?"
-    a: "It can happen: switching is experimental and can lose data, and its session move isn't proven yet. For sessions you can't afford to lose, we suggest claude-transplant's command line instead. A switch is meant to move the window's Code-tab sessions after a backup. Transcripts stay in the folder, and a session a running Claude Code has open stays behind."
+    a: "It can happen: switching is experimental, can lose data, and its session move isn't proven yet. For the usual Claude app's sessions, we suggest claude-transplant's command line, without --cloud, instead. A switch is meant to move the window's Code-tab sessions after a backup. Transcripts stay in the folder, and a session a running Claude Code has open stays behind."
   - q: "Does cl_audit pool the limits of my accounts?"
     a: "No. Each account's limits are its own, and cl_audit reads only the account in use, so nothing is added up or shared. A standby account shows its plan and when it was last used, never limits. A switch happens only when you start it, never by itself."
   - q: "Is my sign-in copied between accounts?"
@@ -195,7 +195,7 @@ sources:
   - title: "claude-transplant README at v4.2.2 (vitaliyhayda/claude-transplant)"
     url: "https://github.com/vitaliyhayda/claude-transplant/blob/v4.2.2/README.md"
     checked: 2026-11-28
-    supports: "A community tool, MIT-licensed, by its own author and not by n-uf, that moves the Claude app's Code-tab session records between accounts, as a command line or a menu bar app; the CLI doesn't need --cloud; --cloud archives the source account's Remote Control copies and reads Desktop's claude.ai session from the Keychain in memory, sent only to claude.ai; the menu bar's Move always passes --cloud; without --cloud nothing is read from the Keychain or uploaded."
+    supports: "A community tool, MIT-licensed, unofficial and not affiliated with Anthropic, that moves the Claude app's Code-tab session records between accounts, as a command line or a menu bar app; --cloud is optional in the CLI; --cloud archives the source account's Remote Control copies and reads Desktop's claude.ai session from the Keychain in memory, sent only to claude.ai; the menu bar's Move always passes --cloud; without --cloud nothing is read from the Keychain or uploaded."
     quote: "Only with `--cloud`, which the menubar's Move always passes."
   - title: "Consumer Terms of Service (Anthropic)"
     url: "https://www.anthropic.com/legal/consumer-terms"
@@ -218,7 +218,7 @@ cl_audit is a free Claude account switcher for Mac that moves one profile betwee
 
 {{experimental: switch}}
 
-The session move in a switch is new and not yet proven. For Code sessions you can't afford to lose, we suggest running [claude-transplant](https://github.com/vitaliyhayda/claude-transplant) directly from its command line, without `--cloud`. It's someone else's MIT-licensed tool, and we're not affiliated with it. {{live:/blog/move-claude-code-session-to-another-account/}}The steps are in our guide to [moving a Claude Code session to another account](/blog/move-claude-code-session-to-another-account/).{{/live}}
+The session move in a switch is new and not yet proven. For Code sessions you can't afford to lose, we suggest running [claude-transplant](https://github.com/vitaliyhayda/claude-transplant) directly from its command line, without `--cloud`. It's someone else's MIT-licensed tool, and we're not affiliated with it. It moves only the usual Claude app's sessions, the default profile's: its paths are fixed to that app's folders, so another profile's Claude window can't carry its sessions this way. {{live:/blog/move-claude-code-session-to-another-account/}}The steps are in our guide to [moving a Claude Code session to another account](/blog/move-claude-code-session-to-another-account/).{{/live}}
 
 Say your profile Main works on `ultra-1@example.com`, and you also have `ultra-2@example.com`. Main's card shows ultra-1's limits. ultra-2 waits on standby until you switch to it.
 
@@ -287,7 +287,7 @@ Before the sign-in starts, cl_audit unsets `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_
 
 Switching is experimental and can lose data, so keep your own copy of anything you can't afford to lose. Claude Code's own history doesn't need to move. Its transcripts stay in the profile's folder, where `claude --resume` looks for them. The part the Claude app keeps per account is the window's list of Code sessions, and that is what a switch moves.
 
-The move is adapted from [claude-transplant](https://github.com/vitaliyhayda/claude-transplant), a community tool under the MIT licence, and cl_audit's README credits it. We've used claude-transplant ourselves to move sessions between two accounts, and it worked well. That's our two accounts, not a test of yours, and cl_audit's adaptation hasn't had that use yet. So for sessions you can't afford to lose we'd still run claude-transplant itself, from its command line and not its menu bar app. The menu bar app's Move always passes `--cloud`, which reads the Claude app's claude.ai sign-in from the Keychain and uses it. Anthropic's Consumer Terms bar accessing its services by automated means, such as a script, except with an API key or where Anthropic explicitly permits it, and cl_audit's README also says to leave `--cloud` off.
+The move is adapted from [claude-transplant](https://github.com/vitaliyhayda/claude-transplant), a community tool under the MIT licence, and cl_audit's README credits it. We've used claude-transplant ourselves to move sessions between two accounts, and it worked well. That's our two accounts, not a test of yours, and cl_audit's adaptation isn't proven yet. So for those we'd still run claude-transplant itself, from its command line and not its menu bar app. It covers only the usual Claude app, the default profile's window, and you quit every Claude window first: with others open it can quit the wrong one. The menu bar app's Move always passes `--cloud`, which reads the Claude app's claude.ai sign-in from the Keychain and uses it to archive Remote Control copies on claude.ai. Anthropic's Consumer Terms bar accessing its services by automated means, such as a script, except with an API key or where Anthropic explicitly permits it, and cl_audit's README also says to leave `--cloud` off. Without it, claude-transplant's README says nothing is read from the Keychain or uploaded.
 
 Every step goes on a receipt, so **Undo the move** can put back what got done, as long as Claude Code isn't on the new account yet. It may not bring everything back.
 
@@ -373,7 +373,7 @@ Other switchers do a related job for Claude Code alone. By their READMEs, checke
 
 | Tool | What it swaps | Where it makes more sense |
 |---|---|---|
-| cl_audit | The profile's account. Claude Code signs in again on the same folder, on Anthropic's own screen, and no sign-in is copied. The Claude window's Code sessions and scheduled tasks are meant to move too, after a backup; that move is experimental | You use the Claude app and Claude Code in one profile and want the sessions to go with the account |
+| cl_audit | The profile's account. Claude Code signs in again on the same folder, on Anthropic's own screen, and no sign-in is copied. The Claude window's Code sessions and scheduled tasks are meant to move too, after a backup; that move is experimental | You use the Claude app and Claude Code in one profile and want one switch for both, with a backup first |
 | claude-swap | The account-specific Claude sign-in for Claude Code, in the CLI and the VS Code extension. It has an optional automatic mode and an optional macOS menu bar app | You work in the terminal, on macOS, Linux or Windows, and want a command to swap sign-ins |
 | CCSwitcher | A menu bar app (macOS 14 or later) that keeps a backup of each Claude Code account's credentials and swaps the Keychain entry and `~/.claude.json` | You want a small menu bar switcher for Claude Code alone |
 
