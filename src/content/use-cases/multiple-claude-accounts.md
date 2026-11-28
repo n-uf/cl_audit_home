@@ -5,7 +5,7 @@ h1: "Multiple Claude accounts on one Mac"
 mainKeyword: "multiple claude accounts"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-29
+updated: 2026-11-28
 author: n-uf
 order: 1
 takeaways:
@@ -20,7 +20,7 @@ faq:
   - q: "How do I open several Claude windows on a Mac?"
     a: "Turn on the Claude window switch for each profile. The profile using ~/.claude opens the usual Claude app, and every other profile opens its own Claude window with its own sign-in, chats and settings, next to the others. You open or quit each window from its card on the dashboard, and open it from the launcher or its Dock icon."
   - q: "Can you run multiple instances of Claude Desktop?"
-    a: "Yes, with cl_audit on a Mac. Each profile with Claude window on opens its own Claude window, started on its own data folder, so a work and a personal account run side by side, each with its own sign-in, chats and Code tab. The profile on `~/.claude` uses the usual Claude app."
+    a: "Yes, with cl_audit on a Mac. Turn on Claude window for each profile: the profile on ~/.claude opens the usual Claude app, and every other profile opens its own Claude window on its own data folder. A work and a personal account then run side by side, each with its own sign-in, chats and Code tab."
   - q: "Do two accounts share usage limits?"
     a: "cl_audit keeps them apart: each profile shows the limits of its own account, read from Anthropic with that profile's sign-in, and cl_audit doesn't pool them. A profile can switch to another of your own accounts, and its Code sessions are meant to move with it, after a backup, but switching is experimental and can lose data. Within one plan, Anthropic's help page says Claude and Claude Code count against the same limits."
   - q: "Can two profiles use the same email?"
@@ -141,7 +141,7 @@ In cl_audit the unit is a profile: one Claude setup. A profile has a Claude Code
 ![cl_audit launcher with three Claude profiles and limits](/img/guides/launcher-profiles.webp "The launcher: every profile with both limits. ⌘1–9 opens its Claude window, ⌘↩ its Terminal. Sample data.")
 
 - **Claude Code folder.** Claude Code keeps its settings and session history in one folder, `~/.claude` by default. Anthropic's docs say that if you set `CLAUDE_CONFIG_DIR`, Claude Code stores them in that folder instead. Each profile has its own folder and sign-in: `~/.claude` for the first, and one such as `~/.claude-work` for each you add.
-- **Claude window.** The profile that uses `~/.claude` opens the usual Claude app. Every other profile gets its own Claude window, with its own sign-in, chats and settings. Each of those windows runs with its own `--user-data-dir`, and that's how cl_audit tells them apart.
+- **Claude window.** The profile that uses `~/.claude` opens the usual Claude app. Every other profile gets its own Claude window, with its own sign-in, chats and settings.
 - **Dock icon.** A small app named `cl_audit <profile name>` whose icon shows the profile's 5-hour and weekly usage. The Dock draws that usage itself, so the icon has no running dot and no ⌘-Tab entry until you click it. By default a click shows the usage for 3 seconds while the profile's Claude window opens. For a new profile, or after an update, the app may start once for about a minute so the Dock can use it. If the Dock can't draw the usage (Dock Tiles turned off in System Settings ▸ General ▸ Login Items & Extensions, say), the app runs instead, about two minutes after cl_audit starts, until the Dock can draw it again.
 
 A profile has two switches, **Usage in the Dock** and **Claude window**. With both off it's "usage only". Its limits still show on the [Claude usage dashboard](/dashboard/), in the launcher and in alerts, but nothing sits in the Dock and no window opens. That suits an account you only want to keep an eye on.
@@ -150,17 +150,17 @@ In cl_audit, "account" means only the claude.ai account a profile signs in to. A
 
 ## Claude Desktop multiple instances, one per account
 
-If you searched for "Claude Desktop multiple instances" or "two instances of Claude Desktop", you want two accounts open at once. In cl_audit that is one Claude window per profile, side by side.
+The Claude app signs in to one account at a time, so two accounts open at once means two copies of the app running. In cl_audit that is one Claude window per profile, side by side.
 
 Turn on **Claude window** for each profile, then open the windows from the dashboard, the launcher or the Dock icons. The profile on `~/.claude` opens the usual Claude app. Every other profile starts the app on its own data folder, with its own `--user-data-dir`, and cl_audit matches each running window to its profile by that path. With a "work" and a "home" profile, you get two windows open together, each signed in to its own account.
 
-More windows of one app aren't more accounts. Anthropic's Claude Code docs describe opening a session in a window of its own, which gives you another window on the account you're signed in to, not a second account. Other tools that start a second copy of the app are compared in [Claude desktop profile switchers for Mac, compared](/blog/claude-profile-switchers-mac/).
+More windows of one app aren't more accounts. Anthropic's Claude Code docs describe opening a Code session in a window of its own, and they say nothing about signing that window in to another account. Other tools that start a second copy of the app are compared in [Claude desktop profile switchers for Mac, compared](/blog/claude-profile-switchers-mac/).
 
-Claude Code comes along. Each window has its own Code tab, and a Code session stays in the data folder of the window it was made in, so a new window's Code sidebar starts empty. In Terminal, Claude Code runs from the profile's own folder and its own login. Limits stay per account too: each profile's Dock icon shows its own, and cl_audit doesn't add them up.
+Each window has its own Code tab. A Code session stays in the data folder of the window it was made in, so a new window's Code sidebar starts empty.
 
-To use two Claude Code accounts at the same time, Anthropic's authentication docs say to give each account its own configuration directory, set with `CLAUDE_CONFIG_DIR` when you start `claude`. The [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) guide does that by hand. cl_audit sets it for each profile, so the Terminal key on a card starts Claude Code in the right folder, next to that profile's window.
+To use two Claude Code accounts at the same time, Anthropic's authentication docs say to give each account its own configuration directory, set with `CLAUDE_CONFIG_DIR` when you start `claude`. The [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) guide does that by hand. cl_audit sets it for every profile except the one on `~/.claude`, and each card's **Terminal** key starts Claude Code in that profile's folder.
 
-macOS ties running Claude windows to Claude pins in its own order, so several Claude pins get mixed up. cl_audit's README says the Dock icons are the reliable way to reach each profile's window: one per profile, each showing that profile's usage.
+macOS ties running Claude windows to Claude pins in its own order, so several Claude pins get mixed up. The Dock icons are the reliable way to reach each profile's window: one for each profile with Usage in the Dock on, showing that profile's usage.
 
 ## Work and personal on the same email
 
@@ -228,7 +228,7 @@ cl_audit doesn't get around usage limits. It doesn't pool limits across accounts
 
 Whether you may hold more than one Claude account is up to Anthropic's terms. Anthropic's Usage Policy, as it read on 28 November 2026 (effective 12 November 2026), lists among things not to do: coordinating malicious activity across multiple accounts; creating multiple accounts to avoid detection, get around product guardrails or send repeated inputs that break the policy; automating account creation; and using a different account to get around a ban.
 
-This page is about keeping accounts apart for separate purposes: work and personal, or a Team plan and your own. Two accounts' limits don't pool, so a second account is not more room on the first. {{live:/blog/claude-max-multiple-accounts/}}What Anthropic's pages say about holding more than one plan is in [Claude Max multiple accounts](/blog/claude-max-multiple-accounts/).{{/live}} cl_audit can't tell you how Anthropic's terms apply to your own case. If you're unsure, read the terms or ask Anthropic.
+This page is about keeping accounts apart for separate purposes, such as work and personal, or a Team plan and your own, not about getting more usage. {{live:/blog/claude-max-multiple-accounts/}}What Anthropic's pages say about holding more than one plan is in [Claude Max multiple accounts](/blog/claude-max-multiple-accounts/).{{/live}} cl_audit can't tell you how Anthropic's terms apply to your own case. If you're unsure, read the terms or ask Anthropic.
 
 ## Other ways to run a second account
 
