@@ -16,6 +16,6 @@ const { Content, headings } = await render(entry);
 // the body with its {{live:}} blocks resolved (src/data/live.ts), its images as sized figures (src/data/images.ts), then its
 // action buttons (src/data/actions.ts); the plain component if there is no rendered HTML
 const file = entry.filePath ?? `src/content/use-cases/${entry.id}.md`;
-const html = entry.rendered?.html ? withActions(withImages(withExperimental(await withLiveBlocks(entry.rendered.html, file), file)), pathOf("usecases", entry.id), entry.data.mainKeyword) : undefined;
+const html = entry.rendered?.html ? withActions(withImages(withExperimental(await withLiveBlocks(entry.rendered.html, file), file)), pathOf("usecases", entry.id), entry.data.mainKeyword, entry.data.actions) : undefined;
 ---
 <Reader entry={entry} section="usecases" headings={headings}>{html ? <Fragment set:html={html} /> : <Content />}</Reader>
