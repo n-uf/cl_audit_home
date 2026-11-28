@@ -14,6 +14,7 @@ const article = z.object({
   published: z.coerce.date(),         // the day the page goes live (UTC); for a draft, the day it is scheduled for
   updated: z.coerce.date(),
   draft: z.boolean().default(false),  // true: scheduled, not live yet; scripts/publish-due.mjs flips it on its date
+  actions: z.boolean().default(true), // false: no action buttons in this page's body (src/data/actions.ts)
   author: z.literal("n-uf"),
   takeaways: z.array(z.string().min(20)).min(3).max(5),
   faq: z.array(z.object({ q: z.string().endsWith("?"), a: z.string().min(40) })).min(4).max(5),

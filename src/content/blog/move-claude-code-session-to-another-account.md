@@ -8,6 +8,7 @@ published: 2026-12-03
 updated: 2026-12-03
 author: n-uf
 draft: true
+actions: false
 takeaways:
   - "claude-transplant is a community tool, MIT-licensed and not made by Anthropic or by us, that moves the Claude app's Code-tab session records from one of your accounts to another. Its README says it works on macOS 13 or newer with Node 22 or newer."
   - "The transcript files in ~/.claude/projects stay where they are and are shared by every account. Only the per-account records that build the Code-tab sidebar move, and the sessions keep their ids."

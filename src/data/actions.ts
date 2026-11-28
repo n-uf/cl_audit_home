@@ -118,8 +118,10 @@ function button(kind: Kind, nth: number, [label, href]: [string, string]): strin
 }
 
 /** The rendered HTML of a page with its action buttons in place. `page` is its path, which also seeds the jitter;
- *  `mainKeyword` (from the front matter) sets the page's own topic. */
-export function withActions(html: string, page: string, mainKeyword: string): string {
+ *  `mainKeyword` (from the front matter) sets the page's own topic. `enabled` is the front matter's `actions`:
+ *  false leaves the page without buttons. */
+export function withActions(html: string, page: string, mainKeyword: string, enabled = true): string {
+  if (!enabled) return html;
   const bs = blocks(html);
   const total = bs.at(-1)?.cum ?? 0;
   const rand = rng(page);

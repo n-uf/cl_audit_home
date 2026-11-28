@@ -26,7 +26,7 @@ const rendered = entry ? await render(entry) : undefined;
 // the body with its {{live:}} blocks resolved (src/data/live.ts), its images as sized figures (src/data/images.ts), then its
 // action buttons (src/data/actions.ts); the plain component if there is no rendered HTML
 const file = entry?.filePath ?? `src/content/blog/${entry?.id}.md`;
-const html = entry?.rendered?.html ? withActions(withImages(withExperimental(await withLiveBlocks(entry.rendered.html, file), file)), pathOf("blog", entry.id), entry.data.mainKeyword) : undefined;
+const html = entry?.rendered?.html ? withActions(withImages(withExperimental(await withLiveBlocks(entry.rendered.html, file), file)), pathOf("blog", entry.id), entry.data.mainKeyword, entry.data.actions) : undefined;
 
 const title = "Claude usage blog: limits, resets, tracking";
 const description = "Guides on Claude's usage limits and how to track them on a Mac: when limits reset, how to check usage, and how to use several accounts.";
