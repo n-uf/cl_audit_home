@@ -139,7 +139,7 @@ Projects also help the other way. The best-practices page says content in a proj
 
 ### Say it once, in one message
 
-Anthropic's best-practices page suggests planning a conversation before you start: decide what you need, combine related questions, share the background up front and review your prompt before sending. Its stated reason is fewer back-and-forth messages. These are the cheapest changes on the list, since they cost nothing but a minute of thought.
+Anthropic's best-practices page suggests planning a conversation before you start: decide what you need, combine related questions, share the background up front and review your prompt before sending. Its stated reason is fewer back-and-forth messages. These changes cost nothing but a minute of thought.
 
 ## Claude Code usage tips: how to keep usage low
 
