@@ -5,11 +5,11 @@ h1: "Multiple Claude accounts on one Mac"
 mainKeyword: "multiple claude accounts"
 kind: use-case
 published: 2026-11-02
-updated: 2026-11-23
+updated: 2026-11-29
 author: n-uf
 order: 1
 takeaways:
-  - "You can run multiple Claude accounts on one Mac at the same time. The first profile is the default one, on ~/.claude with the usual Claude app; each profile you add gets its own Claude window and Claude Code folder."
+  - "You can run multiple Claude accounts on one Mac at the same time, as Claude app windows side by side. The first profile is the default one, on ~/.claude with the usual Claude app; each profile you add gets its own Claude window and Claude Code folder."
   - "cl_audit tells accounts apart by account and organisation, so a personal plan and a Team seat on the same email can be two profiles. One account can also be in several profiles, each with its own folder."
   - "Each profile's 5-hour and weekly limits are read separately; cl_audit doesn't pool them. A profile can switch to another of your own accounts, and its Code sessions are meant to move with it, but switching is experimental and can lose data."
   - "Whether one person may hold more than one Claude account is set by Anthropic's terms, not by cl_audit."
@@ -42,6 +42,21 @@ sources:
   - title: "Claude Code docs: Settings (CLAUDE_CONFIG_DIR)"
     url: "https://code.claude.com/docs/en/settings"
     checked: 2026-11-02
+  - title: "Claude Code docs: Authentication (log in with multiple accounts)"
+    url: "https://code.claude.com/docs/en/authentication"
+    checked: 2026-11-28
+    supports: "To stay signed in to multiple accounts at once, give each account its own configuration directory by setting CLAUDE_CONFIG_DIR when starting claude; each directory has its own settings, session history and claude.ai login."
+    quote: "give each account its own configuration directory"
+  - title: "Claude Code docs: Desktop application (sessions in their own window)"
+    url: "https://code.claude.com/docs/en/desktop"
+    checked: 2026-11-28
+    supports: "The page describes opening a session in a window of its own (Cmd-click a session, or Open in, New window). It says nothing about running multiple copies of the app or multiple accounts."
+    quote: "In its own window"
+  - title: "cl_audit README at v26.11.88 (Claude windows)"
+    url: "https://github.com/n-uf/cl_audit/blob/v26.11.88/README.md"
+    checked: 2026-11-28
+    supports: "A profile other than the one on ~/.claude gets its own Claude window (own sign-in, chats and settings); running Claude apps are matched to profiles by their exact --user-data-dir, the usual app being the one without it; a new window's Code sidebar starts empty and Code sessions stay in the data folder they were made in; macOS ties running Claude windows to Claude pins in its own order, so several Claude pins get mixed up, and the Dock icons are the reliable way to reach each profile's window."
+    quote: "the Dock icons are the reliable way to reach each profile's window"
   - title: "Claude Code docs: Commands (/usage)"
     url: "https://code.claude.com/docs/en/commands"
     checked: 2026-11-02
@@ -130,6 +145,20 @@ In cl_audit the unit is a profile: one Claude setup. A profile has a Claude Code
 A profile has two switches, **Usage in the Dock** and **Claude window**. With both off it's "usage only". Its limits still show on the [Claude usage dashboard](/dashboard/), in the launcher and in alerts, but nothing sits in the Dock and no window opens. That suits an account you only want to keep an eye on.
 
 In cl_audit, "account" means only the claude.ai account a profile signs in to. A profile has one or more accounts and works on one at a time. An account can be in more than one profile, and cl_audit tells accounts apart by account and organisation.
+
+## Claude Desktop multiple instances, one per account
+
+If you searched for "Claude Desktop multiple instances" or "two instances of Claude Desktop", you want two accounts open at once. In cl_audit that is one Claude window per profile, side by side.
+
+Turn on **Claude window** for each profile, then open the windows from the dashboard, the launcher or the Dock icons. The profile on `~/.claude` opens the usual Claude app. Every other profile starts the app on its own data folder, with its own `--user-data-dir`, and cl_audit matches each running window to its profile by that path. With a "work" and a "home" profile, you get two windows open together, each signed in to its own account.
+
+More windows of one app aren't more accounts. Anthropic's Claude Code docs describe opening a session in a window of its own, which gives you another window on the account you're signed in to, not a second account. Other tools that start a second copy of the app are compared in [Claude desktop profile switchers for Mac, compared](/blog/claude-profile-switchers-mac/).
+
+Claude Code comes along. Each window has its own Code tab, and a Code session stays in the data folder of the window it was made in, so a new window's Code sidebar starts empty. In Terminal, Claude Code runs from the profile's own folder and its own login. Limits stay per account too: each profile's Dock icon shows its own, and cl_audit doesn't add them up.
+
+To use two Claude Code accounts at the same time, Anthropic's authentication docs say to give each account its own configuration directory, set with `CLAUDE_CONFIG_DIR` when you start `claude`. The [Claude Code multiple accounts](/blog/claude-code-multiple-accounts/) guide does that by hand. cl_audit sets it for each profile, so the Terminal key on a card starts Claude Code in the right folder, next to that profile's window.
+
+macOS ties running Claude windows to Claude pins in its own order, so several Claude pins get mixed up. cl_audit's README says the Dock icons are the reliable way to reach each profile's window: one per profile, each showing that profile's usage.
 
 ## Work and personal on the same email
 
